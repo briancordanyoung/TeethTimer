@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Title</key>
+			<string>Timer</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Default Duration</string>
+			<key>Key</key>
+			<string>defaultDurationInSeconds</string>
+			<key>DefaultValue</key>
+			<integer>240</integer>
+			<key>Titles</key>
+			<array>
+				<string>01:00</string>
+				<string>01:15</string>
+				<string>01:30</string>
+				<string>01.45</string>
+				<string>02:00</string>
+				<string>02:15</string>
+				<string>02:30</string>
+				<string>02:45</string>
+				<string>03:00</string>
+				<string>03:30</string>
+				<string>04:00</string>
+				<string>04:30</string>
+				<string>05:00</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<integer>60</integer>
+				<integer>75</integer>
+				<integer>90</integer>
+				<integer>105</integer>
+				<integer>120</integer>
+				<integer>135</integer>
+				<integer>150</integer>
+				<integer>165</integer>
+				<integer>180</integer>
+				<integer>210</integer>
+				<integer>240</integer>
+				<integer>270</integer>
+				<integer>300</integer>
+			</array>
+		</dict>
+	</array>
+	<key>StringsTable</key>
+	<string>Root</string>
+</dict>
+</plist>

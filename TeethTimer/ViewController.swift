@@ -13,6 +13,12 @@ class ViewController: UIViewController {
     // MARK: Properties
     var startTime: NSTimeInterval?
     var elapsedTimeAtPause: NSTimeInterval = 0
+    var brushingDurationPref: Int  {
+        get {
+            return NSUserDefaults.standardUserDefaults().integerForKey("defaultDurationInSeconds")
+        }
+    }
+    
     var brushingDuration = (60 * 4) as NSTimeInterval // 4 Minutes
     var timerIsHidden = false
     
@@ -29,12 +35,22 @@ class ViewController: UIViewController {
     @IBOutlet weak var startPauseButton: UIButton!
     @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var timerLabel: UILabel!
+    @IBOutlet weak var fullScreenImage: UIImageView!
     
     
     
     // MARK: View Controller Methods
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        setBrushingDuration()
+        timerLabel.text = displayTimeStringFromDuration(brushingDuration)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        styleButton(resetButton)
+        styleButton(startPauseButton)
+        fullScreenImage.image = UIImage(named: "GavinPool-5.jpg")
         resetTimer()
     }
 
@@ -42,6 +58,13 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+
+    func styleButton(button: UIButton) {
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 15
+        button.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).CGColor
+        button.titleLabel?.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+    }
     
     // MARK: Button Actions
     @IBAction func startStopPressed(sender: UIButton) {
@@ -70,13 +93,14 @@ class ViewController: UIViewController {
     
     func pauseTimer() {
         currentlyRunning = false
-        startPauseButton.setTitle("Start", forState: UIControlState.Normal)
+        startPauseButton.setTitle("Continue", forState: UIControlState.Normal)
     }
 
     func resetTimer() {
         startTime = nil
         elapsedTimeAtPause = 0
         timerLabel.text = displayTimeStringFromDuration(brushingDuration)
+        startPauseButton.setTitle("Start", forState: UIControlState.Normal)
     }
     
     func rememberTimerAtPause(elapsedTime: NSTimeInterval) {
@@ -84,6 +108,34 @@ class ViewController: UIViewController {
         elapsedTimeAtPause = elapsedTime
     }
 
+    func setBrushingDuration() {
+        let brushingDurationPref = self.brushingDurationPref
+        if (brushingDurationPref != 0) {
+            brushingDuration = NSTimeInterval(brushingDurationPref)
+        }
+    }
+    
+    func timerHasStarted() -> Bool {
+        var timerHasStarted = false
+
+        if elapsedTimeAtPause != 0 {
+            timerHasStarted = true
+        }
+        
+        if currentlyRunning {
+            timerHasStarted = true
+        }
+        
+        if startTime != nil {
+            timerHasStarted = true
+        }
+        
+        return timerHasStarted
+    }
+    
+    func timerHasNotStarted() -> Bool {
+        return !timerHasStarted()
+    }
     
     
     // MARK: Time Helper Methods
@@ -96,7 +148,7 @@ class ViewController: UIViewController {
         return displayTimeStringWithMinutes(durationParts.minutes, AndSeconds: durationParts.seconds)
     }
     
-    func timeAsParts(elapsedTimeInterval: NSTimeInterval) -> (minutes: Int,seconds: Int){
+    func timeAsParts(elapsedTimeInterval: NSTimeInterval) -> (minutes: Int,seconds: Int) {
         var elapsedTime = elapsedTimeInterval
         let elapsedMinsTime = elapsedTime / 60.0
         let elapsedMins = Int(elapsedMinsTime)
@@ -137,11 +189,12 @@ class ViewController: UIViewController {
             
             // TODO: Make Method to subtract elapsedTime from brushingDuration
             //       and then turn that result in to parts
+//            let brushingDurationParts = timeAsParts(brushingDuration)
+            
             let elapsedTimeParts = timeAsParts(elapsedTime)
             let displaySecs = 59 - elapsedTimeParts.seconds
             let displayMins = Int(brushingDuration / 60) - elapsedTimeParts.minutes - 1
 
-            
             
             let labelText = displayTimeStringWithMinutes(displayMins, AndSeconds: displaySecs)
             
@@ -156,31 +209,7 @@ class ViewController: UIViewController {
         }
         
     }
-    
-//    func printValues() {
-//        
-//        func printValuesAgain() {
-//            var printer = NSTimer.scheduledTimerWithTimeInterval( 1,
-//                target: self,
-//                selector:  Selector("printValues"),
-//                userInfo: nil,
-//                repeats: false)
-//        }
-//        
-//        if let start = startTime? {
-//            let now = NSDate.timeIntervalSinceReferenceDate()
-//            let elapsedTime = now - start + elapsedTimeAtPause
-//            
-//            println("Start Time: \(Int(start)) elapsedTime: \(Int(elapsedTime)) elapsedTimeAtPause: \(Int(elapsedTimeAtPause)) currentlyRunning: \(currentlyRunning) timerLabel: \(timerLabel.text)")
-//        } else {
-//            println("Start Time:     elapsedTime:      elapsedTimeAtPause: \(Int(elapsedTimeAtPause)) currentlyRunning: \(currentlyRunning) timerLabel: \(timerLabel.text)")
-//        }
-//        
-//        printValuesAgain()
-//    }
-    
-    
-    
+
     
 }
 

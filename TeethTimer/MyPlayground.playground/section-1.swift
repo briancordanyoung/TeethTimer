@@ -24,3 +24,4 @@ aTest.notCurrentlyRunning
 
 aTest.notCurrentlyRunning = false
 aTest.currentlyRunning
+

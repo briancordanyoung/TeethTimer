@@ -30,6 +30,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
+        let rootViewController = UIApplication.sharedApplication().keyWindow?.rootViewController
+        let viewController: ViewController = rootViewController as ViewController
+        viewController.setBrushingDuration()
+        if viewController.timerHasNotStarted() {
+            viewController.resetTimer()
+        }
+        
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
