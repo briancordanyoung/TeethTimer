@@ -31,13 +31,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(application: UIApplication) {
         let rootViewController = UIApplication.sharedApplication().keyWindow?.rootViewController
+        
+        // Anytime the app is brought to the forground, the timer duration preference
+        // could have been changed.  Check to see if the timer is currently active
+        // (active: paused or counting down, but not already reset and waiting to start)
+        // If the timer is not active, then reset the time so that it reads the new 
+        // timer duration preference and updates the UI to reflect it.
+        //
+        // This assumes that the rootViewController is our 'ViewController' class
         let viewController: ViewController = rootViewController as ViewController
-        viewController.setBrushingDuration()
         if viewController.timerHasNotStarted() {
             viewController.resetTimer()
         }
-        
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
     func applicationDidBecomeActive(application: UIApplication) {

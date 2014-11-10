@@ -75,9 +75,7 @@ class ViewController: UIViewController {
         }
     }
 
-    
     @IBAction func resetPressed(sender: UIButton) {
-        pauseTimer()
         resetTimer()
     }
     
@@ -95,12 +93,23 @@ class ViewController: UIViewController {
         currentlyRunning = false
         startPauseButton.setTitle("Continue", forState: UIControlState.Normal)
     }
-
+    
     func resetTimer() {
         startTime = nil
+        currentlyRunning = false
         elapsedTimeAtPause = 0
+        setBrushingDuration()
         timerLabel.text = displayTimeStringFromDuration(brushingDuration)
         startPauseButton.setTitle("Start", forState: UIControlState.Normal)
+    }
+    
+    func timerCompleted() {
+        startTime = nil
+        elapsedTimeAtPause = 0
+        currentlyRunning = false
+        setBrushingDuration()
+        timerLabel.text = "00:00"
+        startPauseButton.setTitle("Done", forState: UIControlState.Normal)
     }
     
     func rememberTimerAtPause(elapsedTime: NSTimeInterval) {
@@ -118,15 +127,15 @@ class ViewController: UIViewController {
     func timerHasStarted() -> Bool {
         var timerHasStarted = false
 
+        if startTime != nil {
+            timerHasStarted = true
+        }
+        
         if elapsedTimeAtPause != 0 {
             timerHasStarted = true
         }
         
         if currentlyRunning {
-            timerHasStarted = true
-        }
-        
-        if startTime != nil {
             timerHasStarted = true
         }
         
@@ -187,29 +196,19 @@ class ViewController: UIViewController {
                 return
             }
             
-            // TODO: Make Method to subtract elapsedTime from brushingDuration
-            //       and then turn that result in to parts
-//            let brushingDurationParts = timeAsParts(brushingDuration)
+            let elapsedTimeParts = timeAsParts(brushingDuration - elapsedTime)
+            let labelText = displayTimeStringWithMinutes(elapsedTimeParts.minutes,
+                                             AndSeconds: elapsedTimeParts.seconds)
             
-            let elapsedTimeParts = timeAsParts(elapsedTime)
-            let displaySecs = 59 - elapsedTimeParts.seconds
-            let displayMins = Int(brushingDuration / 60) - elapsedTimeParts.minutes - 1
-
-            
-            let labelText = displayTimeStringWithMinutes(displayMins, AndSeconds: displaySecs)
             
             if (elapsedTime > brushingDuration) {
-                pauseTimer()
-                timerLabel.text = "00:00"
+                timerCompleted()
             } else {
                 timerLabel.text = labelText
                 updateTimeAgain()
             }
             
         }
-        
     }
-
-    
 }
 
