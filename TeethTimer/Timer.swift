@@ -89,12 +89,9 @@ class Timer: NSObject {
         }
     }
     
+    // MARK:
+    // =============================================================================
     // MARK: Init methods
-    init(WithStartButton button: UIButton, AndTimerLabel label: UILabel) {
-        startPauseButton = button
-        timerLabel = label
-    }
-    
     convenience override init() {
         // I couldn't figure out how to initilize a UIViewController
         // with the nessesary UIButton & UILabel at the time the Timer
@@ -105,7 +102,12 @@ class Timer: NSObject {
         self.init(WithStartButton: UIButton(), AndTimerLabel: UILabel())
     }
     
-    // MARK: Timer Methods
+    init(WithStartButton button: UIButton, AndTimerLabel label: UILabel) {
+        startPauseButton = button
+        timerLabel = label
+    }
+    
+    // MARK: Timer Actions
     func start() {
         currentlyRunning = true
         startTime = NSDate.timeIntervalSinceReferenceDate()
@@ -123,7 +125,7 @@ class Timer: NSObject {
         notCurrentlyRunning = true
         elapsedTimeAtPause = 0
         syncBrushingDurationSetting()
-        timerText = displayTimeStringFromDuration(brushingDuration)
+        timerText = timeStringFromDuration(brushingDuration)
         startPauseButtonTitle = "Start"
     }
     
@@ -136,7 +138,6 @@ class Timer: NSObject {
         startPauseButtonTitle = "Done"
     }
     
-    
     func syncBrushingDurationSetting() {
         let brushingDurationSetting = self.brushingDurationSetting
         if (brushingDurationSetting != 0) {
@@ -146,13 +147,13 @@ class Timer: NSObject {
 
     
     // MARK: Time Helper Methods
-    private func displayTimeStringWithMinutes(minutes: Int, AndSeconds seconds: Int) -> String {
+    private func timeStringFromMinutes(minutes: Int, AndSeconds seconds: Int) -> String {
         return NSString(format: "%02i:%02i",minutes,seconds)
     }
     
-    private func displayTimeStringFromDuration(duration: NSTimeInterval) -> String {
+    private func timeStringFromDuration(duration: NSTimeInterval) -> String {
         let durationParts = timeAsParts(duration)
-        return displayTimeStringWithMinutes(durationParts.minutes, AndSeconds: durationParts.seconds)
+        return timeStringFromMinutes(durationParts.minutes, AndSeconds: durationParts.seconds)
     }
     
     private func timeAsParts(elapsedTimeInterval: NSTimeInterval) -> (minutes: Int,seconds: Int) {
@@ -192,7 +193,8 @@ class Timer: NSObject {
         if let start = startTime? {
             let now = NSDate.timeIntervalSinceReferenceDate()
             let elapsedTime = now - start + elapsedTimeAtPause
-            
+            let timeRemaining = brushingDuration - elapsedTime
+
             if notCurrentlyRunning {
                 rememberTimerAtPause(elapsedTime)
                 return
@@ -201,9 +203,7 @@ class Timer: NSObject {
             if (elapsedTime > brushingDuration) {
                 complete()
             } else {
-                let elapsedTimeParts = timeAsParts(brushingDuration - elapsedTime)
-                timerText = displayTimeStringWithMinutes(elapsedTimeParts.minutes,
-                                             AndSeconds: elapsedTimeParts.seconds)
+                timerText = timeStringFromDuration(timeRemaining)
                 incrementTimerAgain()
             }
             
