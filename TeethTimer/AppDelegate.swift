@@ -40,8 +40,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //
         // This assumes that the rootViewController is our 'ViewController' class
         let viewController: ViewController = rootViewController as ViewController
-        if viewController.timerHasNotStarted() {
-            viewController.resetTimer()
+        if viewController.timer.timerHasNotStarted() {
+            viewController.timer.resetTimer()
         }
     }
 
