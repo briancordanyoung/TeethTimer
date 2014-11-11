@@ -14,14 +14,14 @@ class Timer: NSObject {
     // MARK: Properties
     var startTime: NSTimeInterval?
     var elapsedTimeAtPause: NSTimeInterval = 0
-    var brushingDurationPref: Int  {
+    var timerIsHidden = false
+    
+    var brushingDuration = (60 * 4) as NSTimeInterval // 4 Minute Default
+    var brushingDurationSetting: Int  {
         get {
             return NSUserDefaults.standardUserDefaults().integerForKey("defaultDurationInSeconds")
         }
     }
-    
-    var brushingDuration = (60 * 4) as NSTimeInterval // 4 Minutes
-    var timerIsHidden = false
     
     var currentlyRunning = false
     var notCurrentlyRunning: Bool {
@@ -32,82 +32,118 @@ class Timer: NSObject {
             currentlyRunning = !notRunning
         }
     }
+
+    var hasStarted: Bool {
+        get {
+            var timerHasStarted = false
+
+            if startTime != nil {
+                timerHasStarted = true
+            }
+
+            if elapsedTimeAtPause != 0 {
+                timerHasStarted = true
+            }
+
+            if currentlyRunning {
+                timerHasStarted = true
+            }
+            
+            return timerHasStarted
+        }
+    }
+    
+    var hasNotStarted: Bool {
+        get {
+            return !hasStarted
+        }
+    }
+    
     
     var startPauseButton: UIButton
-    var timerLabel: UILabel
+    var startPauseButtonTitle: String {
+        get {
+            var returnText = ""
+            if let buttonTitle = startPauseButton.titleForState(UIControlState.Normal) {
+                returnText = buttonTitle
+            }
+            return returnText
+        }
+        set(title) {
+            startPauseButton.setTitle(title, forState: UIControlState.Normal)
+        }
+    }
+
     
+    var timerLabel: UILabel
+    var timerText: String {
+        get {
+            var returnText = ""
+            if let labelText = timerLabel.text {
+                returnText = labelText
+            }
+            return returnText
+        }
+        set(text) {
+            timerLabel.text = text
+        }
+    }
+    
+    // MARK: Init methods
     init(WithStartButton button: UIButton, AndTimerLabel label: UILabel) {
         startPauseButton = button
         timerLabel = label
     }
     
-
+    convenience override init() {
+        // I couldn't figure out how to initilize a UIViewController
+        // with the nessesary UIButton & UILabel at the time the Timer
+        // intance is created.  So, I made this convenience init which
+        // creates these throw-away UIButton & UILabel.  These should be
+        // ignored and replaced by the UIButton & UILabel that is used
+        // in the UIViewController, likely coming from the storyboard.
+        self.init(WithStartButton: UIButton(), AndTimerLabel: UILabel())
+    }
     
     // MARK: Timer Methods
-    func startTimer() {
+    func start() {
         currentlyRunning = true
         startTime = NSDate.timeIntervalSinceReferenceDate()
-        startPauseButton.setTitle("Pause", forState: UIControlState.Normal)
-        updateTime()
+        startPauseButtonTitle = "Pause"
+        incrementTimer()
     }
     
-    func pauseTimer() {
-        currentlyRunning = false
-        startPauseButton.setTitle("Continue", forState: UIControlState.Normal)
+    func pause() {
+        notCurrentlyRunning = true
+        startPauseButtonTitle = "Continue"
     }
     
-    func resetTimer() {
+    func reset() {
         startTime = nil
-        currentlyRunning = false
+        notCurrentlyRunning = true
         elapsedTimeAtPause = 0
-        setBrushingDuration()
-        timerLabel.text = displayTimeStringFromDuration(brushingDuration)
-        startPauseButton.setTitle("Start", forState: UIControlState.Normal)
+        syncBrushingDurationSetting()
+        timerText = displayTimeStringFromDuration(brushingDuration)
+        startPauseButtonTitle = "Start"
     }
     
-    func timerCompleted() {
+    private func complete() {
         startTime = nil
-        elapsedTimeAtPause = 0
+        notCurrentlyRunning = true
         currentlyRunning = false
-        setBrushingDuration()
-        timerLabel.text = "00:00"
-        startPauseButton.setTitle("Done", forState: UIControlState.Normal)
+        syncBrushingDurationSetting()
+        timerText = "00:00"
+        startPauseButtonTitle = "Done"
     }
     
-    func rememberTimerAtPause(elapsedTime: NSTimeInterval) {
-        startTime = nil
-        elapsedTimeAtPause = elapsedTime
-    }
     
-    func setBrushingDuration() {
-        let brushingDurationPref = self.brushingDurationPref
-        if (brushingDurationPref != 0) {
-            brushingDuration = NSTimeInterval(brushingDurationPref)
+    func syncBrushingDurationSetting() {
+        let brushingDurationSetting = self.brushingDurationSetting
+        if (brushingDurationSetting != 0) {
+            brushingDuration = NSTimeInterval(brushingDurationSetting)
         }
     }
-    
-    func timerHasStarted() -> Bool {
-        var timerHasStarted = false
-        
-        if startTime != nil {
-            timerHasStarted = true
-        }
-        
-        if elapsedTimeAtPause != 0 {
-            timerHasStarted = true
-        }
-        
-        if currentlyRunning {
-            timerHasStarted = true
-        }
-        
-        return timerHasStarted
-    }
-    
-    func timerHasNotStarted() -> Bool {
-        return !timerHasStarted()
-    }
-    
+
     
     // MARK: Time Helper Methods
     private func displayTimeStringWithMinutes(minutes: Int, AndSeconds seconds: Int) -> String {
@@ -129,19 +165,23 @@ class Timer: NSObject {
         
         return (elapsedMins, elapsedSecs)
     }
-    
+
     
     // MARK: Timer
-    func updateTime() {
-        
-        func updateTimeAgain() {
-            var timer = NSTimer.scheduledTimerWithTimeInterval( 0.1,
-                target: self,
-                selector:  Selector("updateTime"),
-                userInfo: nil,
-                repeats: false)
-        }
-        
+    private func rememberTimerAtPause(elapsedTime: NSTimeInterval) {
+        startTime = nil
+        elapsedTimeAtPause = elapsedTime
+    }
+    
+    private func incrementTimerAgain() {
+        var timer = NSTimer.scheduledTimerWithTimeInterval( 0.1,
+            target: self,
+            selector:  Selector("incrementTimer"),
+            userInfo: nil,
+            repeats: false)
+    }
+    
+    func incrementTimer() {
         
         // Stop updating the timer if the app is hidden or the view controler
         // is not visable
@@ -158,16 +198,13 @@ class Timer: NSObject {
                 return
             }
             
-            let elapsedTimeParts = timeAsParts(brushingDuration - elapsedTime)
-            let labelText = displayTimeStringWithMinutes(elapsedTimeParts.minutes,
-                AndSeconds: elapsedTimeParts.seconds)
-            
-            
             if (elapsedTime > brushingDuration) {
-                timerCompleted()
+                complete()
             } else {
-                timerLabel.text = labelText
-                updateTimeAgain()
+                let elapsedTimeParts = timeAsParts(brushingDuration - elapsedTime)
+                timerText = displayTimeStringWithMinutes(elapsedTimeParts.minutes,
+                                             AndSeconds: elapsedTimeParts.seconds)
+                incrementTimerAgain()
             }
             
         }

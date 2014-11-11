@@ -19,59 +19,57 @@ class ViewController: UIViewController {
     
     // MARK: Init methods
     required init(coder aDecoder: NSCoder) {
-        timer = Timer(WithStartButton: UIButton(), AndTimerLabel: UILabel())
+        timer = Timer()
         super.init(coder: aDecoder)
     }
 
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
-        timer = Timer(WithStartButton: UIButton(), AndTimerLabel: UILabel())
+        timer = Timer()
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
     
     // MARK: View Controller Methods
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        timer.startPauseButton = startPauseButton
-        timer.timerLabel = timerLabel
-        timer.resetTimer()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         styleButton(resetButton)
         styleButton(startPauseButton)
         fullScreenImage.image = UIImage(named: "GavinPool-5.jpg")
-        timer.resetTimer()
+        timer.reset()
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        timer.startPauseButton = startPauseButton
+        timer.timerLabel = timerLabel
+        timer.reset()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
 
-    func styleButton(button: UIButton) {
+    // MARK: Button Actions
+    @IBAction func startStopPressed(sender: UIButton) {
+        if timer.notCurrentlyRunning {
+            timer.start()
+        } else {
+            timer.pause()
+        }
+    }
+
+    @IBAction func resetPressed(sender: UIButton) {
+        timer.reset()
+    }
+    
+    // MARK: Appearance Helper
+    private func styleButton(button: UIButton) {
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 15
         button.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).CGColor
         button.titleLabel?.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
     }
-    
-    // MARK: Button Actions
-    @IBAction func startStopPressed(sender: UIButton) {
-        if timer.currentlyRunning == false {
-            timer.startTimer()
-        } else {
-            timer.pauseTimer()
-        }
-    }
-
-    @IBAction func resetPressed(sender: UIButton) {
-        timer.resetTimer()
-    }
-    
-    
-    
     
 }
 
