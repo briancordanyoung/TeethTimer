@@ -35,11 +35,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Anytime the app is brought to the forground, the timer duration preference
         // could have been changed.  Check to see if the timer is currently active
         // (active: paused or counting down, but not already reset and waiting to start)
-        // If the timer is not active, then reset the time so that it reads the new 
+        // If the timer is not active, then reset the timer so that it reads the new 
         // timer duration preference and updates the UI to reflect it.
         //
         // This assumes that the rootViewController is our 'ViewController' class
-        let viewController: ViewController = rootViewController as ViewController
+        let viewController: TimerViewController = rootViewController as TimerViewController
         if viewController.timer.hasNotStarted {
             viewController.timer.reset()
         }
