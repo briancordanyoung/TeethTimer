@@ -89,6 +89,16 @@ class Timer: NSObject {
         }
     }
     
+    var hasCompleted: Bool {
+        get {
+            var hasCompleted = false
+            if startPauseButtonTitle == "Done" {
+                hasCompleted = true
+            }
+            return hasCompleted
+        }
+    }
+    
     // MARK:
     // =============================================================================
     // MARK: Init methods

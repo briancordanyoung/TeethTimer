@@ -52,6 +52,11 @@ class TimerViewController: UIViewController {
 
     // MARK: Button Actions
     @IBAction func startStopPressed(sender: UIButton) {
+        if timer.hasCompleted {
+            timer.reset()
+            return
+        }
+        
         if timer.notCurrentlyRunning {
             timer.start()
         } else {
