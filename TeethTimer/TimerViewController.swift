@@ -15,30 +15,7 @@ class TimerViewController: UIViewController {
     @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var fullScreenImage: UIImageView!
-    let timer: Timer
-    
-    
-    // MARK: Functions to pass to the Timer class
-    func updateTimeLabelWithText(labelText: String) {
-        timerLabel.text = labelText
-    }
-
-    func updateButtonTitleWithText(buttonText: String) {
-        startPauseButton.setTitle(buttonText, forState: UIControlState.Normal)
-    }
-    
-    
-    
-    // MARK: Init methods
-    required init(coder aDecoder: NSCoder) {
-        timer = Timer()
-        super.init(coder: aDecoder)
-    }
-
-    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
-        timer = Timer()
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
+    let timer = Timer()
     
     
     // MARK: View Controller Methods
@@ -77,6 +54,16 @@ class TimerViewController: UIViewController {
 
     @IBAction func resetPressed(sender: UIButton) {
         timer.reset()
+    }
+
+    
+    // MARK: Functions to pass to the Timer class
+    func updateTimeLabelWithText(labelText: String) {
+        timerLabel.text = labelText
+    }
+    
+    func updateButtonTitleWithText(buttonText: String) {
+        startPauseButton.setTitle(buttonText, forState: UIControlState.Normal)
     }
     
     // MARK: Appearance Helper

@@ -30,12 +30,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
+        resetTimerIfItHasNotStarted()
+    }
+
+    func applicationDidBecomeActive(application: UIApplication) {
+        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        resetTimerIfItHasNotStarted()
+    }
+
+    func applicationWillTerminate(application: UIApplication) {
+        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    
+    
+    func resetTimerIfItHasNotStarted() {
         let rootViewController = UIApplication.sharedApplication().keyWindow?.rootViewController
         
         // Anytime the app is brought to the forground, the timer duration preference
         // could have been changed.  Check to see if the timer is currently active
         // (active: paused or counting down, but not already reset and waiting to start)
-        // If the timer is not active, then reset the timer so that it reads the new 
+        // If the timer is not active, then reset the timer so that it reads the new
         // timer duration preference and updates the UI to reflect it.
         //
         // This assumes that the rootViewController is our 'ViewController' class
@@ -43,14 +58,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if viewController.timer.hasNotStarted {
             viewController.timer.reset()
         }
-    }
-
-    func applicationDidBecomeActive(application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    }
-
-    func applicationWillTerminate(application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
 
