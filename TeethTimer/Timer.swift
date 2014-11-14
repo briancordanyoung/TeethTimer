@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Brian Young. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 class Timer: NSObject {
 
@@ -60,83 +60,98 @@ class Timer: NSObject {
     }
     
     
-    var startPauseButton: UIButton
-    var startPauseButtonTitle: String {
-        get {
-            var returnText = ""
-            if let buttonTitle = startPauseButton.titleForState(UIControlState.Normal) {
-                returnText = buttonTitle
-            }
-            return returnText
-        }
-        set(title) {
-            startPauseButton.setTitle(title, forState: UIControlState.Normal)
-        }
-    }
-
+//    var startPauseButton: UIButton
+//    var startPauseButtonTitle: String {
+//        get {
+//            var returnText = ""
+//            if let buttonTitle = startPauseButton.titleForState(UIControlState.Normal) {
+//                returnText = buttonTitle
+//            }
+//            return returnText
+//        }
+//        set(title) {
+//            startPauseButton.setTitle(title, forState: UIControlState.Normal)
+//        }
+//    }
+//
+//    
+//    var timerLabel: UILabel
+//    var timerText: String {
+//        get {
+//            var returnText = ""
+//            if let labelText = timerLabel.text {
+//                returnText = labelText
+//            }
+//            return returnText
+//        }
+//        set(text) {
+//            timerLabel.text = text
+//        }
+//    }
     
-    var timerLabel: UILabel
-    var timerText: String {
+    var hasCompleted = false
+    var hasNotCompleted: Bool {
         get {
-            var returnText = ""
-            if let labelText = timerLabel.text {
-                returnText = labelText
-            }
-            return returnText
+            return !hasCompleted
         }
-        set(text) {
-            timerLabel.text = text
+        set(hasCompleted) {
+            self.hasCompleted = !hasCompleted
         }
     }
     
-    var hasCompleted: Bool {
-        get {
-            var hasCompleted = false
-            if startPauseButtonTitle == "Done" {
-                hasCompleted = true
-            }
-            return hasCompleted
-        }
-    }
+    
+    var updateTimeAsText: (String) -> ()
+    var updateUIControlText: (String) -> ()
+    
+    
     
     // MARK:
     // =============================================================================
     // MARK: Init methods
     convenience override init() {
         // I couldn't figure out how to initilize a UIViewController
-        // with the nessesary UIButton & UILabel at the time the Timer
+        // with the nessesary Functions at the time the Timer
         // intance is created.  So, I made this convenience init which
-        // creates these throw-away UIButton & UILabel.  These should be
-        // ignored and replaced by the UIButton & UILabel that is used
-        // in the UIViewController, likely coming from the storyboard.
-        self.init(WithStartButton: UIButton(), AndTimerLabel: UILabel())
+        // creates these stand-in println() functions.  These should be
+        // replaced by the functions that update any controls
+        // like a UIButton or UILabel in the UIViewController.
+        func printControlText(controlText: String) {
+            println("Text UI Control should change to: \(controlText)")
+        }
+        
+        func printTime(timeAsString: String) {
+            println("Text of Timer should change to: \(timeAsString)")
+        }
+        
+        self.init(printControlText, printTime)
     }
     
-    init(WithStartButton button: UIButton, AndTimerLabel label: UILabel) {
-        startPauseButton = button
-        timerLabel = label
+    init(WithUpdateUIControlTextFunc updateUIControlTextFunc: (String) -> (), AndUpdateTimeFunc updateTimeFunc: (String) -> ()) {
+        updateUIControlText = updateUIControlTextFunc
+        updateTimeAsText = updateTimeFunc
     }
     
     // MARK: Timer Actions
     func start() {
         currentlyRunning = true
         startTime = NSDate.timeIntervalSinceReferenceDate()
-        startPauseButtonTitle = "Pause"
+        updateUIControlText("Pause")
         incrementTimer()
     }
     
     func pause() {
         notCurrentlyRunning = true
-        startPauseButtonTitle = "Continue"
+        updateUIControlText("Continue")
     }
     
     func reset() {
         startTime = nil
         notCurrentlyRunning = true
+        hasCompleted = false
         elapsedTimeAtPause = 0
         syncBrushingDurationSetting()
-        timerText = timeStringFromDuration(brushingDuration)
-        startPauseButtonTitle = "Start"
+        updateTimeAsText(timeStringFromDuration(brushingDuration))
+        updateUIControlText("Start")
     }
     
     private func complete() {
@@ -144,8 +159,9 @@ class Timer: NSObject {
         notCurrentlyRunning = true
         currentlyRunning = false
         syncBrushingDurationSetting()
-        timerText = "00:00"
-        startPauseButtonTitle = "Done"
+        updateTimeAsText("00:00")
+        updateUIControlText("Done")
+        hasCompleted = true
     }
     
     func syncBrushingDurationSetting() {
@@ -213,7 +229,7 @@ class Timer: NSObject {
             if (elapsedTime > brushingDuration) {
                 complete()
             } else {
-                timerText = timeStringFromDuration(timeRemaining)
+                updateTimeAsText(timeStringFromDuration(timeRemaining))
                 incrementTimerAgain()
             }
             

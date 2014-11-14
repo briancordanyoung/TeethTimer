@@ -17,6 +17,18 @@ class TimerViewController: UIViewController {
     @IBOutlet weak var fullScreenImage: UIImageView!
     let timer: Timer
     
+    
+    // MARK: Functions to pass to the Timer class
+    func updateTimeLabelWithText(labelText: String) {
+        timerLabel.text = labelText
+    }
+
+    func updateButtonTitleWithText(buttonText: String) {
+        startPauseButton.setTitle(buttonText, forState: UIControlState.Normal)
+    }
+    
+    
+    
     // MARK: Init methods
     required init(coder aDecoder: NSCoder) {
         timer = Timer()
@@ -35,13 +47,12 @@ class TimerViewController: UIViewController {
         styleButton(resetButton)
         styleButton(startPauseButton)
         fullScreenImage.image = UIImage(named: "GavinPool-5.jpg")
-        timer.reset()
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        timer.startPauseButton = startPauseButton
-        timer.timerLabel = timerLabel
+        timer.updateTimeAsText = updateTimeLabelWithText
+        timer.updateUIControlText = updateButtonTitleWithText
         timer.reset()
     }
     
