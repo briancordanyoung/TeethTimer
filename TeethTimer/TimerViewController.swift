@@ -28,8 +28,10 @@ class TimerViewController: UIViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        timer.updateTimeAsText = updateTimeLabelWithText
+        timer.updateTimerWithText = updateTimeLabelWithText
         timer.updateUIControlText = updateButtonTitleWithText
+        timer.updateTimerWithPercentage = updatePercentageDone
+        timer.updateTimerWithSeconds = updateSeconds
         timer.reset()
     }
     
@@ -57,7 +59,7 @@ class TimerViewController: UIViewController {
     }
 
     
-    // MARK: Functions to pass to the Timer class
+    // MARK: Callbacks to pass to the Timer class
     func updateTimeLabelWithText(labelText: String) {
         timerLabel.text = labelText
     }
@@ -66,6 +68,13 @@ class TimerViewController: UIViewController {
         startPauseButton.setTitle(buttonText, forState: UIControlState.Normal)
     }
     
+    func updatePercentageDone(percentageDone: Float) {
+
+    }
+    
+    func updateSeconds(secondsLeft: NSTimeInterval) {
+    }
+
     // MARK: Appearance Helper
     private func styleButton(button: UIButton) {
         button.layer.borderWidth = 1

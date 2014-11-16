@@ -13,13 +13,14 @@ class Timer: NSObject {
     
     // MARK: Properties
     var startTime: NSTimeInterval?
-    var elapsedTimeAtPause: NSTimeInterval = 0
+    var elapsedTimeAtPause = NSTimeInterval(0)
     var timerIsHidden = false
     
-    var brushingDuration = (60 * 4) as NSTimeInterval // 4 Minute Default
+    var brushingDuration = NSTimeInterval(60 * 4) // 4 Minute Default
     var brushingDurationSetting: Int  {
         get {
-            return NSUserDefaults.standardUserDefaults().integerForKey("defaultDurationInSeconds")
+            return NSUserDefaults.standardUserDefaults()
+                .integerForKey("defaultDurationInSeconds")
         }
     }
     
@@ -60,35 +61,6 @@ class Timer: NSObject {
     }
     
     
-//    var startPauseButton: UIButton
-//    var startPauseButtonTitle: String {
-//        get {
-//            var returnText = ""
-//            if let buttonTitle = startPauseButton.titleForState(UIControlState.Normal) {
-//                returnText = buttonTitle
-//            }
-//            return returnText
-//        }
-//        set(title) {
-//            startPauseButton.setTitle(title, forState: UIControlState.Normal)
-//        }
-//    }
-//
-//    
-//    var timerLabel: UILabel
-//    var timerText: String {
-//        get {
-//            var returnText = ""
-//            if let labelText = timerLabel.text {
-//                returnText = labelText
-//            }
-//            return returnText
-//        }
-//        set(text) {
-//            timerLabel.text = text
-//        }
-//    }
-    
     var hasCompleted = false
     var hasNotCompleted: Bool {
         get {
@@ -99,10 +71,14 @@ class Timer: NSObject {
         }
     }
     
-    
-    var updateTimeAsText: (String) -> ()
+    // Properties that hold functions. (a.k.a. a block based API)
+    // These should be used as call backs alerting a view controller
+    // that one of these events occurred.
+    var updateTimerWithText: (String) -> ()
     var updateUIControlText: (String) -> ()
-    
+    var updateTimerWithSeconds: (NSTimeInterval) -> ()
+    var updateTimerWithPercentage: (Float) -> ()
+
     
     
     // MARK:
@@ -110,25 +86,47 @@ class Timer: NSObject {
     // MARK: Init methods
     convenience override init() {
         // I couldn't figure out how to initilize a UIViewController
-        // with the nessesary Functions at the time the Timer
+        // with the nessesary functions at the time the Timer
         // intance is created.  So, I made this convenience init which
         // creates these stand-in println() functions.  These should be
-        // replaced by the functions that update any controls
-        // like a UIButton or UILabel in the UIViewController.
+        // replaced in the timer class instance by the callbacks that
+        // update any controls like a UIButton or UILabel in the UIViewController.
         func printControlText(controlText: String) {
-            println("Text UI Control should change to: \(controlText)")
+            #if DEBUG
+            println("Change Timer Control to: \(controlText)")
+            #endif
         }
         
-        func printTime(timeAsString: String) {
-            println("Text of Timer should change to: \(timeAsString)")
+        func printTime(timerAsString: String) {
+            #if DEBUG
+            println("Time Left: \(timerAsString)")
+            #endif
         }
         
-        self.init(printControlText, printTime)
+        func printSeconds(timerAsSeconds: NSTimeInterval) {
+            #if DEBUG
+            println("Seconds left: \(timerAsSeconds)")
+            #endif
+        }
+        
+        func printPercentage(timerAsPercentage: Float) {
+            #if DEBUG
+            println("Percentage left: \(timerAsPercentage)")
+            #endif
+        }
+        
+        self.init(printControlText, printTime, printSeconds, printPercentage)
     }
     
-    init(WithUpdateUIControlTextFunc updateUIControlTextFunc: (String) -> (), AndUpdateTimeFunc updateTimeFunc: (String) -> ()) {
-        updateUIControlText = updateUIControlTextFunc
-        updateTimeAsText = updateTimeFunc
+    init( updateUIControlTextFunc: (String) -> (),
+                  updateTimerFunc: (String) -> (),
+                updateSecondsFunc: (NSTimeInterval) -> (),
+             updatePercentageFunc: (Float) -> ()    ) {
+            
+        updateUIControlText       = updateUIControlTextFunc
+        updateTimerWithText       = updateTimerFunc
+        updateTimerWithSeconds    = updateSecondsFunc
+        updateTimerWithPercentage = updatePercentageFunc
     }
     
     // MARK: Timer Actions
@@ -147,21 +145,28 @@ class Timer: NSObject {
     func reset() {
         startTime = nil
         notCurrentlyRunning = true
-        hasCompleted = false
+        hasNotCompleted = true
         elapsedTimeAtPause = 0
+
         syncBrushingDurationSetting()
-        updateTimeAsText(timeStringFromDuration(brushingDuration))
+
+        updateTimerWithText(timeStringFromDuration(brushingDuration))
+        updateTimerWithSeconds(brushingDuration)
+        updateTimerWithPercentage(1.0)
         updateUIControlText("Start")
     }
     
     private func complete() {
         startTime = nil
         notCurrentlyRunning = true
-        currentlyRunning = false
-        syncBrushingDurationSetting()
-        updateTimeAsText("00:00")
-        updateUIControlText("Done")
         hasCompleted = true
+
+        updateUIControlText("Done")
+        updateTimerWithText("00:00")
+        updateTimerWithSeconds(NSTimeInterval(0))
+        updateTimerWithPercentage(0.0)
+
+        syncBrushingDurationSetting()
     }
     
     func syncBrushingDurationSetting() {
@@ -191,6 +196,10 @@ class Timer: NSObject {
         let elapsedSecs = Int(elapsedSecsTime)
         
         return (elapsedMins, elapsedSecs)
+    }
+    
+    private func secondsToPercentage(secondsRemaining: NSTimeInterval) -> Float {
+        return Float(secondsRemaining / brushingDuration)
     }
 
     
@@ -229,7 +238,9 @@ class Timer: NSObject {
             if (elapsedTime > brushingDuration) {
                 complete()
             } else {
-                updateTimeAsText(timeStringFromDuration(timeRemaining))
+                updateTimerWithText(timeStringFromDuration(timeRemaining))
+                updateTimerWithSeconds(timeRemaining)
+                updateTimerWithPercentage(secondsToPercentage(timeRemaining))
                 incrementTimerAgain()
             }
             
