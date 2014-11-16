@@ -150,9 +150,7 @@ class Timer: NSObject {
 
         syncBrushingDurationSetting()
 
-        updateTimerWithText(timeStringFromDuration(brushingDuration))
-        updateTimerWithSeconds(brushingDuration)
-        updateTimerWithPercentage(1.0)
+        updateTimerWithTimeRemaining(brushingDuration)
         updateUIControlText("Start")
     }
     
@@ -162,9 +160,7 @@ class Timer: NSObject {
         hasCompleted = true
 
         updateUIControlText("Done")
-        updateTimerWithText("00:00")
-        updateTimerWithSeconds(NSTimeInterval(0))
-        updateTimerWithPercentage(0.0)
+        updateTimerWithTimeRemaining(0.0)
 
         syncBrushingDurationSetting()
     }
@@ -200,6 +196,25 @@ class Timer: NSObject {
     
     private func secondsToPercentage(secondsRemaining: NSTimeInterval) -> Float {
         return Float(secondsRemaining / brushingDuration)
+    }
+    
+    private func updateTimerWithTimeRemaining(timeRemaining: NSTimeInterval) {
+        // TODO: More testing to make sure that the timer always ends
+        //       on 0 and 00:00.  Percentage left reuqired special handling
+        updateTimerWithText(timeStringFromDuration(timeRemaining))
+        updateTimerWithSeconds(timeRemaining)
+        
+        var percentageLeft = secondsToPercentage(timeRemaining)
+        
+        if percentageLeft < 0.001 {
+            percentageLeft = 0.0
+        }
+        
+        if hasCompleted {
+            percentageLeft = 0.0
+        }
+        
+        updateTimerWithPercentage(percentageLeft)
     }
 
     
@@ -238,9 +253,7 @@ class Timer: NSObject {
             if (elapsedTime > brushingDuration) {
                 complete()
             } else {
-                updateTimerWithText(timeStringFromDuration(timeRemaining))
-                updateTimerWithSeconds(timeRemaining)
-                updateTimerWithPercentage(secondsToPercentage(timeRemaining))
+                updateTimerWithTimeRemaining(timeRemaining)
                 incrementTimerAgain()
             }
             
