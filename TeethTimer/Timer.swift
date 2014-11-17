@@ -14,7 +14,6 @@ class Timer: NSObject {
     // MARK: Properties
     var startTime: NSTimeInterval?
     var elapsedTimeAtPause = NSTimeInterval(0)
-    var timerIsHidden = false
     
     var brushingDuration = NSTimeInterval(60 * 4) // 4 Minute Default
     var brushingDurationSetting: Int  {
@@ -24,6 +23,16 @@ class Timer: NSObject {
         }
     }
     
+    var hidden = false
+    var visible: Bool {
+        get {
+            return !hidden
+        }
+        set(isVisible) {
+            hidden = !isVisible
+        }
+    }
+
     var currentlyRunning = false
     var notCurrentlyRunning: Bool {
         get {
@@ -165,13 +174,25 @@ class Timer: NSObject {
         syncBrushingDurationSetting()
     }
     
-    func syncBrushingDurationSetting() {
+    func transitionToHidden() {
+        hidden = true
+    }
+    
+    func transitionToVisible() {
+        visible = true
+        if hasStarted {
+            incrementTimer()
+        } else {
+            reset()
+        }
+    }
+    
+    private func syncBrushingDurationSetting() {
         let brushingDurationSetting = self.brushingDurationSetting
         if (brushingDurationSetting != 0) {
             brushingDuration = NSTimeInterval(brushingDurationSetting)
         }
     }
-
     
     // MARK: Time Helper Methods
     private func timeStringFromMinutes(minutes: Int, AndSeconds seconds: Int) -> String {
@@ -234,9 +255,9 @@ class Timer: NSObject {
     
     func incrementTimer() {
         
-        // Stop updating the timer if the app is hidden or the view controler
+        // Stop updating the timer if the app or view controler
         // is not visable
-        if timerIsHidden {
+        if hidden {
             return
         }
         
