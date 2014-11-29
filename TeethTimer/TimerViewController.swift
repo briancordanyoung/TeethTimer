@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TimerViewController: UIViewController {
+class TimerViewController: UIViewController, ImageWheelDelegate {
 
     // MARK: Properties
     @IBOutlet weak var startPauseButton: UIButton!
@@ -23,7 +23,15 @@ class TimerViewController: UIViewController {
         super.viewDidLoad()
         styleButton(resetButton)
         styleButton(startPauseButton)
-        fullScreenImage.image = UIImage(named: "GavinPool-5.jpg")
+//        fullScreenImage.image = UIImage(named: "GavinPool-5.jpg")
+        fullScreenImage.image = UIImage(named: "Gavin Poses-s01")
+
+//        let wheel = ImageWheelControl(WithFrame: CGRectMake(0, 0, 200, 200),
+//                                    AndDelegate: self,
+//                                   withSections: 8)
+//        wheel.center = CGPointMake(160, 240)
+//        self.view.addSubview(wheel)
+        
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -73,6 +81,11 @@ class TimerViewController: UIViewController {
     }
     
     func updateSeconds(secondsLeft: NSTimeInterval) {
+    }
+    
+    // MARK: ImageWheelDelegate
+    func wheelDidChangeValue(newValue: String) {
+        println(newValue)
     }
 
     // MARK: Appearance Helper
