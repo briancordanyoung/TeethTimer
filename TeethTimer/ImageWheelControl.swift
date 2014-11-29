@@ -242,19 +242,12 @@ class ImageWheelControl: UIControl  {
         
         var newVal = CGFloat(0)
         
-        println("currentValue: \(currentValue)")
         
         for c in cloves {
-            println("c.value: \(c.value)")
-            println("minValue: \(c.minValue) maxValue: \(c.maxValue)")
             if (c.minValue > 0.0 && c.maxValue < 0.0) { // anomalous case
-                
-                println("1   value: \(c.value)")
                 
                 if (c.maxValue > radians || c.minValue < radians) {
                     
-                    println("2   value: \(c.value)")
-
                     if (radians > 0.0) { // we are in the positive quadrant
                         
                         newVal = CGFloat(radians) - CGFloat(M_PI);
@@ -265,7 +258,6 @@ class ImageWheelControl: UIControl  {
                         
                     }
 
-                    println("  c.value: \(c.value)")
                     currentValue = c.value;
                     
                 }
@@ -274,16 +266,12 @@ class ImageWheelControl: UIControl  {
         
             else if (radians > c.minValue && radians < c.maxValue) {
                 
-                println("3   value: \(c.value)")
-
                 newVal = CGFloat(radians) - CGFloat(c.midValue);
-                println("  c.value: \(c.value)")
+
                 currentValue = c.value;
                 
             }
         }
-
-        println("currentValue: \(currentValue)")
         
         UIView.beginAnimations(nil, context: nil)
         UIView.setAnimationDuration(0.2)
@@ -298,7 +286,6 @@ class ImageWheelControl: UIControl  {
         let image = getCloveByValue(currentValue)
         image.alpha = maxAlphavalue
 
-        println("currentValue: \(currentValue) CloveName: \(getCloveName(currentValue)) Clovetag: \(getCloveByValue(currentValue).tag)")
     }
     
     // MARK: Helper method
