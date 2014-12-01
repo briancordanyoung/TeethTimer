@@ -13,7 +13,11 @@ class Timer: NSObject {
     
     // MARK: Properties
     var startTime: NSTimeInterval?
+    var lastStartTime: NSTimeInterval?
+    var timerUUID: String?
+
     var elapsedTimeAtPause = NSTimeInterval(0)
+    var additionalElapsedTime = NSTimeInterval(0)
     
     var brushingDuration = NSTimeInterval(60 * 4) // 4 Minute Default
     var brushingDurationSetting: Int  {
@@ -47,7 +51,7 @@ class Timer: NSObject {
         get {
             var timerHasStarted = false
 
-            if startTime != nil {
+            if lastStartTime != nil {
                 timerHasStarted = true
             }
 
@@ -102,25 +106,25 @@ class Timer: NSObject {
         // update any controls like a UIButton or UILabel in the UIViewController.
         func printControlText(controlText: String) {
             #if DEBUG
-            println("Change Timer Control to: \(controlText)")
+            println("Change Timer Control Text to: \(controlText)")
             #endif
         }
         
-        func printTime(timerAsString: String) {
+        func printTime(timeAsString: String) {
             #if DEBUG
-            println("Time Left: \(timerAsString)")
+            println("Time Left: \(timeAsString)")
             #endif
         }
         
-        func printSeconds(timerAsSeconds: NSTimeInterval) {
+        func printSeconds(timeAsSeconds: NSTimeInterval) {
             #if DEBUG
-            println("Seconds left: \(timerAsSeconds)")
+            println("Seconds left: \(timeAsSeconds)")
             #endif
         }
         
-        func printPercentage(timerAsPercentage: Float) {
+        func printPercentage(timeAsPercentage: Float) {
             #if DEBUG
-            println("Percentage left: \(timerAsPercentage)")
+            println("Percentage left: \(timeAsPercentage)")
             #endif
         }
         
@@ -141,7 +145,13 @@ class Timer: NSObject {
     // MARK: Timer Actions
     func start() {
         currentlyRunning = true
-        startTime = NSDate.timeIntervalSinceReferenceDate()
+        lastStartTime = NSDate.timeIntervalSinceReferenceDate()
+        if startTime == nil {
+            startTime = lastStartTime
+        }
+        if timerUUID == nil {
+            timerUUID = NSUUID().UUIDString
+        }
         updateUIControlText("Pause")
         incrementTimer()
     }
@@ -153,25 +163,49 @@ class Timer: NSObject {
     
     func reset() {
         startTime = nil
+        lastStartTime = nil
+        timerUUID = nil
         notCurrentlyRunning = true
         hasNotCompleted = true
         elapsedTimeAtPause = 0
+        additionalElapsedTime = 0
 
         syncBrushingDurationSetting()
 
-        updateTimerWithTimeRemaining(brushingDuration)
+        updateTimerWithTimeRemaining(brushingDuration + additionalElapsedTime)
         updateUIControlText("Start")
     }
     
-    private func complete() {
-        startTime = nil
+    private func complete(elapsedTime: NSTimeInterval) {
         notCurrentlyRunning = true
+        rememberTimerAtPause(elapsedTime)
         hasCompleted = true
 
         updateUIControlText("Done")
         updateTimerWithTimeRemaining(0.0)
-
-        syncBrushingDurationSetting()
+        
+        println("original timer:      \(brushingDuration)")
+        println("total running time:  \(elapsedTimeAtPause)")
+        println("total addition time: \(additionalElapsedTime)")
+    }
+    
+    
+    func addTimeByPercentage(percentage: Float) {
+        // Don't use brushingDuration + additionalElapsedTime because
+        // we only want to add a percentage of the original duration
+        // without any addition seconds added
+        let additionalSeconds = NSTimeInterval(Float(brushingDuration) * percentage)
+        addTimeBySeconds(additionalSeconds)
+    }
+    
+    func addTimeBySeconds(seconds: NSTimeInterval) {
+        additionalElapsedTime = additionalElapsedTime + seconds
+        if lastStartTime == nil {
+            lastStartTime = NSDate.timeIntervalSinceReferenceDate()
+        }
+        currentlyRunning = true
+        hasNotCompleted = true
+        incrementTimer()
     }
     
     func transitionToHidden() {
@@ -216,7 +250,7 @@ class Timer: NSObject {
     }
     
     private func secondsToPercentage(secondsRemaining: NSTimeInterval) -> Float {
-        return Float(secondsRemaining / brushingDuration)
+        return Float(secondsRemaining / (brushingDuration + additionalElapsedTime))
     }
     
     private func updateTimerWithTimeRemaining(timeRemaining: NSTimeInterval) {
@@ -227,9 +261,9 @@ class Timer: NSObject {
         
         var percentageLeft = secondsToPercentage(timeRemaining)
         
-        if percentageLeft < 0.001 {
-            percentageLeft = 0.0
-        }
+//        if percentageLeft < 0.001 {
+//            percentageLeft = 0.0
+//        }
         
         if hasCompleted {
             percentageLeft = 0.0
@@ -241,7 +275,7 @@ class Timer: NSObject {
     
     // MARK: Timer
     private func rememberTimerAtPause(elapsedTime: NSTimeInterval) {
-        startTime = nil
+        lastStartTime = nil
         elapsedTimeAtPause = elapsedTime
     }
     
@@ -261,18 +295,18 @@ class Timer: NSObject {
             return
         }
         
-        if let start = startTime? {
+        if let start = lastStartTime? {
             let now = NSDate.timeIntervalSinceReferenceDate()
             let elapsedTime = now - start + elapsedTimeAtPause
-            let timeRemaining = brushingDuration - elapsedTime
+            let timeRemaining = (brushingDuration + additionalElapsedTime) - elapsedTime
 
             if notCurrentlyRunning {
                 rememberTimerAtPause(elapsedTime)
                 return
             }
             
-            if (elapsedTime > brushingDuration) {
-                complete()
+            if (elapsedTime > (brushingDuration + additionalElapsedTime)) {
+                complete(elapsedTime)
             } else {
                 updateTimerWithTimeRemaining(timeRemaining)
                 incrementTimerAgain()

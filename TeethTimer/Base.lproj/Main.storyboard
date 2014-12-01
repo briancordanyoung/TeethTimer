@@ -22,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
-                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y32-a2-VoP" userLabel="lowerThirdView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y32-a2-VoP" userLabel="lowerThirdView">
                                 <rect key="frame" x="0.0" y="579" width="375" height="88"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.75" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -69,6 +69,15 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h77-iB-1sZ">
+                                <rect key="frame" x="172" y="629" width="30" height="30"/>
+                                <state key="normal" title="test">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="testPresses:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hFq-lQ-JUV"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -85,8 +94,10 @@
                             <constraint firstItem="MOq-R8-IVu" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="T18-yG-tr2"/>
                             <constraint firstAttribute="trailing" secondItem="Y32-a2-VoP" secondAttribute="trailing" id="TCu-0y-w0G"/>
                             <constraint firstItem="MOq-R8-IVu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Z6s-yx-bj0"/>
+                            <constraint firstAttribute="centerX" secondItem="h77-iB-1sZ" secondAttribute="centerX" id="aMN-kA-6jV"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="OUX-Ix-O1U" secondAttribute="bottom" constant="35" id="agX-fw-RkF"/>
                             <constraint firstAttribute="centerX" secondItem="MVB-6D-Qmk" secondAttribute="centerX" id="fX5-pa-hP7"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="h77-iB-1sZ" secondAttribute="bottom" constant="8" id="n1a-7G-g4F"/>
                             <constraint firstAttribute="trailing" secondItem="z2l-dT-yk7" secondAttribute="trailing" constant="30" id="nvY-oc-b87"/>
                             <constraint firstItem="MVB-6D-Qmk" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="oIw-fs-MXo"/>
                             <constraint firstItem="Vn1-Zx-sgu" firstAttribute="top" secondItem="z2l-dT-yk7" secondAttribute="top" id="w9a-Gb-UUo"/>
@@ -99,6 +110,7 @@
                         <outlet property="lowerThirdView" destination="Y32-a2-VoP" id="CME-g0-d2W"/>
                         <outlet property="resetButton" destination="z2l-dT-yk7" id="vuu-wS-veL"/>
                         <outlet property="startPauseButton" destination="Vn1-Zx-sgu" id="59w-Mo-ILk"/>
+                        <outlet property="testButton" destination="h77-iB-1sZ" id="axQ-ko-wuR"/>
                         <outlet property="timerLabel" destination="OUX-Ix-O1U" id="6fW-xf-yBv"/>
                     </connections>
                 </viewController>

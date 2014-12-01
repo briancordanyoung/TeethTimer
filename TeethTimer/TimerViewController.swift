@@ -18,6 +18,8 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
     @IBOutlet weak var controlView: UIView!
     @IBOutlet weak var lowerThirdView: UIView!
     
+    @IBOutlet weak var testButton: UIButton!
+    
     var gavinWheelHeight: NSLayoutConstraint?
     var gavinWheelWidth: NSLayoutConstraint?
     var gavinWheel: ImageWheelControl?
@@ -115,6 +117,10 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
         timer.reset()
     }
 
+    @IBAction func testPresses(sender: UIButton) {
+//        timer.addTimeBySeconds(30)
+        timer.addTimeByPercentage(0.25)
+    }
     
     // MARK: Callbacks to pass to the Timer class
     func updateTimeLabelWithText(labelText: String) {
