@@ -31,9 +31,8 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
         styleButton(startPauseButton)
 //        fullScreenImage.image = UIImage(named: "background")
         
-        let gavinWheel = ImageWheelControl(WithFrame: CGRectMake(0, 0, 200 , 200),
-                                         AndDelegate: self,
-                                        WithSections: 10)
+        let gavinWheel = ImageWheelControl(WithDelegate: self,
+                                           WithSections: 6)
         
         controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
 
@@ -79,7 +78,7 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
         }
 
         gavinWheel.positionViews()
-        
+
         self.gavinWheel = gavinWheel
     }
     
@@ -102,12 +101,7 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
     @IBAction func startStopPressed(sender: UIButton) {
         if timer.hasCompleted {
             timer.reset()
-            gavinWheel?.rotateToLeafByValue(1)
             return
-        }
-        
-        if timer.hasNotStarted {
-            //gavinWheel?.rotateToLeafByValue(2)
         }
         
         if timer.notCurrentlyRunning {
@@ -119,7 +113,6 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
 
     @IBAction func resetPressed(sender: UIButton) {
         timer.reset()
-        gavinWheel?.rotateToLeafByValue(1)
     }
 
     
@@ -161,19 +154,26 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
     }
     
     func updatePercentageDone(percentageDone: Float) {
-//        println("\(percentageDone)")
+        
         if let _gavinWheel = gavinWheel? {
+            // At 100% should always be the first leaf
+            // But, as soon as it is less, advance to the 2nd leaf.
+            // This done on the lines marked belowe 1, 2 & 3
+
             
             var sections = _gavinWheel.numberOfSections - 1
-//            sections = sections - 1
+            sections = sections - 1  // 1
             
             var currentLeafValue = 1 + currentLeafValueFromPrecent(percentageDone,
                                              WithSectionCount: sections)
-//            currentLeafValue = currentLeafValue + 1
+            currentLeafValue = currentLeafValue + 1 // 2
 
-            if _gavinWheel.currentLeafValue != currentLeafValue {
-                print("\(_gavinWheel.currentLeafValue) | \(currentLeafValue)")
-                _gavinWheel.rotateToLeafByValue(currentLeafValue)
+            if percentageDone == 1.0 { // 3
+                if _gavinWheel.currentLeafValue != 1 {
+                    _gavinWheel.animateToLeafByValue(1)
+                }
+            } else if _gavinWheel.currentLeafValue != currentLeafValue {
+                _gavinWheel.animateToLeafByValue(currentLeafValue)
             }
         }
     }
@@ -186,7 +186,7 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
     
     // MARK: ImageWheelDelegate
     func wheelDidChangeValue(newValue: String) {
-        println(newValue)
+//        println(newValue)
     }
 
     // MARK:

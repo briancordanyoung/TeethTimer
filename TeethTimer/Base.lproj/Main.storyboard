@@ -30,7 +30,7 @@
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MVB-6D-Qmk">
-                                <rect key="frame" x="0.0" y="-44" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="1" width="375" height="665"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="MVB-6D-Qmk" secondAttribute="height" multiplier="40:71" id="NOQ-kx-RtL"/>
                                 </constraints>
@@ -63,8 +63,8 @@
                                     <action selector="startStopPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jwk-hh-01W"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OUX-Ix-O1U">
-                                <rect key="frame" x="169" y="614" width="39" height="18"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OUX-Ix-O1U">
+                                <rect key="frame" x="168" y="614" width="39" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -91,11 +91,6 @@
                             <constraint firstItem="MVB-6D-Qmk" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="oIw-fs-MXo"/>
                             <constraint firstItem="Vn1-Zx-sgu" firstAttribute="top" secondItem="z2l-dT-yk7" secondAttribute="top" id="w9a-Gb-UUo"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="MVB-6D-Qmk"/>
-                            </mask>
-                        </variation>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
