@@ -20,6 +20,7 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
     
     var gavinWheelHeight: NSLayoutConstraint?
     var gavinWheelWidth: NSLayoutConstraint?
+    var gavinWheel: ImageWheelControl?
     
     let timer = Timer()
 
@@ -32,7 +33,7 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
         
         let gavinWheel = ImageWheelControl(WithFrame: CGRectMake(0, 0, 200 , 200),
                                          AndDelegate: self,
-                                        WithSections: 6)
+                                        WithSections: 10)
         
         controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
 
@@ -79,6 +80,7 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
 
         gavinWheel.positionViews()
         
+        self.gavinWheel = gavinWheel
     }
     
     
@@ -100,7 +102,12 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
     @IBAction func startStopPressed(sender: UIButton) {
         if timer.hasCompleted {
             timer.reset()
+            gavinWheel?.rotateToLeafByValue(1)
             return
+        }
+        
+        if timer.hasNotStarted {
+            //gavinWheel?.rotateToLeafByValue(2)
         }
         
         if timer.notCurrentlyRunning {
@@ -112,6 +119,7 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
 
     @IBAction func resetPressed(sender: UIButton) {
         timer.reset()
+        gavinWheel?.rotateToLeafByValue(1)
     }
 
     
@@ -124,16 +132,61 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
         startPauseButton.setTitle(buttonText, forState: UIControlState.Normal)
     }
     
-    func updatePercentageDone(percentageDone: Float) {
-
+    
+    
+    
+    
+    
+    
+    func clamp(value: Int, ToValue maximumValue: Int) -> Int {
+        
+        if value > maximumValue {
+            return 1
+        }
+        
+        if value < 0 {
+            return 0
+        }
+        
+        return value
     }
+    
+    func currentLeafValueFromPrecent(percentageDone: Float , WithSectionCount sections: Int) -> Int {
+        let percentageToGo = 1.0 - percentageDone
+        let sectionsByPercent = percentageToGo * Float(sections)
+        let current = clamp(Int(sectionsByPercent),
+                    ToValue: sections)
+        
+        return current
+    }
+    
+    func updatePercentageDone(percentageDone: Float) {
+//        println("\(percentageDone)")
+        if let _gavinWheel = gavinWheel? {
+            
+            var sections = _gavinWheel.numberOfSections - 1
+//            sections = sections - 1
+            
+            var currentLeafValue = 1 + currentLeafValueFromPrecent(percentageDone,
+                                             WithSectionCount: sections)
+//            currentLeafValue = currentLeafValue + 1
+
+            if _gavinWheel.currentLeafValue != currentLeafValue {
+                print("\(_gavinWheel.currentLeafValue) | \(currentLeafValue)")
+                _gavinWheel.rotateToLeafByValue(currentLeafValue)
+            }
+        }
+    }
+    
+    
+    
     
     func updateSeconds(secondsLeft: NSTimeInterval) {
     }
     
     // MARK: ImageWheelDelegate
     func wheelDidChangeValue(newValue: String) {
-//        println(newValue)
+        println(newValue)
     }
 
     // MARK:

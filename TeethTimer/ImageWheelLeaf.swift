@@ -6,23 +6,21 @@
 //  Copyright (c) 2014 Brian Young. All rights reserved.
 //
 
-import Foundation
 
-class ImageWheelLeaf: NSObject {
-    var minValue: Float
-    var maxValue: Float
-    var midValue: Float
+struct ImageWheelLeaf {
+    var minRadian: Float
+    var maxRadian: Float
+    var midRadian: Float
     var value: Int
     
     init(WithMin min: Float, AndMax max: Float, AndMid mid: Float, AndValue valueIn: Int) {
-        minValue = min
-        maxValue = max
-        midValue = mid
+        minRadian = min
+        maxRadian = max
+        midRadian = mid
         value = valueIn
-        super.init()
     }
     
     func description() -> String {
-        return "\(value) | \(minValue), \(midValue), \(maxValue)"
+        return "\(value) | \(minRadian), \(midRadian), \(maxRadian)"
     }
 }

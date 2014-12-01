@@ -21,7 +21,7 @@ class ImageWheelControl: UIControl  {
     var numberOfSections = 6
     var startTransform = CGAffineTransformMakeRotation(0)
     var leaves: [ImageWheelLeaf] = []
-    var currentValue: Int = 0
+    var currentLeafValue: Int = 0
     var deltaAngle = CGFloat(0)
 
     let minAlphavalue: CGFloat = 1.0
@@ -41,6 +41,7 @@ class ImageWheelControl: UIControl  {
         super.init(frame: frame)
             
         numberOfSections = sectionsCount
+        startTransform = CGAffineTransformMakeRotation(360.0 / CGFloat(numberOfSections) / 2.0)
         delegate = delegateIn
         drawWheel()
     }
@@ -56,18 +57,29 @@ class ImageWheelControl: UIControl  {
         let angleSize: CGFloat = CGFloat(2) * CGFloat(M_PI) / CGFloat(numberOfSections)
         
         // Build UIViews for each pie piece
-        for i in 0..<numberOfSections {
-            let image = UIImageView(image: UIImage(named: "segment"))
+        for i in 1...numberOfSections {
+            var image = UIImage(named: "segment")
             
-            image.layer.anchorPoint = CGPoint(x: 1, y: 0.5)
-            image.transform = CGAffineTransformMakeRotation(angleSize * CGFloat(i))
-            image.alpha = minAlphavalue
-            image.tag = i
-            
-            if (i == 0) {
-                image.alpha = maxAlphavalue;
+            if i == 1 {
+                image = ColorImage.colorizeImage(image!, withColor: UIColor.blackColor())
             }
-            container.addSubview(image)
+
+            if i == 2 {
+                image = ColorImage.colorizeImage(image!, withColor: UIColor.redColor())
+            }
+
+            if i == 10 {
+                image = ColorImage.colorizeImage(image!, withColor: UIColor.blueColor())
+            }
+            
+
+            var imageView = UIImageView(image: image)
+            
+            imageView.layer.anchorPoint = CGPoint(x: 1, y: 0.5)
+            imageView.transform = CGAffineTransformMakeRotation(angleSize * CGFloat(i + 1))
+            imageView.tag = i
+            
+            container.addSubview(imageView)
         }
         
         
@@ -75,14 +87,72 @@ class ImageWheelControl: UIControl  {
         self.addSubview(container)
         
         if (numberOfSections % 2 == 0) {
-            self.buildLeafsEven()
+            self.buildLeavesEven()
         } else {
-            self.buildLeafsOdd()
+            self.buildLeavesOdd()
         }
         
         updateDelegatesLeafName()
     }
     
+    func buildLeavesEven() {
+        let leafWidth = Float(2) * Float(M_PI) / Float(numberOfSections)
+        var mid = leafWidth / 2 
+        var max = Float(0)
+        var min = Float(0)
+        
+        for i in 1...numberOfSections {
+            max = mid + (leafWidth / 2)
+            min = mid - (leafWidth / 2)
+            
+            var leaf = ImageWheelLeaf(WithMin: min,
+                                       AndMax: max,
+                                       AndMid: mid,
+                                     AndValue: i)
+            
+            if (leaf.maxRadian - leafWidth < Float(M_PI * -1)) {
+                mid = Float(M_PI) - (leafWidth / 2)
+                leaf.midRadian = mid
+                leaf.minRadian = fabsf(leaf.maxRadian)
+            }
+            
+            mid -= leafWidth
+            
+            println("Leaf: \(leaf.description())");
+            
+            leaves.append(leaf)
+        }
+    }
+    
+    
+    func buildLeavesOdd() {
+        let leafWidth = Float(2) * Float(M_PI) / Float(numberOfSections)
+        var mid = Float(0) //leafWidth / 2
+        var max = Float(0)
+        var min = Float(0)
+        
+        
+        for i in 1...numberOfSections {
+            max = mid + (leafWidth / 2)
+            min = mid - (leafWidth / 2)
+            
+            var leaf = ImageWheelLeaf(WithMin: min,
+                                       AndMax: max,
+                                       AndMid: mid,
+                                     AndValue: i)
+            
+            mid -= leafWidth
+            
+            if (leaf.maxRadian < Float(-M_PI)) {
+                mid = (mid * -1)
+                mid -= leafWidth
+            }
+            
+            println("Leaf: \(leaf.description())");
+            
+            leaves.append(leaf)
+        }
+    }
     
     
     // MARK: Contraint setup
@@ -107,8 +177,8 @@ class ImageWheelControl: UIControl  {
         self.addConstraints(view_constraint_H)
         self.addConstraints(view_constraint_V)
 
-        for i in 0..<numberOfSections {
-            if let image = getLeafByValue(i) {
+        for i in 1...numberOfSections {
+            if let image = getLeafImageByValue(i) {
         
                 image.setTranslatesAutoresizingMaskIntoConstraints(false)
     
@@ -142,78 +212,11 @@ class ImageWheelControl: UIControl  {
                        toItem: nil,
                     attribute: NSLayoutAttribute.NotAnAttribute,
                     multiplier: 1.0,
-                     constant: 80.0))
+                     constant: 200.0))
             }
         }
     }
     
-    // MARK: Delegate Callbacks
-    func updateDelegatesLeafName() {
-        if let delegateUR = delegate? {
-            let leafName = getLeafName(currentValue)
-            delegateUR.wheelDidChangeValue(leafName)
-        }
-
-    }
-    
-    func buildLeafsEven() {
-        let fanWidth = Float(2) * Float(M_PI) / Float(numberOfSections)
-        var mid = Float(0)
-        var max = Float(0)
-        var min = Float(0)
-        
-        for i in 0..<numberOfSections {
-            max = mid + (fanWidth / 2)
-            min = mid - (fanWidth / 2)
-
-            var leaf = ImageWheelLeaf(WithMin: min,
-                                         AndMax: max,
-                                         AndMid: mid,
-                                       AndValue: i)
-            
-            if (leaf.maxValue - fanWidth < Float(M_PI * -1)) {
-                mid = Float(M_PI)
-                leaf.midValue = mid
-                leaf.minValue = fabsf(leaf.maxValue)
-            }
-            
-            mid -= fanWidth
-            
-//            println("cl is \(leaf)");
-            
-            leaves.append(leaf)
-        }
-    }
-    
-    
-    func buildLeafsOdd() {
-        let fanWidth = Float(2) * Float(M_PI) / Float(numberOfSections)
-        var mid = Float(0)
-        var max = Float(0)
-        var min = Float(0)
-
-        
-        for i in 0..<numberOfSections {
-            max = mid + (fanWidth / 2)
-            min = mid - (fanWidth / 2)
-
-            var leaf = ImageWheelLeaf(WithMin: min,
-                                         AndMax: max,
-                                         AndMid: mid,
-                                       AndValue: i)
-            
-            mid -= fanWidth
-
-            if (leaf.maxValue < Float(-M_PI)) {
-                mid = (mid * -1)
-                mid -= fanWidth
-            }
-            
-//            println("cl is \(leaf)");
-            
-            leaves.append(leaf)
-        }
-    }
     
     
     // MARK: UIControl methods
@@ -231,7 +234,7 @@ class ImageWheelControl: UIControl  {
         let dy = touchPoint.y - container.center.y
         deltaAngle = atan2(dy,dx)
         startTransform = container.transform
-        getLeafByValue(currentValue)?.alpha = minAlphavalue
+        getLeafImageByValue(currentLeafValue)?.alpha = minAlphavalue
         
         return true
     }
@@ -266,48 +269,76 @@ class ImageWheelControl: UIControl  {
     }
 
     
+    
+    
     override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
-        let b = Float(container.transform.b)
-        let a = Float(container.transform.a)
-        let radians = atan2f(b, a)
+        let currentRotation = radiansFromTransform(container.transform)
         
-        var newVal = CGFloat(0)
+        var newRotation = CGFloat(0)
         
-        for c in leaves {
-            if (c.minValue > 0.0 && c.maxValue < 0.0) { // anomalous case
+        for leaf in leaves {
+            if (leaf.minRadian > 0.0 && leaf.maxRadian < 0.0) { // anomalous case
                 
-                if (c.maxValue > radians || c.minValue < radians) {
-                    if (radians > 0.0) { // we are in the positive quadrant
-                        newVal = CGFloat(radians) - CGFloat(M_PI);
+                if (leaf.maxRadian > currentRotation || leaf.minRadian < currentRotation) {
+                    if (currentRotation > 0.0) { // we are in the positive quadrant
+                        newRotation = CGFloat(currentRotation) - CGFloat(M_PI);
                     } else { // we are in the negative one
-                        newVal = CGFloat(radians) + CGFloat(M_PI);
+                        newRotation = CGFloat(currentRotation) + CGFloat(M_PI);
                     }
-                    currentValue = c.value;
+                    currentLeafValue = leaf.value;
                 }
-            }
-        
-            else if (radians > c.minValue && radians < c.maxValue) {
                 
-                newVal = CGFloat(radians) - CGFloat(c.midValue);
-                currentValue = c.value;
+            } else if (currentRotation > leaf.minRadian && currentRotation < leaf.maxRadian) {
+                
+                newRotation = CGFloat(currentRotation) - CGFloat(leaf.midRadian);
+                currentLeafValue = leaf.value;
                 
             }
         }
         
-        UIView.beginAnimations(nil, context: nil)
-        UIView.setAnimationDuration(0.2)
+//        println("newRotation set: \(newRotation)")
         
-        let t = CGAffineTransformRotate(container.transform, (newVal * -1))
-        container.transform = t;
         
-        UIView.commitAnimations()
-        
+        animateImageWheelRotationByRadians(newRotation * -1)
         updateDelegatesLeafName()
+    }
+    
+    func rotateToLeafByValue(value: Int) {
+        if let leaf = getLeafByValue(value) {
+            println(" | \(value)")
+            rotateToLeaf(leaf)
+        }
+    }
+    
+    func rotateToLeaf(leaf: ImageWheelLeaf) {
+        let currentRotation = radiansFromTransform(container.transform)
+        let newRotation = CGFloat(currentRotation) - CGFloat(leaf.midRadian);
+        animateImageWheelRotationByRadians(newRotation * -1)
         
-        getLeafByValue(currentValue)?.alpha = maxAlphavalue
+        currentLeafValue = leaf.value;
+        updateDelegatesLeafName()
     }
     
     
+    func animateImageWheelRotationByRadians(radians: CGFloat) {
+        UIView.beginAnimations(nil, context: nil)
+        UIView.setAnimationDuration(0.2)
+        
+        let t = CGAffineTransformRotate(container.transform, radians)
+        container.transform = t;
+        
+        UIView.commitAnimations()
+    }
+    
+    
+    // MARK: Delegate Callbacks
+    func updateDelegatesLeafName() {
+        if let delegateUR = delegate? {
+            let leafName = getLeafName(currentLeafValue)
+            delegateUR.wheelDidChangeValue(leafName)
+        }
+        
+    }
     
     // MARK: Helper method
     func getLeafName(position: Int) -> String {
@@ -316,9 +347,6 @@ class ImageWheelControl: UIControl  {
         
         switch (position) {
 
-        case 0:
-            name = "0"
-            
         case 1:
             name = "1"
             
@@ -341,16 +369,22 @@ class ImageWheelControl: UIControl  {
             name = "7"
             
         case 8:
-            name = "Triangle"
+            name = "8"
+            
+        case 9:
+            name = "9"
+            
+        case 10:
+            name = "10"
             
         default:
-            name = "more than 8"
+            name = "more than 10"
         }
         
         return name
     }
     
-    func getLeafByValue(value: Int) -> UIImageView? {
+    func getLeafImageByValue(value: Int) -> UIImageView? {
         
         var leafView: UIImageView?
         let views = container.subviews
@@ -364,6 +398,21 @@ class ImageWheelControl: UIControl  {
         
         return leafView
     }
+    
+    func getLeafByValue(value: Int) -> ImageWheelLeaf? {
+        
+        var returnLeaf: ImageWheelLeaf?
+        
+        for leaf in leaves {
+            if leaf.value == value {
+                returnLeaf = leaf
+            }
+        }
+        
+        return returnLeaf
+    }
+    
+
     
     func calculateDistanceFromCenter(point: CGPoint) -> Float {
         let center = CGPointMake(self.bounds.size.width  / 2.0,
@@ -380,5 +429,13 @@ class ImageWheelControl: UIControl  {
         return sqrt(sqrtOf)
     }
     
+    func radiansFromTransform(transform: CGAffineTransform) -> Float {
+        let b = Float(transform.b)
+        let a = Float(transform.a)
+        let radians = atan2f(b, a)
+        
+        return radians
+    }
+
 }
 
