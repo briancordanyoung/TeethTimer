@@ -15,11 +15,15 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y32-a2-VoP">
-                                <rect key="frame" x="0.0" y="392" width="320" height="88"/>
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MOq-R8-IVu" userLabel="imageWheelControlView">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y32-a2-VoP" userLabel="lowerThirdView">
+                                <rect key="frame" x="0.0" y="579" width="375" height="88"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.75" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="88" id="aXs-Sl-CjM"/>
@@ -32,7 +36,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z2l-dT-yk7">
-                                <rect key="frame" x="200" y="420" width="90" height="30"/>
+                                <rect key="frame" x="255" y="607" width="90" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="90" id="cay-wI-Pmb"/>
                                 </constraints>
@@ -46,7 +50,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vn1-Zx-sgu">
-                                <rect key="frame" x="30" y="420" width="90" height="30"/>
+                                <rect key="frame" x="30" y="607" width="90" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="90" id="Vgu-ch-7xn"/>
                                 </constraints>
@@ -59,8 +63,8 @@
                                     <action selector="startStopPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jwk-hh-01W"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OUX-Ix-O1U">
-                                <rect key="frame" x="141" y="427" width="39" height="18"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OUX-Ix-O1U">
+                                <rect key="frame" x="169" y="614" width="39" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -71,12 +75,16 @@
                             <constraint firstAttribute="trailing" secondItem="MVB-6D-Qmk" secondAttribute="trailing" id="2qa-l4-iGU"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Vn1-Zx-sgu" secondAttribute="bottom" constant="30" id="2zD-1F-Gen"/>
                             <constraint firstAttribute="centerY" secondItem="MVB-6D-Qmk" secondAttribute="centerY" id="3el-aZ-ghh"/>
+                            <constraint firstAttribute="trailing" secondItem="MOq-R8-IVu" secondAttribute="trailing" id="3qn-yZ-5lD"/>
+                            <constraint firstAttribute="bottom" secondItem="MOq-R8-IVu" secondAttribute="bottom" id="Dug-UW-hfK"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="z2l-dT-yk7" secondAttribute="bottom" constant="30" id="INN-c3-b26"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Y32-a2-VoP" secondAttribute="bottom" id="K1r-qm-6FT"/>
                             <constraint firstAttribute="centerX" secondItem="OUX-Ix-O1U" secondAttribute="centerX" id="PRd-Ye-Pwg"/>
                             <constraint firstItem="Y32-a2-VoP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="QcG-h0-pXv"/>
                             <constraint firstItem="Vn1-Zx-sgu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="30" id="SU3-o2-ShK"/>
+                            <constraint firstItem="MOq-R8-IVu" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="T18-yG-tr2"/>
                             <constraint firstAttribute="trailing" secondItem="Y32-a2-VoP" secondAttribute="trailing" id="TCu-0y-w0G"/>
+                            <constraint firstItem="MOq-R8-IVu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Z6s-yx-bj0"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="OUX-Ix-O1U" secondAttribute="bottom" constant="35" id="agX-fw-RkF"/>
                             <constraint firstAttribute="centerX" secondItem="MVB-6D-Qmk" secondAttribute="centerX" id="fX5-pa-hP7"/>
                             <constraint firstAttribute="trailing" secondItem="z2l-dT-yk7" secondAttribute="trailing" constant="30" id="nvY-oc-b87"/>
@@ -89,9 +97,11 @@
                             </mask>
                         </variation>
                     </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="controlView" destination="MOq-R8-IVu" id="UKu-kb-7Zt"/>
                         <outlet property="fullScreenImage" destination="MVB-6D-Qmk" id="dh6-aA-T5Q"/>
+                        <outlet property="lowerThirdView" destination="Y32-a2-VoP" id="CME-g0-d2W"/>
                         <outlet property="resetButton" destination="z2l-dT-yk7" id="vuu-wS-veL"/>
                         <outlet property="startPauseButton" destination="Vn1-Zx-sgu" id="59w-Mo-ILk"/>
                         <outlet property="timerLabel" destination="OUX-Ix-O1U" id="6fW-xf-yBv"/>

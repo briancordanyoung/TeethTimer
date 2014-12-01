@@ -25,6 +25,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return rootViewController as TimerViewController
     }()
 
+    func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+
+        // https://stackoverflow.com/questions/26461689/ios-state-restoration-animation-bug/26591842#26591842?newreg=72c20853498146b7a00cc5351ba502c2&newUserTooltips=true
+        self.window?.makeKeyAndVisible()
+        return true
+    }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
