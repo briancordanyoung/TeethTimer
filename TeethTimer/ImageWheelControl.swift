@@ -8,11 +8,6 @@
 
 import UIKit
 
-// TODO: Replace Delegate with target/action pattern
-protocol ImageWheelDelegate {
-    func wheelDidChangeValue(newValue: String)
-}
-
 
 class ImageWheelControl: UIControl  {
     
@@ -20,7 +15,6 @@ class ImageWheelControl: UIControl  {
     let maxAlphavalue: CGFloat = 1.0
     let centerCircle:  Float = 20.0
 
-    var delegate: ImageWheelDelegate?
     var container = UIView()
     var numberOfSections = 6
     var currentLeafValue = 1
@@ -52,14 +46,12 @@ class ImageWheelControl: UIControl  {
     
     
 
-    init( WithDelegate    delegateIn: ImageWheelDelegate,
-          WithSections sectionsCount: Int) {
+    init(WithSections sectionsCount: Int) {
             
         super.init(frame: CGRect())
             
         numberOfSections = sectionsCount
         startTransform = CGAffineTransformMakeRotation(CGFloat(2.82743 + leafWidthAngle))
-        delegate = delegateIn
         drawWheel()
     }
 
@@ -241,6 +233,8 @@ class ImageWheelControl: UIControl  {
         deltaAngle = atan2(dy,dx)
         startTransform = container.transform
         getLeafImageByValue(currentLeafValue)?.alpha = minAlphavalue
+        // NOTE: Possible Events to impliment (but some come free, so check)
+        //self.sendActionsForControlEvents(UIControlEvents.TouchDown) // Comes for free
         
         return true
     }
@@ -270,7 +264,12 @@ class ImageWheelControl: UIControl  {
         let angleDifference = deltaAngle - ang
         
         container.transform = CGAffineTransformRotate(startTransform, -angleDifference)
-        
+        // NOTE: Possible Events to impliment (but some come free, so check)
+        self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+        //self.sendActionsForControlEvents(UIControlEvents.TouchDragInside)
+        //self.sendActionsForControlEvents(UIControlEvents.TouchDragExit)
+        //self.sendActionsForControlEvents(UIControlEvents.TouchDragEnter)
+        //self.sendActionsForControlEvents(UIControlEvents.TouchDragOutside)
         return true
     }
 
@@ -303,8 +302,11 @@ class ImageWheelControl: UIControl  {
             }
         }
         
+        // NOTE: Possible Events to impliment (but some come free, so check)
+        //self.sendActionsForControlEvents(UIControlEvents.TouchUpInside) // Comes for free
+        //self.sendActionsForControlEvents(UIControlEvents.TouchUpOutside)
+        //self.sendActionsForControlEvents(UIControlEvents.TouchCancel)
         animateImageWheelRotationByRadians(newRotation * -1)
-        updateDelegatesLeafName()
     }
 
     // MARK: Image Wheel Rotation Methods
@@ -317,8 +319,8 @@ class ImageWheelControl: UIControl  {
     func rotateToLeaf(leaf: ImageWheelLeaf) {
         let angle = CGFloat(leaf.midRadian)
         rotateToAngle(angle)
+        self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
         currentLeafValue = leaf.value;
-        updateDelegatesLeafName()
     }
     
     func rotateToAngle(angle: CGFloat) {
@@ -342,9 +344,9 @@ class ImageWheelControl: UIControl  {
         let currentRotation = radiansFromTransform(container.transform)
         let newRotation = CGFloat(currentRotation) - CGFloat(leaf.midRadian)
         animateImageWheelRotationByRadians(newRotation * -1)
+        self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
         
         currentLeafValue = leaf.value;
-        updateDelegatesLeafName()
     }
     
     
@@ -360,15 +362,6 @@ class ImageWheelControl: UIControl  {
         }
     }
     
-    
-    // MARK: Delegate Callbacks
-    func updateDelegatesLeafName() {
-        if let delegateUR = delegate? {
-            let leafName = getLeafName(currentLeafValue)
-            delegateUR.wheelDidChangeValue(leafName)
-        }
-        
-    }
     
     // MARK: Helper method
     func getLeafName(position: Int) -> String {

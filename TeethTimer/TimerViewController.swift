@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TimerViewController: UIViewController, ImageWheelDelegate {
+class TimerViewController: UIViewController {
 
     // MARK: Properties
     @IBOutlet weak var startPauseButton: UIButton!
@@ -33,8 +33,7 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
         styleButton(startPauseButton)
 //        fullScreenImage.image = UIImage(named: "background")
         
-        let gavinWheel = ImageWheelControl(WithDelegate: self,
-                                           WithSections: 6)
+        let gavinWheel = ImageWheelControl(WithSections: 6)
         
         controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
 
@@ -80,6 +79,17 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
         }
 
         gavinWheel.positionViews()
+        gavinWheel.addTarget(self,
+            action: "gavinWheelRotatedByUser:",
+            forControlEvents: UIControlEvents.TouchUpInside)
+        
+        gavinWheel.addTarget(self,
+            action: "gavinWheelRotatingByUser:",
+            forControlEvents: UIControlEvents.ValueChanged)
+        
+        gavinWheel.addTarget(self,
+            action: "gavinWheelTouchedByUser:",
+            forControlEvents: UIControlEvents.TouchDown)
 
         self.gavinWheel = gavinWheel
     }
@@ -87,10 +97,12 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Timer uses a Closure/Block based callback system
+        // Set the properties with our callback functions
         timer.updateTimerWithText = updateTimeLabelWithText
         timer.updateUIControlText = updateButtonTitleWithText
         timer.updateTimerWithPercentage = updatePercentageDone
-        timer.updateTimerWithSeconds = updateSeconds
         timer.reset()
     }
     
@@ -122,6 +134,19 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
         timer.addTimeByPercentage(0.25)
     }
     
+    // MARK: ImageWheelControl Target/Action Callback
+    func gavinWheelRotatedByUser(gavinWheel: ImageWheelControl) {
+        println("gavinWheelRotatedByUser: \(gavinWheel.currentLeafValue)")
+    }
+    
+    func gavinWheelRotatingByUser(gavinWheel: ImageWheelControl) {
+        println("gavinWheelRotatingByUser: \(gavinWheel.currentLeafValue)")
+    }
+    
+    func gavinWheelTouchedByUser(gavinWheel: ImageWheelControl) {
+        println("gavinWheelTouchedByUser: \(gavinWheel.currentLeafValue)")
+    }
+    
     // MARK: Callbacks to pass to the Timer class
     func updateTimeLabelWithText(labelText: String) {
         timerLabel.text = labelText
@@ -131,33 +156,6 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
         startPauseButton.setTitle(buttonText, forState: UIControlState.Normal)
     }
     
-    
-    
-    
-    
-    
-    
-    func clamp(value: Int, ToValue maximumValue: Int) -> Int {
-        
-        if value > maximumValue {
-            return 1
-        }
-        
-        if value < 0 {
-            return 0
-        }
-        
-        return value
-    }
-    
-    func currentLeafValueFromPrecent(percentageDone: Float , WithSectionCount sections: Int) -> Int {
-        let percentageToGo = 1.0 - percentageDone
-        let sectionsByPercent = percentageToGo * Float(sections)
-        let current = clamp(Int(sectionsByPercent),
-                    ToValue: sections)
-        
-        return current
-    }
     
     func updatePercentageDone(percentageDone: Float) {
         
@@ -184,17 +182,30 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
         }
     }
     
-    
-    
-    
-    func updateSeconds(secondsLeft: NSTimeInterval) {
+    // MARK: Timer Callback helper Methods
+    func clamp(value: Int, ToValue maximumValue: Int) -> Int {
+        
+        if value > maximumValue {
+            return 1
+        }
+        
+        if value < 0 {
+            return 0
+        }
+        
+        return value
     }
     
-    // MARK: ImageWheelDelegate
-    func wheelDidChangeValue(newValue: String) {
-//        println(newValue)
+    func currentLeafValueFromPrecent(percentageDone: Float , WithSectionCount sections: Int) -> Int {
+        let percentageToGo = 1.0 - percentageDone
+        let sectionsByPercent = percentageToGo * Float(sections)
+        let current = clamp(Int(sectionsByPercent),
+            ToValue: sections)
+        
+        return current
     }
-
+    
+    
     // MARK:
     func gavinWheelSize() -> (CGFloat) {
         let height = self.view.bounds.height
@@ -227,7 +238,7 @@ class TimerViewController: UIViewController, ImageWheelDelegate {
         updateGavinWheelSize()
     }
 
-    
+
     // MARK: Appearance Helper
     private func styleButton(button: UIButton) {
         button.layer.borderWidth = 1
