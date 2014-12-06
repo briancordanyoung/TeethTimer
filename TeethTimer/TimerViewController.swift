@@ -84,7 +84,7 @@ class TimerViewController: UIViewController {
             forControlEvents: UIControlEvents.TouchUpInside)
         
         gavinWheel.addTarget(self,
-            action: "gavinWheelRotatingByUser:",
+            action: "gavinWheelChanged:",
             forControlEvents: UIControlEvents.ValueChanged)
         
         gavinWheel.addTarget(self,
@@ -136,15 +136,17 @@ class TimerViewController: UIViewController {
     
     // MARK: ImageWheelControl Target/Action Callback
     func gavinWheelRotatedByUser(gavinWheel: ImageWheelControl) {
-        println("gavinWheelRotatedByUser: \(gavinWheel.currentLeafValue)")
+//        println("gavinWheelRotatedByUser: \(gavinWheel.currentLeafValue)")
+//        timer.pause()
     }
     
-    func gavinWheelRotatingByUser(gavinWheel: ImageWheelControl) {
-        println("gavinWheelRotatingByUser: \(gavinWheel.currentLeafValue)")
+    func gavinWheelChanged(gavinWheel: ImageWheelControl) {
+//        println("gavinWheelChanged: \(gavinWheel.currentLeafValue)")
     }
     
     func gavinWheelTouchedByUser(gavinWheel: ImageWheelControl) {
-        println("gavinWheelTouchedByUser: \(gavinWheel.currentLeafValue)")
+//        println("gavinWheelTouchedByUser: \(gavinWheel.currentLeafValue)")
+//        timer.start()
     }
     
     // MARK: Callbacks to pass to the Timer class

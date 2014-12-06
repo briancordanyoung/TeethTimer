@@ -84,6 +84,26 @@ class Timer: NSObject {
         }
     }
     
+    var elapsedTime: NSTimeInterval {
+        get {
+            var _elapsedTime: NSTimeInterval = 0
+            if let start = lastStartTime? {
+                let now = NSDate.timeIntervalSinceReferenceDate()
+                _elapsedTime = now - start + elapsedTimeAtPause
+            } else {
+                _elapsedTime = elapsedTimeAtPause
+            }
+            return _elapsedTime
+        }
+    }
+    
+    var timeRemaining: NSTimeInterval {
+        get {
+            return (brushingDuration + additionalElapsedTime) - elapsedTime
+        }
+    }
+    
+    
     // Properties that hold functions. (a.k.a. a block based API)
     // These should be used as call backs alerting a view controller
     // that one of these events occurred.
@@ -189,8 +209,15 @@ class Timer: NSObject {
         println("total addition time: \(additionalElapsedTime)")
     }
     
+    // TODO: Check for bugs in reporting percentage done after adding time
+    func addTimeSetNewPercentageDone(percentageTarget: Float) {
+//        percent
+        
+    }
     
     func addTimeByPercentage(percentage: Float) {
+        
+        
         // Don't use brushingDuration + additionalElapsedTime because
         // we only want to add a percentage of the original duration
         // without any addition seconds added
@@ -296,9 +323,9 @@ class Timer: NSObject {
         }
         
         if let start = lastStartTime? {
-            let now = NSDate.timeIntervalSinceReferenceDate()
-            let elapsedTime = now - start + elapsedTimeAtPause
-            let timeRemaining = (brushingDuration + additionalElapsedTime) - elapsedTime
+//            let now = NSDate.timeIntervalSinceReferenceDate()
+//            let elapsedTime = now - start + elapsedTimeAtPause
+//            let timeRemaining = (brushingDuration + additionalElapsedTime) - elapsedTime
 
             if notCurrentlyRunning {
                 rememberTimerAtPause(elapsedTime)
