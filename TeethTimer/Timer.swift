@@ -181,6 +181,12 @@ class Timer: NSObject {
         updateUIControlText("Continue")
     }
     
+    func pauseAfterDoneAndAddTime() {
+        hasNotCompleted = true
+        updateUIControlText("Continue")
+        updateTimerTo(timeRemaining)
+    }
+    
     func reset() {
         startTime = nil
         lastStartTime = nil
@@ -192,7 +198,7 @@ class Timer: NSObject {
 
         syncBrushingDurationSetting()
 
-        updateTimerWithTimeRemaining(brushingDuration + additionalElapsedTime)
+        updateTimerTo(brushingDuration)
         updateUIControlText("Start")
     }
     
@@ -202,37 +208,37 @@ class Timer: NSObject {
         hasCompleted = true
 
         updateUIControlText("Done")
-        updateTimerWithTimeRemaining(0.0)
+        updateTimerTo(0.0)
         
-        println("original timer:      \(brushingDuration)")
-        println("total running time:  \(elapsedTimeAtPause)")
-        println("total addition time: \(additionalElapsedTime)")
+        println("original timer:        \(brushingDuration)")
+        println("total running time:    \(elapsedTimeAtPause)")
+        println("total additional time: \(additionalElapsedTime)")
     }
     
-    // TODO: Check for bugs in reporting percentage done after adding time
-    func addTimeSetNewPercentageDone(percentageTarget: Float) {
-//        percent
-        
-    }
     
     func addTimeByPercentage(percentage: Float) {
-        
-        
         // Don't use brushingDuration + additionalElapsedTime because
         // we only want to add a percentage of the original duration
-        // without any addition seconds added
+        // without any additional seconds added
         let additionalSeconds = NSTimeInterval(Float(brushingDuration) * percentage)
         addTimeBySeconds(additionalSeconds)
     }
     
     func addTimeBySeconds(seconds: NSTimeInterval) {
+        // Don't add sooo much to the timer that the time left
+        // if more than the original brushing duration
         additionalElapsedTime = additionalElapsedTime + seconds
-        if lastStartTime == nil {
-            lastStartTime = NSDate.timeIntervalSinceReferenceDate()
+        if additionalElapsedTime > elapsedTime {
+            additionalElapsedTime = elapsedTime
         }
-        currentlyRunning = true
-        hasNotCompleted = true
-        incrementTimer()
+        
+        if notCurrentlyRunning {
+            updateTimerTo(timeRemaining)
+        }
+        
+        if hasCompleted {
+            pauseAfterDoneAndAddTime()
+        }
     }
     
     func transitionToHidden() {
@@ -277,20 +283,16 @@ class Timer: NSObject {
     }
     
     private func secondsToPercentage(secondsRemaining: NSTimeInterval) -> Float {
-        return Float(secondsRemaining / (brushingDuration + additionalElapsedTime))
+        return Float(secondsRemaining / (brushingDuration))
     }
     
-    private func updateTimerWithTimeRemaining(timeRemaining: NSTimeInterval) {
+    private func updateTimerTo(timeRemaining: NSTimeInterval) {
         // TODO: More testing to make sure that the timer always ends
         //       on 0 and 00:00.  Percentage left reuqired special handling
         updateTimerWithText(timeStringFromDuration(timeRemaining))
         updateTimerWithSeconds(timeRemaining)
         
         var percentageLeft = secondsToPercentage(timeRemaining)
-        
-//        if percentageLeft < 0.001 {
-//            percentageLeft = 0.0
-//        }
         
         if hasCompleted {
             percentageLeft = 0.0
@@ -335,7 +337,7 @@ class Timer: NSObject {
             if (elapsedTime > (brushingDuration + additionalElapsedTime)) {
                 complete(elapsedTime)
             } else {
-                updateTimerWithTimeRemaining(timeRemaining)
+                updateTimerTo(timeRemaining)
                 incrementTimerAgain()
             }
             

@@ -33,7 +33,7 @@ class TimerViewController: UIViewController {
         styleButton(startPauseButton)
 //        fullScreenImage.image = UIImage(named: "background")
         
-        let gavinWheel = ImageWheelControl(WithSections: 6)
+        let gavinWheel = ImageWheelControl(WithSections: 10)
         
         controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
 
@@ -91,6 +91,7 @@ class TimerViewController: UIViewController {
             action: "gavinWheelTouchedByUser:",
             forControlEvents: UIControlEvents.TouchDown)
 
+        gavinWheel.wheelTurnedBackBy = wheelTurnedBackByFunc
         self.gavinWheel = gavinWheel
     }
     
@@ -130,23 +131,16 @@ class TimerViewController: UIViewController {
     }
 
     @IBAction func testPresses(sender: UIButton) {
-//        timer.addTimeBySeconds(30)
-        timer.addTimeByPercentage(0.25)
     }
     
     // MARK: ImageWheelControl Target/Action Callback
     func gavinWheelRotatedByUser(gavinWheel: ImageWheelControl) {
-//        println("gavinWheelRotatedByUser: \(gavinWheel.currentLeafValue)")
-//        timer.pause()
     }
     
     func gavinWheelChanged(gavinWheel: ImageWheelControl) {
-//        println("gavinWheelChanged: \(gavinWheel.currentLeafValue)")
     }
     
     func gavinWheelTouchedByUser(gavinWheel: ImageWheelControl) {
-//        println("gavinWheelTouchedByUser: \(gavinWheel.currentLeafValue)")
-//        timer.start()
     }
     
     // MARK: Callbacks to pass to the Timer class
@@ -158,6 +152,10 @@ class TimerViewController: UIViewController {
         startPauseButton.setTitle(buttonText, forState: UIControlState.Normal)
     }
     
+    // MARK: Callbacks to pass to the ImageWheel class
+    func wheelTurnedBackByFunc(leaves: Int,  AndPercentage percentage: CGFloat) {
+        timer.addTimeByPercentage(Float(percentage))
+    }
     
     func updatePercentageDone(percentageDone: Float) {
         

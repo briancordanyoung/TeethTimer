@@ -8,6 +8,7 @@
 
 import UIKit
 
+typealias wheelTurnedBackByDelegate = (Int, AndPercentage: CGFloat) -> ()
 
 class ImageWheelControl: UIControl  {
     
@@ -57,8 +58,7 @@ class ImageWheelControl: UIControl  {
     // Properties that hold closures. (a.k.a. a block based API)
     // These should be used as call backs alerting a view controller
     // that one of these events occurred.
-    typealias wheelTurnedBackByDelegate = (Int) -> ()
-    var wheelTurnedBackBy: wheelTurnedBackByDelegate = { leafCount in
+    var wheelTurnedBackBy: wheelTurnedBackByDelegate = { leafCount, percentage in
         var plural = "leaves"
         if leafCount == 1 {
             plural = "leaf"
@@ -75,8 +75,6 @@ class ImageWheelControl: UIControl  {
         numberOfSections = sectionsCount
         startTransform = CGAffineTransformMakeRotation(CGFloat(2.82743 + leafWidthAngle))
         drawWheel()
-        
-        println("1/2 leafWidthAngle: \(leafWidthAngle / 2)")
     }
 
     required init(coder: NSCoder) {
@@ -374,13 +372,6 @@ class ImageWheelControl: UIControl  {
             animateToLeafByValue(leafValueBeforeTouch)
         } else {
             animateToLeafByValue(currentLeafValue)
-            // TODO: Stop the wheel from turning back past the first position
-            // if currentLeafValue > leafValueBeforeTouch {
-            //     // Was to the right past the start leaf, rotate back to the start
-            //     animateToLeafByValue(1)
-            // } else {
-            //     animateToLeafByValue(currentLeafValue)
-            // }
         }
         
         if currentLeafHasChanged && !returnToPreviousLeaf {
@@ -389,8 +380,11 @@ class ImageWheelControl: UIControl  {
             if currentValue > leafValueBeforeTouch {
                 currentValue -= numberOfSections
             }
-            let result = leafValueBeforeTouch - currentValue
-            wheelTurnedBackBy(result)
+            let leafCount = leafValueBeforeTouch - currentValue
+            
+            let percentageStep = 1 / CGFloat((numberOfSections - 1))
+            let percentage = percentageStep * CGFloat(leafCount)
+            wheelTurnedBackBy(leafCount, AndPercentage: percentage)
         }
 
         
