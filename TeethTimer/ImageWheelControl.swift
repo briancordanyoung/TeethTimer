@@ -15,6 +15,9 @@ class ImageWheelControl: UIControl  {
     let minAlphavalue: CGFloat = 1.0
     let maxAlphavalue: CGFloat = 1.0
     let centerCircle:  Float = 20.0
+    let leafImageHeight: CGFloat = (800 * 0.9)
+    let leafImageWidth: CGFloat = (734 * 0.9)
+    
     let angleDifferenceDampenerFactor: Float = 6
 
     var container = UIView()
@@ -88,27 +91,16 @@ class ImageWheelControl: UIControl  {
         
         // Build UIViews for each pie piece
         for i in 1...numberOfSections {
-            var image = UIImage(named: "segment")
+            var image = UIImage(named: imageNameFrom(i))
             
-            if i == 1 {
-                image = ColorImage.colorizeImage(image!, withColor: UIColor.blackColor())
-            }
-
-            if i == 2 {
-                image = ColorImage.colorizeImage(image!, withColor: UIColor.greenColor())
-            }
-
-            if i == (numberOfSections) {
-                image = ColorImage.colorizeImage(image!, withColor: UIColor.redColor())
-            }
-            
-            let leafStartingAngle = CGFloat(M_PI * 1.5) - CGFloat(leafWidthAngle / 2)
-            let leafAngle = (CGFloat(leafWidthAngle) * CGFloat(i)) + leafStartingAngle
+            let leafStartingAngle = CGFloat(M_PI * 3) + CGFloat(leafWidthAngle / 2)
+            let leafAngle = (CGFloat(leafWidthAngle) * CGFloat(i)) - leafStartingAngle
 
             var imageView = UIImageView(image: image)
-            imageView.layer.anchorPoint = CGPoint(x: 1, y: 0.5)
+            imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
             imageView.transform = CGAffineTransformMakeRotation(leafAngle)
             imageView.tag = i
+            imageView.alpha = 0
             
             container.addSubview(imageView)
         }
@@ -123,6 +115,18 @@ class ImageWheelControl: UIControl  {
             self.buildLeavesOdd()
         }
         
+    }
+    
+    func imageNameFrom(i: Int) -> String {
+        let numberFormater = NSNumberFormatter()
+        numberFormater.maximumIntegerDigits = 0
+        numberFormater.minimumIntegerDigits = 2
+        numberFormater.maximumIntegerDigits = 2
+        numberFormater.minimumFractionDigits = 0
+        let numberString = numberFormater.stringFromNumber(i)
+        let imageName = "Gavin Poses-s\(numberString!)"
+        
+        return imageName
     }
     
     func buildLeavesEven() {
@@ -221,7 +225,7 @@ class ImageWheelControl: UIControl  {
                        toItem: nil,
                     attribute: NSLayoutAttribute.NotAnAttribute,
                     multiplier: 1.0,
-                     constant: 80.0))
+                     constant: leafImageHeight))
     
                 image.addConstraint( NSLayoutConstraint(item: image,
                     attribute: NSLayoutAttribute.Width,
@@ -229,11 +233,12 @@ class ImageWheelControl: UIControl  {
                        toItem: nil,
                     attribute: NSLayoutAttribute.NotAnAttribute,
                     multiplier: 1.0,
-                     constant: 200.0))
+                     constant: leafImageWidth))
             }
         }
         
         rotateToAngle(CGFloat(leaves[0].midRadian + leafWidthAngle))
+        getLeafImageByValue(1)?.alpha = 1
     }
     
     
@@ -416,6 +421,13 @@ class ImageWheelControl: UIControl  {
         rotateToAngle(angle)
         self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
         currentLeafValue = leaf.value;
+        for i in 1...numberOfSections {
+            if i == currentLeafValue {
+                getLeafImageByValue(i)?.alpha = 1
+            } else {
+                getLeafImageByValue(i)?.alpha = 0
+            }
+        }
     }
     
     func rotateToAngle(angle: CGFloat) {
@@ -425,6 +437,7 @@ class ImageWheelControl: UIControl  {
         if (userIsNotInteracting) {
             let t = CGAffineTransformRotate(container.transform, newRotation)
             container.transform = t;
+            
         }
     }
 
@@ -438,7 +451,26 @@ class ImageWheelControl: UIControl  {
     func animateToLeaf(leaf: ImageWheelLeaf) {
         let currentRotation = radiansFromTransform(container.transform)
         let newRotation = CGFloat(currentRotation) - CGFloat(leaf.midRadian)
-        animateImageWheelRotationByRadians(newRotation * -1)
+        let radians = newRotation * -1
+        if (userIsNotInteracting) {
+            UIView.animateWithDuration(0.2,
+                animations: {
+                    let t = CGAffineTransformRotate(self.container.transform, radians)
+                    self.container.transform = t;
+                    for i in 1...self.numberOfSections {
+                        if i == leaf.value {
+                            self.getLeafImageByValue(i)?.alpha = 1
+                        } else {
+                            self.getLeafImageByValue(i)?.alpha = 0
+                        }
+                    }
+                },
+                completion: {
+                    (value: Bool) in
+                    self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+            })
+        }
+        
         self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
         
         currentLeafValue = leaf.value;
@@ -451,6 +483,13 @@ class ImageWheelControl: UIControl  {
                 animations: {
                     let t = CGAffineTransformRotate(self.container.transform, radians)
                     self.container.transform = t;
+                    for i in 1...self.numberOfSections {
+                        if i == self.currentLeafValue + 1 {
+                            self.getLeafImageByValue(i)?.alpha = 1
+                        } else {
+                            self.getLeafImageByValue(i)?.alpha = 0
+                        }
+                    }
                 },
                 completion: {
                     (value: Bool) in
