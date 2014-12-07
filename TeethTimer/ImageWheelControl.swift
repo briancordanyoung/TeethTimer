@@ -14,6 +14,7 @@ class ImageWheelControl: UIControl  {
     let minAlphavalue: CGFloat = 1.0
     let maxAlphavalue: CGFloat = 1.0
     let centerCircle:  Float = 20.0
+    let angleDifferenceDampenerFactor: Float = 6
 
     var container = UIView()
     var numberOfSections = 6
@@ -27,6 +28,8 @@ class ImageWheelControl: UIControl  {
     var returnToPreviousLeaf = false
     var previousTouch: UITouch?
     var previousEvent: UIEvent?
+    var previousAngle: CGFloat?
+    var wheelHasFlipped360 = false
     var deltaAngle = CGFloat(0)
     var startTransform = CGAffineTransformMakeRotation(0)
     var userIsInteracting = false
@@ -52,6 +55,7 @@ class ImageWheelControl: UIControl  {
             return Float(2) * Float(M_PI) / Float(numberOfSections)
         }
     }
+    
     
     
     // MARK: Initialization
@@ -244,6 +248,8 @@ class ImageWheelControl: UIControl  {
         // Remember state during user rotation
         previousTouch = touch
         previousEvent = event
+        previousAngle = deltaAngle
+        wheelHasFlipped360 = false
         return true
     }
     
@@ -252,6 +258,9 @@ class ImageWheelControl: UIControl  {
         
         if touchIsOffWheel(touch) {
             println("drag path too close to the center or far off the wheel.");
+            self.sendActionsForControlEvents(UIControlEvents.TouchDragExit)
+            //self.sendActionsForControlEvents(UIControlEvents.TouchDragOutside)
+///            endTrackingWithPreviousTouch(touch, withEvent: event)
             endTrackingWithPreviousTouch(touch, withEvent: event)
             return false  // Ends current touches to the control
         }
@@ -266,9 +275,31 @@ class ImageWheelControl: UIControl  {
 /**/    var msg = ""
         
         // If the wheel is turned to the left the angleDifference is positive
+        
+        //
+        var dampenRotation = false
+        
+        // Rotated to the left
         if angleDifference > 0 {
+            dampenRotation = true
+        }
+        
+        if (previousAngle < -2) && (ang > 2) {
+            wheelHasFlipped360 = true
+        }
+        
+        if wheelHasFlipped360 {
+            dampenRotation = true
+            angleDifference = (deltaAngle - ang) + CGFloat(M_PI * 2)
+        }
+        
+        if dampenRotation {
             returnToPreviousLeaf = true
-            angleDifferenceDampener = CGFloat(1) - (angleDifference / CGFloat(leafWidthAngle * 3))
+            let angleUntilDampended = CGFloat(leafWidthAngle * angleDifferenceDampenerFactor)
+            angleDifferenceDampener = CGFloat(1) - (angleDifference / angleUntilDampended)
+            if angleDifferenceDampener < 0.5 || wheelHasFlipped360 {
+                angleDifferenceDampener = 0.5
+            }
             angleDifferenceDamped = angleDifference * angleDifferenceDampener
 
 /**/        msg = "1 - (\(angleDifference) / \(leafWidthAngle)) = \(angleDifferenceDampener)"
@@ -284,17 +315,16 @@ class ImageWheelControl: UIControl  {
         // When the angleDifferenceDampener is less than 0.5, the effect is that the
         // Wheel turns in the opposite direction than the users finger.
         // That looks wrong.  We use this below to end touches
-        let differenceDampenerIsTooSmall = (angleDifferenceDampener < 0.5)
+        let differenceDampenerIsTooSmall = (angleDifferenceDampener < 0.51)
         
         // If the wheel rotates far enough, it will flip the 360 and make it hard to
         // track.  This makes the wheel jump and is unclear to the user if the wheel
         // was rotated to the left or right.  Instead, we will just cancel the touch.
         let touchPoint = touchPointWithTouch(touch)
-        let fudgeFactor = CGFloat(10)
-        let touchIsLowerThanCenterOfWheel = (touchPoint.y > (container.center.y - fudgeFactor))
-/**/    msg = "touchPoint.y: \(touchPoint.y) container.center.y: \((container.center.y - fudgeFactor)) fudgeFactor: \(fudgeFactor)"
-/**/    //println(msg)
-        
+        var touchIsLowerThanCenterOfWheel = (touchPoint.y > container.center.y )
+/**/    //msg = "touchPoint.y: \(touchPoint.y) container.center.y: \((container.center.y - fudgeFactor)) fudgeFactor: \(fudgeFactor)"
+/**/    println(msg)
+
         // If either is true, cancel the touch tracking and let the wheel go to a rest.
         if differenceDampenerIsTooSmall || touchIsLowerThanCenterOfWheel {
             println("Cancel Touch")
@@ -307,17 +337,16 @@ class ImageWheelControl: UIControl  {
         }
 
         
-        container.transform = CGAffineTransformRotate(startTransform, -angleDifferenceDamped)
+        container.transform = CGAffineTransformRotate(startTransform, -angleDifferenceDamped )
         // NOTE: Possible Events to impliment (but some come free, so check)
         self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-        //self.sendActionsForControlEvents(UIControlEvents.TouchDragInside)
-        //self.sendActionsForControlEvents(UIControlEvents.TouchDragExit)
+        self.sendActionsForControlEvents(UIControlEvents.TouchDragInside)
         //self.sendActionsForControlEvents(UIControlEvents.TouchDragEnter)
-        //self.sendActionsForControlEvents(UIControlEvents.TouchDragOutside)
 
         // Remember state during user rotation
         previousTouch = touch
         previousEvent = event
+        previousAngle = ang
 
         return true
     }
@@ -340,56 +369,50 @@ class ImageWheelControl: UIControl  {
         userIsNotInteracting = true
         
         let currentRotation = radiansFromTransform(container.transform)
-        var newRotation = CGFloat(0)
         
         var currentLeafHasChanged = false
-
+        
         for leaf in leaves {
-            if (leaf.minRadian > 0.0 && leaf.maxRadian < 0.0) { // anomalous case
-                println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX anomalous case XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-                
+            if (leaf.minRadian > 0.0 && leaf.maxRadian < 0.0) {
+                println(" anomalous case ")
                 if (leaf.maxRadian > currentRotation || leaf.minRadian < currentRotation) {
-                    if (currentRotation > 0.0) { // we are in the positive quadrant
-                        newRotation = CGFloat(currentRotation) - CGFloat(M_PI);
-                    } else { // we are in the negative one
-                        newRotation = CGFloat(currentRotation) + CGFloat(M_PI);
-                    }
-                    currentLeafHasChanged = changeCurrentLeaf(leaf)
+                    currentLeafHasChanged = setCurrentLeaf(leaf)
                 }
-                
             } else if (currentRotation > leaf.minRadian && currentRotation < leaf.maxRadian) {
-                newRotation = CGFloat(currentRotation) - CGFloat(leaf.midRadian);
-                currentLeafHasChanged = changeCurrentLeaf(leaf)
+                currentLeafHasChanged = setCurrentLeaf(leaf)
+            }
+            
+            if currentLeafHasChanged {
+                break
             }
         }
+        
+        if currentLeafHasChanged {
+            // TODO: Tell ViewController there was a time change
+            println("currentLeaf Has Changed")
+        } else {
+            println("currentLeaf Unchanged")
+        }
+        
+        if returnToPreviousLeaf {
+            println("returnToPreviousLeaf is true")
+            animateToLeafByValue(leafValueBeforeTouch)
+        } else {
+            println("returnToPreviousLeaf is false")
+            animateToLeafByValue(currentLeafValue)
+        }
+        
+        // User rotation has ended.  Forget the state.
+        previousTouch = nil
+        previousEvent = nil
+        previousAngle = nil
+        wheelHasFlipped360 = false
         
         // NOTE: Possible Events to impliment (but some come free, so check)
         //self.sendActionsForControlEvents(UIControlEvents.TouchUpInside) // Comes for free
         //self.sendActionsForControlEvents(UIControlEvents.TouchUpOutside)
         //self.sendActionsForControlEvents(UIControlEvents.TouchCancel)
-
-        if currentLeafHasChanged && !returnToPreviousLeaf {
-            // TODO: Tell ViewController there was a time change
-            println("currentLeaf Has Changed")
-            if returnToPreviousLeaf {
-                println("returnToPreviousLeaf is true")
-            } else {
-                println("returnToPreviousLeaf is false")
-            }
-            animateImageWheelRotationByRadians(newRotation * -1)
-        } else {
-            println("currentLeaf Unchanged")
-            if returnToPreviousLeaf {
-                println("returnToPreviousLeaf is true")
-                animateToLeafByValue(leafValueBeforeTouch)
-            } else {
-                println("returnToPreviousLeaf is false")
-                animateImageWheelRotationByRadians(newRotation * -1)
-            }
-        }
         
-        previousTouch = touch
-        previousEvent = event
     }
     
     
@@ -525,7 +548,7 @@ class ImageWheelControl: UIControl  {
         return returnLeaf
     }
     
-    func changeCurrentLeaf(leaf: ImageWheelLeaf) -> Bool {
+    func setCurrentLeaf(leaf: ImageWheelLeaf) -> Bool {
         var currentLeafHasChanged = false
         if (currentLeafValue != leaf.value) {
             currentLeafValue = leaf.value
