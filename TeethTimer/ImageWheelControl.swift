@@ -378,9 +378,12 @@ class ImageWheelControl: UIControl  {
         
         if currentLeafHasChanged && !returnToPreviousLeaf {
             // TODO: Tell ViewController there was a time change
-            let value = Int(1)
-            
-            wheelTurnedBackBy(1)
+            var currentValue = currentLeafValue
+            if currentValue > leafValueBeforeTouch {
+                currentValue -= numberOfSections
+            }
+            let result = leafValueBeforeTouch - currentValue
+            wheelTurnedBackBy(result)
         }
 
         
