@@ -374,10 +374,17 @@ class ImageWheelControl: UIControl  {
             animateToLeafByValue(leafValueBeforeTouch)
         } else {
             animateToLeafByValue(currentLeafValue)
+            // TODO: Stop the wheel from turning back past the first position
+            // if currentLeafValue > leafValueBeforeTouch {
+            //     // Was to the right past the start leaf, rotate back to the start
+            //     animateToLeafByValue(1)
+            // } else {
+            //     animateToLeafByValue(currentLeafValue)
+            // }
         }
         
         if currentLeafHasChanged && !returnToPreviousLeaf {
-            // TODO: Tell ViewController there was a time change
+            // Tell ViewController there was a change to the wheel leaf position
             var currentValue = currentLeafValue
             if currentValue > leafValueBeforeTouch {
                 currentValue -= numberOfSections
