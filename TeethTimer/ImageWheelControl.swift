@@ -26,8 +26,6 @@ class ImageWheelControl: UIControl  {
     // Wheel Rotation state for user interaction:
     var leafValueBeforeTouch = 1
     var returnToPreviousLeaf = false
-    var previousTouch: UITouch?
-    var previousEvent: UIEvent?
     var previousAngle: CGFloat?
     var wheelHasFlipped360 = false
     var deltaAngle = CGFloat(0)
@@ -56,13 +54,24 @@ class ImageWheelControl: UIControl  {
         }
     }
     
+    // Properties that hold closures. (a.k.a. a block based API)
+    // These should be used as call backs alerting a view controller
+    // that one of these events occurred.
+    typealias wheelTurnedBackByDelegate = (Int) -> ()
+    var wheelTurnedBackBy: wheelTurnedBackByDelegate = { leafCount in
+        var plural = "leaves"
+        if leafCount == 1 {
+            plural = "leaf"
+        }
+        println("Wheel was turned back by \(leafCount) \(plural)")
+    }
+
     
     
     // MARK: Initialization
     init(WithSections sectionsCount: Int) {
-            
         super.init(frame: CGRect())
-            
+
         numberOfSections = sectionsCount
         startTransform = CGAffineTransformMakeRotation(CGFloat(2.82743 + leafWidthAngle))
         drawWheel()
@@ -246,8 +255,6 @@ class ImageWheelControl: UIControl  {
         startTransform = container.transform
 
         // Remember state during user rotation
-        previousTouch = touch
-        previousEvent = event
         previousAngle = deltaAngle
         wheelHasFlipped360 = false
         return true
@@ -260,8 +267,7 @@ class ImageWheelControl: UIControl  {
             println("drag path too close to the center or far off the wheel.");
             self.sendActionsForControlEvents(UIControlEvents.TouchDragExit)
             //self.sendActionsForControlEvents(UIControlEvents.TouchDragOutside)
-///            endTrackingWithPreviousTouch(touch, withEvent: event)
-            endTrackingWithPreviousTouch(touch, withEvent: event)
+            endTrackingWithTouch(touch, withEvent: event)
             return false  // Ends current touches to the control
         }
         
@@ -272,11 +278,8 @@ class ImageWheelControl: UIControl  {
         var angleDifferenceDamped = angleDifference
         var angleDifferenceDampener = CGFloat(1.0)
 
-/**/    var msg = ""
         
         // If the wheel is turned to the left the angleDifference is positive
-        
-        //
         var dampenRotation = false
         
         // Rotated to the left
@@ -302,13 +305,7 @@ class ImageWheelControl: UIControl  {
             }
             angleDifferenceDamped = angleDifference * angleDifferenceDampener
 
-/**/        msg = "1 - (\(angleDifference) / \(leafWidthAngle)) = \(angleDifferenceDampener)"
-/**/        msg = "ang:\(ang)    \(msg)"
-/**/        msg = "AngleDifference: \(angleDifference) | damp: \(angleDifferenceDampener)     \(msg)  "
-/**/        msg = "\(angleDifferenceDamped) \(msg) \(currentLeafValue)"
-            
         } else {
-/**/        msg = "x.xxxxxxx AngleDifference: x.xxxxx | damp: x.xxxxx     ang:\(ang)    1 - (x.xxxxx / \(leafWidthAngle)) = x.xxxxxx   \(currentLeafValue)"
             returnToPreviousLeaf = false
         }
 
@@ -322,17 +319,14 @@ class ImageWheelControl: UIControl  {
         // was rotated to the left or right.  Instead, we will just cancel the touch.
         let touchPoint = touchPointWithTouch(touch)
         var touchIsLowerThanCenterOfWheel = (touchPoint.y > container.center.y )
-/**/    //msg = "touchPoint.y: \(touchPoint.y) container.center.y: \((container.center.y - fudgeFactor)) fudgeFactor: \(fudgeFactor)"
-/**/    println(msg)
 
         // If either is true, cancel the touch tracking and let the wheel go to a rest.
         if differenceDampenerIsTooSmall || touchIsLowerThanCenterOfWheel {
-            println("Cancel Touch")
             // TODO: Use the previous touch some how and ignore the current touch that...
             // has moved too far and will flip the 360....
             // Or, maybe the 'returnToPreviousLeaf' mechinism is working right.  look in to it
             
-            endTrackingWithPreviousTouch(touch, withEvent: event)
+            endTrackingWithTouch(touch, withEvent: event)
             return false  // Ends current touches to the control
         }
 
@@ -344,25 +338,11 @@ class ImageWheelControl: UIControl  {
         //self.sendActionsForControlEvents(UIControlEvents.TouchDragEnter)
 
         // Remember state during user rotation
-        previousTouch = touch
-        previousEvent = event
         previousAngle = ang
 
         return true
     }
 
-    func endTrackingWithPreviousTouch(touch: UITouch, withEvent event: UIEvent) {
-        var aTouch = touch
-        var anEvent = event
-        if previousTouch != nil {
-            aTouch = previousTouch!
-        }
-        if previousEvent != nil {
-            anEvent = previousEvent!
-        }
-        endTrackingWithTouch(aTouch, withEvent: anEvent)
-    }
-    
     override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
 
         // Clear state ending user rotation
@@ -386,25 +366,25 @@ class ImageWheelControl: UIControl  {
                 break
             }
         }
+    
         
-        if currentLeafHasChanged {
-            // TODO: Tell ViewController there was a time change
-            println("currentLeaf Has Changed")
-        } else {
-            println("currentLeaf Unchanged")
-        }
         
+        // Animate the wheel to rest at one of the leaves.
         if returnToPreviousLeaf {
-            println("returnToPreviousLeaf is true")
             animateToLeafByValue(leafValueBeforeTouch)
         } else {
-            println("returnToPreviousLeaf is false")
             animateToLeafByValue(currentLeafValue)
         }
         
+        if currentLeafHasChanged && !returnToPreviousLeaf {
+            // TODO: Tell ViewController there was a time change
+            let value = Int(1)
+            
+            wheelTurnedBackBy(1)
+        }
+
+        
         // User rotation has ended.  Forget the state.
-        previousTouch = nil
-        previousEvent = nil
         previousAngle = nil
         wheelHasFlipped360 = false
         
