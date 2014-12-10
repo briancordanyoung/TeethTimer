@@ -99,7 +99,7 @@ class TimerViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Timer uses a Closure/Block based callback system
+        // Timer uses a Closure/Block based callback API
         // Set the properties with our callback functions
         timer.updateTimerWithText = updateTimeLabelWithText
         timer.updateUIControlText = updateButtonTitleWithText
@@ -206,7 +206,7 @@ class TimerViewController: UIViewController {
     }
     
     
-    // MARK:
+    // MARK: Layout Methods
     func gavinWheelSize() -> (CGFloat) {
         let height = self.view.bounds.height
         let width = self.view.bounds.width

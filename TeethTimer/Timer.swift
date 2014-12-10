@@ -287,7 +287,7 @@ class Timer: NSObject {
     }
     
     private func updateTimerTo(timeRemaining: NSTimeInterval) {
-        // TODO: More testing to make sure that the timer always ends
+        // TODO: More testing to make sure that the timer always ends...
         //       on 0 and 00:00.  Percentage left reuqired special handling
         updateTimerWithText(timeStringFromDuration(timeRemaining))
         updateTimerWithSeconds(timeRemaining)

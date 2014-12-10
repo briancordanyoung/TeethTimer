@@ -324,11 +324,7 @@ class ImageWheelControl: UIControl  {
         var touchIsLowerThanCenterOfWheel = (touchPoint.y > container.center.y )
 
         // If either is true, cancel the touch tracking and let the wheel go to a rest.
-        if differenceDampenerIsTooSmall || touchIsLowerThanCenterOfWheel {
-            // TODO: Use the previous touch some how and ignore the current touch that...
-            // has moved too far and will flip the 360....
-            // Or, maybe the 'returnToPreviousLeaf' mechinism is working right.  look in to it
-            
+        if differenceDampenerIsTooSmall || touchIsLowerThanCenterOfWheel {            
             endTrackingWithTouch(touch, withEvent: event)
             return false  // Ends current touches to the control
         }
