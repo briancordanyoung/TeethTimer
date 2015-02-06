@@ -15,30 +15,30 @@ class ImageWheelControl: UIControl  {
     let minAlphavalue: CGFloat = 1.0
     let maxAlphavalue: CGFloat = 1.0
     let centerCircle:  Float = 20.0
-    let leafImageHeight: CGFloat = (800 * 0.9)
-    let leafImageWidth: CGFloat = (734 * 0.9)
+    let wedgeImageHeight: CGFloat = (800 * 0.9)
+    let wedgeImageWidth: CGFloat = (734 * 0.9)
     
     //  3 = highly dampened
     //  6 = slightly dampened
     // 12 = no dampening
     let angleDifferenceDampenerFactor: Float = 4.5
-
+    
     var container = UIView()
-    var numberOfSections = 6
-    var leaves: [ImageWheelLeaf] = []
-
+    var numberOfWedges = 6
+    var wedges: [ImageWheelWedge] = []
+    
     // Primary properties holding this controls data
-    var currentLeafValue = 1
-
+    var currentWedgeValue = 1
+    
     // Wheel Rotation state for user interaction:
-    var leafValueBeforeTouch = 1
-    var returnToPreviousLeaf = false
+    var wedgeValueBeforeTouch = 1
+    var returnToPreviousWedge = false
     var previousAngle: CGFloat?
     var wheelHasFlipped360 = false
     var deltaAngle = CGFloat(0)
     var startTransform = CGAffineTransformMakeRotation(0)
     var userIsInteracting = false
-
+    
     // Calculated Properties
     var userIsNotInteracting: Bool {
         get {
@@ -55,65 +55,70 @@ class ImageWheelControl: UIControl  {
         }
     }
     
-    var leafWidthAngle: Float {
+    var wedgeWidthAngle: Float {
         get {
-            return Float(2) * Float(M_PI) / Float(numberOfSections)
+            return Float(2) * Float(M_PI) / Float(numberOfWedges)
         }
     }
     
-    var numberOfSectionsIsEven: Bool {
+    var numberOfWedgesAreEven: Bool {
         get {
-            var numberOfSectionsIsEven: Bool
-            if numberOfSections % 2 == 0 {
-                numberOfSectionsIsEven = true
+            var numberOfWedgesAreEven: Bool
+            if numberOfWedges % 2 == 0 {
+                numberOfWedgesAreEven = true
             } else {
-                numberOfSectionsIsEven = false
+                numberOfWedgesAreEven = false
             }
-            return numberOfSectionsIsEven
+            return numberOfWedgesAreEven
         }
     }
     
     // Properties that hold closures. (a.k.a. a block based API)
     // These should be used as call backs alerting a view controller
     // that one of these events occurred.
-    var wheelTurnedBackBy: wheelTurnedBackByDelegate = { leafCount, percentage in
-        var plural = "leaves"
-        if leafCount == 1 {
-            plural = "leaf"
+    var wheelTurnedBackBy: wheelTurnedBackByDelegate = { wedgeCount, percentage in
+        var plural = "wedges"
+        if wedgeCount == 1 {
+            plural = "wedge"
         }
-        println("Wheel was turned back by \(leafCount) \(plural)")
+        println("Wheel was turned back by \(wedgeCount) \(plural)")
     }
-
+    
     
     
     // MARK: Initialization
     init(WithSections sectionsCount: Int) {
         super.init(frame: CGRect())
-
-        numberOfSections = sectionsCount
-        startTransform = CGAffineTransformMakeRotation(CGFloat(2.82743 + leafWidthAngle))
+        
+        numberOfWedges = sectionsCount
+        startTransform = CGAffineTransformMakeRotation(CGFloat(2.82743 + wedgeWidthAngle))
         drawWheel()
     }
-
+    
     required init(coder: NSCoder) {
         super.init(coder: coder)
         fatalError("init(coder:) has not been implemented")
     }
-
-
+    
+    
     // MARK: Setup Methods
     func drawWheel() {
         
         // Build UIViews for each pie piece
-        for i in 1...numberOfSections {
+        for i in 1...numberOfWedges {
+            
+            // TODO: refactor the image assignment
+            //       out into a queued cell arrangment
+            //       so the number of sections may be
+            //       different than the number of wedges
             var image = UIImage(named: imageNameFrom(i))
             
-            let leafStartingAngle = CGFloat(M_PI * 3) + CGFloat(leafWidthAngle / 2)
-            let leafAngle = (CGFloat(leafWidthAngle) * CGFloat(i)) - leafStartingAngle
-
+            let wedgeStartingAngle = CGFloat(M_PI * 3) + CGFloat(wedgeWidthAngle / 2)
+            let wedgeAngle = (CGFloat(wedgeWidthAngle) * CGFloat(i)) - wedgeStartingAngle
+            
             var imageView = UIImageView(image: image)
             imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
-            imageView.transform = CGAffineTransformMakeRotation(leafAngle)
+            imageView.transform = CGAffineTransformMakeRotation(wedgeAngle)
             imageView.tag = i
             imageView.alpha = 0
             
@@ -124,10 +129,10 @@ class ImageWheelControl: UIControl  {
         container.userInteractionEnabled = false
         self.addSubview(container)
         
-        if numberOfSectionsIsEven {
-            self.buildLeavesEven()
+        if numberOfWedgesAreEven {
+            self.buildWedgesEven()
         } else {
-            self.buildLeavesOdd()
+            self.buildWedgesOdd()
         }
         
     }
@@ -151,49 +156,49 @@ class ImageWheelControl: UIControl  {
         return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
     }
     
-    func buildLeavesEven() {
-        var mid = Float(M_PI) - (leafWidthAngle / 2)
+    func buildWedgesEven() {
+        var mid = Float(M_PI) - (wedgeWidthAngle / 2)
         var max = Float(M_PI)
-        var min = Float(M_PI) - leafWidthAngle
+        var min = Float(M_PI) - wedgeWidthAngle
         
-        for i in 1...numberOfSections {
-            max = mid + (leafWidthAngle / 2)
-            min = mid - (leafWidthAngle / 2)
+        for i in 1...numberOfWedges {
+            max = mid + (wedgeWidthAngle / 2)
+            min = mid - (wedgeWidthAngle / 2)
             
-            var leaf = ImageWheelLeaf(WithMin: min,
+            var wedge = ImageWheelWedge(WithMin: min,
                 AndMax: max,
                 AndMid: mid,
                 AndValue: i)
             
-            mid -= leafWidthAngle
+            mid -= wedgeWidthAngle
             
-            leaves.append(leaf)
+            wedges.append(wedge)
         }
     }
     
     
-    func buildLeavesOdd() {
-        var mid = Float(M_PI) - (leafWidthAngle / 2)
+    func buildWedgesOdd() {
+        var mid = Float(M_PI) - (wedgeWidthAngle / 2)
         var max = Float(M_PI)
-        var min = Float(M_PI) - leafWidthAngle
+        var min = Float(M_PI) - wedgeWidthAngle
         
-        for i in 1...numberOfSections {
-            max = mid + (leafWidthAngle / 2)
-            min = mid - (leafWidthAngle / 2)
+        for i in 1...numberOfWedges {
+            max = mid + (wedgeWidthAngle / 2)
+            min = mid - (wedgeWidthAngle / 2)
             
-            var leaf = ImageWheelLeaf(WithMin: min,
+            var wedge = ImageWheelWedge(WithMin: min,
                 AndMax: max,
                 AndMid: mid,
                 AndValue: i)
             
-            mid -= leafWidthAngle
+            mid -= wedgeWidthAngle
             
-            if (leaf.maxRadian < Float(-M_PI)) {
+            if (wedge.maxRadian < Float(-M_PI)) {
                 mid = (mid * -1)
-                mid -= leafWidthAngle
+                mid -= wedgeWidthAngle
             }
             
-            leaves.append(leaf)
+            wedges.append(wedge)
         }
     }
     
@@ -202,72 +207,72 @@ class ImageWheelControl: UIControl  {
     func positionViews() {
         self.setTranslatesAutoresizingMaskIntoConstraints(false)
         container.setTranslatesAutoresizingMaskIntoConstraints(false)
-
+        
         // constraints
         let viewsDictionary = ["controlView":container]
         
         //position constraints
         let view_constraint_H:NSArray = NSLayoutConstraint.constraintsWithVisualFormat("H:|[controlView]|",
-                      options: NSLayoutFormatOptions(0),
-                      metrics: nil,
-                        views: viewsDictionary)
+            options: NSLayoutFormatOptions(0),
+            metrics: nil,
+            views: viewsDictionary)
         
         let view_constraint_V:NSArray = NSLayoutConstraint.constraintsWithVisualFormat("V:|[controlView]|",
-                      options: NSLayoutFormatOptions(0),
-                      metrics: nil,
-                        views: viewsDictionary)
+            options: NSLayoutFormatOptions(0),
+            metrics: nil,
+            views: viewsDictionary)
         
         self.addConstraints(view_constraint_H)
         self.addConstraints(view_constraint_V)
-
-        for i in 1...numberOfSections {
-            if let image = getLeafImageByValue(i) {
         
+        for i in 1...numberOfWedges {
+            if let image = getWedgeImageByValue(i) {
+                
                 image.setTranslatesAutoresizingMaskIntoConstraints(false)
-    
+                
                 container.addConstraint(NSLayoutConstraint(item: image,
                     attribute: NSLayoutAttribute.CenterY,
                     relatedBy: NSLayoutRelation.Equal,
-                       toItem: container,
+                    toItem: container,
                     attribute: NSLayoutAttribute.CenterY,
                     multiplier: 1.0,
-                     constant: 0.0))
-    
+                    constant: 0.0))
+                
                 container.addConstraint(NSLayoutConstraint(item: image,
                     attribute: NSLayoutAttribute.CenterX,
                     relatedBy: NSLayoutRelation.Equal,
-                       toItem: container,
+                    toItem: container,
                     attribute: NSLayoutAttribute.CenterX,
                     multiplier: 1.0,
                     constant: 0.0))
-    
+                
                 image.addConstraint( NSLayoutConstraint(item: image,
                     attribute: NSLayoutAttribute.Height,
                     relatedBy: NSLayoutRelation.Equal,
-                       toItem: nil,
+                    toItem: nil,
                     attribute: NSLayoutAttribute.NotAnAttribute,
                     multiplier: 1.0,
-                     constant: leafImageHeight))
-    
+                    constant: wedgeImageHeight))
+                
                 image.addConstraint( NSLayoutConstraint(item: image,
                     attribute: NSLayoutAttribute.Width,
                     relatedBy: NSLayoutRelation.Equal,
-                       toItem: nil,
+                    toItem: nil,
                     attribute: NSLayoutAttribute.NotAnAttribute,
                     multiplier: 1.0,
-                     constant: leafImageWidth))
+                    constant: wedgeImageWidth))
             }
         }
         
-        rotateToAngle(CGFloat(leaves[0].midRadian + leafWidthAngle))
-        getLeafImageByValue(1)?.alpha = 1
+        rotateToAngle(CGFloat(wedges[0].midRadian + wedgeWidthAngle))
+        getWedgeImageByValue(1)?.alpha = 1
     }
     
     
     
     // MARK: UIControl methods handling the touches
     override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
-
+        
         if touchIsOffWheel(touch) {
             println("Ignoring tap: too close to the center or far off the wheel.")
             return false  // Ends current touches to the control
@@ -275,10 +280,10 @@ class ImageWheelControl: UIControl  {
         
         // Set state bigining user rotation
         userIsInteracting = true
-        leafValueBeforeTouch = currentLeafValue
+        wedgeValueBeforeTouch = currentWedgeValue
         deltaAngle = angleAtTouch(touch)
         startTransform = container.transform
-
+        
         // Remember state during user rotation
         previousAngle = deltaAngle
         wheelHasFlipped360 = false
@@ -305,7 +310,7 @@ class ImageWheelControl: UIControl  {
         var dampenRotation = false
         var angleDifferenceDamped = angleDifference
         var dampener = CGFloat(1.0)
-
+        
         
         // The wheel is turned to the left when
         // angleDifference is positive.
@@ -319,16 +324,16 @@ class ImageWheelControl: UIControl  {
         }
         
         if dampenRotation {
-            returnToPreviousLeaf = true
-            let angleUntilDampended = CGFloat(leafWidthAngle * angleDifferenceDampenerFactor)
+            returnToPreviousWedge = true
+            let angleUntilDampended = CGFloat(wedgeWidthAngle * angleDifferenceDampenerFactor)
             dampener = CGFloat(1) - (angleDifference / angleUntilDampended)
             if dampener < 0.5 || wheelHasFlipped360 {
                 dampener = 0.5
             }
             angleDifferenceDamped = angleDifference * dampener
-
+            
         } else {
-            returnToPreviousLeaf = false
+            returnToPreviousWedge = false
         }
         
         // If the wheel rotates far enough, it will flip the 360 and
@@ -337,7 +342,7 @@ class ImageWheelControl: UIControl  {
         // left or right.  Instead, we will just cancel the touch.
         let touchPoint = touchPointWithTouch(touch)
         var touchIsLowerThanCenterOfWheel = (touchPoint.y > container.center.y )
-
+        
         if touchIsLowerThanCenterOfWheel {
             endTrackingWithTouch(touch, withEvent: event)
             return false  // Ends current touches to the control
@@ -346,59 +351,59 @@ class ImageWheelControl: UIControl  {
         container.transform = CGAffineTransformRotate(startTransform, -angleDifferenceDamped )
         self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
         self.sendActionsForControlEvents(UIControlEvents.TouchDragInside)
-
+        
         // Remember state during user rotation
         previousAngle = angle
-
+        
         return true
     }
-
+    
     override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
-
+        
         // Clear state ending user rotation
         userIsNotInteracting = true
         
         let currentRotation = radiansFromTransform(container.transform)
         
-        var currentLeafHasChanged = false
+        var currentWedgeHasChanged = false
         
-        for leaf in leaves {
-            if (leaf.minRadian > 0.0 && leaf.maxRadian < 0.0) {
+        for wedge in wedges {
+            if (wedge.minRadian > 0.0 && wedge.maxRadian < 0.0) {
                 println(" anomalous case ")
-                if (leaf.maxRadian > currentRotation || leaf.minRadian < currentRotation) {
-                    currentLeafHasChanged = setCurrentLeaf(leaf)
+                if (wedge.maxRadian > currentRotation || wedge.minRadian < currentRotation) {
+                    currentWedgeHasChanged = setCurrentWedge(wedge)
                 }
-            } else if (currentRotation > leaf.minRadian && currentRotation < leaf.maxRadian) {
-                currentLeafHasChanged = setCurrentLeaf(leaf)
+            } else if (currentRotation > wedge.minRadian && currentRotation < wedge.maxRadian) {
+                currentWedgeHasChanged = setCurrentWedge(wedge)
             }
             
-            if currentLeafHasChanged {
+            if currentWedgeHasChanged {
                 break
             }
         }
-    
         
         
-        // Animate the wheel to rest at one of the leaves.
-        if returnToPreviousLeaf {
-            animateToLeafByValue(leafValueBeforeTouch)
+        
+        // Animate the wheel to rest at one of the wedges.
+        if returnToPreviousWedge {
+            animateToWedgeByValue(wedgeValueBeforeTouch)
         } else {
-            animateToLeafByValue(currentLeafValue)
+            animateToWedgeByValue(currentWedgeValue)
         }
         
-        if currentLeafHasChanged && !returnToPreviousLeaf {
-            // Tell ViewController there was a change to the wheel leaf position
-            var currentValue = currentLeafValue
-            if currentValue > leafValueBeforeTouch {
-                currentValue -= numberOfSections
+        if currentWedgeHasChanged && !returnToPreviousWedge {
+            // Tell ViewController there was a change to the wheel wedge position
+            var currentValue = currentWedgeValue
+            if currentValue > wedgeValueBeforeTouch {
+                currentValue -= numberOfWedges
             }
-            let leafCount = leafValueBeforeTouch - currentValue
+            let wedgeCount = wedgeValueBeforeTouch - currentValue
             
-            let percentageStep = 1 / CGFloat((numberOfSections - 1))
-            let percentage = percentageStep * CGFloat(leafCount)
-            wheelTurnedBackBy(leafCount, AndPercentage: percentage)
+            let percentageStep = 1 / CGFloat((numberOfWedges - 1))
+            let percentage = percentageStep * CGFloat(wedgeCount)
+            wheelTurnedBackBy(wedgeCount, AndPercentage: percentage)
         }
-
+        
         
         // User rotation has ended.  Forget the state.
         previousAngle = nil
@@ -413,26 +418,26 @@ class ImageWheelControl: UIControl  {
     
     
     
-
+    
     
     
     // MARK: Image Wheel Rotation Methods
-    func rotateToLeafByValue(value: Int) {
-        if let leaf = getLeafByValue(value) {
-            rotateToLeaf(leaf)
+    func rotateToWedgeByValue(value: Int) {
+        if let wedge = getWedgeByValue(value) {
+            rotateToWedge(wedge)
         }
     }
-
-    func rotateToLeaf(leaf: ImageWheelLeaf) {
-        let angle = CGFloat(leaf.midRadian)
+    
+    func rotateToWedge(wedge: ImageWheelWedge) {
+        let angle = CGFloat(wedge.midRadian)
         rotateToAngle(angle)
         self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-        currentLeafValue = leaf.value;
-        for i in 1...numberOfSections {
-            if i == currentLeafValue {
-                getLeafImageByValue(i)?.alpha = 1
+        currentWedgeValue = wedge.value;
+        for i in 1...numberOfWedges {
+            if i == currentWedgeValue {
+                getWedgeImageByValue(i)?.alpha = 1
             } else {
-                getLeafImageByValue(i)?.alpha = 0
+                getWedgeImageByValue(i)?.alpha = 0
             }
         }
     }
@@ -440,35 +445,35 @@ class ImageWheelControl: UIControl  {
     func rotateToAngle(angle: CGFloat) {
         let currentRotation = radiansFromTransform(container.transform)
         let newRotation = CGFloat(currentRotation) - angle
-
+        
         if (userIsNotInteracting) {
             let t = CGAffineTransformRotate(container.transform, newRotation)
             container.transform = t;
             
         }
     }
-
-
-    func animateToLeafByValue(value: Int) {
-        if let leaf = getLeafByValue(value) {
-            animateToLeaf(leaf)
+    
+    
+    func animateToWedgeByValue(value: Int) {
+        if let wedge = getWedgeByValue(value) {
+            animateToWedge(wedge)
         }
     }
     
-    func animateToLeaf(leaf: ImageWheelLeaf) {
+    func animateToWedge(wedge: ImageWheelWedge) {
         let currentRotation = radiansFromTransform(container.transform)
-        let newRotation = CGFloat(currentRotation) - CGFloat(leaf.midRadian)
+        let newRotation = CGFloat(currentRotation) - CGFloat(wedge.midRadian)
         let radians = newRotation * -1
         if (userIsNotInteracting) {
             UIView.animateWithDuration(0.2,
                 animations: {
                     let t = CGAffineTransformRotate(self.container.transform, radians)
                     self.container.transform = t;
-                    for i in 1...self.numberOfSections {
-                        if i == leaf.value {
-                            self.getLeafImageByValue(i)?.alpha = 1
+                    for i in 1...self.numberOfWedges {
+                        if i == wedge.value {
+                            self.getWedgeImageByValue(i)?.alpha = 1
                         } else {
-                            self.getLeafImageByValue(i)?.alpha = 0
+                            self.getWedgeImageByValue(i)?.alpha = 0
                         }
                     }
                 },
@@ -480,7 +485,7 @@ class ImageWheelControl: UIControl  {
         
         self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
         
-        currentLeafValue = leaf.value;
+        currentWedgeValue = wedge.value;
     }
     
     
@@ -490,57 +495,57 @@ class ImageWheelControl: UIControl  {
                 animations: {
                     let t = CGAffineTransformRotate(self.container.transform, radians)
                     self.container.transform = t;
-                    for i in 1...self.numberOfSections {
-                        if i == self.currentLeafValue + 1 {
-                            self.getLeafImageByValue(i)?.alpha = 1
+                    for i in 1...self.numberOfWedges {
+                        if i == self.currentWedgeValue + 1 {
+                            self.getWedgeImageByValue(i)?.alpha = 1
                         } else {
-                            self.getLeafImageByValue(i)?.alpha = 0
+                            self.getWedgeImageByValue(i)?.alpha = 0
                         }
                     }
                 },
                 completion: {
                     (value: Bool) in
                     self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-                })
+            })
         }
     }
     
     
-    func getLeafImageByValue(value: Int) -> UIImageView? {
+    func getWedgeImageByValue(value: Int) -> UIImageView? {
         
-        var leafView: UIImageView?
+        var wedgeView: UIImageView?
         let views = container.subviews
         
         for image in views {
             let imageView = image as UIImageView
             if imageView.tag == value {
-                leafView = imageView
+                wedgeView = imageView
             }
         }
         
-        return leafView
+        return wedgeView
     }
     
-    func getLeafByValue(value: Int) -> ImageWheelLeaf? {
+    func getWedgeByValue(value: Int) -> ImageWheelWedge? {
         
-        var returnLeaf: ImageWheelLeaf?
+        var returnWedge: ImageWheelWedge?
         
-        for leaf in leaves {
-            if leaf.value == value {
-                returnLeaf = leaf
+        for wedge in wedges {
+            if wedge.value == value {
+                returnWedge = wedge
             }
         }
         
-        return returnLeaf
+        return returnWedge
     }
     
-    func setCurrentLeaf(leaf: ImageWheelLeaf) -> Bool {
-        var currentLeafHasChanged = false
-        if (currentLeafValue != leaf.value) {
-            currentLeafValue = leaf.value
-            currentLeafHasChanged = true
+    func setCurrentWedge(wedge: ImageWheelWedge) -> Bool {
+        var currentWedgeHasChanged = false
+        if (currentWedgeValue != wedge.value) {
+            currentWedgeValue = wedge.value
+            currentWedgeHasChanged = true
         }
-        return currentLeafHasChanged
+        return currentWedgeHasChanged
     }
     
     // MARK: Wheel touch and angles helper methods
@@ -591,7 +596,7 @@ class ImageWheelControl: UIControl  {
     
     func distanceFromCenterWithPoint(point: CGPoint) -> Float {
         let center = CGPointMake(self.bounds.size.width  / 2.0,
-                                 self.bounds.size.height / 2.0)
+            self.bounds.size.height / 2.0)
         
         return distanceBetweenPointA(center, AndPointB: point)
     }
@@ -611,6 +616,6 @@ class ImageWheelControl: UIControl  {
         
         return radians
     }
-
+    
 }
 

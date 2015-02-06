@@ -1,13 +1,5 @@
-//
-//  ImageWheelLeaf.swift
-//  TeethTimer
-//
-//  Created by Brian Cordan Young on 11/28/14.
-//  Copyright (c) 2014 Brian Young. All rights reserved.
-//
 
-
-struct ImageWheelLeaf {
+struct ImageWheelWedge {
     var minRadian: Float
     var maxRadian: Float
     var midRadian: Float

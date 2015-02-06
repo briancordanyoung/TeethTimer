@@ -167,8 +167,8 @@ class TimerViewController: UIViewController {
             // But, as soon as it is less, advance to the 2nd leaf.
             // This done on the lines marked belowe 1, 2 & 3
 
-            
-            var sections = _gavinWheel.numberOfSections - 1
+            // TODO: Change numberOfWedges -> numberOf???
+            var sections = _gavinWheel.numberOfWedges - 1
             sections = sections - 1  // 1
             
             var currentLeafValue = 1 + currentLeafValueFromPrecent(percentageDone,
@@ -176,11 +176,11 @@ class TimerViewController: UIViewController {
             currentLeafValue = currentLeafValue + 1 // 2
 
             if percentageDone == 1.0 { // 3
-                if _gavinWheel.currentLeafValue != 1 {
-                    _gavinWheel.animateToLeafByValue(1)
+                if _gavinWheel.currentWedgeValue != 1 {
+                    _gavinWheel.animateToWedgeByValue(1)
                 }
-            } else if _gavinWheel.currentLeafValue != currentLeafValue {
-                _gavinWheel.animateToLeafByValue(currentLeafValue)
+            } else if _gavinWheel.currentWedgeValue != currentLeafValue {
+                _gavinWheel.animateToWedgeByValue(currentLeafValue)
             }
         }
     }

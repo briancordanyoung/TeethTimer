@@ -71,8 +71,8 @@
 		D33540D71A3764E80064C81C /* Gavin Poses-s10@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335409B1A3764E80064C81C /* Gavin Poses-s10@3x.png */; };
 		D3354FF51A2953E700C667A0 /* ImageWheelControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3354FF41A2953E700C667A0 /* ImageWheelControl.swift */; };
 		D3354FF61A2953E700C667A0 /* ImageWheelControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3354FF41A2953E700C667A0 /* ImageWheelControl.swift */; };
-		D3354FF81A298AD100C667A0 /* ImageWheelLeaf.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3354FF71A298AD100C667A0 /* ImageWheelLeaf.swift */; };
-		D3354FF91A298AD100C667A0 /* ImageWheelLeaf.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3354FF71A298AD100C667A0 /* ImageWheelLeaf.swift */; };
+		D3354FF81A298AD100C667A0 /* ImageWheelWedge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3354FF71A298AD100C667A0 /* ImageWheelWedge.swift */; };
+		D3354FF91A298AD100C667A0 /* ImageWheelWedge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3354FF71A298AD100C667A0 /* ImageWheelWedge.swift */; };
 		D335501A1A299A4900C667A0 /* segment.png in Resources */ = {isa = PBXBuildFile; fileRef = D33550051A299A4900C667A0 /* segment.png */; };
 		D335501B1A299A4900C667A0 /* segment.png in Resources */ = {isa = PBXBuildFile; fileRef = D33550051A299A4900C667A0 /* segment.png */; };
 		D3485C8519ECEEB900C6E495 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3485C8419ECEEB900C6E495 /* Timer.swift */; };
@@ -128,7 +128,7 @@
 		D335409A1A3764E80064C81C /* Gavin Poses-s10@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s10@2x.png"; sourceTree = "<group>"; };
 		D335409B1A3764E80064C81C /* Gavin Poses-s10@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s10@3x.png"; sourceTree = "<group>"; };
 		D3354FF41A2953E700C667A0 /* ImageWheelControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheelControl.swift; sourceTree = "<group>"; };
-		D3354FF71A298AD100C667A0 /* ImageWheelLeaf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheelLeaf.swift; sourceTree = "<group>"; };
+		D3354FF71A298AD100C667A0 /* ImageWheelWedge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheelWedge.swift; sourceTree = "<group>"; };
 		D33550051A299A4900C667A0 /* segment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = segment.png; sourceTree = "<group>"; };
 		D3485C8319ECE77200C6E495 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		D3485C8419ECEEB900C6E495 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
@@ -227,7 +227,7 @@
 				D3B7BC7319EA383A00F50DF7 /* Main.storyboard */,
 				D34DC0551A0FF26000AA7420 /* Settings.bundle */,
 				D3354FF41A2953E700C667A0 /* ImageWheelControl.swift */,
-				D3354FF71A298AD100C667A0 /* ImageWheelLeaf.swift */,
+				D3354FF71A298AD100C667A0 /* ImageWheelWedge.swift */,
 				D31F95E01A2C5FE700219B32 /* ColorImage.swift */,
 				D3B7BC7819EA383A00F50DF7 /* LaunchScreen.xib */,
 				D3B7BC6D19EA383A00F50DF7 /* Supporting Files */,
@@ -427,7 +427,7 @@
 			files = (
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
 				D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */,
-				D3354FF81A298AD100C667A0 /* ImageWheelLeaf.swift in Sources */,
+				D3354FF81A298AD100C667A0 /* ImageWheelWedge.swift in Sources */,
 				D3485C8519ECEEB900C6E495 /* Timer.swift in Sources */,
 				D31F95E11A2C5FE700219B32 /* ColorImage.swift in Sources */,
 				D3354FF51A2953E700C667A0 /* ImageWheelControl.swift in Sources */,
@@ -438,7 +438,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3354FF91A298AD100C667A0 /* ImageWheelLeaf.swift in Sources */,
+				D3354FF91A298AD100C667A0 /* ImageWheelWedge.swift in Sources */,
 				D31F95E21A2C5FE700219B32 /* ColorImage.swift in Sources */,
 				D3B7BC8619EA383A00F50DF7 /* TeethTimerTests.swift in Sources */,
 				D3354FF61A2953E700C667A0 /* ImageWheelControl.swift in Sources */,
