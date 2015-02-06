@@ -18,7 +18,10 @@ class ImageWheelControl: UIControl  {
     let leafImageHeight: CGFloat = (800 * 0.9)
     let leafImageWidth: CGFloat = (734 * 0.9)
     
-    let angleDifferenceDampenerFactor: Float = 6
+    //  3 = highly dampened
+    //  6 = slightly dampened
+    // 12 = no dampening
+    let angleDifferenceDampenerFactor: Float = 4.5
 
     var container = UIView()
     var numberOfSections = 6
@@ -55,6 +58,18 @@ class ImageWheelControl: UIControl  {
     var leafWidthAngle: Float {
         get {
             return Float(2) * Float(M_PI) / Float(numberOfSections)
+        }
+    }
+    
+    var numberOfSectionsIsEven: Bool {
+        get {
+            var numberOfSectionsIsEven: Bool
+            if numberOfSections % 2 == 0 {
+                numberOfSectionsIsEven = true
+            } else {
+                numberOfSectionsIsEven = false
+            }
+            return numberOfSectionsIsEven
         }
     }
     
@@ -109,7 +124,7 @@ class ImageWheelControl: UIControl  {
         container.userInteractionEnabled = false
         self.addSubview(container)
         
-        if (numberOfSections % 2 == 0) {
+        if numberOfSectionsIsEven {
             self.buildLeavesEven()
         } else {
             self.buildLeavesOdd()
@@ -117,16 +132,22 @@ class ImageWheelControl: UIControl  {
         
     }
     
-    func imageNameFrom(i: Int) -> String {
+    func paddedTwoDigitNumber(i: Int) -> String {
+        var paddedTwoDigitNumber = "00"
+        
         let numberFormater = NSNumberFormatter()
         numberFormater.maximumIntegerDigits = 0
         numberFormater.minimumIntegerDigits = 2
         numberFormater.maximumIntegerDigits = 2
         numberFormater.minimumFractionDigits = 0
-        let numberString = numberFormater.stringFromNumber(i)
-        let imageName = "Gavin Poses-s\(numberString!)"
-        
-        return imageName
+        if let numberString = numberFormater.stringFromNumber(i) {
+            paddedTwoDigitNumber = numberString
+        }
+        return paddedTwoDigitNumber
+    }
+    
+    func imageNameFrom(i: Int) -> String {
+        return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
     }
     
     func buildLeavesEven() {
@@ -274,70 +295,59 @@ class ImageWheelControl: UIControl  {
             return false  // Ends current touches to the control
         }
         
-        let ang = angleAtTouch(touch)
-        var angleDifference = (deltaAngle - ang)
+        let angle = angleAtTouch(touch)
+        checkIfWheelHasFlipped360(angle)
         
-        // Prevent the user from rotating to the left. (positive)
+        var angleDifference = (deltaAngle - angle)
+        
+        // Prevent the user from rotating to the left.
+        var dampenRotation = false
         var angleDifferenceDamped = angleDifference
-        var angleDifferenceDampener = CGFloat(1.0)
+        var dampener = CGFloat(1.0)
 
         
-        // If the wheel is turned to the left the angleDifference is positive
-        var dampenRotation = false
-        
-        // Rotated to the left
+        // The wheel is turned to the left when
+        // angleDifference is positive.
         if angleDifference > 0 {
             dampenRotation = true
         }
         
-        if (previousAngle < -2) && (ang > 2) {
-            wheelHasFlipped360 = true
-        }
-        
         if wheelHasFlipped360 {
             dampenRotation = true
-            angleDifference = (deltaAngle - ang) + CGFloat(M_PI * 2)
+            angleDifference = (deltaAngle - angle) + CGFloat(M_PI * 2)
         }
         
         if dampenRotation {
             returnToPreviousLeaf = true
             let angleUntilDampended = CGFloat(leafWidthAngle * angleDifferenceDampenerFactor)
-            angleDifferenceDampener = CGFloat(1) - (angleDifference / angleUntilDampended)
-            if angleDifferenceDampener < 0.5 || wheelHasFlipped360 {
-                angleDifferenceDampener = 0.5
+            dampener = CGFloat(1) - (angleDifference / angleUntilDampended)
+            if dampener < 0.5 || wheelHasFlipped360 {
+                dampener = 0.5
             }
-            angleDifferenceDamped = angleDifference * angleDifferenceDampener
+            angleDifferenceDamped = angleDifference * dampener
 
         } else {
             returnToPreviousLeaf = false
         }
-
-        // When the angleDifferenceDampener is less than 0.5, the effect is that the
-        // Wheel turns in the opposite direction than the users finger.
-        // That looks wrong.  We use this below to end touches
-        let differenceDampenerIsTooSmall = (angleDifferenceDampener < 0.51)
         
-        // If the wheel rotates far enough, it will flip the 360 and make it hard to
-        // track.  This makes the wheel jump and is unclear to the user if the wheel
-        // was rotated to the left or right.  Instead, we will just cancel the touch.
+        // If the wheel rotates far enough, it will flip the 360 and
+        // make it hard to track.  This makes the wheel jump and is
+        // unclear to the user if the wheel was rotated to the
+        // left or right.  Instead, we will just cancel the touch.
         let touchPoint = touchPointWithTouch(touch)
         var touchIsLowerThanCenterOfWheel = (touchPoint.y > container.center.y )
 
-        // If either is true, cancel the touch tracking and let the wheel go to a rest.
-        if differenceDampenerIsTooSmall || touchIsLowerThanCenterOfWheel {            
+        if touchIsLowerThanCenterOfWheel {
             endTrackingWithTouch(touch, withEvent: event)
             return false  // Ends current touches to the control
         }
-
         
         container.transform = CGAffineTransformRotate(startTransform, -angleDifferenceDamped )
-        // NOTE: Possible Events to impliment (but some come free, so check)
         self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
         self.sendActionsForControlEvents(UIControlEvents.TouchDragInside)
-        //self.sendActionsForControlEvents(UIControlEvents.TouchDragEnter)
 
         // Remember state during user rotation
-        previousAngle = ang
+        previousAngle = angle
 
         return true
     }
@@ -495,50 +505,6 @@ class ImageWheelControl: UIControl  {
     }
     
     
-    // MARK: Leaf Helper method
-    func getLeafName(position: Int) -> String {
-        
-        var name = ""
-        
-        switch (position) {
-
-        case 1:
-            name = "1"
-            
-        case 2:
-            name = "2"
-            
-        case 3:
-            name = "3"
-            
-        case 4:
-            name = "4"
-            
-        case 5:
-            name = "5"
-            
-        case 6:
-            name = "6"
-            
-        case 7:
-            name = "7"
-            
-        case 8:
-            name = "8"
-            
-        case 9:
-            name = "9"
-            
-        case 10:
-            name = "10"
-            
-        default:
-            name = "more than 10"
-        }
-        
-        return name
-    }
-    
     func getLeafImageByValue(value: Int) -> UIImageView? {
         
         var leafView: UIImageView?
@@ -586,6 +552,12 @@ class ImageWheelControl: UIControl  {
         return angleAtTouchPoint(touchPoint)
     }
     
+    func checkIfWheelHasFlipped360(angle: CGFloat) {
+        if (previousAngle < -2) && (angle > 2) {
+            wheelHasFlipped360 = true
+        }
+    }
+    
     func angleAtTouchPoint(touchPoint: CGPoint) -> CGFloat {
         let dx = touchPoint.x - container.center.x
         let dy = touchPoint.y - container.center.y
@@ -596,20 +568,19 @@ class ImageWheelControl: UIControl  {
     
     func touchIsOnWheel(touch: UITouch) -> Bool {
         let dist = distanceFromCenterWithTouch(touch)
-        var result = true
+        var touchIsOnWheel = true
         
         if (dist < centerCircle) {
-            result = false
+            touchIsOnWheel = false
         }
         if (dist > outsideCircle) {
-            result = false
+            touchIsOnWheel = false
         }
-        return result
+        return touchIsOnWheel
     }
     
     func touchIsOffWheel(touch: UITouch) -> Bool {
-        var result = touchIsOnWheel(touch)
-        return !result
+        return !touchIsOnWheel(touch)
     }
     
     func distanceFromCenterWithTouch(touch: UITouch) -> Float {
