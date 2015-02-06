@@ -136,10 +136,11 @@ class ImageWheelControl: UIControl  {
         var paddedTwoDigitNumber = "00"
         
         let numberFormater = NSNumberFormatter()
-        numberFormater.maximumIntegerDigits = 0
-        numberFormater.minimumIntegerDigits = 2
-        numberFormater.maximumIntegerDigits = 2
+        numberFormater.minimumIntegerDigits  = 2
+        numberFormater.maximumIntegerDigits  = 2
         numberFormater.minimumFractionDigits = 0
+        numberFormater.maximumFractionDigits = 0
+        
         if let numberString = numberFormater.stringFromNumber(i) {
             paddedTwoDigitNumber = numberString
         }
