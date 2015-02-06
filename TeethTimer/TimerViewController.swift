@@ -29,9 +29,12 @@ class TimerViewController: UIViewController {
     // MARK: View Controller Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        fullScreenImage.image = UIImage(named: "background")
+        
+        
         styleButton(resetButton)
         styleButton(startPauseButton)
-//        fullScreenImage.image = UIImage(named: "background")
         
         let gavinWheel = ImageWheelControl(WithSections: 10)
         
