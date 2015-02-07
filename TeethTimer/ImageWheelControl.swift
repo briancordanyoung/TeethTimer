@@ -25,7 +25,8 @@ class ImageWheelControl: UIControl  {
     
     var container = UIView()
     var numberOfWedges = 6
-    var wedges: [ImageWheelWedge] = []
+    var wedges: [WedgeRegion] = []
+    var images: [UIImage] = []
     
     // Primary properties holding this controls data
     var currentWedgeValue = 1
@@ -92,7 +93,7 @@ class ImageWheelControl: UIControl  {
         
         numberOfWedges = sectionsCount
         startTransform = CGAffineTransformMakeRotation(CGFloat(2.82743 + wedgeWidthAngle))
-        drawWheel()
+        createWedges()
     }
     
     required init(coder: NSCoder) {
@@ -102,7 +103,7 @@ class ImageWheelControl: UIControl  {
     
     
     // MARK: Setup Methods
-    func drawWheel() {
+    func createWedges() {
         
         // Build UIViews for each pie piece
         for i in 1...numberOfWedges {
@@ -130,12 +131,24 @@ class ImageWheelControl: UIControl  {
         self.addSubview(container)
         
         if numberOfWedgesAreEven {
-            self.buildWedgesEven()
+            createWedgeRegionsEven()
         } else {
-            self.buildWedgesOdd()
+            createWedgeRegionsOdd()
         }
         
     }
+    
+    func createWedgeAtIndex(i: Int, AndAngle angle: CGFloat) -> UIImageView {
+        var imageView = UIImageView()
+        imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
+        imageView.transform = CGAffineTransformMakeRotation(angle)
+        imageView.tag = i
+        imageView.alpha = 0
+        return imageView
+    }
+    
+    
+    
     
     func paddedTwoDigitNumber(i: Int) -> String {
         var paddedTwoDigitNumber = "00"
@@ -153,10 +166,11 @@ class ImageWheelControl: UIControl  {
     }
     
     func imageNameFrom(i: Int) -> String {
-        return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
+//        return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
+        return "num-\(paddedTwoDigitNumber(i))"
     }
     
-    func buildWedgesEven() {
+    func createWedgeRegionsEven() {
         var mid = Float(M_PI) - (wedgeWidthAngle / 2)
         var max = Float(M_PI)
         var min = Float(M_PI) - wedgeWidthAngle
@@ -165,7 +179,7 @@ class ImageWheelControl: UIControl  {
             max = mid + (wedgeWidthAngle / 2)
             min = mid - (wedgeWidthAngle / 2)
             
-            var wedge = ImageWheelWedge(WithMin: min,
+            var wedge = WedgeRegion(WithMin: min,
                 AndMax: max,
                 AndMid: mid,
                 AndValue: i)
@@ -177,7 +191,7 @@ class ImageWheelControl: UIControl  {
     }
     
     
-    func buildWedgesOdd() {
+    func createWedgeRegionsOdd() {
         var mid = Float(M_PI) - (wedgeWidthAngle / 2)
         var max = Float(M_PI)
         var min = Float(M_PI) - wedgeWidthAngle
@@ -186,7 +200,7 @@ class ImageWheelControl: UIControl  {
             max = mid + (wedgeWidthAngle / 2)
             min = mid - (wedgeWidthAngle / 2)
             
-            var wedge = ImageWheelWedge(WithMin: min,
+            var wedge = WedgeRegion(WithMin: min,
                 AndMax: max,
                 AndMid: mid,
                 AndValue: i)
@@ -289,7 +303,6 @@ class ImageWheelControl: UIControl  {
         wheelHasFlipped360 = false
         return true
     }
-    
     
     override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
         
@@ -428,10 +441,9 @@ class ImageWheelControl: UIControl  {
         }
     }
     
-    func rotateToWedge(wedge: ImageWheelWedge) {
+    func rotateToWedge(wedge: WedgeRegion) {
         let angle = CGFloat(wedge.midRadian)
         rotateToAngle(angle)
-        self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
         currentWedgeValue = wedge.value;
         for i in 1...numberOfWedges {
             if i == currentWedgeValue {
@@ -449,8 +461,8 @@ class ImageWheelControl: UIControl  {
         if (userIsNotInteracting) {
             let t = CGAffineTransformRotate(container.transform, newRotation)
             container.transform = t;
-            
         }
+        self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
     }
     
     
@@ -460,10 +472,11 @@ class ImageWheelControl: UIControl  {
         }
     }
     
-    func animateToWedge(wedge: ImageWheelWedge) {
+    func animateToWedge(wedge: WedgeRegion) {
         let currentRotation = radiansFromTransform(container.transform)
         let newRotation = CGFloat(currentRotation) - CGFloat(wedge.midRadian)
         let radians = newRotation * -1
+
         if (userIsNotInteracting) {
             UIView.animateWithDuration(0.2,
                 animations: {
@@ -483,31 +496,8 @@ class ImageWheelControl: UIControl  {
             })
         }
         
-        self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
         
         currentWedgeValue = wedge.value;
-    }
-    
-    
-    func animateImageWheelRotationByRadians(radians: CGFloat) {
-        if (userIsNotInteracting) {
-            UIView.animateWithDuration(0.2,
-                animations: {
-                    let t = CGAffineTransformRotate(self.container.transform, radians)
-                    self.container.transform = t;
-                    for i in 1...self.numberOfWedges {
-                        if i == self.currentWedgeValue + 1 {
-                            self.getWedgeImageByValue(i)?.alpha = 1
-                        } else {
-                            self.getWedgeImageByValue(i)?.alpha = 0
-                        }
-                    }
-                },
-                completion: {
-                    (value: Bool) in
-                    self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-            })
-        }
     }
     
     
@@ -526,9 +516,9 @@ class ImageWheelControl: UIControl  {
         return wedgeView
     }
     
-    func getWedgeByValue(value: Int) -> ImageWheelWedge? {
+    func getWedgeByValue(value: Int) -> WedgeRegion? {
         
-        var returnWedge: ImageWheelWedge?
+        var returnWedge: WedgeRegion?
         
         for wedge in wedges {
             if wedge.value == value {
@@ -539,7 +529,7 @@ class ImageWheelControl: UIControl  {
         return returnWedge
     }
     
-    func setCurrentWedge(wedge: ImageWheelWedge) -> Bool {
+    func setCurrentWedge(wedge: WedgeRegion) -> Bool {
         var currentWedgeHasChanged = false
         if (currentWedgeValue != wedge.value) {
             currentWedgeValue = wedge.value
@@ -548,7 +538,7 @@ class ImageWheelControl: UIControl  {
         return currentWedgeHasChanged
     }
     
-    // MARK: Wheel touch and angles helper methods
+    // MARK: Wheel touch and angle helper methods
     func touchPointWithTouch(touch: UITouch) -> CGPoint {
         return touch.locationInView(self)
     }

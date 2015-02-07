@@ -7,6 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D30771821A869B06003BA7E1 /* num-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716C1A869B06003BA7E1 /* num-01@2x.png */; };
+		D30771831A869B06003BA7E1 /* num-02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716D1A869B06003BA7E1 /* num-02@2x.png */; };
+		D30771841A869B06003BA7E1 /* num-03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716E1A869B06003BA7E1 /* num-03@2x.png */; };
+		D30771851A869B06003BA7E1 /* num-04@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716F1A869B06003BA7E1 /* num-04@2x.png */; };
+		D30771861A869B06003BA7E1 /* num-05@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771701A869B06003BA7E1 /* num-05@2x.png */; };
+		D30771871A869B06003BA7E1 /* num-06@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771711A869B06003BA7E1 /* num-06@2x.png */; };
+		D30771881A869B06003BA7E1 /* num-07@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771721A869B06003BA7E1 /* num-07@2x.png */; };
+		D30771891A869B06003BA7E1 /* num-08@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771731A869B06003BA7E1 /* num-08@2x.png */; };
+		D307718A1A869B06003BA7E1 /* num-09@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771741A869B06003BA7E1 /* num-09@2x.png */; };
+		D307718B1A869B06003BA7E1 /* num-10@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771751A869B06003BA7E1 /* num-10@2x.png */; };
+		D307718C1A869B06003BA7E1 /* num-11@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771761A869B06003BA7E1 /* num-11@2x.png */; };
+		D307718D1A869B06003BA7E1 /* num-12@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771771A869B06003BA7E1 /* num-12@2x.png */; };
+		D307718E1A869B06003BA7E1 /* num-13@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771781A869B06003BA7E1 /* num-13@2x.png */; };
+		D307718F1A869B06003BA7E1 /* num-14@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771791A869B06003BA7E1 /* num-14@2x.png */; };
+		D30771901A869B06003BA7E1 /* num-15@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307717A1A869B06003BA7E1 /* num-15@2x.png */; };
+		D30771911A869B06003BA7E1 /* num-16@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307717B1A869B06003BA7E1 /* num-16@2x.png */; };
+		D30771921A869B06003BA7E1 /* num-17@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307717C1A869B06003BA7E1 /* num-17@2x.png */; };
+		D30771931A869B06003BA7E1 /* num-18@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307717D1A869B06003BA7E1 /* num-18@2x.png */; };
+		D30771941A869B06003BA7E1 /* num-19@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307717E1A869B06003BA7E1 /* num-19@2x.png */; };
+		D30771951A869B06003BA7E1 /* num-20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307717F1A869B06003BA7E1 /* num-20@2x.png */; };
+		D30771961A869B06003BA7E1 /* num-21@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771801A869B06003BA7E1 /* num-21@2x.png */; };
+		D30771971A869B06003BA7E1 /* num-22@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771811A869B06003BA7E1 /* num-22@2x.png */; };
 		D31F95E11A2C5FE700219B32 /* ColorImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F95E01A2C5FE700219B32 /* ColorImage.swift */; };
 		D31F95E21A2C5FE700219B32 /* ColorImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F95E01A2C5FE700219B32 /* ColorImage.swift */; };
 		D335409C1A3764E80064C81C /* Gavin Poses-s01.png in Resources */ = {isa = PBXBuildFile; fileRef = D335407E1A3764E80064C81C /* Gavin Poses-s01.png */; };
@@ -71,8 +93,8 @@
 		D33540D71A3764E80064C81C /* Gavin Poses-s10@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335409B1A3764E80064C81C /* Gavin Poses-s10@3x.png */; };
 		D3354FF51A2953E700C667A0 /* ImageWheelControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3354FF41A2953E700C667A0 /* ImageWheelControl.swift */; };
 		D3354FF61A2953E700C667A0 /* ImageWheelControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3354FF41A2953E700C667A0 /* ImageWheelControl.swift */; };
-		D3354FF81A298AD100C667A0 /* ImageWheelWedge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3354FF71A298AD100C667A0 /* ImageWheelWedge.swift */; };
-		D3354FF91A298AD100C667A0 /* ImageWheelWedge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3354FF71A298AD100C667A0 /* ImageWheelWedge.swift */; };
+		D3354FF81A298AD100C667A0 /* wedgeRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3354FF71A298AD100C667A0 /* wedgeRegion.swift */; };
+		D3354FF91A298AD100C667A0 /* wedgeRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3354FF71A298AD100C667A0 /* wedgeRegion.swift */; };
 		D335501A1A299A4900C667A0 /* segment.png in Resources */ = {isa = PBXBuildFile; fileRef = D33550051A299A4900C667A0 /* segment.png */; };
 		D335501B1A299A4900C667A0 /* segment.png in Resources */ = {isa = PBXBuildFile; fileRef = D33550051A299A4900C667A0 /* segment.png */; };
 		D3485C8519ECEEB900C6E495 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3485C8419ECEEB900C6E495 /* Timer.swift */; };
@@ -96,6 +118,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D307716C1A869B06003BA7E1 /* num-01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-01@2x.png"; path = "TeethTimer/Numbers/num-01@2x.png"; sourceTree = "<group>"; };
+		D307716D1A869B06003BA7E1 /* num-02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-02@2x.png"; path = "TeethTimer/Numbers/num-02@2x.png"; sourceTree = "<group>"; };
+		D307716E1A869B06003BA7E1 /* num-03@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-03@2x.png"; path = "TeethTimer/Numbers/num-03@2x.png"; sourceTree = "<group>"; };
+		D307716F1A869B06003BA7E1 /* num-04@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-04@2x.png"; path = "TeethTimer/Numbers/num-04@2x.png"; sourceTree = "<group>"; };
+		D30771701A869B06003BA7E1 /* num-05@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-05@2x.png"; path = "TeethTimer/Numbers/num-05@2x.png"; sourceTree = "<group>"; };
+		D30771711A869B06003BA7E1 /* num-06@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-06@2x.png"; path = "TeethTimer/Numbers/num-06@2x.png"; sourceTree = "<group>"; };
+		D30771721A869B06003BA7E1 /* num-07@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-07@2x.png"; path = "TeethTimer/Numbers/num-07@2x.png"; sourceTree = "<group>"; };
+		D30771731A869B06003BA7E1 /* num-08@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-08@2x.png"; path = "TeethTimer/Numbers/num-08@2x.png"; sourceTree = "<group>"; };
+		D30771741A869B06003BA7E1 /* num-09@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-09@2x.png"; path = "TeethTimer/Numbers/num-09@2x.png"; sourceTree = "<group>"; };
+		D30771751A869B06003BA7E1 /* num-10@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-10@2x.png"; path = "TeethTimer/Numbers/num-10@2x.png"; sourceTree = "<group>"; };
+		D30771761A869B06003BA7E1 /* num-11@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-11@2x.png"; path = "TeethTimer/Numbers/num-11@2x.png"; sourceTree = "<group>"; };
+		D30771771A869B06003BA7E1 /* num-12@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-12@2x.png"; path = "TeethTimer/Numbers/num-12@2x.png"; sourceTree = "<group>"; };
+		D30771781A869B06003BA7E1 /* num-13@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-13@2x.png"; path = "TeethTimer/Numbers/num-13@2x.png"; sourceTree = "<group>"; };
+		D30771791A869B06003BA7E1 /* num-14@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-14@2x.png"; path = "TeethTimer/Numbers/num-14@2x.png"; sourceTree = "<group>"; };
+		D307717A1A869B06003BA7E1 /* num-15@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-15@2x.png"; path = "TeethTimer/Numbers/num-15@2x.png"; sourceTree = "<group>"; };
+		D307717B1A869B06003BA7E1 /* num-16@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-16@2x.png"; path = "TeethTimer/Numbers/num-16@2x.png"; sourceTree = "<group>"; };
+		D307717C1A869B06003BA7E1 /* num-17@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-17@2x.png"; path = "TeethTimer/Numbers/num-17@2x.png"; sourceTree = "<group>"; };
+		D307717D1A869B06003BA7E1 /* num-18@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-18@2x.png"; path = "TeethTimer/Numbers/num-18@2x.png"; sourceTree = "<group>"; };
+		D307717E1A869B06003BA7E1 /* num-19@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-19@2x.png"; path = "TeethTimer/Numbers/num-19@2x.png"; sourceTree = "<group>"; };
+		D307717F1A869B06003BA7E1 /* num-20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-20@2x.png"; path = "TeethTimer/Numbers/num-20@2x.png"; sourceTree = "<group>"; };
+		D30771801A869B06003BA7E1 /* num-21@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-21@2x.png"; path = "TeethTimer/Numbers/num-21@2x.png"; sourceTree = "<group>"; };
+		D30771811A869B06003BA7E1 /* num-22@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-22@2x.png"; path = "TeethTimer/Numbers/num-22@2x.png"; sourceTree = "<group>"; };
 		D31F95E01A2C5FE700219B32 /* ColorImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorImage.swift; path = ../ColorImage.swift; sourceTree = "<group>"; };
 		D335407E1A3764E80064C81C /* Gavin Poses-s01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s01.png"; sourceTree = "<group>"; };
 		D335407F1A3764E80064C81C /* Gavin Poses-s01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s01@2x.png"; sourceTree = "<group>"; };
@@ -128,7 +172,7 @@
 		D335409A1A3764E80064C81C /* Gavin Poses-s10@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s10@2x.png"; sourceTree = "<group>"; };
 		D335409B1A3764E80064C81C /* Gavin Poses-s10@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s10@3x.png"; sourceTree = "<group>"; };
 		D3354FF41A2953E700C667A0 /* ImageWheelControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheelControl.swift; sourceTree = "<group>"; };
-		D3354FF71A298AD100C667A0 /* ImageWheelWedge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheelWedge.swift; sourceTree = "<group>"; };
+		D3354FF71A298AD100C667A0 /* wedgeRegion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = wedgeRegion.swift; sourceTree = "<group>"; };
 		D33550051A299A4900C667A0 /* segment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = segment.png; sourceTree = "<group>"; };
 		D3485C8319ECE77200C6E495 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		D3485C8419ECEEB900C6E495 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
@@ -162,6 +206,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D30771981A869B10003BA7E1 /* Numbers */ = {
+			isa = PBXGroup;
+			children = (
+				D307716C1A869B06003BA7E1 /* num-01@2x.png */,
+				D307716D1A869B06003BA7E1 /* num-02@2x.png */,
+				D307716E1A869B06003BA7E1 /* num-03@2x.png */,
+				D307716F1A869B06003BA7E1 /* num-04@2x.png */,
+				D30771701A869B06003BA7E1 /* num-05@2x.png */,
+				D30771711A869B06003BA7E1 /* num-06@2x.png */,
+				D30771721A869B06003BA7E1 /* num-07@2x.png */,
+				D30771731A869B06003BA7E1 /* num-08@2x.png */,
+				D30771741A869B06003BA7E1 /* num-09@2x.png */,
+				D30771751A869B06003BA7E1 /* num-10@2x.png */,
+				D30771761A869B06003BA7E1 /* num-11@2x.png */,
+				D30771771A869B06003BA7E1 /* num-12@2x.png */,
+				D30771781A869B06003BA7E1 /* num-13@2x.png */,
+				D30771791A869B06003BA7E1 /* num-14@2x.png */,
+				D307717A1A869B06003BA7E1 /* num-15@2x.png */,
+				D307717B1A869B06003BA7E1 /* num-16@2x.png */,
+				D307717C1A869B06003BA7E1 /* num-17@2x.png */,
+				D307717D1A869B06003BA7E1 /* num-18@2x.png */,
+				D307717E1A869B06003BA7E1 /* num-19@2x.png */,
+				D307717F1A869B06003BA7E1 /* num-20@2x.png */,
+				D30771801A869B06003BA7E1 /* num-21@2x.png */,
+				D30771811A869B06003BA7E1 /* num-22@2x.png */,
+			);
+			name = Numbers;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		D335407D1A3764E80064C81C /* GavinPoses */ = {
 			isa = PBXGroup;
 			children = (
@@ -227,7 +301,7 @@
 				D3B7BC7319EA383A00F50DF7 /* Main.storyboard */,
 				D34DC0551A0FF26000AA7420 /* Settings.bundle */,
 				D3354FF41A2953E700C667A0 /* ImageWheelControl.swift */,
-				D3354FF71A298AD100C667A0 /* ImageWheelWedge.swift */,
+				D3354FF71A298AD100C667A0 /* wedgeRegion.swift */,
 				D31F95E01A2C5FE700219B32 /* ColorImage.swift */,
 				D3B7BC7819EA383A00F50DF7 /* LaunchScreen.xib */,
 				D3B7BC6D19EA383A00F50DF7 /* Supporting Files */,
@@ -239,6 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				D335407D1A3764E80064C81C /* GavinPoses */,
+				D30771981A869B10003BA7E1 /* Numbers */,
 				D33550051A299A4900C667A0 /* segment.png */,
 				D3B7BC6E19EA383A00F50DF7 /* Info.plist */,
 			);
@@ -376,6 +451,28 @@
 				D33540A21A3764E80064C81C /* Gavin Poses-s02.png in Resources */,
 				D33540BA1A3764E80064C81C /* Gavin Poses-s06.png in Resources */,
 				D33540CA1A3764E80064C81C /* Gavin Poses-s08@3x.png in Resources */,
+				D30771821A869B06003BA7E1 /* num-01@2x.png in Resources */,
+				D30771831A869B06003BA7E1 /* num-02@2x.png in Resources */,
+				D30771841A869B06003BA7E1 /* num-03@2x.png in Resources */,
+				D30771851A869B06003BA7E1 /* num-04@2x.png in Resources */,
+				D30771861A869B06003BA7E1 /* num-05@2x.png in Resources */,
+				D30771871A869B06003BA7E1 /* num-06@2x.png in Resources */,
+				D30771881A869B06003BA7E1 /* num-07@2x.png in Resources */,
+				D30771891A869B06003BA7E1 /* num-08@2x.png in Resources */,
+				D307718A1A869B06003BA7E1 /* num-09@2x.png in Resources */,
+				D307718B1A869B06003BA7E1 /* num-10@2x.png in Resources */,
+				D307718C1A869B06003BA7E1 /* num-11@2x.png in Resources */,
+				D307718D1A869B06003BA7E1 /* num-12@2x.png in Resources */,
+				D307718E1A869B06003BA7E1 /* num-13@2x.png in Resources */,
+				D307718F1A869B06003BA7E1 /* num-14@2x.png in Resources */,
+				D30771901A869B06003BA7E1 /* num-15@2x.png in Resources */,
+				D30771911A869B06003BA7E1 /* num-16@2x.png in Resources */,
+				D30771921A869B06003BA7E1 /* num-17@2x.png in Resources */,
+				D30771931A869B06003BA7E1 /* num-18@2x.png in Resources */,
+				D30771941A869B06003BA7E1 /* num-19@2x.png in Resources */,
+				D30771951A869B06003BA7E1 /* num-20@2x.png in Resources */,
+				D30771961A869B06003BA7E1 /* num-21@2x.png in Resources */,
+				D30771971A869B06003BA7E1 /* num-22@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,7 +524,7 @@
 			files = (
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
 				D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */,
-				D3354FF81A298AD100C667A0 /* ImageWheelWedge.swift in Sources */,
+				D3354FF81A298AD100C667A0 /* wedgeRegion.swift in Sources */,
 				D3485C8519ECEEB900C6E495 /* Timer.swift in Sources */,
 				D31F95E11A2C5FE700219B32 /* ColorImage.swift in Sources */,
 				D3354FF51A2953E700C667A0 /* ImageWheelControl.swift in Sources */,
@@ -438,7 +535,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3354FF91A298AD100C667A0 /* ImageWheelWedge.swift in Sources */,
+				D3354FF91A298AD100C667A0 /* wedgeRegion.swift in Sources */,
 				D31F95E21A2C5FE700219B32 /* ColorImage.swift in Sources */,
 				D3B7BC8619EA383A00F50DF7 /* TeethTimerTests.swift in Sources */,
 				D3354FF61A2953E700C667A0 /* ImageWheelControl.swift in Sources */,

@@ -1,5 +1,5 @@
 
-struct ImageWheelWedge {
+struct WedgeRegion {
     var minRadian: Float
     var maxRadian: Float
     var midRadian: Float
