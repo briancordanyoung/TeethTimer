@@ -81,7 +81,7 @@ class TimerViewController: UIViewController {
             gavinWheel.addConstraint(gavinWheelWidth!)
         }
 
-        gavinWheel.positionViews()
+        gavinWheel.addConstraintsToViews()
         gavinWheel.addTarget(self,
             action: "gavinWheelRotatedByUser:",
             forControlEvents: UIControlEvents.TouchUpInside)

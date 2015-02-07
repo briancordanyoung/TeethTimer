@@ -217,8 +217,8 @@ class ImageWheelControl: UIControl  {
     }
     
     
-    // MARK: Contraint setup
-    func positionViews() {
+    // MARK: Constraint setup
+    func addConstraintsToViews() {
         self.setTranslatesAutoresizingMaskIntoConstraints(false)
         container.setTranslatesAutoresizingMaskIntoConstraints(false)
         
