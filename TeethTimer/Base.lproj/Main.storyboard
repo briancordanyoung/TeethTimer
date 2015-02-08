@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
@@ -69,6 +69,18 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="positive" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zMY-mC-XPd">
+                                <rect key="frame" x="16" y="20" width="60" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="flipped" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8r0-ZA-qdP">
+                                <rect key="frame" x="306" y="20" width="53" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h77-iB-1sZ">
                                 <rect key="frame" x="172" y="629" width="30" height="30"/>
                                 <state key="normal" title="test">
@@ -88,11 +100,15 @@
                             <constraint firstAttribute="bottom" secondItem="MOq-R8-IVu" secondAttribute="bottom" id="Dug-UW-hfK"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="z2l-dT-yk7" secondAttribute="bottom" constant="30" id="INN-c3-b26"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Y32-a2-VoP" secondAttribute="bottom" id="K1r-qm-6FT"/>
+                            <constraint firstAttribute="trailing" secondItem="8r0-ZA-qdP" secondAttribute="trailing" constant="16" id="KMB-2H-nh6"/>
+                            <constraint firstItem="zMY-mC-XPd" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="ME7-L1-pkH"/>
                             <constraint firstAttribute="centerX" secondItem="OUX-Ix-O1U" secondAttribute="centerX" id="PRd-Ye-Pwg"/>
                             <constraint firstItem="Y32-a2-VoP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="QcG-h0-pXv"/>
                             <constraint firstItem="Vn1-Zx-sgu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="30" id="SU3-o2-ShK"/>
                             <constraint firstItem="MOq-R8-IVu" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="T18-yG-tr2"/>
+                            <constraint firstItem="8r0-ZA-qdP" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="TAB-F6-LHK"/>
                             <constraint firstAttribute="trailing" secondItem="Y32-a2-VoP" secondAttribute="trailing" id="TCu-0y-w0G"/>
+                            <constraint firstItem="zMY-mC-XPd" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="YKT-E3-9d9"/>
                             <constraint firstItem="MOq-R8-IVu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Z6s-yx-bj0"/>
                             <constraint firstAttribute="centerX" secondItem="h77-iB-1sZ" secondAttribute="centerX" id="aMN-kA-6jV"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="OUX-Ix-O1U" secondAttribute="bottom" constant="35" id="agX-fw-RkF"/>
@@ -111,8 +127,10 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="controlView" destination="MOq-R8-IVu" id="UKu-kb-7Zt"/>
+                        <outlet property="flippedLabel" destination="8r0-ZA-qdP" id="3IU-5g-MpE"/>
                         <outlet property="fullScreenImage" destination="MVB-6D-Qmk" id="dh6-aA-T5Q"/>
                         <outlet property="lowerThirdView" destination="Y32-a2-VoP" id="CME-g0-d2W"/>
+                        <outlet property="posNegLabel" destination="zMY-mC-XPd" id="iix-ui-v33"/>
                         <outlet property="resetButton" destination="z2l-dT-yk7" id="vuu-wS-veL"/>
                         <outlet property="startPauseButton" destination="Vn1-Zx-sgu" id="59w-Mo-ILk"/>
                         <outlet property="testButton" destination="h77-iB-1sZ" id="axQ-ko-wuR"/>

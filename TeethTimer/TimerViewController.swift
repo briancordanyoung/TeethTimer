@@ -20,6 +20,10 @@ class TimerViewController: UIViewController {
     
     @IBOutlet weak var testButton: UIButton!
     
+    @IBOutlet weak var posNegLabel: UILabel!
+    @IBOutlet weak var flippedLabel: UILabel!
+    
+    
     var gavinWheelHeight: NSLayoutConstraint?
     var gavinWheelWidth: NSLayoutConstraint?
     var gavinWheel: ImageWheelControl?
@@ -28,6 +32,7 @@ class TimerViewController: UIViewController {
 
     // MARK: View Controller Methods
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
 //        fullScreenImage.image = UIImage(named: "background")
@@ -36,7 +41,24 @@ class TimerViewController: UIViewController {
         styleButton(resetButton)
         styleButton(startPauseButton)
         
-        let gavinWheel = ImageWheelControl(WithSections: 10)
+        let images = arrayOfImages(10)
+        let gavinWheel = ImageWheelControl(WithSections: 10, AndImages: images)
+        
+        
+        
+        flippedLabel.text = ""
+        func wheelHasFlipped360Changed(text: String) {
+            flippedLabel.text = text
+        }
+        gavinWheel.userState.wheelHasFlipped360Changed = wheelHasFlipped360Changed
+        
+        posNegLabel.text = ""
+        func userRotatedChanged(text: String) {
+            posNegLabel.text = text
+        }
+        gavinWheel.userState.userRotatedChanged = userRotatedChanged
+        
+        
         
         controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
 
@@ -241,6 +263,39 @@ class TimerViewController: UIViewController {
         updateGavinWheelSize()
     }
 
+    
+    func paddedTwoDigitNumber(i: Int) -> String {
+        var paddedTwoDigitNumber = "00"
+        
+        let numberFormater = NSNumberFormatter()
+        numberFormater.minimumIntegerDigits  = 2
+        numberFormater.maximumIntegerDigits  = 2
+        numberFormater.minimumFractionDigits = 0
+        numberFormater.maximumFractionDigits = 0
+        
+        if let numberString = numberFormater.stringFromNumber(i) {
+            paddedTwoDigitNumber = numberString
+        }
+        return paddedTwoDigitNumber
+    }
+    
+    func imageNameForNumber(i: Int) -> String {
+        //        return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
+        return "num-\(paddedTwoDigitNumber(i))"
+    }
+
+    func arrayOfImages(count: Int) -> [UIImage] {
+        var imageArray: [UIImage] = []
+        for i in 1...count {
+            if let image_ = UIImage(named: imageNameForNumber(i)) {
+                imageArray.append(image_)
+            }
+        }
+        
+        return imageArray
+    }
+    
+    
 
     // MARK: Appearance Helper
     private func styleButton(button: UIButton) {
