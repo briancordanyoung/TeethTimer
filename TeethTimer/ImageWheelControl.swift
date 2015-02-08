@@ -42,17 +42,15 @@ class ImageWheelInteractionState {
         didSet(previousStatus)
         {
             if wheelHasFlipped360 {
-                wheelHasFlipped360Changed("Flipped")
-                var timer = NSTimer.scheduledTimerWithTimeInterval( 1.0,
-                    target: self,
-                    selector:  Selector("clearWheelHasFlipped360Changed"),
-                    userInfo: nil,
-                    repeats: false)
+                println("Flipped")
+//                wheelHasFlipped360Changed("Flipped")
+//                var timer = NSTimer.scheduledTimerWithTimeInterval( 1.0,
+//                    target: self,
+//                    selector:  Selector("clearWheelHasFlipped360Changed"),
+//                    userInfo: nil,
+//                    repeats: false)
             }
         }
-    }
-    func clearWheelHasFlipped360Changed() {
-        wheelHasFlipped360Changed("")
     }
     
     var userRotatedChanged:  (String) -> Void = {text in}
@@ -95,12 +93,17 @@ class ImageWheelInteractionState {
     }
     
     func resetState() {
+        isNotInteracting = true
+        dontReturnToPreviousWedge = true
         previousAngle = nil
         wheelHasFlipped360 = false
         userRotatedPositive = nil
         startTransform = CGAffineTransformMakeRotation(0)
     }
     
+    func clearWheelHasFlipped360Changed() {
+        wheelHasFlipped360Changed("")
+    }
 }
 
 
@@ -199,7 +202,7 @@ class ImageWheelControl: UIControl  {
             imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
             imageView.transform = CGAffineTransformMakeRotation(wedgeAngle)
             imageView.tag = i
-            imageView.alpha = 0
+            imageView.alpha = 1 //0
             
             container.addSubview(imageView)
         }
@@ -425,65 +428,77 @@ class ImageWheelControl: UIControl  {
         userState.previousAngle = angle
 
         
-  println("currentRotation \(radiansFromTransform(container.transform))")
+//  println("currentRotation \(radiansFromTransform(container.transform))")
         
         return true
     }
     
     override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
         
-        // Clear state ending user rotation
+        // User interaction has ended, but most of the state is
+        // still used through out this method.
         userState.isNotInteracting = true
         
         let currentRotation = radiansFromTransform(container.transform)
         
-        var currentWedgeHasChanged = false
-        
+        println("currentRotation \(radiansFromTransform(container.transform))")
         for wedge in wedges {
+            println("wedge \(wedge.value) min: \(wedge.midRadian) max: \(wedge.maxRadian)")
+        }
+        let s = "                                           "
+        
+        // Determin where the wheel is (which wedge we are within)
+        var currentWedgeHasChanged = false
+        for wedge in wedges {
+
             if (wedge.minRadian > 0.0 && wedge.maxRadian < 0.0) {
-                println(" anomalous case ")
-                if (wedge.maxRadian > currentRotation || wedge.minRadian < currentRotation) {
+                println("\(s)\(wedge.value): anomalous min: \(wedge.midRadian) > 0 max: \(wedge.maxRadian) < 0")
+                
+                if currentRotationIs(currentRotation, isOutsideWedge: wedge) {
                     currentWedgeHasChanged = setCurrentWedge(wedge)
+                    break
                 }
-            } else if (currentRotation > wedge.minRadian && currentRotation < wedge.maxRadian) {
+            } else if currentRotationIs(currentRotation, isWithinWedge: wedge) {
                 currentWedgeHasChanged = setCurrentWedge(wedge)
-            }
-            
-            if currentWedgeHasChanged {
                 break
             }
         }
         
         
         // Animate the wheel to rest at one of the wedges.
-        if userState.returnToPreviousWedge {
-            animateToWedgeByValue(userState.wedgeValueBeforeTouch)
-        } else {
-            animateToWedgeByValue(currentWedgeValue)
-        }
+//        if userState.returnToPreviousWedge {
+//            animateToWedgeByValue(userState.wedgeValueBeforeTouch)
+//        } else {
+//            animateToWedgeByValue(currentWedgeValue)
+//        }
         
-        if currentWedgeHasChanged && userState.dontReturnToPreviousWedge {
-            // Tell ViewController there was a change to the wheel wedge position
-            var currentValue = currentWedgeValue
-            if currentValue > userState.wedgeValueBeforeTouch {
-                currentValue -= numberOfWedges
-            }
-            let wedgeCount = userState.wedgeValueBeforeTouch - currentValue
-            
-            let percentageStep = 1 / CGFloat((numberOfWedges - 1))
-            let percentage = percentageStep * CGFloat(wedgeCount)
-            wheelTurnedBackBy(wedgeCount, AndPercentage: percentage)
-        }
+        // Callback to block/closure based 'delegate' to
+        // inform it that the wheel has been rewound.
+//        if currentWedgeHasChanged && userState.dontReturnToPreviousWedge {
+//            // Tell ViewController there was a change to the wheel wedge position
+//            var currentValue = currentWedgeValue
+//            if currentValue > userState.wedgeValueBeforeTouch {
+//                currentValue -= numberOfWedges
+//            }
+//            let wedgeCount = userState.wedgeValueBeforeTouch - currentValue
+//            
+//            let percentageStep = 1 / CGFloat((numberOfWedges - 1))
+//            let percentage = percentageStep * CGFloat(wedgeCount)
+//            wheelTurnedBackBy(wedgeCount, AndPercentage: percentage)
+//        }
         
         
         // User rotation has ended.  Forget the state.
         userState.resetState()
         
-        // NOTE: Possible Events to impliment (but some come free, so check)
-        //self.sendActionsForControlEvents(UIControlEvents.TouchUpInside) // Comes for free
-        //self.sendActionsForControlEvents(UIControlEvents.TouchUpOutside)
-        //self.sendActionsForControlEvents(UIControlEvents.TouchCancel)
-        
+        comments(){
+            /*
+            NOTE: Possible Events to impliment (but some come free, so check)
+            self.sendActionsForControlEvents(UIControlEvents.TouchUpInside)  Comes for free
+            self.sendActionsForControlEvents(UIControlEvents.TouchUpOutside)
+            self.sendActionsForControlEvents(UIControlEvents.TouchCancel)
+            */
+        }
     }
     
     
@@ -609,6 +624,32 @@ class ImageWheelControl: UIControl  {
     
     
     // MARK: Wheel touch and angle helper methods
+    func currentRotationIs(currentRotation: Float, isOutsideWedge wedge: WedgeRegion) -> Bool {
+        var outsideWedge = false
+        let s = "                                           "
+
+        if (wedge.maxRadian > currentRotation ||
+            wedge.minRadian < currentRotation    ) {
+                outsideWedge = true
+            println("\(s)\(wedge.value): isOutsideWedge min: \(wedge.midRadian) > \(currentRotation) max: \(wedge.maxRadian) < \(currentRotation)")
+        }
+        
+        return outsideWedge
+    }
+    
+    func currentRotationIs(currentRotation: Float, isWithinWedge wedge: WedgeRegion) -> Bool {
+        var withinWedge = false
+        
+        if (currentRotation > wedge.minRadian &&
+            currentRotation < wedge.maxRadian   ) {
+                withinWedge = true
+                println("\(wedge.value): isWithinWedge min: \(wedge.midRadian) > \(currentRotation) max: \(wedge.maxRadian) < \(currentRotation)")
+        }
+        
+        return withinWedge
+    }
+    
+    
     func touchPointWithTouch(touch: UITouch) -> CGPoint {
         return touch.locationInView(self)
     }

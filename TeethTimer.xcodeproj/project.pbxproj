@@ -29,6 +29,8 @@
 		D30771951A869B06003BA7E1 /* num-20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307717F1A869B06003BA7E1 /* num-20@2x.png */; };
 		D30771961A869B06003BA7E1 /* num-21@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771801A869B06003BA7E1 /* num-21@2x.png */; };
 		D30771971A869B06003BA7E1 /* num-22@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771811A869B06003BA7E1 /* num-22@2x.png */; };
+		D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */; };
+		D307719B1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */; };
 		D31F95E11A2C5FE700219B32 /* ColorImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F95E01A2C5FE700219B32 /* ColorImage.swift */; };
 		D31F95E21A2C5FE700219B32 /* ColorImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F95E01A2C5FE700219B32 /* ColorImage.swift */; };
 		D335409C1A3764E80064C81C /* Gavin Poses-s01.png in Resources */ = {isa = PBXBuildFile; fileRef = D335407E1A3764E80064C81C /* Gavin Poses-s01.png */; };
@@ -140,6 +142,7 @@
 		D307717F1A869B06003BA7E1 /* num-20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-20@2x.png"; path = "TeethTimer/Numbers/num-20@2x.png"; sourceTree = "<group>"; };
 		D30771801A869B06003BA7E1 /* num-21@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-21@2x.png"; path = "TeethTimer/Numbers/num-21@2x.png"; sourceTree = "<group>"; };
 		D30771811A869B06003BA7E1 /* num-22@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-22@2x.png"; path = "TeethTimer/Numbers/num-22@2x.png"; sourceTree = "<group>"; };
+		D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BCYStandardLibrary.swift; sourceTree = "<group>"; };
 		D31F95E01A2C5FE700219B32 /* ColorImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorImage.swift; path = ../ColorImage.swift; sourceTree = "<group>"; };
 		D335407E1A3764E80064C81C /* Gavin Poses-s01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s01.png"; sourceTree = "<group>"; };
 		D335407F1A3764E80064C81C /* Gavin Poses-s01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s01@2x.png"; sourceTree = "<group>"; };
@@ -295,6 +298,7 @@
 			isa = PBXGroup;
 			children = (
 				D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */,
+				D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */,
 				D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */,
 				D3485C8419ECEEB900C6E495 /* Timer.swift */,
 				D3485C8319ECE77200C6E495 /* MyPlayground.playground */,
@@ -386,6 +390,7 @@
 				TargetAttributes = {
 					D3B7BC6919EA383A00F50DF7 = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = YJ4PN236TF;
 					};
 					D3B7BC7E19EA383A00F50DF7 = {
 						CreatedOnToolsVersion = 6.0;
@@ -523,6 +528,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
+				D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
 				D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */,
 				D3354FF81A298AD100C667A0 /* wedgeRegion.swift in Sources */,
 				D3485C8519ECEEB900C6E495 /* Timer.swift in Sources */,
@@ -539,6 +545,7 @@
 				D31F95E21A2C5FE700219B32 /* ColorImage.swift in Sources */,
 				D3B7BC8619EA383A00F50DF7 /* TeethTimerTests.swift in Sources */,
 				D3354FF61A2953E700C667A0 /* ImageWheelControl.swift in Sources */,
+				D307719B1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,10 +662,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = TeethTimer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -667,10 +677,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = TeethTimer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

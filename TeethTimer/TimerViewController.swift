@@ -42,7 +42,7 @@ class TimerViewController: UIViewController {
         styleButton(startPauseButton)
         
         let images = arrayOfImages(10)
-        let gavinWheel = ImageWheelControl(WithSections: 10, AndImages: images)
+        let gavinWheel = ImageWheelControl(WithSections: 9, AndImages: images)
         
         
         
