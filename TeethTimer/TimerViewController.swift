@@ -42,7 +42,7 @@ class TimerViewController: UIViewController {
         styleButton(startPauseButton)
         
         let images = arrayOfImages(10)
-        let gavinWheel = ImageWheelControl(WithSections: 9, AndImages: images)
+        let gavinWheel = ImageWheelControl(WithSections: 10, AndImages: images)
         
         
         
@@ -184,13 +184,13 @@ class TimerViewController: UIViewController {
     
     func updatePercentageDone(percentageDone: Float) {
         
-        if let _gavinWheel = gavinWheel? {
+        if let gavinWheel_ = gavinWheel? {
             // At 100% should always be the first leaf
             // But, as soon as it is less, advance to the 2nd leaf.
             // This done on the lines marked belowe 1, 2 & 3
 
             // TODO: Change numberOfWedges -> numberOf???
-            var sections = _gavinWheel.numberOfWedges - 1
+            var sections = gavinWheel_.numberOfWedges - 1
             sections = sections - 1  // 1
             
             var currentLeafValue = 1 + currentLeafValueFromPrecent(percentageDone,
@@ -198,11 +198,11 @@ class TimerViewController: UIViewController {
             currentLeafValue = currentLeafValue + 1 // 2
 
             if percentageDone == 1.0 { // 3
-                if _gavinWheel.currentWedgeValue != 1 {
-                    _gavinWheel.animateToWedgeByValue(1)
+                if gavinWheel_.currentWedgeValue != 1 {
+                    gavinWheel_.animateToWedgeByValue(1)
                 }
-            } else if _gavinWheel.currentWedgeValue != currentLeafValue {
-                _gavinWheel.animateToWedgeByValue(currentLeafValue)
+            } else if gavinWheel_.currentWedgeValue != currentLeafValue {
+                gavinWheel_.animateToWedgeByValue(currentLeafValue)
             }
         }
     }
@@ -280,8 +280,8 @@ class TimerViewController: UIViewController {
     }
     
     func imageNameForNumber(i: Int) -> String {
-        //        return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
-        return "num-\(paddedTwoDigitNumber(i))"
+                return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
+//        return "num-\(paddedTwoDigitNumber(i))"
     }
 
     func arrayOfImages(count: Int) -> [UIImage] {

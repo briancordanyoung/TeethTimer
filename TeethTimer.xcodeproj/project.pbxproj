@@ -31,6 +31,8 @@
 		D30771971A869B06003BA7E1 /* num-22@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771811A869B06003BA7E1 /* num-22@2x.png */; };
 		D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */; };
 		D307719B1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */; };
+		D307719D1A8873DB003BA7E1 /* ImageWheelInteractionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307719C1A8873DB003BA7E1 /* ImageWheelInteractionState.swift */; };
+		D307719E1A8873DB003BA7E1 /* ImageWheelInteractionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307719C1A8873DB003BA7E1 /* ImageWheelInteractionState.swift */; };
 		D31F95E11A2C5FE700219B32 /* ColorImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F95E01A2C5FE700219B32 /* ColorImage.swift */; };
 		D31F95E21A2C5FE700219B32 /* ColorImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F95E01A2C5FE700219B32 /* ColorImage.swift */; };
 		D335409C1A3764E80064C81C /* Gavin Poses-s01.png in Resources */ = {isa = PBXBuildFile; fileRef = D335407E1A3764E80064C81C /* Gavin Poses-s01.png */; };
@@ -143,6 +145,7 @@
 		D30771801A869B06003BA7E1 /* num-21@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-21@2x.png"; path = "TeethTimer/Numbers/num-21@2x.png"; sourceTree = "<group>"; };
 		D30771811A869B06003BA7E1 /* num-22@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-22@2x.png"; path = "TeethTimer/Numbers/num-22@2x.png"; sourceTree = "<group>"; };
 		D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BCYStandardLibrary.swift; sourceTree = "<group>"; };
+		D307719C1A8873DB003BA7E1 /* ImageWheelInteractionState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheelInteractionState.swift; sourceTree = "<group>"; };
 		D31F95E01A2C5FE700219B32 /* ColorImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorImage.swift; path = ../ColorImage.swift; sourceTree = "<group>"; };
 		D335407E1A3764E80064C81C /* Gavin Poses-s01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s01.png"; sourceTree = "<group>"; };
 		D335407F1A3764E80064C81C /* Gavin Poses-s01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s01@2x.png"; sourceTree = "<group>"; };
@@ -305,6 +308,7 @@
 				D3B7BC7319EA383A00F50DF7 /* Main.storyboard */,
 				D34DC0551A0FF26000AA7420 /* Settings.bundle */,
 				D3354FF41A2953E700C667A0 /* ImageWheelControl.swift */,
+				D307719C1A8873DB003BA7E1 /* ImageWheelInteractionState.swift */,
 				D3354FF71A298AD100C667A0 /* wedgeRegion.swift */,
 				D31F95E01A2C5FE700219B32 /* ColorImage.swift */,
 				D3B7BC7819EA383A00F50DF7 /* LaunchScreen.xib */,
@@ -527,6 +531,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D307719D1A8873DB003BA7E1 /* ImageWheelInteractionState.swift in Sources */,
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
 				D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
 				D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */,
@@ -543,6 +548,7 @@
 			files = (
 				D3354FF91A298AD100C667A0 /* wedgeRegion.swift in Sources */,
 				D31F95E21A2C5FE700219B32 /* ColorImage.swift in Sources */,
+				D307719E1A8873DB003BA7E1 /* ImageWheelInteractionState.swift in Sources */,
 				D3B7BC8619EA383A00F50DF7 /* TeethTimerTests.swift in Sources */,
 				D3354FF61A2953E700C667A0 /* ImageWheelControl.swift in Sources */,
 				D307719B1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
