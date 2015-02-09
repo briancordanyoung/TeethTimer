@@ -189,12 +189,12 @@ class ImageWheelControl: UIControl  {
         let viewsDictionary = ["controlView":container]
         
         //position constraints
-        let view_constraint_H:NSArray = NSLayoutConstraint.constraintsWithVisualFormat("H:|[controlView]|",
+        let view_constraint_H:[AnyObject] = NSLayoutConstraint.constraintsWithVisualFormat("H:|[controlView]|",
             options: NSLayoutFormatOptions(0),
             metrics: nil,
             views: viewsDictionary)
         
-        let view_constraint_V:NSArray = NSLayoutConstraint.constraintsWithVisualFormat("V:|[controlView]|",
+        let view_constraint_V:[AnyObject] = NSLayoutConstraint.constraintsWithVisualFormat("V:|[controlView]|",
             options: NSLayoutFormatOptions(0),
             metrics: nil,
             views: viewsDictionary)
@@ -523,7 +523,7 @@ class ImageWheelControl: UIControl  {
         var wedgeImageViews: [UIImageView] = []
         for image in views {
             if image.isKindOfClass(UIImageView.self) {
-                let imageView = image as UIImageView
+                let imageView = image as! UIImageView
                 if imageView.tag != 0 {
                     wedgeImageViews.append(imageView)
                 }

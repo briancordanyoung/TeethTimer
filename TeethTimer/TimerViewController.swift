@@ -184,7 +184,7 @@ class TimerViewController: UIViewController {
     
     func updatePercentageDone(percentageDone: Float) {
         
-        if let gavinWheel_ = gavinWheel? {
+        if let gavinWheel_ = gavinWheel {
             // At 100% should always be the first leaf
             // But, as soon as it is less, advance to the 2nd leaf.
             // This done on the lines marked belowe 1, 2 & 3

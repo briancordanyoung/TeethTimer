@@ -86,14 +86,14 @@ class Timer: NSObject {
     
     var elapsedTime: NSTimeInterval {
         get {
-            var _elapsedTime: NSTimeInterval = 0
-            if let start = lastStartTime? {
+            var elapsedTime_: NSTimeInterval = 0
+            if let start = lastStartTime {
                 let now = NSDate.timeIntervalSinceReferenceDate()
-                _elapsedTime = now - start + elapsedTimeAtPause
+                elapsedTime_ = now - start + elapsedTimeAtPause
             } else {
-                _elapsedTime = elapsedTimeAtPause
+                elapsedTime_ = elapsedTimeAtPause
             }
-            return _elapsedTime
+            return elapsedTime_
         }
     }
     
@@ -148,13 +148,16 @@ class Timer: NSObject {
             #endif
         }
         
-        self.init(printControlText, printTime, printSeconds, printPercentage)
+        self.init(WithControlTextFunc: printControlText,
+                   AndUpdateTimerFunc: printTime,
+                 AndUpdateSecondsFunc: printSeconds,
+              AndUpdatePercentageFunc: printPercentage)
     }
     
-    init( updateUIControlTextFunc: (String) -> (),
-                  updateTimerFunc: (String) -> (),
-                updateSecondsFunc: (NSTimeInterval) -> (),
-             updatePercentageFunc: (Float) -> ()    ) {
+    init( WithControlTextFunc  updateUIControlTextFunc: (String) -> (),
+          AndUpdateTimerFunc           updateTimerFunc: (String) -> (),
+          AndUpdateSecondsFunc       updateSecondsFunc: (NSTimeInterval) -> (),
+          AndUpdatePercentageFunc updatePercentageFunc: (Float) -> ()    ) {
             
         updateUIControlText       = updateUIControlTextFunc
         updateTimerWithText       = updateTimerFunc
@@ -263,7 +266,7 @@ class Timer: NSObject {
     
     // MARK: Time Helper Methods
     private func timeStringFromMinutes(minutes: Int, AndSeconds seconds: Int) -> String {
-        return NSString(format: "%02i:%02i",minutes,seconds)
+        return NSString(format: "%02i:%02i",minutes,seconds) as! String
     }
     
     private func timeStringFromDuration(duration: NSTimeInterval) -> String {
@@ -324,7 +327,7 @@ class Timer: NSObject {
             return
         }
         
-        if let start = lastStartTime? {
+        if let start = lastStartTime {
 //            let now = NSDate.timeIntervalSinceReferenceDate()
 //            let elapsedTime = now - start + elapsedTimeAtPause
 //            let timeRemaining = (brushingDuration + additionalElapsedTime) - elapsedTime

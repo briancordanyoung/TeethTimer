@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // This assumes that the rootViewController is our 'ViewController' class
     lazy var timerViewController: TimerViewController = {
         let rootViewController = UIApplication.sharedApplication().keyWindow?.rootViewController
-        return rootViewController as TimerViewController
+        return rootViewController as! TimerViewController
     }()
 
     func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
