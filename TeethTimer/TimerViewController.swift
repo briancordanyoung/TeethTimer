@@ -44,22 +44,6 @@ class TimerViewController: UIViewController {
         let images = arrayOfImages(10)
         let gavinWheel = ImageWheelControl(WithSections: 10, AndImages: images)
         
-        
-        
-        flippedLabel.text = ""
-        func wheelHasFlipped360Changed(text: String) {
-            flippedLabel.text = text
-        }
-        gavinWheel.userState.wheelHasFlipped360Changed = wheelHasFlipped360Changed
-        
-        posNegLabel.text = ""
-        func userRotatedChanged(text: String) {
-            posNegLabel.text = text
-        }
-        gavinWheel.userState.userRotatedChanged = userRotatedChanged
-        
-        
-        
         controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
 
         gavinWheel.setTranslatesAutoresizingMaskIntoConstraints(false)

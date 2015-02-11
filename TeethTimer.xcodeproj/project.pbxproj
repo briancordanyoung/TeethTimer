@@ -300,18 +300,18 @@
 		D3B7BC6C19EA383A00F50DF7 /* TeethTimer */ = {
 			isa = PBXGroup;
 			children = (
+				D3B7BC7319EA383A00F50DF7 /* Main.storyboard */,
+				D3B7BC7819EA383A00F50DF7 /* LaunchScreen.xib */,
 				D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */,
-				D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */,
 				D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */,
 				D3485C8419ECEEB900C6E495 /* Timer.swift */,
-				D3485C8319ECE77200C6E495 /* MyPlayground.playground */,
-				D3B7BC7319EA383A00F50DF7 /* Main.storyboard */,
 				D34DC0551A0FF26000AA7420 /* Settings.bundle */,
 				D3354FF41A2953E700C667A0 /* ImageWheelControl.swift */,
 				D307719C1A8873DB003BA7E1 /* ImageWheelInteractionState.swift */,
 				D3354FF71A298AD100C667A0 /* wedgeRegion.swift */,
 				D31F95E01A2C5FE700219B32 /* ColorImage.swift */,
-				D3B7BC7819EA383A00F50DF7 /* LaunchScreen.xib */,
+				D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */,
+				D3485C8319ECE77200C6E495 /* MyPlayground.playground */,
 				D3B7BC6D19EA383A00F50DF7 /* Supporting Files */,
 			);
 			path = TeethTimer;

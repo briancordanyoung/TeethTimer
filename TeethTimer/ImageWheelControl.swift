@@ -30,13 +30,9 @@ class ImageWheelControl: UIControl  {
     var images: [UIImage] = []
     
     
-    // Primary properties holding this controls data
     var currentWedgeValue = 1         // wedge to image?
     let userState = ImageWheelInteractionState()
-    
     var deltaAngle = CGFloat(0)
-    
-    // Calculated Properties
     
     var outsideCircle: Float {
         get {
@@ -49,12 +45,7 @@ class ImageWheelControl: UIControl  {
             return Float(2) * Float(M_PI) / Float(numberOfWedges)
         }
     }
-//    var wedgeStartingAngle: CGFloat {
-//        get {
-//            return CGFloat(M_PI * 3) + CGFloat(self.wedgeWidthAngle / 2)
-//        }
-//    }
-    
+
     var numberOfWedgesAreEven: Bool {
         get {
             var numberOfWedgesAreEven: Bool

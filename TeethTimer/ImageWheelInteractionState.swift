@@ -36,50 +36,20 @@ class ImageWheelInteractionState {
     
     var previousAngle: CGFloat?
     
-    var wheelHasFlipped360Changed: (String) -> Void = {text in}
-    var wheelHasFlipped360: Bool = false {
-        didSet(previousStatus)
-        {
-            if wheelHasFlipped360 {
-                println("Flipped")
-                //                wheelHasFlipped360Changed("Flipped")
-                //                var timer = NSTimer.scheduledTimerWithTimeInterval( 1.0,
-                //                    target: self,
-                //                    selector:  Selector("clearWheelHasFlipped360Changed"),
-                //                    userInfo: nil,
-                //                    repeats: false)
-            }
-        }
-    }
+    var wheelHasFlipped360: Bool = false
     
-    var userRotatedChanged:  (String) -> Void = {text in}
-    var userRotatedPositive: Bool? {
-        didSet(previousStatus)
-        {
-            var text = ""
-            
-            if let userRotatedPositive_ = userRotatedPositive {
-                if userRotatedPositive_ {
-                    text = "Pos"
-                } else {
-                    text = "Neg"
-                }
-            }
-            userRotatedChanged(text)
-        }
-    }
-    
+    var userRotatedPositive: Bool?
     var userRotatedNegitive: Bool? {
         get {
-            if let pos = userRotatedPositive {
-                return !pos
+            if let userRotatedPositive_ = userRotatedPositive {
+                return !userRotatedPositive_
             } else {
                 return nil
             }
         }
         set(rotatedNegitive) {
-            if let neg = rotatedNegitive {
-                userRotatedPositive = !neg
+            if let rotatedNegitive_ = rotatedNegitive {
+                userRotatedPositive = !rotatedNegitive_
             } else {
                 userRotatedPositive = nil
             }
@@ -105,17 +75,6 @@ class ImageWheelInteractionState {
         wedgeOpacityList = Dictionary<Int, CGFloat>()
     }
     
-    func initOpacityListWithWedges( wedges: [WedgeRegion],
-        AndViews   views: [UIImageView] ) {
-            
-            clearWedgeOpacityList()
-            assert(wedges.count == views.count, "setOpacityListWithWedges requires both the wedges and views arrays to each have the same number of elements.")
-            for (i,wedge) in enumerate(wedges) {
-                let view = views[i]
-                wedgeOpacityList[wedge.value] = view.alpha
-            }
-    }
-    
     func initOpacityListWithWedges( wedges: [WedgeRegion]) {
         for wedge in wedges {
             wedgeOpacityList[wedge.value] = CGFloat(0)
@@ -129,10 +88,6 @@ class ImageWheelInteractionState {
                 view.alpha = opacityValue
             }
         }
-    }
-    
-    func clearWheelHasFlipped360Changed() {
-        wheelHasFlipped360Changed("")
     }
 }
 
