@@ -265,7 +265,8 @@ class Timer: NSObject {
     }
     
     // MARK: Time Helper Methods
-    private func timeStringFromMinutes(minutes: Int, AndSeconds seconds: Int) -> String {
+    private func timeStringFromMinutes(minutes: Int, AndSeconds seconds: Int)
+                                    -> String {
         return NSString(format: "%02i:%02i",minutes,seconds) as! String
     }
     
@@ -274,7 +275,8 @@ class Timer: NSObject {
         return timeStringFromMinutes(durationParts.minutes, AndSeconds: durationParts.seconds)
     }
     
-    private func timeAsParts(elapsedTimeInterval: NSTimeInterval) -> (minutes: Int,seconds: Int) {
+    private func timeAsParts(elapsedTimeInterval: NSTimeInterval)
+                         -> (minutes: Int,seconds: Int) {
         var elapsedTime = elapsedTimeInterval
         let elapsedMinsTime = elapsedTime / 60.0
         let elapsedMins = Int(elapsedMinsTime)
@@ -292,16 +294,18 @@ class Timer: NSObject {
     private func updateTimerTo(timeRemaining: NSTimeInterval) {
         // TODO: More testing to make sure that the timer always ends...
         //       on 0 and 00:00.  Percentage left reuqired special handling
-        updateTimerWithText(timeStringFromDuration(timeRemaining))
-        updateTimerWithSeconds(timeRemaining)
         
-        var percentageLeft = secondsToPercentage(timeRemaining)
-        
+        let percentageLeft: Float
         if hasCompleted {
             percentageLeft = 0.0
+        } else {
+            percentageLeft = secondsToPercentage(timeRemaining)
         }
         
         updateTimerWithPercentage(percentageLeft)
+        updateTimerWithText(timeStringFromDuration(timeRemaining))
+        updateTimerWithSeconds(timeRemaining)
+
     }
 
     
@@ -328,9 +332,6 @@ class Timer: NSObject {
         }
         
         if let start = lastStartTime {
-//            let now = NSDate.timeIntervalSinceReferenceDate()
-//            let elapsedTime = now - start + elapsedTimeAtPause
-//            let timeRemaining = (brushingDuration + additionalElapsedTime) - elapsedTime
 
             if notCurrentlyRunning {
                 rememberTimerAtPause(elapsedTime)
