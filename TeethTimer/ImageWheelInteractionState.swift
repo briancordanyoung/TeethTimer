@@ -34,26 +34,19 @@ class ImageWheelInteractionState {
     }
     
     
-    var previousAngle: CGFloat   = 0.0
-    var firstTouchAngle: CGFloat = 0.0
+    var previousAngle: CGFloat      = 0.0
+    var firstTouchAngle: CGFloat    = 0.0
+    var maxAngleDifference: CGFloat = 0.0
     
     var wheelHasFlipped360: Bool = false
     
-    var userRotatedPositive: Bool?
-    var userRotatedNegitive: Bool? {
+    var rotatedPositive: Bool = true
+    var rotatedNegitive: Bool {
         get {
-            if let userRotatedPositive_ = userRotatedPositive {
-                return !userRotatedPositive_
-            } else {
-                return nil
-            }
+            return !rotatedPositive
         }
         set(rotatedNegitive) {
-            if let rotatedNegitive_ = rotatedNegitive {
-                userRotatedPositive = !rotatedNegitive_
-            } else {
-                userRotatedPositive = nil
-            }
+            rotatedPositive = !rotatedNegitive
         }
     }
     
@@ -67,8 +60,9 @@ class ImageWheelInteractionState {
         dontReturnToPreviousWedge = true
         previousAngle   = 0.0
         firstTouchAngle = 0.0
+        maxAngleDifference = 0.0
         wheelHasFlipped360 = false
-        userRotatedPositive = nil
+        rotatedPositive = true
         startTransform = CGAffineTransformMakeRotation(0)
         clearWedgeOpacityList()
     }

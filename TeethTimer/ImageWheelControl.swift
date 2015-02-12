@@ -19,10 +19,11 @@ class ImageWheelControl: UIControl  {
     let wedgeImageHeight: CGFloat = (800 * 0.9)
     let wedgeImageWidth: CGFloat = (734 * 0.9)
     
+    //  2 = highly dampened
     //  3 = highly dampened
     //  6 = slightly dampened
     // 12 = no dampening
-    let angleDifferenceDampenerFactor: Float = 4.5
+    let angleDifferenceDampenerFactor: Float =  3
     
     var container = UIView()
     var numberOfWedges = 6
@@ -296,17 +297,16 @@ class ImageWheelControl: UIControl  {
         checkIfWheelHasFlipped360(angle)
         checkIfRotatingPositive(angle)
         
-        var angleDifference = (userState.firstTouchAngle - angle)
-        
         // Prevent the user from rotating to the left.
-        var dampenRotation = false
+        var angleDifference       = (userState.firstTouchAngle - angle)
         var angleDifferenceDamped = angleDifference
-        var dampener = CGFloat(1.0)
+        var dampener              = CGFloat(1.0)
+        var dampenRotation        = false
         
         
         // The wheel is turned to the left when
         // angleDifference is positive.
-        if userState.userRotatedNegitive! {
+        if userState.rotatedPositive {
             dampenRotation = true
         }
         
@@ -319,15 +319,26 @@ class ImageWheelControl: UIControl  {
             userState.returnToPreviousWedge = true
             let angleUntilDampended = CGFloat(wedgeWidthAngle * angleDifferenceDampenerFactor)
             dampener = CGFloat(1) - (angleDifference / angleUntilDampended)
-            if dampener < 0.5 || userState.wheelHasFlipped360 {
-                dampener = 0.5
+            if dampener > 1 {
+                dampener = 1.0
             }
             angleDifferenceDamped = angleDifference * dampener
+            
+            if dampener < 0.5 || userState.wheelHasFlipped360 {
+                dampener = 0.5
+                if userState.maxAngleDifference == 0 {
+                    userState.maxAngleDifference = angleDifference * dampener
+                }
+                angleDifferenceDamped = userState.maxAngleDifference
+            }
             
         } else {
             userState.returnToPreviousWedge = false
         }
-        
+                                    
+        println("dampener: \(dampener)")
+        println("angleDifferenceDamped: \(angleDifferenceDamped)")
+                                            
         // If the wheel rotates far enough, it will flip the 360 and
         // make it hard to track.  This makes the wheel jump and is
         // unclear to the user if the wheel was rotated to the
@@ -621,10 +632,11 @@ class ImageWheelControl: UIControl  {
     }
     
     func checkIfRotatingPositive(angle: CGFloat) {
-        if angle > userState.previousAngle {
-            userState.userRotatedPositive = true
+        let angleDifference = userState.firstTouchAngle - angle
+        if angleDifference > 0 {
+            userState.rotatedPositive = true
         } else {
-            userState.userRotatedNegitive = true
+            userState.rotatedNegitive = true
         }
     }
     
