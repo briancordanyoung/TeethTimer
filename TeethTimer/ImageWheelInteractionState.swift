@@ -34,7 +34,8 @@ class ImageWheelInteractionState {
     }
     
     
-    var previousAngle: CGFloat?
+    var previousAngle: CGFloat   = 0.0
+    var firstTouchAngle: CGFloat = 0.0
     
     var wheelHasFlipped360: Bool = false
     
@@ -58,13 +59,14 @@ class ImageWheelInteractionState {
     
     
     init() {
-        resetState()
+        reset()
     }
     
-    func resetState() {
+    func reset() {
         isNotInteracting = true
         dontReturnToPreviousWedge = true
-        previousAngle = nil
+        previousAngle   = 0.0
+        firstTouchAngle = 0.0
         wheelHasFlipped360 = false
         userRotatedPositive = nil
         startTransform = CGAffineTransformMakeRotation(0)
