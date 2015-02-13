@@ -324,6 +324,7 @@ class ImageWheelControl: UIControl  {
         }
                                     
                                     
+                                    
         // If the wheel rotates far enough, it will flip the 360 and
         // make it hard to track.  This makes the wheel jump and is
         // unclear to the user if the wheel was rotated to the
@@ -344,10 +345,9 @@ class ImageWheelControl: UIControl  {
         let currentRotation = radiansFromTransform(container.transform)
         setImageOpacityForCurrentAngle(Float(currentRotation))
 
+                                    
         // Remember state during user rotation
         userState.previousAngle = angle
-
-        
         
         return true
     }
@@ -370,16 +370,7 @@ class ImageWheelControl: UIControl  {
         // Callback to block/closure based 'delegate' to
         // inform it that the wheel has been rewound.
         if currentWedgeHasChanged && userState.dontReturnToPreviousWedge {
-            // Tell ViewController there was a change to the wheel wedge position
-            var currentValue = currentWedgeValue
-            if currentValue > userState.wedgeValueBeforeTouch {
-                currentValue -= numberOfWedges
-            }
-            let wedgeCount = userState.wedgeValueBeforeTouch - currentValue
-            
-            let percentageStep = 1 / CGFloat((numberOfWedges - 1))
-            let percentage = percentageStep * CGFloat(wedgeCount)
-            wheelTurnedBackBy(wedgeCount, AndPercentage: percentage)
+            wheelTurnedBack()
         }
         
         // User rotation has ended.  Forget the state.
@@ -426,6 +417,18 @@ class ImageWheelControl: UIControl  {
         self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
     }
     
+    func wheelTurnedBack() {
+        // Callback to notify there was a change to the wheel wedge position
+        var currentValue = currentWedgeValue
+        if currentValue > userState.wedgeValueBeforeTouch {
+            currentValue -= numberOfWedges
+        }
+        let wedgeCount = userState.wedgeValueBeforeTouch - currentValue
+        
+        let percentageStep = 1 / CGFloat((numberOfWedges - 1))
+        let percentage = percentageStep * CGFloat(wedgeCount)
+        wheelTurnedBackBy(wedgeCount, AndPercentage: percentage)
+    }
     
     // TODO: animateToImageNumber
     // func animateToImageNumber(i: Int)
@@ -493,7 +496,7 @@ class ImageWheelControl: UIControl  {
         var currentWedge: WedgeRegion?
         // Determin where the wheel is (which wedge we are within)
         for wedge in wedges {
-            if currentRotationIs(angle, isWithinWedge: wedge) {
+            if currentRotation(angle, isWithinWedge: wedge) {
                 currentWedge = wedge
                 break
             }
@@ -529,7 +532,13 @@ class ImageWheelControl: UIControl  {
     func setImageOpacityForCurrentAngle(currentAngle: Float) {
         userState.initOpacityListWithWedges(wedges)
         
-        let angle = currentAngle + (wedgeWidthAngle / 2)
+        // Shift the rotation 1/2 a wedge width angle to center the effect
+        // of changing the opacity.
+        var angle = currentAngle + (wedgeWidthAngle / 2)
+        if angle > Float(M_PI) {
+            angle = angle - Float(M_PI * 2)
+        }
+        
         for wedge in wedges {
             
             if angle > wedge.minRadian &&
@@ -588,7 +597,7 @@ class ImageWheelControl: UIControl  {
     
     
     // MARK: Wheel touch and angle helper methods
-    func currentRotationIs(currentRotation: Float,
+    func currentRotation(currentRotation: Float,
                        isWithinWedge wedge: WedgeRegion) -> Bool {
         var withinWedge = false
         
