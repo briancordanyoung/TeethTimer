@@ -2,26 +2,7 @@
 
 import UIKit
 
-class Test: NSObject {
-    
-
-    var currentlyRunning = false
-    var notCurrentlyRunning: Bool {
-        get {
-            return !currentlyRunning
-        }
-        set(notRunning) {
-            currentlyRunning = !notRunning
-        }
-        }
+for i in 50...150 {
+    let dist = Float(i)
+    let x = log(dist)
 }
-
-
-let aTest = Test()
-
-aTest.currentlyRunning
-aTest.notCurrentlyRunning
-
-aTest.notCurrentlyRunning = false
-aTest.currentlyRunning
-

@@ -11,19 +11,12 @@ import UIKit
 typealias wheelTurnedBackByDelegate = (Int, AndPercentage: CGFloat) -> ()
 
 
-
-
 class ImageWheelControl: UIControl  {
     
-    let centerCircle:  Float = 20.0
-    let wedgeImageHeight: CGFloat = (800 * 0.9)
-    let wedgeImageWidth: CGFloat = (734 * 0.9)
-    
-    //  2 = highly dampened
-    //  3 = highly dampened
-    //  6 = slightly dampened
-    // 12 = no dampening
-    let angleDifferenceDampenerFactor: Float =  3
+    let centerCircle:              Float =  20.0
+    let wedgeImageHeight:        CGFloat = (800 * 0.9)
+    let wedgeImageWidth:         CGFloat = (734 * 0.9)
+    let rotationDampeningFactor: CGFloat =  5.0
     
     var container = UIView()
     var numberOfWedges = 6
@@ -75,6 +68,15 @@ class ImageWheelControl: UIControl  {
         }
     }
     
+    lazy var padNumber: NSNumberFormatter = {
+        let numberFormater = NSNumberFormatter()
+        numberFormater.minimumIntegerDigits  = 1
+        numberFormater.maximumIntegerDigits  = 1
+        numberFormater.minimumFractionDigits = 3
+        numberFormater.maximumFractionDigits = 3
+        numberFormater.positivePrefix = " "
+        return numberFormater
+    }()
     
     // Properties that hold closures. (a.k.a. a block based API)
     // These should be used as call backs alerting a view controller
@@ -298,10 +300,8 @@ class ImageWheelControl: UIControl  {
         checkIfRotatingPositive(angle)
         
         // Prevent the user from rotating to the left.
-        var angleDifference       = (userState.firstTouchAngle - angle)
-        var angleDifferenceDamped = angleDifference
-        var dampener              = CGFloat(1.0)
-        var dampenRotation        = false
+        var angleDifference = (userState.firstTouchAngle - angle)
+        var dampenRotation  = false
         
         
         // The wheel is turned to the left when
@@ -312,33 +312,18 @@ class ImageWheelControl: UIControl  {
         
         if userState.wheelHasFlipped360 {
             dampenRotation = true
-            angleDifference = (userState.firstTouchAngle - angle) + CGFloat(M_PI * 2)
+            angleDifference = angleDifference + CGFloat(M_PI * 2)
         }
         
+        var angleDifferenceDamped = angleDifference
         if dampenRotation {
+            angleDifferenceDamped = self.dampenRotation(angleDifference)
             userState.returnToPreviousWedge = true
-            let angleUntilDampended = CGFloat(wedgeWidthAngle * angleDifferenceDampenerFactor)
-            dampener = CGFloat(1) - (angleDifference / angleUntilDampended)
-            if dampener > 1 {
-                dampener = 1.0
-            }
-            angleDifferenceDamped = angleDifference * dampener
-            
-            if dampener < 0.5 || userState.wheelHasFlipped360 {
-                dampener = 0.5
-                if userState.maxAngleDifference == 0 {
-                    userState.maxAngleDifference = angleDifference * dampener
-                }
-                angleDifferenceDamped = userState.maxAngleDifference
-            }
-            
         } else {
             userState.returnToPreviousWedge = false
         }
                                     
-        println("dampener: \(dampener)")
-        println("angleDifferenceDamped: \(angleDifferenceDamped)")
-                                            
+                                    
         // If the wheel rotates far enough, it will flip the 360 and
         // make it hard to track.  This makes the wheel jump and is
         // unclear to the user if the wheel was rotated to the
@@ -695,6 +680,17 @@ class ImageWheelControl: UIControl  {
     }
     
     
+    func pad(number: CGFloat) -> String {
+        var paddedNumber = " 1.000"
+        if let numberString = padNumber.stringFromNumber(number) {
+            paddedNumber = numberString
+        }
+        return paddedNumber
+    }
     
+    func dampenRotation(angle: CGFloat) -> CGFloat {
+        return (log((angle * rotationDampeningFactor) + 1) / rotationDampeningFactor)
+    }
+
 }
 
