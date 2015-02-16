@@ -168,13 +168,13 @@ class TimerViewController: UIViewController {
     
     func updatePercentageDone(percentageDone: Float) {
         
-        if let gavinWheel_ = gavinWheel {
+        if let gavinWheel = gavinWheel {
             // At 100% should always be the first leaf
             // But, as soon as it is less, advance to the 2nd leaf.
             // This done on the lines marked belowe 1, 2 & 3
 
-            // TODO: Change numberOfWedges -> numberOf???
-            var sections = gavinWheel_.numberOfWedges - 1
+            // TODO: Change numberOfWedges to numberOfImages
+            var sections = gavinWheel.numberOfWedges - 1
             sections = sections - 1  // 1
             
             var currentLeafValue = 1 + currentLeafValueFromPrecent(percentageDone,
@@ -182,11 +182,13 @@ class TimerViewController: UIViewController {
             currentLeafValue = currentLeafValue + 1 // 2
 
             if percentageDone == 1.0 { // 3
-                if gavinWheel_.currentWedgeValue != 1 {
-                    gavinWheel_.animateToWedgeByValue(1)
+                if gavinWheel.currentWedgeValue != 1 {
+                    gavinWheel.animateToWedgeByValue( 1,
+                                         inDirection: .Negitive)
                 }
-            } else if gavinWheel_.currentWedgeValue != currentLeafValue {
-                gavinWheel_.animateToWedgeByValue(currentLeafValue)
+            } else if gavinWheel.currentWedgeValue != currentLeafValue {
+                gavinWheel.animateToWedgeByValue( currentLeafValue,
+                                     inDirection: .Positive)
             }
         }
     }
@@ -264,15 +266,15 @@ class TimerViewController: UIViewController {
     }
     
     func imageNameForNumber(i: Int) -> String {
-                return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
-//        return "num-\(paddedTwoDigitNumber(i))"
+//                return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
+        return "num-\(paddedTwoDigitNumber(i))"
     }
 
     func arrayOfImages(count: Int) -> [UIImage] {
         var imageArray: [UIImage] = []
         for i in 1...count {
-            if let image_ = UIImage(named: imageNameForNumber(i)) {
-                imageArray.append(image_)
+            if let image = UIImage(named: imageNameForNumber(i)) {
+                imageArray.append(image)
             }
         }
         

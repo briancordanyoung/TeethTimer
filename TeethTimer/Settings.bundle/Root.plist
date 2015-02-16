@@ -21,6 +21,7 @@
 			<integer>240</integer>
 			<key>Titles</key>
 			<array>
+				<string>TEST</string>
 				<string>01:00</string>
 				<string>01:15</string>
 				<string>01:30</string>
@@ -37,6 +38,7 @@
 			</array>
 			<key>Values</key>
 			<array>
+				<integer>10</integer>
 				<integer>60</integer>
 				<integer>75</integer>
 				<integer>90</integer>
