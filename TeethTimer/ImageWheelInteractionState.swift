@@ -22,7 +22,7 @@ class ImageWheelInteractionState {
     
     var wedgeOpacityList = Dictionary<Int, CGFloat>()
     var startTransform = CGAffineTransformMakeRotation(0)
-    var wedgeValueBeforeTouch = 1     // wedge to image?
+    var wedgeValueBeforeTouch: WedgeValue = 1     // wedge to image?
     var returnToPreviousWedge = false // wedge to image?
     var dontReturnToPreviousWedge: Bool {
         get {

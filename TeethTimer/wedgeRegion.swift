@@ -1,9 +1,11 @@
 
+typealias WedgeValue = Int
+
 struct WedgeRegion {
     var minRadian: Float
     var maxRadian: Float
     var midRadian: Float
-    var value: Int
+    var value: WedgeValue
     
     init(WithMin min: Float, AndMax max: Float, AndMid mid: Float, AndValue valueIn: Int) {
         minRadian = min

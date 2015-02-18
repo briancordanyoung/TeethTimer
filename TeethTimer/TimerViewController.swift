@@ -162,7 +162,7 @@ class TimerViewController: UIViewController {
     }
     
     // MARK: Callbacks to pass to the ImageWheel class
-    func wheelTurnedBackByFunc(leaves: Int,  AndPercentage percentage: CGFloat) {
+    func wheelTurnedBackByFunc(Wedge: Int,  AndPercentage percentage: CGFloat) {
         timer.addTimeByPercentage(Float(percentage))
     }
     
