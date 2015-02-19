@@ -2,10 +2,11 @@
 
 import UIKit
 
-func normalizedAngleForAngle(var angle: Float) -> Float {
-    let positiveHalfCircle = Float(M_PI)
-    let negitiveHalfCircle = Float(M_PI * -1)
-    let fullCircle = Float(M_PI * 2)
+func normalizedAngleForAngle(var angle: CGFloat) -> CGFloat {
+    let halfCircle = CGFloat(M_PI)
+    let fullCircle = CGFloat(M_PI) * 2
+    let positiveHalfCircle =  halfCircle
+    let negitiveHalfCircle = -halfCircle
     
     while angle > positiveHalfCircle || angle < negitiveHalfCircle {
         if angle > positiveHalfCircle {
@@ -20,4 +21,4 @@ func normalizedAngleForAngle(var angle: Float) -> Float {
 
 
 normalizedAngleForAngle(0)
-normalizedAngleForAngle(-234.23)
+normalizedAngleForAngle(34.23)

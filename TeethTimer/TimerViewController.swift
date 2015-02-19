@@ -176,11 +176,11 @@ class TimerViewController: UIViewController {
             if percentageDone == 1.0 { // 3
                 if gavinWheel.currentWedgeValue != 1 {
                     gavinWheel.animateToWedgeByValue( 1,
-                                         inDirection: .Negitive)
+                                         inDirection: .CounterClockwise)
                 }
             } else if gavinWheel.currentWedgeValue != currentLeafValue {
                 gavinWheel.animateToWedgeByValue( currentLeafValue,
-                                     inDirection: .Positive)
+                                     inDirection: .Clockwise)
             }
         }
     }
