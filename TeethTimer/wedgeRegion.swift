@@ -1,3 +1,4 @@
+import CoreGraphics
 
 typealias WedgeValue = Int
 

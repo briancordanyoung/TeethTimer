@@ -109,6 +109,8 @@
 		D3B7BC7519EA383A00F50DF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3B7BC7319EA383A00F50DF7 /* Main.storyboard */; };
 		D3B7BC7A19EA383A00F50DF7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3B7BC7819EA383A00F50DF7 /* LaunchScreen.xib */; };
 		D3B7BC8619EA383A00F50DF7 /* TeethTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC8519EA383A00F50DF7 /* TeethTimerTests.swift */; };
+		D3DC4C481A95877400984A24 /* ImageWheelVisualState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */; };
+		D3DC4C491A95877400984A24 /* ImageWheelVisualState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -192,6 +194,7 @@
 		D3B7BC7F19EA383A00F50DF7 /* TeethTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TeethTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B7BC8419EA383A00F50DF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3B7BC8519EA383A00F50DF7 /* TeethTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeethTimerTests.swift; sourceTree = "<group>"; };
+		D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheelVisualState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -307,6 +310,7 @@
 				D3485C8419ECEEB900C6E495 /* Timer.swift */,
 				D3354FF41A2953E700C667A0 /* ImageWheelControl.swift */,
 				D307719C1A8873DB003BA7E1 /* ImageWheelInteractionState.swift */,
+				D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */,
 				D3354FF71A298AD100C667A0 /* wedgeRegion.swift */,
 				D31F95E01A2C5FE700219B32 /* ColorImage.swift */,
 				D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */,
@@ -535,6 +539,7 @@
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
 				D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
 				D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */,
+				D3DC4C481A95877400984A24 /* ImageWheelVisualState.swift in Sources */,
 				D3354FF81A298AD100C667A0 /* wedgeRegion.swift in Sources */,
 				D3485C8519ECEEB900C6E495 /* Timer.swift in Sources */,
 				D31F95E11A2C5FE700219B32 /* ColorImage.swift in Sources */,
@@ -551,6 +556,7 @@
 				D307719E1A8873DB003BA7E1 /* ImageWheelInteractionState.swift in Sources */,
 				D3B7BC8619EA383A00F50DF7 /* TeethTimerTests.swift in Sources */,
 				D3354FF61A2953E700C667A0 /* ImageWheelControl.swift in Sources */,
+				D3DC4C491A95877400984A24 /* ImageWheelVisualState.swift in Sources */,
 				D307719B1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

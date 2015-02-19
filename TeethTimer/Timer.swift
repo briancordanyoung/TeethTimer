@@ -1,11 +1,3 @@
-//
-//  Timer.swift
-//  TeethTimer
-//
-//  Created by Brian Cordan Young on 10/13/14.
-//  Copyright (c) 2014 Brian Young. All rights reserved.
-//
-
 import Foundation
 
 class Timer: NSObject {
@@ -86,7 +78,7 @@ class Timer: NSObject {
     
     var elapsedTime: NSTimeInterval {
         get {
-            var elapsedTime_: NSTimeInterval = 0
+            var elapsedTime_: NSTimeInterval
             if let start = lastStartTime {
                 let now = NSDate.timeIntervalSinceReferenceDate()
                 elapsedTime_ = now - start + elapsedTimeAtPause
