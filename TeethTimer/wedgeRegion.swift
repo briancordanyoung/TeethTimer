@@ -3,12 +3,15 @@ import CoreGraphics
 typealias WedgeValue = Int
 
 struct WedgeRegion {
-    var minRadian: Float
-    var maxRadian: Float
-    var midRadian: Float
+    var minRadian: CGFloat
+    var maxRadian: CGFloat
+    var midRadian: CGFloat
     var value: WedgeValue
     
-    init(WithMin min: Float, AndMax max: Float, AndMid mid: Float, AndValue valueIn: Int) {
+    init(WithMin min: CGFloat,
+          AndMax max: CGFloat,
+          AndMid mid: CGFloat,
+    AndValue valueIn: Int) {
         minRadian = min
         maxRadian = max
         midRadian = mid

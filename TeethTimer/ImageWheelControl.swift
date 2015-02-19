@@ -3,7 +3,7 @@ import UIKit
 typealias wheelTurnedBackByDelegate = (Int, AndPercentage: CGFloat) -> ()
 
 struct ImageWheelRotationRotationKey {
-    let timePercent: Double
+    let timePercent: CGFloat
     let wedge: WedgeRegion
 }
 
@@ -25,7 +25,7 @@ enum Parity {
 
 class ImageWheelControl: UIControl  {
     
-    let centerCircle:                  Float =  20.0
+    let centerCircle:                CGFloat =  20.0
     let wedgeImageHeight:            CGFloat = (800 * 0.9)
     let wedgeImageWidth:             CGFloat = (734 * 0.9)
     let rotationDampeningFactor:     CGFloat =  5.0
@@ -55,7 +55,7 @@ class ImageWheelControl: UIControl  {
         }
     }
     
-    var currentRotation: Float {
+    var currentRotation: CGFloat {
         get {
             return radiansFromTransform(container.transform)
         }
@@ -73,15 +73,15 @@ class ImageWheelControl: UIControl  {
         }
     }
     
-    var outsideCircle: Float {
+    var outsideCircle: CGFloat {
         get {
-            return Float(Float(container.bounds.height) * 2)
+            return container.bounds.height * 2
         }
     }
     
-    var wedgeWidthAngle: Float {
+    var wedgeWidthAngle: CGFloat {
         get {
-            return Float(2) * Float(M_PI) / Float(numberOfWedges)
+            return 2 * CGFloat(M_PI) / CGFloat(numberOfWedges)
         }
     }
 
@@ -173,9 +173,9 @@ class ImageWheelControl: UIControl  {
     }
     
     func createWedgeRegionsEven() {
-        var mid = Float(M_PI) - (wedgeWidthAngle / 2)
-        var max = Float(M_PI)
-        var min = Float(M_PI) - wedgeWidthAngle
+        var mid = CGFloat(M_PI) - (wedgeWidthAngle / 2)
+        var max = CGFloat(M_PI)
+        var min = CGFloat(M_PI) - wedgeWidthAngle
         
         for i in 1...numberOfWedges {
             max = mid + (wedgeWidthAngle / 2)
@@ -194,9 +194,9 @@ class ImageWheelControl: UIControl  {
     
     
     func createWedgeRegionsOdd() {
-        var mid = Float(M_PI) - (wedgeWidthAngle / 2)
-        var max = Float(M_PI)
-        var min = Float(M_PI) - wedgeWidthAngle
+        var mid = CGFloat(M_PI) - (wedgeWidthAngle / 2)
+        var max = CGFloat(M_PI)
+        var min = CGFloat(M_PI) - wedgeWidthAngle
         
         for i in 1...numberOfWedges {
             max = mid + (wedgeWidthAngle / 2)
@@ -209,7 +209,7 @@ class ImageWheelControl: UIControl  {
             
             mid -= wedgeWidthAngle
             
-            if (wedge.maxRadian < Float(-M_PI)) {
+            if (wedge.maxRadian < CGFloat(-M_PI)) {
                 mid = (mid * -1)
                 mid -= wedgeWidthAngle
             }
@@ -443,7 +443,7 @@ class ImageWheelControl: UIControl  {
             let newRotation = CGFloat(currentRotation) - angle
             let t = CGAffineTransformRotate(container.transform, newRotation)
             container.transform = t;
-            setImageOpacityForCurrentAngle(Float(angle))
+            setImageOpacityForCurrentAngle(angle)
         }
         self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
     }
@@ -496,7 +496,7 @@ class ImageWheelControl: UIControl  {
             steps.append(aStep)
             
         } else {
-            let timeSlice = 1.0 / Double(resolved.count)
+            let timeSlice = 1.0 / CGFloat(resolved.count)
             for i in 1...resolved.count {
                 if resolved.direction == .Positive {
                     currentWedge = nextWedge(currentWedge)
@@ -530,7 +530,7 @@ class ImageWheelControl: UIControl  {
         // in the completion block.
         steps.removeLast()
         
-        let duration = animateWedgeDuration * Double(steps.count) / 2
+        let duration = animateWedgeDuration * NSTimeInterval(steps.count) / 2
         
         let options: UIViewKeyframeAnimationOptions = .CalculationModePaced |
                                         UIViewKeyframeAnimationOptions(1 << 16)
@@ -545,18 +545,18 @@ class ImageWheelControl: UIControl  {
             delay: 0.0,
             options: options,
             animations: {
-                var startTime = Double(0)
-                var stepDuration = Double(0)
+                var startTime = NSTimeInterval(0)
+                var stepDuration = NSTimeInterval(0)
                 for step in steps {
                     
-                    stepDuration = step.timePercent
+                    stepDuration = NSTimeInterval(step.timePercent)
                     
                     UIView.addKeyframeWithRelativeStartTime( startTime,
                                            relativeDuration: stepDuration,
                                                  animations: {
                         self.container.transform =
-                                    CGAffineTransformMakeRotation(CGFloat(step.wedge.midRadian))
-                        self.setImageOpacityForCurrentAngle(Float(step.wedge.midRadian))
+                                    CGAffineTransformMakeRotation(step.wedge.midRadian)
+                        self.setImageOpacityForCurrentAngle(step.wedge.midRadian)
                                                     
                     }) // end addKeyframeWithRelativeStartTime
                     startTime = startTime + stepDuration
@@ -572,7 +572,7 @@ class ImageWheelControl: UIControl  {
                         initialSpringVelocity: 1.0,
                         options: .BeginFromCurrentState,
                         animations: {
-                            let t = CGAffineTransformMakeRotation(CGFloat(lastStep.wedge.midRadian))
+                            let t = CGAffineTransformMakeRotation(lastStep.wedge.midRadian)
                             self.container.transform = t;
                             self.setImageOpacityForCurrentAngle(lastStep.wedge.midRadian)
                         },
@@ -705,7 +705,7 @@ class ImageWheelControl: UIControl  {
     }
 
     
-    func currentWedgeForAngle(var angle: Float) -> WedgeRegion {
+    func currentWedgeForAngle(var angle: CGFloat) -> WedgeRegion {
         
         angle = normalizedAngleForAngle(angle)
         var currentWedge: WedgeRegion?
@@ -720,11 +720,11 @@ class ImageWheelControl: UIControl  {
         return currentWedge!
     }
     
-    func setImageOpacityForCurrentAngle(var angle: Float) {
+    func setImageOpacityForCurrentAngle(var angle: CGFloat) {
         visualState.initOpacityListWithWedges(wedges)
         
-        let halfCircle = Float(M_PI)
-        let fullCircle = Float(M_PI) * 2
+        let halfCircle = CGFloat(M_PI)
+        let fullCircle = CGFloat(M_PI) * 2
 
         // Shift the rotation 1/2 a wedge width angle to center the effect
         // of changing the opacity.
@@ -774,7 +774,7 @@ class ImageWheelControl: UIControl  {
     
     
     
-    func currentRotation(currentRotation: Float,
+    func currentRotation(currentRotation: CGFloat,
                        isWithinWedge wedge: WedgeRegion) -> Bool {
         var withinWedge = false
         
@@ -840,12 +840,12 @@ class ImageWheelControl: UIControl  {
         return !touchIsOnWheel(touch)
     }
     
-    func distanceFromCenterWithTouch(touch: UITouch) -> Float {
+    func distanceFromCenterWithTouch(touch: UITouch) -> CGFloat {
         let touchPoint = touchPointWithTouch(touch)
         return distanceFromCenterWithPoint(touchPoint)
     }
     
-    func distanceFromCenterWithPoint(point: CGPoint) -> Float {
+    func distanceFromCenterWithPoint(point: CGPoint) -> CGFloat {
         let center = CGPointMake(self.bounds.size.width  / 2.0,
             self.bounds.size.height / 2.0)
         
@@ -853,18 +853,18 @@ class ImageWheelControl: UIControl  {
     }
     
     func distanceBetweenPointA(pointA: CGPoint,
-                     AndPointB pointB: CGPoint) -> Float {
+                     AndPointB pointB: CGPoint) -> CGFloat {
         let dx = pointA.x - pointB.x
         let dy = pointA.y - pointB.y
-        let sqrtOf = Float(dx * dx + dy * dy)
+        let sqrtOf = dx * dx + dy * dy
         
         return sqrt(sqrtOf)
     }
     
-    func radiansFromTransform(transform: CGAffineTransform) -> Float {
-        let b = Float(transform.b)
-        let a = Float(transform.a)
-        let radians = atan2f(b, a)
+    func radiansFromTransform(transform: CGAffineTransform) -> CGFloat {
+        let b = transform.b
+        let a = transform.a
+        let radians = atan2(b, a)
         
         return radians
     }
@@ -874,10 +874,10 @@ class ImageWheelControl: UIControl  {
         return (log((angle * rotationDampeningFactor) + 1) / rotationDampeningFactor)
     }
 
-    func normalizedAngleForAngle(var angle: Float) -> Float {
-        let positiveHalfCircle = Float(M_PI)
-        let negitiveHalfCircle = Float(M_PI * -1)
-        let fullCircle = Float(M_PI * 2)
+    func normalizedAngleForAngle(var angle: CGFloat) -> CGFloat {
+        let positiveHalfCircle = CGFloat(M_PI)
+        let negitiveHalfCircle = CGFloat(M_PI * -1)
+        let fullCircle = CGFloat(M_PI * 2)
         
         while angle > positiveHalfCircle || angle < negitiveHalfCircle {
             if angle > positiveHalfCircle {
@@ -891,7 +891,7 @@ class ImageWheelControl: UIControl  {
     }
     
     // MARK: Debug printing methods
-    func padd(number: Double) -> String {
+    func padd(number: CGFloat) -> String {
         var paddedNumber = " 1.000"
         if let numberString = padNumber.stringFromNumber(number) {
             paddedNumber = numberString
@@ -908,10 +908,10 @@ class ImageWheelControl: UIControl  {
     }
     
     // MARK: Math Helpers
-    func percentValue(value: Float,
-        isBetweenLow   low: Float,
-        AndHigh       high: Float ) -> Float {
-            return (value - low) / (high - low)
+    func percentValue(value: CGFloat,
+         isBetweenLow   low: CGFloat,
+         AndHigh       high: CGFloat ) -> CGFloat {
+        return (value - low) / (high - low)
     }
 
 }

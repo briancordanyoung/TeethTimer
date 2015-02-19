@@ -1,4 +1,5 @@
 import Foundation
+import CoreGraphics
 
 class Timer: NSObject {
 
@@ -102,7 +103,7 @@ class Timer: NSObject {
     var updateTimerWithText: (String) -> ()
     var updateUIControlText: (String) -> ()
     var updateTimerWithSeconds: (NSTimeInterval) -> ()
-    var updateTimerWithPercentage: (Float) -> ()
+    var updateTimerWithPercentage: (CGFloat) -> ()
 
     
     
@@ -134,7 +135,7 @@ class Timer: NSObject {
             #endif
         }
         
-        func printPercentage(timeAsPercentage: Float) {
+        func printPercentage(timeAsPercentage: CGFloat) {
             #if DEBUG
             println("Percentage left: \(timeAsPercentage)")
             #endif
@@ -149,7 +150,7 @@ class Timer: NSObject {
     init( WithControlTextFunc  updateUIControlTextFunc: (String) -> (),
           AndUpdateTimerFunc           updateTimerFunc: (String) -> (),
           AndUpdateSecondsFunc       updateSecondsFunc: (NSTimeInterval) -> (),
-          AndUpdatePercentageFunc updatePercentageFunc: (Float) -> ()    ) {
+          AndUpdatePercentageFunc updatePercentageFunc: (CGFloat) -> ()    ) {
             
         updateUIControlText       = updateUIControlTextFunc
         updateTimerWithText       = updateTimerFunc
@@ -211,11 +212,11 @@ class Timer: NSObject {
     }
     
     
-    func addTimeByPercentage(percentage: Float) {
+    func addTimeByPercentage(percentage: CGFloat) {
         // Don't use brushingDuration + additionalElapsedTime because
         // we only want to add a percentage of the original duration
         // without any additional seconds added
-        let additionalSeconds = NSTimeInterval(Float(brushingDuration) * percentage)
+        let additionalSeconds = brushingDuration * NSTimeInterval(percentage)
         addTimeBySeconds(additionalSeconds)
     }
     
@@ -273,21 +274,21 @@ class Timer: NSObject {
         let elapsedMinsTime = elapsedTime / 60.0
         let elapsedMins = Int(elapsedMinsTime)
         elapsedTime = elapsedMinsTime * 60
-        let elapsedSecsTime = elapsedTime - (Double(elapsedMins) * 60)
+        let elapsedSecsTime = elapsedTime - (NSTimeInterval(elapsedMins) * 60)
         let elapsedSecs = Int(elapsedSecsTime)
         
         return (elapsedMins, elapsedSecs)
     }
     
-    private func secondsToPercentage(secondsRemaining: NSTimeInterval) -> Float {
-        return Float(secondsRemaining / (brushingDuration))
+    private func secondsToPercentage(secondsRemaining: NSTimeInterval) -> CGFloat {
+        return CGFloat(secondsRemaining / brushingDuration)
     }
     
     private func updateTimerTo(timeRemaining: NSTimeInterval) {
         // TODO: More testing to make sure that the timer always ends...
         //       on 0 and 00:00.  Percentage left reuqired special handling
         
-        let percentageLeft: Float
+        let percentageLeft: CGFloat
         if hasCompleted {
             percentageLeft = 0.0
         } else {

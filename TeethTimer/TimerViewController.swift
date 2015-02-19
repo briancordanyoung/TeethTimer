@@ -155,10 +155,10 @@ class TimerViewController: UIViewController {
     
     // MARK: Callbacks to pass to the ImageWheel class
     func wheelTurnedBackByFunc(Wedge: Int,  AndPercentage percentage: CGFloat) {
-        timer.addTimeByPercentage(Float(percentage))
+        timer.addTimeByPercentage(percentage)
     }
     
-    func updatePercentageDone(percentageDone: Float) {
+    func updatePercentageDone(percentageDone: CGFloat) {
         
         if let gavinWheel = gavinWheel {
             // At 100% should always be the first leaf
@@ -199,9 +199,10 @@ class TimerViewController: UIViewController {
         return value
     }
     
-    func currentLeafValueFromPrecent(percentageDone: Float , WithSectionCount sections: Int) -> Int {
+    func currentLeafValueFromPrecent(percentageDone: CGFloat,
+                          WithSectionCount sections: Int) -> Int {
         let percentageToGo = 1.0 - percentageDone
-        let sectionsByPercent = percentageToGo * Float(sections)
+        let sectionsByPercent = percentageToGo * CGFloat(sections)
         let current = clamp(Int(sectionsByPercent),
             ToValue: sections)
         
