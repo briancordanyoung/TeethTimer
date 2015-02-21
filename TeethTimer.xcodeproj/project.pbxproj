@@ -111,6 +111,8 @@
 		D3B7BC8619EA383A00F50DF7 /* TeethTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC8519EA383A00F50DF7 /* TeethTimerTests.swift */; };
 		D3DC4C481A95877400984A24 /* ImageWheelVisualState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */; };
 		D3DC4C491A95877400984A24 /* ImageWheelVisualState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */; };
+		D3DC4C4B1A95BE5300984A24 /* ImageWheelWedges.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC4C4A1A95BE5300984A24 /* ImageWheelWedges.swift */; };
+		D3DC4C4C1A95BE5300984A24 /* ImageWheelWedges.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC4C4A1A95BE5300984A24 /* ImageWheelWedges.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -195,6 +197,7 @@
 		D3B7BC8419EA383A00F50DF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3B7BC8519EA383A00F50DF7 /* TeethTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeethTimerTests.swift; sourceTree = "<group>"; };
 		D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheelVisualState.swift; sourceTree = "<group>"; };
+		D3DC4C4A1A95BE5300984A24 /* ImageWheelWedges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheelWedges.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -311,6 +314,7 @@
 				D3354FF41A2953E700C667A0 /* ImageWheelControl.swift */,
 				D307719C1A8873DB003BA7E1 /* ImageWheelInteractionState.swift */,
 				D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */,
+				D3DC4C4A1A95BE5300984A24 /* ImageWheelWedges.swift */,
 				D3354FF71A298AD100C667A0 /* wedgeRegion.swift */,
 				D31F95E01A2C5FE700219B32 /* ColorImage.swift */,
 				D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */,
@@ -537,6 +541,7 @@
 			files = (
 				D307719D1A8873DB003BA7E1 /* ImageWheelInteractionState.swift in Sources */,
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
+				D3DC4C4B1A95BE5300984A24 /* ImageWheelWedges.swift in Sources */,
 				D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
 				D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */,
 				D3DC4C481A95877400984A24 /* ImageWheelVisualState.swift in Sources */,
@@ -551,6 +556,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3DC4C4C1A95BE5300984A24 /* ImageWheelWedges.swift in Sources */,
 				D3354FF91A298AD100C667A0 /* wedgeRegion.swift in Sources */,
 				D31F95E21A2C5FE700219B32 /* ColorImage.swift in Sources */,
 				D307719E1A8873DB003BA7E1 /* ImageWheelInteractionState.swift in Sources */,

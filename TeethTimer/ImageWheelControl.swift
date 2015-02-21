@@ -38,9 +38,13 @@ class ImageWheelControl: UIControl  {
     
     var container = UIView()
     var numberOfWedges: Int = 0
+    
+    // TODO: Create Wedges Structure that contains the WedgeRegions
+    //       and all the Wedge Helper Methods
+    
     var wedges: [WedgeRegion] = []
-    var images: [UIImage] = []
-    let userState = ImageWheelInteractionState()
+    var images: [UIImage]     = []
+    let userState   = ImageWheelInteractionState()
     let visualState = ImageWheelVisualState()
     
     var allWedgeImageViews: [UIImageView] {
@@ -419,8 +423,6 @@ class ImageWheelControl: UIControl  {
     }
     
     
-    
-    
 
     
     // MARK: Rotation Methods (Without Animating)
@@ -581,7 +583,7 @@ class ImageWheelControl: UIControl  {
     }
     
 
-    // MARK: Wedge Helper Methods
+    // MARK: Wedge Awareness Helpers
     func resolveDirectionAndCountToWedge(wedge: WedgeRegion,
         var inDirection direction: DirectionToRotate)
                     -> (direction: DirectionToRotate, count: Int) {
@@ -669,21 +671,6 @@ class ImageWheelControl: UIControl  {
     }
     
     
-    
-    func wedgeImageViewFromValue(value: Int) -> UIImageView? {
-        
-        var wedgeView: UIImageView?
-        
-        for image in allWedgeImageViews {
-            let imageView = image as UIImageView
-            if imageView.tag == value {
-                wedgeView = imageView
-            }
-        }
-        
-        return wedgeView
-    }
-    
     func wedgeFromValue(value: Int) -> WedgeRegion {
         
         var returnWedge: WedgeRegion?
@@ -760,14 +747,8 @@ class ImageWheelControl: UIControl  {
     }
     
     
-    func imageOfNumber(i: Int) -> UIImage {
-        return images[i - 1]
-    }
-    
-    
-    
     func currentRotation(currentRotation: CGFloat,
-                       isWithinWedge wedge: WedgeRegion) -> Bool {
+                     isWithinWedge wedge: WedgeRegion) -> Bool {
         var withinWedge = false
         
         if (currentRotation >= wedge.minRadian &&
@@ -779,7 +760,7 @@ class ImageWheelControl: UIControl  {
     }
     
     
-    // MARK: Whole Wheel Helper Methods
+    // MARK: Whole Wheel Helpers
     func checkIfWheelHasFlipped360(angle: CGFloat) {
         // TODO: This is janky.  Is there bettter math???
         if (userState.previousAngle < -2) && (angle > 2) {
@@ -797,7 +778,7 @@ class ImageWheelControl: UIControl  {
     }
 
     
-    // MARK: Whole Wheel Helper Methods
+    // MARK: UITouch Helpers
     func touchPointWithTouch(touch: UITouch) -> CGPoint {
         return touch.locationInView(self)
     }
@@ -852,7 +833,8 @@ class ImageWheelControl: UIControl  {
         
         return sqrt(sqrtOf)
     }
-    
+
+    // MARK: Angle Helpers
     func radiansFromTransform(transform: CGAffineTransform) -> CGFloat {
         let b = transform.b
         let a = transform.a
@@ -861,11 +843,6 @@ class ImageWheelControl: UIControl  {
         return radians
     }
     
-    
-    func dampenRotation(angle: CGFloat) -> CGFloat {
-        return (log((angle * rotationDampeningFactor) + 1) / rotationDampeningFactor)
-    }
-
     func normalizedAngleForAngle(var angle: CGFloat) -> CGFloat {
         let positiveHalfCircle =  halfCircle
         let negitiveHalfCircle = -halfCircle
@@ -879,6 +856,17 @@ class ImageWheelControl: UIControl  {
             }
         }
         return angle
+    }
+    
+    func dampenRotation(angle: CGFloat) -> CGFloat {
+        return (log((angle * rotationDampeningFactor) + 1) / rotationDampeningFactor)
+    }
+    
+    // MARK: Math Helpers
+    func percentValue(value: CGFloat,
+        isBetweenLow   low: CGFloat,
+        AndHigh       high: CGFloat ) -> CGFloat {
+            return (value - low) / (high - low)
     }
     
     // MARK: Debug printing methods
@@ -898,11 +886,23 @@ class ImageWheelControl: UIControl  {
         return paddedNumber
     }
     
-    // MARK: Math Helpers
-    func percentValue(value: CGFloat,
-         isBetweenLow   low: CGFloat,
-         AndHigh       high: CGFloat ) -> CGFloat {
-        return (value - low) / (high - low)
+    // MARK: Other
+    func wedgeImageViewFromValue(value: Int) -> UIImageView? {
+        
+        var wedgeView: UIImageView?
+        
+        for image in allWedgeImageViews {
+            let imageView = image as UIImageView
+            if imageView.tag == value {
+                wedgeView = imageView
+            }
+        }
+        
+        return wedgeView
+    }
+    
+    func imageOfNumber(i: Int) -> UIImage {
+        return images[i - 1]
     }
 
 }

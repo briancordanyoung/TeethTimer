@@ -1,0 +1,6 @@
+import CoreGraphics
+
+
+class ImageWheelWedges {
+    
+}
