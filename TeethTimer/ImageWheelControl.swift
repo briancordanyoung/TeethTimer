@@ -157,12 +157,7 @@ class ImageWheelControl: UIControl  {
         for i in 1...numberOfWedges {
             
             let wedgeAngle = (CGFloat(wedgeWidthAngle) * CGFloat(i)) - wedgeStartingAngle
-            
-            var imageView = UIImageView(image: imageOfNumber(i))
-            imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
-            imageView.transform = CGAffineTransformMakeRotation(wedgeAngle)
-            imageView.tag = i
-            
+            var imageView  = createWedgeAtIndex(i, AndAngle: wedgeAngle)            
             container.addSubview(imageView)
         }
         
@@ -179,7 +174,7 @@ class ImageWheelControl: UIControl  {
     }
     
     func createWedgeAtIndex(i: Int, AndAngle angle: CGFloat) -> UIImageView {
-        var imageView = UIImageView()
+        var imageView = UIImageView(image: imageOfNumber(i))
         imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
         imageView.transform = CGAffineTransformMakeRotation(angle)
         imageView.tag = i
