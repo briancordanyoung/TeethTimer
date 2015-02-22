@@ -2,23 +2,7 @@
 
 import UIKit
 
-func normalizedAngleForAngle(var angle: CGFloat) -> CGFloat {
-    let halfCircle = CGFloat(M_PI)
-    let fullCircle = CGFloat(M_PI) * 2
-    let positiveHalfCircle =  halfCircle
-    let negitiveHalfCircle = -halfCircle
-    
-    while angle > positiveHalfCircle || angle < negitiveHalfCircle {
-        if angle > positiveHalfCircle {
-            angle -= fullCircle
-        }
-        if angle < negitiveHalfCircle {
-            angle += fullCircle
-        }
-    }
-    return angle
-}
+let images = ["a","b","d","e","f","g","h","i"]
+let wedges = ["x","y"]
 
-
-normalizedAngleForAngle(0)
-normalizedAngleForAngle(34.23)
+let currentImageFactor = images.count / wedges.count
