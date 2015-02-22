@@ -5,7 +5,7 @@ typealias ImageIndex = Int
 
 struct ImageWheelRotationKey {
     let timePercent: CGFloat
-    let wedge: WedgeRegion
+    let image: ImageIndex
 }
 
 enum DirectionToRotate {
@@ -428,7 +428,7 @@ class ImageWheelControl: UIControl  {
     
     
     // MARK: -
-    // MARK: Rotation Methods (Without Animating)
+    // MARK: Wedge Rotation Methods (Without Animating)
     func rotateToWedgeByValue(value: Int) {
         let wedge = wedgeFromValue(value)
         rotateToWedge(wedge)
@@ -465,7 +465,7 @@ class ImageWheelControl: UIControl  {
 //        wheelTurnedBackBy(wedgeCount, AndPercentage: percentage)
     }
     
-    // MARK: Animation Methods
+    // MARK: Wedge Animation Methods
     
     func animateToWedgeByValue(value: Int) {
         animateToWedgeByValue(value, inDirection: .Closest)
@@ -477,7 +477,8 @@ class ImageWheelControl: UIControl  {
         animateToWedge(wedge, inDirection: direction)
     }
 
-    
+    // TODO: remove method and other 'wedge' methods that are not needed after
+    //       transitioning to 'image' methods
     func animateToWedge(wedge: WedgeRegion,
         inDirection direction: DirectionToRotate) {
         
@@ -488,7 +489,7 @@ class ImageWheelControl: UIControl  {
             
         if resolved.count == 0 {
             let aStep = ImageWheelRotationKey(timePercent: 1.0,
-                                                    wedge: currentWedge)
+                                                    image: currentWedge.value)
             steps.append(aStep)
             
         } else {
@@ -502,7 +503,7 @@ class ImageWheelControl: UIControl  {
                 
                 
                 let aStep = ImageWheelRotationKey(timePercent: timeSlice,
-                                                        wedge: currentWedge)
+                                                        image: currentWedge.value)
                 steps.append(aStep)
             }
         }
@@ -548,9 +549,10 @@ class ImageWheelControl: UIControl  {
                     UIView.addKeyframeWithRelativeStartTime( startTime,
                                            relativeDuration: stepDuration,
                                                  animations: {
+                        let wedge = wedgeForImage(step.image)
                         self.container.transform =
-                                    CGAffineTransformMakeRotation(step.wedge.midRadian)
-                        self.setImageOpacityForCurrentAngle(step.wedge.midRadian)
+                                    CGAffineTransformMakeRotation(wedge.midRadian)
+                        self.setImageOpacityForCurrentAngle(wedge.midRadian)
                                                     
                     }) // end addKeyframeWithRelativeStartTime
                     startTime = startTime + stepDuration
@@ -566,13 +568,16 @@ class ImageWheelControl: UIControl  {
                         initialSpringVelocity: 1.0,
                         options: .BeginFromCurrentState,
                         animations: {
-                            let t = CGAffineTransformMakeRotation(lastStep.wedge.midRadian)
+                            let wedge = wedgeForImage(lastStep.image)
+                            let t = CGAffineTransformMakeRotation(wedge.midRadian)
                             self.container.transform = t;
-                            self.setImageOpacityForCurrentAngle(lastStep.wedge.midRadian)
+                            self.setImageOpacityForCurrentAngle(wedge.midRadian)
                         },
                         completion: {
                             finished in
                             self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+                            self.visualState.imageWheelFullRotations =
+                                                lastStep.image / self.wedges.count
                     })
                 }
             }
@@ -581,19 +586,169 @@ class ImageWheelControl: UIControl  {
     
 
     
+    func imageForWedge(             wedge: WedgeRegion,
+         WhileCurrentImageIs currentImage: ImageIndex) -> ImageIndex {
+            
+        var currentWedge = wedgeForImage(currentImage)
+        let resolved = resolveDirectionAndCountToWedge( wedge,
+                                     GivenCurrentWedge: currentWedge,
+                                           inDirection: .Closest)
+
+        let image: ImageIndex
+        if resolved.direction == .Clockwise {
+            image = currentImage + resolved.count
+        } else {
+            image = currentImage - resolved.count
+        }
+            
+        return image
+    }
+    
+    func wedgeForImage(image: ImageIndex) -> WedgeRegion {
+        var wedgeValue = image % wedges.count
+        if wedgeValue == 0 {
+            wedgeValue = wedges.count
+        }
+        return wedgeFromValue(wedgeValue)
+    }
+    
+    // MARK: -
+    // MARK: Rotation Methods (Without Animating)
+    func rotateToImage(image: ImageIndex) {
+        visualState.imageWheelFullRotations = image / wedges.count
+        let wedge = wedgeForImage(image)
+        rotateToWedge(wedge)
+    }
+    
+    // MARK: Animation Methods
+    func animateToImage(image: ImageIndex) {
+        animateToImage( image, inDirection: .Closest)
+    }
     
     
+    func animateToImage(image: ImageIndex,
+        inDirection direction: DirectionToRotate) {
+            
+            var steps: [ImageWheelRotationKey] = []
+            let resolved = resolveDirectionAndCountToImage( image,
+                inDirection: direction)
+            var currentImage = self.currentImage
+            
+            
+            if resolved.count == 0 {
+                let aStep = ImageWheelRotationKey(timePercent: 1.0,
+                    image: currentImage)
+                steps.append(aStep)
+                
+            } else {
+                let timeSlice = 1.0 / CGFloat(resolved.count)
+                for i in 1...resolved.count {
+                    if resolved.direction == .Clockwise {
+                        currentImage = nextImage(currentImage)
+                    } else {
+                        currentImage = previousImage(currentImage)
+                    }
+                    
+                    
+                    let aStep = ImageWheelRotationKey(timePercent: timeSlice,
+                        image: currentImage)
+                    steps.append(aStep)
+                }
+            }
+            
+            animateToEachStep(steps)
+    }
     
+    func resolveDirectionAndCountToImage(image: ImageIndex,
+                     var inDirection direction: DirectionToRotate)
+                                 -> (direction: DirectionToRotate, count: Int) {
+            
+            let count: Int
+            
+            switch direction {
+            case .Closest:
+                let positiveCount = countFromImage( currentImage,
+                    ToImage: image,
+                    inDirection: .Clockwise)
+                let negitiveCount = countFromImage( currentImage,
+                    ToImage: image,
+                    inDirection: .CounterClockwise)
+                
+                if positiveCount <= negitiveCount {
+                    count     = positiveCount
+                    direction = .Clockwise
+                } else {
+                    count     = negitiveCount
+                    direction = .CounterClockwise
+                }
+                
+            case .Clockwise:
+                count = countFromImage( currentImage,
+                    ToImage: image,
+                    inDirection: .Clockwise)
+                
+            case .CounterClockwise:
+                count = countFromImage( currentImage,
+                    ToImage: image,
+                    inDirection: .CounterClockwise)
+                
+            }
+            
+            return (direction, count)
+            
+    }
     
+    func countFromImage( fromImage: ImageIndex,
+        ToImage toImage: ImageIndex,
+        inDirection direction: DirectionRotated) -> Int {
+            
+            var image = fromImage
+            var count = 0
+            while true {
+                if image == toImage {
+                    break
+                }
+                if direction == .Clockwise {
+                    image = nextImage(image)
+                } else {
+                    image = previousImage(image)
+                }
+                ++count
+            }
+            return count
+    }
+    
+    func nextImage(var image: ImageIndex) -> ImageIndex {
+        ++image
+        if image > images.count {
+            image = 1
+        }
+        return image
+    }
+    
+    func previousImage(var image: ImageIndex) -> ImageIndex {
+        --image
+        if image < 1 {
+            image = images.count
+        }
+        return image
+    }
     
     
     // MARK: -
     // MARK: Wedge Mothods
     func resolveDirectionAndCountToWedge(wedge: WedgeRegion,
-        var inDirection direction: DirectionToRotate)
-                    -> (direction: DirectionToRotate, count: Int) {
-            
-            var currentWedge = self.currentWedge
+                     var inDirection direction: DirectionToRotate)
+                                 -> (direction: DirectionToRotate, count: Int) {
+         return resolveDirectionAndCountToWedge( wedge,
+                              GivenCurrentWedge: self.currentWedge,
+                                    inDirection: direction)
+    }
+    
+    func resolveDirectionAndCountToWedge(wedge: WedgeRegion,
+                GivenCurrentWedge currentWedge: WedgeRegion,
+                     var inDirection direction: DirectionToRotate)
+                                 -> (direction: DirectionToRotate, count: Int) {
             
             let count: Int
             
