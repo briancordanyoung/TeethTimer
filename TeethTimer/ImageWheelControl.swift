@@ -57,9 +57,29 @@ class ImageWheelControl: UIControl  {
                     }
                 }
             }
+            println("allWedgeImageViews Count: \(wedgeImageViews.count)")
             return wedgeImageViews
         }
     }
+    
+    var allWedgeViews: [Int:UIView] {
+        get {
+            let views = container.subviews
+            
+            var wedgeViews: [Int:UIView] = [:]
+            for view in views {
+                if !view.isKindOfClass(UIImageView.self) {
+                    let view = view as! UIView
+                    if view.tag != 0 {
+                        wedgeViews[tag] = view
+                    }
+                }
+            }
+            println("allWedgeViews Count: \(wedgeViews.count)")
+            return wedgeViews
+        }
+    }
+    
     
     var currentRotation: CGFloat {
         get {
@@ -153,14 +173,14 @@ class ImageWheelControl: UIControl  {
     func createWedges() {
         
         let wedgeStartingAngle = (halfCircle * 3) + CGFloat(self.wedgeWidthAngle / 2)
+        
         // Build UIViews for each pie piece
         for i in 1...numberOfWedges {
-            
             let wedgeAngle = (CGFloat(wedgeWidthAngle) * CGFloat(i)) - wedgeStartingAngle
-            var imageView  = createWedgeAtIndex(i, AndAngle: wedgeAngle)            
-            container.addSubview(imageView)
+            let wedgeView  = createWedgeViewAtIndex(i, AndAngle: wedgeAngle)
+//            var imageView  = createWedgeAtIndex(i, AndAngle: wedgeAngle)
+            container.addSubview(wedgeView)
         }
-        
         
         container.userInteractionEnabled = false
         self.addSubview(container)
@@ -170,15 +190,31 @@ class ImageWheelControl: UIControl  {
         } else {
             createWedgeRegionsOdd()
         }
-                
+        
+        let wedgeViews = allWedgeViews
+        
+//        for i in 1...images.count {
+//            let imageView = UIImageView(image: imageOfNumber(i))
+//            let wedgeValue = wedgeForImage(i).value
+//            wedgeViews[wedgeValue]?.addSubview(imageView)
+//        }
+        
     }
     
     func createWedgeAtIndex(i: Int, AndAngle angle: CGFloat) -> UIImageView {
-        var imageView = UIImageView(image: imageOfNumber(i))
+        let imageView = UIImageView(image: imageOfNumber(i))
         imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
         imageView.transform = CGAffineTransformMakeRotation(angle)
         imageView.tag = i
         return imageView
+    }
+    
+    func createWedgeViewAtIndex(i: Int, AndAngle angle: CGFloat) -> UIView {
+        let wedgeView = UIView()
+        wedgeView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
+        wedgeView.transform = CGAffineTransformMakeRotation(angle)
+        wedgeView.tag = i
+        return wedgeView
     }
     
     func createWedgeRegionsEven() {
@@ -1055,6 +1091,20 @@ class ImageWheelControl: UIControl  {
             let imageView = image as UIImageView
             if imageView.tag == value {
                 wedgeView = imageView
+            }
+        }
+        
+        return wedgeView
+    }
+    
+    
+    func wedgeViewFromValue(value: Int) -> UIView? {
+        
+        var wedgeView: UIView?
+        
+        for anyWedgeView in allWedgeViews {
+            if anyWedgeView.tag == value {
+                wedgeView = anyWedgeView
             }
         }
         
