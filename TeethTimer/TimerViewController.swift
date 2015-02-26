@@ -33,7 +33,7 @@ class TimerViewController: UIViewController {
         styleButton(resetButton)
         styleButton(startPauseButton)
         
-        let images = arrayOfImages(10)
+        let images = arrayOfImages(15)
         let gavinWheel = ImageWheelControl(WithSections: 10, AndImages: images)
         
         controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
