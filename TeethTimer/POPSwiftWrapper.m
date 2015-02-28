@@ -80,9 +80,6 @@
 -(BOOL)repeatForever { return self.ref.repeatForever; }
 -(void)setRepeatForever:(BOOL)repeatForever { self.ref.repeatForever = repeatForever; }
 
-//-(id)currentValue { return self.ref.currentValue; }
-//-(void)setCurrentValue:(id)currentValue { self.ref.currentValue = currentValue; }
-
 
 
 @end

@@ -8,6 +8,36 @@
 
 
 
+@protocol _POPAnimationDelegate <NSObject>
+@optional
+
+/**
+ @abstract Called on animation start.
+ @param anim The relevant animation.
+ */
+- (void)pop_animationDidStart:(POPAnimation *)anim;
+
+/**
+ @abstract Called when value meets or exceeds to value.
+ @param anim The relevant animation.
+ */
+- (void)pop_animationDidReachToValue:(POPAnimation *)anim;
+
+/**
+ @abstract Called on animation stop.
+ @param anim The relevant animation.
+ @param finished Flag indicating finished state. Flag is true if the animation reached completion before being removed.
+ */
+- (void)pop_animationDidStop:(POPAnimation *)anim finished:(BOOL)finished;
+
+/**
+ @abstract Called each frame animation is applied.
+ @param anim The relevant animation.
+ */
+- (void)pop_animationDidApply:(POPAnimation *)anim;
+
+@end
+
 
 
 /// Abstract animation effect class
@@ -53,45 +83,12 @@ BOOL repeatForever;
 @property (strong)
 POPAnimation* ref;
 
-@property (strong)
-id currentValue;
-
 
 @end
 
 @class _POPAnimatableProperty;
 
 
-
-@protocol _POPAnimationDelegate <NSObject>
-@optional
-
-/**
- @abstract Called on animation start.
- @param anim The relevant animation.
- */
-- (void)pop_animationDidStart:(POPAnimation *)anim;
-
-/**
- @abstract Called when value meets or exceeds to value.
- @param anim The relevant animation.
- */
-- (void)pop_animationDidReachToValue:(POPAnimation *)anim;
-
-/**
- @abstract Called on animation stop.
- @param anim The relevant animation.
- @param finished Flag indicating finished state. Flag is true if the animation reached completion before being removed.
- */
-- (void)pop_animationDidStop:(POPAnimation *)anim finished:(BOOL)finished;
-
-/**
- @abstract Called each frame animation is applied.
- @param anim The relevant animation.
- */
-- (void)pop_animationDidApply:(POPAnimation *)anim;
-
-@end
 
 
 
@@ -117,10 +114,6 @@ CFTimeInterval beginTime;
 
 @property (copy, nonatomic)
 id delegate;
-
-
-//@property (readonly)
-//CGFloat progress;
 
 @property (assign, nonatomic)
 CGFloat roundingFactor;
