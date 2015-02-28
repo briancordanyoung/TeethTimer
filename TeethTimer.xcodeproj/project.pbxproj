@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B2B31E5C4E30211FC85A4DB9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1113560EAB34F926CF979D1 /* libPods.a */; };
 		D30771821A869B06003BA7E1 /* num-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716C1A869B06003BA7E1 /* num-01@2x.png */; };
 		D30771831A869B06003BA7E1 /* num-02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716D1A869B06003BA7E1 /* num-02@2x.png */; };
 		D30771841A869B06003BA7E1 /* num-03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716E1A869B06003BA7E1 /* num-03@2x.png */; };
@@ -30,101 +31,56 @@
 		D30771961A869B06003BA7E1 /* num-21@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771801A869B06003BA7E1 /* num-21@2x.png */; };
 		D30771971A869B06003BA7E1 /* num-22@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771811A869B06003BA7E1 /* num-22@2x.png */; };
 		D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */; };
-		D307719B1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */; };
 		D307719D1A8873DB003BA7E1 /* ImageWheelInteractionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307719C1A8873DB003BA7E1 /* ImageWheelInteractionState.swift */; };
-		D307719E1A8873DB003BA7E1 /* ImageWheelInteractionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D307719C1A8873DB003BA7E1 /* ImageWheelInteractionState.swift */; };
 		D31F95E11A2C5FE700219B32 /* ColorImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F95E01A2C5FE700219B32 /* ColorImage.swift */; };
-		D31F95E21A2C5FE700219B32 /* ColorImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F95E01A2C5FE700219B32 /* ColorImage.swift */; };
 		D335409C1A3764E80064C81C /* Gavin Poses-s01.png in Resources */ = {isa = PBXBuildFile; fileRef = D335407E1A3764E80064C81C /* Gavin Poses-s01.png */; };
-		D335409D1A3764E80064C81C /* Gavin Poses-s01.png in Resources */ = {isa = PBXBuildFile; fileRef = D335407E1A3764E80064C81C /* Gavin Poses-s01.png */; };
 		D335409E1A3764E80064C81C /* Gavin Poses-s01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335407F1A3764E80064C81C /* Gavin Poses-s01@2x.png */; };
-		D335409F1A3764E80064C81C /* Gavin Poses-s01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335407F1A3764E80064C81C /* Gavin Poses-s01@2x.png */; };
 		D33540A01A3764E80064C81C /* Gavin Poses-s01@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540801A3764E80064C81C /* Gavin Poses-s01@3x.png */; };
-		D33540A11A3764E80064C81C /* Gavin Poses-s01@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540801A3764E80064C81C /* Gavin Poses-s01@3x.png */; };
 		D33540A21A3764E80064C81C /* Gavin Poses-s02.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540811A3764E80064C81C /* Gavin Poses-s02.png */; };
-		D33540A31A3764E80064C81C /* Gavin Poses-s02.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540811A3764E80064C81C /* Gavin Poses-s02.png */; };
 		D33540A41A3764E80064C81C /* Gavin Poses-s02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540821A3764E80064C81C /* Gavin Poses-s02@2x.png */; };
-		D33540A51A3764E80064C81C /* Gavin Poses-s02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540821A3764E80064C81C /* Gavin Poses-s02@2x.png */; };
 		D33540A61A3764E80064C81C /* Gavin Poses-s02@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540831A3764E80064C81C /* Gavin Poses-s02@3x.png */; };
-		D33540A71A3764E80064C81C /* Gavin Poses-s02@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540831A3764E80064C81C /* Gavin Poses-s02@3x.png */; };
 		D33540A81A3764E80064C81C /* Gavin Poses-s03.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540841A3764E80064C81C /* Gavin Poses-s03.png */; };
-		D33540A91A3764E80064C81C /* Gavin Poses-s03.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540841A3764E80064C81C /* Gavin Poses-s03.png */; };
 		D33540AA1A3764E80064C81C /* Gavin Poses-s03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540851A3764E80064C81C /* Gavin Poses-s03@2x.png */; };
-		D33540AB1A3764E80064C81C /* Gavin Poses-s03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540851A3764E80064C81C /* Gavin Poses-s03@2x.png */; };
 		D33540AC1A3764E80064C81C /* Gavin Poses-s03@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540861A3764E80064C81C /* Gavin Poses-s03@3x.png */; };
-		D33540AD1A3764E80064C81C /* Gavin Poses-s03@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540861A3764E80064C81C /* Gavin Poses-s03@3x.png */; };
 		D33540AE1A3764E80064C81C /* Gavin Poses-s04.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540871A3764E80064C81C /* Gavin Poses-s04.png */; };
-		D33540AF1A3764E80064C81C /* Gavin Poses-s04.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540871A3764E80064C81C /* Gavin Poses-s04.png */; };
 		D33540B01A3764E80064C81C /* Gavin Poses-s04@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540881A3764E80064C81C /* Gavin Poses-s04@2x.png */; };
-		D33540B11A3764E80064C81C /* Gavin Poses-s04@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540881A3764E80064C81C /* Gavin Poses-s04@2x.png */; };
 		D33540B21A3764E80064C81C /* Gavin Poses-s04@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540891A3764E80064C81C /* Gavin Poses-s04@3x.png */; };
-		D33540B31A3764E80064C81C /* Gavin Poses-s04@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540891A3764E80064C81C /* Gavin Poses-s04@3x.png */; };
 		D33540B41A3764E80064C81C /* Gavin Poses-s05.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408A1A3764E80064C81C /* Gavin Poses-s05.png */; };
-		D33540B51A3764E80064C81C /* Gavin Poses-s05.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408A1A3764E80064C81C /* Gavin Poses-s05.png */; };
 		D33540B61A3764E80064C81C /* Gavin Poses-s05@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408B1A3764E80064C81C /* Gavin Poses-s05@2x.png */; };
-		D33540B71A3764E80064C81C /* Gavin Poses-s05@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408B1A3764E80064C81C /* Gavin Poses-s05@2x.png */; };
 		D33540B81A3764E80064C81C /* Gavin Poses-s05@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408C1A3764E80064C81C /* Gavin Poses-s05@3x.png */; };
-		D33540B91A3764E80064C81C /* Gavin Poses-s05@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408C1A3764E80064C81C /* Gavin Poses-s05@3x.png */; };
 		D33540BA1A3764E80064C81C /* Gavin Poses-s06.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408D1A3764E80064C81C /* Gavin Poses-s06.png */; };
-		D33540BB1A3764E80064C81C /* Gavin Poses-s06.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408D1A3764E80064C81C /* Gavin Poses-s06.png */; };
 		D33540BC1A3764E80064C81C /* Gavin Poses-s06@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408E1A3764E80064C81C /* Gavin Poses-s06@2x.png */; };
-		D33540BD1A3764E80064C81C /* Gavin Poses-s06@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408E1A3764E80064C81C /* Gavin Poses-s06@2x.png */; };
 		D33540BE1A3764E80064C81C /* Gavin Poses-s06@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408F1A3764E80064C81C /* Gavin Poses-s06@3x.png */; };
-		D33540BF1A3764E80064C81C /* Gavin Poses-s06@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408F1A3764E80064C81C /* Gavin Poses-s06@3x.png */; };
 		D33540C01A3764E80064C81C /* Gavin Poses-s07.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540901A3764E80064C81C /* Gavin Poses-s07.png */; };
-		D33540C11A3764E80064C81C /* Gavin Poses-s07.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540901A3764E80064C81C /* Gavin Poses-s07.png */; };
 		D33540C21A3764E80064C81C /* Gavin Poses-s07@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540911A3764E80064C81C /* Gavin Poses-s07@2x.png */; };
-		D33540C31A3764E80064C81C /* Gavin Poses-s07@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540911A3764E80064C81C /* Gavin Poses-s07@2x.png */; };
 		D33540C41A3764E80064C81C /* Gavin Poses-s07@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540921A3764E80064C81C /* Gavin Poses-s07@3x.png */; };
-		D33540C51A3764E80064C81C /* Gavin Poses-s07@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540921A3764E80064C81C /* Gavin Poses-s07@3x.png */; };
 		D33540C61A3764E80064C81C /* Gavin Poses-s08.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540931A3764E80064C81C /* Gavin Poses-s08.png */; };
-		D33540C71A3764E80064C81C /* Gavin Poses-s08.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540931A3764E80064C81C /* Gavin Poses-s08.png */; };
 		D33540C81A3764E80064C81C /* Gavin Poses-s08@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540941A3764E80064C81C /* Gavin Poses-s08@2x.png */; };
-		D33540C91A3764E80064C81C /* Gavin Poses-s08@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540941A3764E80064C81C /* Gavin Poses-s08@2x.png */; };
 		D33540CA1A3764E80064C81C /* Gavin Poses-s08@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540951A3764E80064C81C /* Gavin Poses-s08@3x.png */; };
-		D33540CB1A3764E80064C81C /* Gavin Poses-s08@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540951A3764E80064C81C /* Gavin Poses-s08@3x.png */; };
 		D33540CC1A3764E80064C81C /* Gavin Poses-s09.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540961A3764E80064C81C /* Gavin Poses-s09.png */; };
-		D33540CD1A3764E80064C81C /* Gavin Poses-s09.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540961A3764E80064C81C /* Gavin Poses-s09.png */; };
 		D33540CE1A3764E80064C81C /* Gavin Poses-s09@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540971A3764E80064C81C /* Gavin Poses-s09@2x.png */; };
-		D33540CF1A3764E80064C81C /* Gavin Poses-s09@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540971A3764E80064C81C /* Gavin Poses-s09@2x.png */; };
 		D33540D01A3764E80064C81C /* Gavin Poses-s09@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540981A3764E80064C81C /* Gavin Poses-s09@3x.png */; };
-		D33540D11A3764E80064C81C /* Gavin Poses-s09@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540981A3764E80064C81C /* Gavin Poses-s09@3x.png */; };
 		D33540D21A3764E80064C81C /* Gavin Poses-s10.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540991A3764E80064C81C /* Gavin Poses-s10.png */; };
-		D33540D31A3764E80064C81C /* Gavin Poses-s10.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540991A3764E80064C81C /* Gavin Poses-s10.png */; };
 		D33540D41A3764E80064C81C /* Gavin Poses-s10@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335409A1A3764E80064C81C /* Gavin Poses-s10@2x.png */; };
-		D33540D51A3764E80064C81C /* Gavin Poses-s10@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335409A1A3764E80064C81C /* Gavin Poses-s10@2x.png */; };
 		D33540D61A3764E80064C81C /* Gavin Poses-s10@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335409B1A3764E80064C81C /* Gavin Poses-s10@3x.png */; };
-		D33540D71A3764E80064C81C /* Gavin Poses-s10@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335409B1A3764E80064C81C /* Gavin Poses-s10@3x.png */; };
 		D3354FF51A2953E700C667A0 /* ImageWheelControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3354FF41A2953E700C667A0 /* ImageWheelControl.swift */; };
-		D3354FF61A2953E700C667A0 /* ImageWheelControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3354FF41A2953E700C667A0 /* ImageWheelControl.swift */; };
 		D3354FF81A298AD100C667A0 /* wedgeRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3354FF71A298AD100C667A0 /* wedgeRegion.swift */; };
-		D3354FF91A298AD100C667A0 /* wedgeRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3354FF71A298AD100C667A0 /* wedgeRegion.swift */; };
-		D335501A1A299A4900C667A0 /* segment.png in Resources */ = {isa = PBXBuildFile; fileRef = D33550051A299A4900C667A0 /* segment.png */; };
-		D335501B1A299A4900C667A0 /* segment.png in Resources */ = {isa = PBXBuildFile; fileRef = D33550051A299A4900C667A0 /* segment.png */; };
 		D3485C8519ECEEB900C6E495 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3485C8419ECEEB900C6E495 /* Timer.swift */; };
 		D34DC0561A0FF26000AA7420 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D34DC0551A0FF26000AA7420 /* Settings.bundle */; };
-		D34DC0571A0FF26000AA7420 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D34DC0551A0FF26000AA7420 /* Settings.bundle */; };
+		D388C3021A9F7B50007D4F8B /* POPProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = D388C2FF1A9F7B50007D4F8B /* POPProperty.swift */; };
+		D388C3031A9F7B50007D4F8B /* POPSwiftWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D388C3011A9F7B50007D4F8B /* POPSwiftWrapper.m */; };
 		D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */; };
 		D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */; };
 		D3B7BC7519EA383A00F50DF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3B7BC7319EA383A00F50DF7 /* Main.storyboard */; };
 		D3B7BC7A19EA383A00F50DF7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3B7BC7819EA383A00F50DF7 /* LaunchScreen.xib */; };
-		D3B7BC8619EA383A00F50DF7 /* TeethTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC8519EA383A00F50DF7 /* TeethTimerTests.swift */; };
 		D3D406F41A985FA700FDD117 /* ImageWheelControl+Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D406F31A985FA700FDD117 /* ImageWheelControl+Images.swift */; };
 		D3DC4C481A95877400984A24 /* ImageWheelVisualState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */; };
-		D3DC4C491A95877400984A24 /* ImageWheelVisualState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		D3B7BC8019EA383A00F50DF7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D3B7BC6219EA383A00F50DF7 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D3B7BC6919EA383A00F50DF7;
-			remoteInfo = TeethTimer;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
+		494890643301A07092EB8CC0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		A8D8BE3E5746E8CC9B850697 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		B1113560EAB34F926CF979D1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D307716C1A869B06003BA7E1 /* num-01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-01@2x.png"; path = "TeethTimer/Numbers/num-01@2x.png"; sourceTree = "<group>"; };
 		D307716D1A869B06003BA7E1 /* num-02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-02@2x.png"; path = "TeethTimer/Numbers/num-02@2x.png"; sourceTree = "<group>"; };
 		D307716E1A869B06003BA7E1 /* num-03@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-03@2x.png"; path = "TeethTimer/Numbers/num-03@2x.png"; sourceTree = "<group>"; };
@@ -182,17 +138,19 @@
 		D335409B1A3764E80064C81C /* Gavin Poses-s10@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s10@3x.png"; sourceTree = "<group>"; };
 		D3354FF41A2953E700C667A0 /* ImageWheelControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheelControl.swift; sourceTree = "<group>"; };
 		D3354FF71A298AD100C667A0 /* wedgeRegion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = wedgeRegion.swift; sourceTree = "<group>"; };
-		D33550051A299A4900C667A0 /* segment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = segment.png; sourceTree = "<group>"; };
 		D3485C8319ECE77200C6E495 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		D3485C8419ECEEB900C6E495 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		D34DC0551A0FF26000AA7420 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		D388C2E41A9EE256007D4F8B /* TeethTimer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TeethTimer-Bridging-Header.h"; sourceTree = "<group>"; };
+		D388C2FF1A9F7B50007D4F8B /* POPProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POPProperty.swift; sourceTree = "<group>"; };
+		D388C3001A9F7B50007D4F8B /* POPSwiftWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POPSwiftWrapper.h; sourceTree = "<group>"; };
+		D388C3011A9F7B50007D4F8B /* POPSwiftWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POPSwiftWrapper.m; sourceTree = "<group>"; };
 		D3B7BC6A19EA383A00F50DF7 /* TeethTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeethTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B7BC6E19EA383A00F50DF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
 		D3B7BC7419EA383A00F50DF7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D3B7BC7919EA383A00F50DF7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		D3B7BC7F19EA383A00F50DF7 /* TeethTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TeethTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B7BC8419EA383A00F50DF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3B7BC8519EA383A00F50DF7 /* TeethTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeethTimerTests.swift; sourceTree = "<group>"; };
 		D3D406F31A985FA700FDD117 /* ImageWheelControl+Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImageWheelControl+Images.swift"; sourceTree = "<group>"; };
@@ -204,19 +162,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D3B7BC7C19EA383A00F50DF7 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				B2B31E5C4E30211FC85A4DB9 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0588C91E349A150BB0A9B1EB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B1113560EAB34F926CF979D1 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D30771981A869B10003BA7E1 /* Numbers */ = {
 			isa = PBXGroup;
 			children = (
@@ -284,12 +244,24 @@
 			path = GavinPoses;
 			sourceTree = "<group>";
 		};
+		D388C3041A9F7B5D007D4F8B /* POP-Wrapper */ = {
+			isa = PBXGroup;
+			children = (
+				D388C2FF1A9F7B50007D4F8B /* POPProperty.swift */,
+				D388C3001A9F7B50007D4F8B /* POPSwiftWrapper.h */,
+				D388C3011A9F7B50007D4F8B /* POPSwiftWrapper.m */,
+			);
+			name = "POP-Wrapper";
+			sourceTree = "<group>";
+		};
 		D3B7BC6119EA383A00F50DF7 = {
 			isa = PBXGroup;
 			children = (
 				D3B7BC6C19EA383A00F50DF7 /* TeethTimer */,
 				D3B7BC8219EA383A00F50DF7 /* TeethTimerTests */,
 				D3B7BC6B19EA383A00F50DF7 /* Products */,
+				D7D25F379C44550B89AD1B67 /* Pods */,
+				0588C91E349A150BB0A9B1EB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -297,7 +269,6 @@
 			isa = PBXGroup;
 			children = (
 				D3B7BC6A19EA383A00F50DF7 /* TeethTimer.app */,
-				D3B7BC7F19EA383A00F50DF7 /* TeethTimerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -320,6 +291,8 @@
 				D3485C8319ECE77200C6E495 /* MyPlayground.playground */,
 				D34DC0551A0FF26000AA7420 /* Settings.bundle */,
 				D3B7BC6D19EA383A00F50DF7 /* Supporting Files */,
+				D388C3041A9F7B5D007D4F8B /* POP-Wrapper */,
+				D388C2E41A9EE256007D4F8B /* TeethTimer-Bridging-Header.h */,
 			);
 			path = TeethTimer;
 			sourceTree = "<group>";
@@ -329,7 +302,6 @@
 			children = (
 				D335407D1A3764E80064C81C /* GavinPoses */,
 				D30771981A869B10003BA7E1 /* Numbers */,
-				D33550051A299A4900C667A0 /* segment.png */,
 				D3B7BC6E19EA383A00F50DF7 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -352,6 +324,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		D7D25F379C44550B89AD1B67 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A8D8BE3E5746E8CC9B850697 /* Pods.debug.xcconfig */,
+				494890643301A07092EB8CC0 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -359,9 +340,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D3B7BC8919EA383A00F50DF7 /* Build configuration list for PBXNativeTarget "TeethTimer" */;
 			buildPhases = (
+				128885417291DA3B80C53879 /* Check Pods Manifest.lock */,
 				D3B7BC6619EA383A00F50DF7 /* Sources */,
 				D3B7BC6719EA383A00F50DF7 /* Frameworks */,
 				D3B7BC6819EA383A00F50DF7 /* Resources */,
+				562005A17CE1462DA7BDB754 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -371,24 +354,6 @@
 			productName = TeethTimer;
 			productReference = D3B7BC6A19EA383A00F50DF7 /* TeethTimer.app */;
 			productType = "com.apple.product-type.application";
-		};
-		D3B7BC7E19EA383A00F50DF7 /* TeethTimerTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D3B7BC8C19EA383A00F50DF7 /* Build configuration list for PBXNativeTarget "TeethTimerTests" */;
-			buildPhases = (
-				D3B7BC7B19EA383A00F50DF7 /* Sources */,
-				D3B7BC7C19EA383A00F50DF7 /* Frameworks */,
-				D3B7BC7D19EA383A00F50DF7 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				D3B7BC8119EA383A00F50DF7 /* PBXTargetDependency */,
-			);
-			name = TeethTimerTests;
-			productName = TeethTimerTests;
-			productReference = D3B7BC7F19EA383A00F50DF7 /* TeethTimerTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -402,10 +367,6 @@
 					D3B7BC6919EA383A00F50DF7 = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = YJ4PN236TF;
-					};
-					D3B7BC7E19EA383A00F50DF7 = {
-						CreatedOnToolsVersion = 6.0;
-						TestTargetID = D3B7BC6919EA383A00F50DF7;
 					};
 				};
 			};
@@ -423,7 +384,6 @@
 			projectRoot = "";
 			targets = (
 				D3B7BC6919EA383A00F50DF7 /* TeethTimer */,
-				D3B7BC7E19EA383A00F50DF7 /* TeethTimerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -449,7 +409,6 @@
 				D3B7BC7A19EA383A00F50DF7 /* LaunchScreen.xib in Resources */,
 				D33540D61A3764E80064C81C /* Gavin Poses-s10@3x.png in Resources */,
 				D33540B41A3764E80064C81C /* Gavin Poses-s05.png in Resources */,
-				D335501A1A299A4900C667A0 /* segment.png in Resources */,
 				D33540BE1A3764E80064C81C /* Gavin Poses-s06@3x.png in Resources */,
 				D33540B21A3764E80064C81C /* Gavin Poses-s04@3x.png in Resources */,
 				D335409C1A3764E80064C81C /* Gavin Poses-s01.png in Resources */,
@@ -492,56 +451,52 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D3B7BC7D19EA383A00F50DF7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		128885417291DA3B80C53879 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D33540C11A3764E80064C81C /* Gavin Poses-s07.png in Resources */,
-				D33540D11A3764E80064C81C /* Gavin Poses-s09@3x.png in Resources */,
-				D33540C31A3764E80064C81C /* Gavin Poses-s07@2x.png in Resources */,
-				D33540B51A3764E80064C81C /* Gavin Poses-s05.png in Resources */,
-				D335409D1A3764E80064C81C /* Gavin Poses-s01.png in Resources */,
-				D33540AB1A3764E80064C81C /* Gavin Poses-s03@2x.png in Resources */,
-				D34DC0571A0FF26000AA7420 /* Settings.bundle in Resources */,
-				D33540CD1A3764E80064C81C /* Gavin Poses-s09.png in Resources */,
-				D33540C51A3764E80064C81C /* Gavin Poses-s07@3x.png in Resources */,
-				D33540B31A3764E80064C81C /* Gavin Poses-s04@3x.png in Resources */,
-				D33540B91A3764E80064C81C /* Gavin Poses-s05@3x.png in Resources */,
-				D33540C91A3764E80064C81C /* Gavin Poses-s08@2x.png in Resources */,
-				D33540A51A3764E80064C81C /* Gavin Poses-s02@2x.png in Resources */,
-				D33540A11A3764E80064C81C /* Gavin Poses-s01@3x.png in Resources */,
-				D33540B71A3764E80064C81C /* Gavin Poses-s05@2x.png in Resources */,
-				D33540BF1A3764E80064C81C /* Gavin Poses-s06@3x.png in Resources */,
-				D33540CF1A3764E80064C81C /* Gavin Poses-s09@2x.png in Resources */,
-				D33540A31A3764E80064C81C /* Gavin Poses-s02.png in Resources */,
-				D33540D31A3764E80064C81C /* Gavin Poses-s10.png in Resources */,
-				D33540B11A3764E80064C81C /* Gavin Poses-s04@2x.png in Resources */,
-				D33540D71A3764E80064C81C /* Gavin Poses-s10@3x.png in Resources */,
-				D33540AD1A3764E80064C81C /* Gavin Poses-s03@3x.png in Resources */,
-				D33540D51A3764E80064C81C /* Gavin Poses-s10@2x.png in Resources */,
-				D33540A71A3764E80064C81C /* Gavin Poses-s02@3x.png in Resources */,
-				D33540A91A3764E80064C81C /* Gavin Poses-s03.png in Resources */,
-				D33540CB1A3764E80064C81C /* Gavin Poses-s08@3x.png in Resources */,
-				D33540AF1A3764E80064C81C /* Gavin Poses-s04.png in Resources */,
-				D33540BB1A3764E80064C81C /* Gavin Poses-s06.png in Resources */,
-				D335501B1A299A4900C667A0 /* segment.png in Resources */,
-				D33540C71A3764E80064C81C /* Gavin Poses-s08.png in Resources */,
-				D335409F1A3764E80064C81C /* Gavin Poses-s01@2x.png in Resources */,
-				D33540BD1A3764E80064C81C /* Gavin Poses-s06@2x.png in Resources */,
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
 		};
-/* End PBXResourcesBuildPhase section */
+		562005A17CE1462DA7BDB754 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D3B7BC6619EA383A00F50DF7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D388C3021A9F7B50007D4F8B /* POPProperty.swift in Sources */,
 				D307719D1A8873DB003BA7E1 /* ImageWheelInteractionState.swift in Sources */,
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
 				D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
 				D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */,
+				D388C3031A9F7B50007D4F8B /* POPSwiftWrapper.m in Sources */,
 				D3DC4C481A95877400984A24 /* ImageWheelVisualState.swift in Sources */,
 				D3354FF81A298AD100C667A0 /* wedgeRegion.swift in Sources */,
 				D3485C8519ECEEB900C6E495 /* Timer.swift in Sources */,
@@ -551,29 +506,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D3B7BC7B19EA383A00F50DF7 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D3354FF91A298AD100C667A0 /* wedgeRegion.swift in Sources */,
-				D31F95E21A2C5FE700219B32 /* ColorImage.swift in Sources */,
-				D307719E1A8873DB003BA7E1 /* ImageWheelInteractionState.swift in Sources */,
-				D3B7BC8619EA383A00F50DF7 /* TeethTimerTests.swift in Sources */,
-				D3354FF61A2953E700C667A0 /* ImageWheelControl.swift in Sources */,
-				D3DC4C491A95877400984A24 /* ImageWheelVisualState.swift in Sources */,
-				D307719B1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		D3B7BC8119EA383A00F50DF7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D3B7BC6919EA383A00F50DF7 /* TeethTimer */;
-			targetProxy = D3B7BC8019EA383A00F50DF7 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		D3B7BC7319EA383A00F50DF7 /* Main.storyboard */ = {
@@ -633,6 +566,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "TeethTimer/TeethTimer-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -669,6 +603,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "TeethTimer/TeethTimer-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -676,10 +611,15 @@
 		};
 		D3B7BC8A19EA383A00F50DF7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A8D8BE3E5746E8CC9B850697 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = TeethTimer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -691,50 +631,21 @@
 		};
 		D3B7BC8B19EA383A00F50DF7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 494890643301A07092EB8CC0 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = TeethTimer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		D3B7BC8D19EA383A00F50DF7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = TeethTimerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TeethTimer.app/TeethTimer";
-			};
-			name = Debug;
-		};
-		D3B7BC8E19EA383A00F50DF7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = TeethTimerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TeethTimer.app/TeethTimer";
 			};
 			name = Release;
 		};
@@ -755,15 +666,6 @@
 			buildConfigurations = (
 				D3B7BC8A19EA383A00F50DF7 /* Debug */,
 				D3B7BC8B19EA383A00F50DF7 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D3B7BC8C19EA383A00F50DF7 /* Build configuration list for PBXNativeTarget "TeethTimerTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D3B7BC8D19EA383A00F50DF7 /* Debug */,
-				D3B7BC8E19EA383A00F50DF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -29,7 +29,7 @@ private let fullCircle = CGFloat(M_PI) * 2
 
 
 
-class ImageWheelControl: UIControl  {
+class ImageWheelControl: UIControl, AnimationDelegate  {
     let centerCircle:                CGFloat =  20.0
     let wedgeImageHeight:            CGFloat = (800 * 0.9)
     let wedgeImageWidth:             CGFloat = (734 * 0.9)
@@ -477,6 +477,8 @@ class ImageWheelControl: UIControl  {
         animateToWedge(wedge, inDirection: direction)
     }
 
+
+    
     // TODO: remove method and other 'wedge' methods that are not needed after
     //       transitioning to 'image' methods
     func animateToWedge(wedge: WedgeRegion,
@@ -518,73 +520,52 @@ class ImageWheelControl: UIControl  {
         // (and avoid the crashes that will come later 
         //  from the assumption we have steps to do)
         if steps.count == 0 { return }
-        
+        // TODO: change 2 to be greater when closer to iamges.count
+        let duration = animateWedgeDuration * CFTimeInterval(steps.count) / 2
         
         let lastStep = steps.last!
         // Remove the last step, because this final step will be animated
         // in the completion block.
         steps.removeLast()
         
-        let duration = animateWedgeDuration * NSTimeInterval(steps.count) / 2
         
-        let options: UIViewKeyframeAnimationOptions = .CalculationModePaced |
-                                        UIViewKeyframeAnimationOptions(1 << 16)
-        comments() {
-            //        UIViewAnimationOptionCurveEaseInOut = 0 << 16,
-            //        UIViewAnimationOptionCurveEaseIn    = 1 << 16,
-            //        UIViewAnimationOptionCurveEaseOut   = 2 << 16,
-            //        UIViewAnimationOptionCurveLinear    = 3 << 16,
+        var startTime = CFTimeInterval(0)
+        var stepDuration = CFTimeInterval(0)
+        for step in steps {
+            let wedge = self.wedgeForImage(step.image)
+            stepDuration = CFTimeInterval(step.timePercent * CGFloat(animateWedgeDuration))
+            
+            let imageStep = BasicAnimation(duration: CGFloat(stepDuration))
+            imageStep.property = AnimatableProperty(name: kPOPLayerRotation)
+            imageStep.toValue = wedge.midRadian
+            imageStep.beginTime = startTime
+            imageStep.name = "Image-\(step.image)"
+            imageStep.delegate = self
+            Animation.addAnimation(imageStep, key: imageStep.property.name, obj: self.container.layer)
+            
+            
+            startTime = startTime + stepDuration
         }
-        
-        UIView.animateKeyframesWithDuration( duration,
-            delay: 0.0,
-            options: options,
-            animations: {
-                var startTime = NSTimeInterval(0)
-                var stepDuration = NSTimeInterval(0)
-                for step in steps {
-                    
-                    stepDuration = NSTimeInterval(step.timePercent)
-                    
-                    UIView.addKeyframeWithRelativeStartTime( startTime,
-                                           relativeDuration: stepDuration,
-                                                 animations: {
-                        let wedge = self.wedgeForImage(step.image)
-                        self.container.transform =
-                                    CGAffineTransformMakeRotation(wedge.midRadian)
-                        self.setImageOpacityForCurrentAngle(wedge.midRadian)
-                                                    
-                    }) // end addKeyframeWithRelativeStartTime
-                    startTime = startTime + stepDuration
-                    
-                } // end for
-                
-            },
-            completion: {finished in
-                if finished {
-                    UIView.animateWithDuration(self.animateWedgeDuration * 1.333,
-                        delay: 0,
-                        usingSpringWithDamping: 0.2,
-                        initialSpringVelocity: 1.0,
-                        options: .BeginFromCurrentState,
-                        animations: {
-                            let wedge = self.wedgeForImage(lastStep.image)
-                            let t = CGAffineTransformMakeRotation(wedge.midRadian)
-                            self.container.transform = t;
-                            self.setImageOpacityForCurrentAngle(wedge.midRadian)
-                        },
-                        completion: {
-                            finished in
-                            self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-                            self.visualState.imageWheelFullRotations =
-                                                lastStep.image / self.wedges.count
-                    })
-                }
-            }
-        )
+    
+        let wedge = wedgeForImage(lastStep.image)
+
+        let lastImage = SpringAnimation(tension: 1000, friction: 30, mass: 1)
+        lastImage.property = AnimatableProperty(name: kPOPLayerRotation)
+        lastImage.toValue = wedge.midRadian
+        lastImage.name = "LastRotation"
+        lastImage.beginTime = startTime
+        lastImage.delegate = self
+//        lastImage.completionBlock = { anim, finsihed in
+//            self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+//        }
+        Animation.addAnimation(lastImage, key: lastImage.property.name, obj: self.container.layer)
     }
     
-
+    func pop_animationDidApply(anim: POPAnimation!) {
+        self.setImageOpacityForCurrentAngle(currentRotation)
+        self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+    }
+        
     
     func imageForWedge(             wedge: WedgeRegion,
          WhileCurrentImageIs currentImage: ImageIndex) -> ImageIndex {
@@ -663,38 +644,38 @@ class ImageWheelControl: UIControl  {
                      var inDirection direction: DirectionToRotate)
                                  -> (direction: DirectionToRotate, count: Int) {
             
-            let count: Int
+        let count: Int
+        
+        switch direction {
+        case .Closest:
+            let positiveCount = countFromImage( currentImage,
+                ToImage: image,
+                inDirection: .Clockwise)
+            let negitiveCount = countFromImage( currentImage,
+                ToImage: image,
+                inDirection: .CounterClockwise)
             
-            switch direction {
-            case .Closest:
-                let positiveCount = countFromImage( currentImage,
-                    ToImage: image,
-                    inDirection: .Clockwise)
-                let negitiveCount = countFromImage( currentImage,
-                    ToImage: image,
-                    inDirection: .CounterClockwise)
-                
-                if positiveCount <= negitiveCount {
-                    count     = positiveCount
-                    direction = .Clockwise
-                } else {
-                    count     = negitiveCount
-                    direction = .CounterClockwise
-                }
-                
-            case .Clockwise:
-                count = countFromImage( currentImage,
-                    ToImage: image,
-                    inDirection: .Clockwise)
-                
-            case .CounterClockwise:
-                count = countFromImage( currentImage,
-                    ToImage: image,
-                    inDirection: .CounterClockwise)
-                
+            if positiveCount <= negitiveCount {
+                count     = positiveCount
+                direction = .Clockwise
+            } else {
+                count     = negitiveCount
+                direction = .CounterClockwise
             }
             
-            return (direction, count)
+        case .Clockwise:
+            count = countFromImage( currentImage,
+                ToImage: image,
+                inDirection: .Clockwise)
+            
+        case .CounterClockwise:
+            count = countFromImage( currentImage,
+                ToImage: image,
+                inDirection: .CounterClockwise)
+            
+        }
+        
+        return (direction, count)
             
     }
     
