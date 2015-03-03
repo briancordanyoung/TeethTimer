@@ -59,9 +59,18 @@
 -(void (^)(_POPAnimation *, BOOL))completionBlock { return _completionBlock; }
 -(void)setCompletionBlock:(void (^)(_POPAnimation *, BOOL))completionBlock {
   _completionBlock = completionBlock;
-  __weak _POPAnimation* wself = self;
   self.ref.completionBlock = ^(POPAnimation* anim, BOOL finished){
-    wself.completionBlock(wself, finished);
+      // TODO: When reating a weakSelf reference, self is being dealloced
+      //       before the completionBlock is called.  Switched to use a
+      //       strongSelf.  But, need to find a solution.
+      //       Must be realted to creating a wrapper around the Objective-C++
+      //       code to be called by swift.
+      _POPAnimation* strongSelf = self; //wself
+      if (strongSelf == nil) {
+          NSLog(@"Uh Oh:_POPAnimation object does not exists any more");
+      } else {
+          strongSelf.completionBlock(strongSelf, finished);
+      }
   };
 }
 

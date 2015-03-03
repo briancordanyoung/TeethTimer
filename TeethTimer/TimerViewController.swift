@@ -165,22 +165,21 @@ class TimerViewController: UIViewController {
             // But, as soon as it is less, advance to the 2nd wedge.
             // This done on the lines marked belowe 1, 2 & 3
 
-            // TODO: Change numberOfWedges to numberOfImages
-            var sections = gavinWheel.numberOfWedges - 1
-            sections = sections - 1  // 1
+            var steps = gavinWheel.numberOfImages - 1
+            steps = steps - 1  // 1
             
-            var currentWedgeValue = 1 + currentWedgeValueFromPrecent(percentageDone,
-                                                   WithSectionCount: sections)
-            currentWedgeValue = currentWedgeValue + 1 // 2
+            var currentWheelValue = 1 + currentWheelValueFromPrecent(percentageDone,
+                                                   WithSectionCount: steps)
+            currentWheelValue = currentWheelValue + 1 // 2
 
             if percentageDone == 1.0 { // 3
                 if gavinWheel.currentWedgeValue != 1 {
                     gavinWheel.animateToWedgeByValue( 1,
                                          inDirection: .CounterClockwise)
                 }
-            } else if gavinWheel.currentWedgeValue != currentWedgeValue {
-                gavinWheel.animateToWedgeByValue( currentWedgeValue,
-                                     inDirection: .Clockwise)
+            } else if gavinWheel.currentImage != currentWheelValue {
+                gavinWheel.animateToImage( currentWheelValue,
+                              inDirection: .Clockwise)
             }
         }
     }
@@ -201,7 +200,7 @@ class TimerViewController: UIViewController {
     
     // TODO: Create a dictionary for Image and percent total time
     //       alter method to return the corrent image
-    func currentWedgeValueFromPrecent(percentageDone: CGFloat,
+    func currentWheelValueFromPrecent(percentageDone: CGFloat,
                            WithSectionCount sections: Int) -> Int {
         let percentageToGo = 1.0 - percentageDone
         let sectionsByPercent = percentageToGo * CGFloat(sections)
