@@ -74,39 +74,23 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
     private var currentRotation: CGFloat {
         get {
             return radiansFromTransform(container.transform)
-//            return currentState.angle
         }
     }
     
     var currentImage: ImageIndex {
         get {
-//            var numberOfCompleteRotations = visualState.imageWheelFullRotations
-//            
-//            if currentWedgeValue == 10 {
-//                --numberOfCompleteRotations
-//            }
-//            let wedgesCountForRotations = wedges.count * numberOfCompleteRotations
-//            let tmp = currentWedgeValue + wedgesCountForRotations
-//            if tmp == 0 {
-//                
-//                println("srgsdgfsdfgsd")
-//            }
-//            println("currentImage: \(tmp)/\(numberOfCompleteRotations)")
-//            return tmp
             return currentState.image
         }
     }
 
     private var currentWedge: WedgeRegion {
         get {
-//            return wedgeForAngle(currentRotation)
             return wedgeFromValue(currentState.wedgeValue)
         }
     }
     
     private var currentWedgeValue: WedgeValue {
         get {
-//            return currentWedge.value
             return currentState.wedgeValue
         }
     }
@@ -644,7 +628,6 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
     func rotateToImage(image: ImageIndex) {
         let wedge = wedgeForImage(image)
         rotateToWedge(wedge)
-        visualState.imageWheelFullRotations = image / wedges.count
     }
     
     // MARK: Image Animation Methods
@@ -659,8 +642,6 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         let resolved = resolveDirectionAndCountToImage( image,
                                            inDirection: direction)
         
-        let wedgeWidthAngleTmp = wedgeWidthAngle
-
         var angle = currentWedge.midRadian
             if resolved.direction == .Clockwise {
                 angle -= CGFloat(resolved.count) * wedgeWidthAngle
@@ -668,10 +649,6 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
                 angle += CGFloat(resolved.count) * wedgeWidthAngle
             }
 
-            if image == 11 {
-                println("image \(image) angle: \(pad(angle))")
-            }
-            
         animateToAngle(angle)
     }
     
