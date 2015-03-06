@@ -2,7 +2,6 @@ import UIKit
 
 class ImageWheelVisualState {
     var wedgeOpacityList = Dictionary<Int, CGFloat>()
-    var imageWheelFullRotations: Int = 0
 
     init() {
         clearWedgeOpacityList()
