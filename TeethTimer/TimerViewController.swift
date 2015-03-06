@@ -154,28 +154,28 @@ class TimerViewController: UIViewController {
     }
     
     // MARK: Callbacks to pass to the ImageWheel class
-    func wheelTurnedBackByFunc(Wedge: Int,  AndPercentage percentage: CGFloat) {
+    func wheelTurnedBackByFunc(image: Int,  AndPercentage percentage: CGFloat) {
         timer.addTimeByPercentage(percentage)
     }
     
     func updatePercentageDone(percentageDone: CGFloat) {
         
         if let gavinWheel = gavinWheel {
-            // At 100% should always be the first wedge
-            // But, as soon as it is less, advance to the 2nd wedge.
+            // At 100% should always be the first image
+            // But, as soon as it is less, advance to the 2nd image.
             // This done on the lines marked belowe 1, 2 & 3
 
-            var steps = gavinWheel.numberOfImages - 1
+            var steps = gavinWheel.images.count - 1
             steps = steps - 1  // 1
             
-            var currentWheelValue = 1 + currentWheelValueFromPrecent(percentageDone,
-                                                   WithSectionCount: steps)
+            var currentWheelValue = 1 + currentWheelValueFromPrecent( percentageDone,
+                                                    WithSectionCount: steps)
             currentWheelValue = currentWheelValue + 1 // 2
 
             if percentageDone == 1.0 { // 3
-                if gavinWheel.currentWedgeValue != 1 {
-                    gavinWheel.animateToWedgeByValue( 1,
-                                         inDirection: .CounterClockwise)
+                if gavinWheel.currentImage != 1 {
+                    gavinWheel.animateToImage( 1,
+                                  inDirection: .CounterClockwise)
                 }
             } else if gavinWheel.currentImage != currentWheelValue {
                 gavinWheel.animateToImage( currentWheelValue,
@@ -183,6 +183,8 @@ class TimerViewController: UIViewController {
             }
         }
     }
+    
+    
     
     // MARK: Timer Callback helper Methods
     func clamp(value: Int, ToValue maximumValue: Int) -> Int {

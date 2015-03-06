@@ -13,7 +13,7 @@ enum InteractionState {
 class ImageWheelInteractionState {
     
     var initialTransform = CGAffineTransformMakeRotation(0)
-    var initialWedge: WedgeValue = 1
+    var initialImage: ImageIndex = 1
     
     var initialAngle:  CGFloat  = 0.0
     var previousAngle: CGFloat  = 0.0
@@ -38,8 +38,8 @@ class ImageWheelInteractionState {
         wheelHasFlipped360 = false
     }
     
-    func initialWedgeIsNotWedge(wedgeValue: WedgeValue) -> Bool {
-        return initialWedge != wedgeValue
+    func initialImageIsNotImage(image: ImageIndex) -> Bool {
+        return initialImage != image
     }
 
 }

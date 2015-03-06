@@ -41,20 +41,20 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
     let wedgeImageHeight:            CGFloat = (800 * 0.9)
     let wedgeImageWidth:             CGFloat = (734 * 0.9)
     let rotationDampeningFactor:     CGFloat =  5.0
-    let animateWedgeDuration: NSTimeInterval =  0.2
-    
-    var container = UIView()
-    var numberOfWedges: Int = 0
-    
-    var wedges: [WedgeRegion] = []
     var images: [UIImage]     = []
-    let userState   = ImageWheelInteractionState()
-    let visualState = ImageWheelVisualState()
-    var currentState = WheelState( additionalRotations: 0,
-                                            wedgeValue: 1,
-                                                 image: 1)
     
-    var allWedgeImageViews: [UIImageView] {
+    private var container = UIView()
+    private var numberOfWedges: Int = 0
+    
+    private var wedges: [WedgeRegion] = []
+    private var wheelAnimations: [String:BasicAnimation] = [:]
+    private let userState   = ImageWheelInteractionState()
+    private let visualState = ImageWheelVisualState()
+    private var currentState = WheelState( additionalRotations: 0,
+                                                    wedgeValue: 1,
+                                                         image: 1)
+    
+    private var allWedgeImageViews: [UIImageView] {
         get {
             let views = container.subviews
             
@@ -71,13 +71,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         }
     }
     
-    var numberOfImages: Int {
-        get {
-            return images.count
-        }
-    }
-    
-    var currentRotation: CGFloat {
+    private var currentRotation: CGFloat {
         get {
             return radiansFromTransform(container.transform)
 //            return currentState.angle
@@ -103,33 +97,33 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         }
     }
 
-    var currentWedge: WedgeRegion {
+    private var currentWedge: WedgeRegion {
         get {
 //            return wedgeForAngle(currentRotation)
             return wedgeFromValue(currentState.wedgeValue)
         }
     }
     
-    var currentWedgeValue: WedgeValue {
+    private var currentWedgeValue: WedgeValue {
         get {
 //            return currentWedge.value
             return currentState.wedgeValue
         }
     }
     
-    var outsideCircle: CGFloat {
+    private var outsideCircle: CGFloat {
         get {
             return container.bounds.height * 2
         }
     }
     
-    var wedgeWidthAngle: CGFloat {
+    private var wedgeWidthAngle: CGFloat {
         get {
-            return 2 * halfCircle / CGFloat(numberOfWedges)
+            return fullCircle / CGFloat(numberOfWedges)
         }
     }
 
-    var wedgeCountParity: Parity {
+    private var wedgeCountParity: Parity {
         get {
             var result: Parity
             if numberOfWedges % 2 == 0 {
@@ -141,7 +135,8 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         }
     }
     
-    lazy var padNumber: NSNumberFormatter = {
+    // TODO: Remove after main development
+    private lazy var padNumber: NSNumberFormatter = {
         let numberFormater = NSNumberFormatter()
         numberFormater.minimumIntegerDigits  = 1
         numberFormater.maximumIntegerDigits  = 1
@@ -181,7 +176,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
     
     
     // MARK: Setup Methods
-    func createWedges() {
+    private func createWedges() {
         
         let wedgeStartingAngle = (halfCircle * 3) + CGFloat(self.wedgeWidthAngle / 2)
         // Build UIViews for each pie piece
@@ -209,7 +204,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
                 
     }
     
-    func createWedgeAtIndex(i: Int, AndAngle angle: CGFloat) -> UIImageView {
+    private func createWedgeAtIndex(i: Int, AndAngle angle: CGFloat) -> UIImageView {
         var imageView = UIImageView()
         imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
         imageView.transform = CGAffineTransformMakeRotation(angle)
@@ -217,7 +212,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         return imageView
     }
     
-    func createWedgeRegionsEven() {
+    private func createWedgeRegionsEven() {
         var mid = halfCircle - (wedgeWidthAngle / 2)
         var max = halfCircle
         var min = halfCircle - wedgeWidthAngle
@@ -238,7 +233,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
     }
     
     
-    func createWedgeRegionsOdd() {
+    private func createWedgeRegionsOdd() {
         var mid = halfCircle - (wedgeWidthAngle / 2)
         var max = halfCircle
         var min = halfCircle -  wedgeWidthAngle
@@ -328,13 +323,22 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         }
         
         
-        let firstWedge = wedgeFromValue(1)
-        rotateToAngle(firstWedge.midRadian + wedgeWidthAngle)
-        wheelRotatedTo(firstWedge.midRadian)
+        resetWheel()
+    }
+    
+    // MARK: Return to known state
+    func resetWheel() {
+        let angle = wedgeFromValue(1).midRadian
+        let t = CGAffineTransformMakeRotation(wedgeFromValue(1).midRadian)
+        container.transform = t;
+        currentState = WheelState( additionalRotations: 0,
+            wedgeValue: 1,
+            image: 1)
+        setImageOpacityForCurrentAngle(angle)
     }
     
     
-    
+    // MARK: -
     // MARK: UIControl methods handling the touches
     override func beginTrackingWithTouch(touch: UITouch,
                                withEvent event: UIEvent) -> Bool {
@@ -345,9 +349,12 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
             return false  // Ends current touches to the control
         }
         
+        // TODO: Handle Touches during animation
+        // Pause POPAnimation & Timer
+                                
         // Set state at the beginning of the users rotation
         userState.currently        = .Interacting
-        userState.initialWedge     = currentWedgeValue
+        userState.initialImage     = currentImage
         userState.initialAngle     = angleAtTouch(touch)
         userState.previousAngle    = userState.initialAngle
         userState.initialTransform = container.transform
@@ -366,7 +373,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         }
         
         let angle = angleAtTouch(touch)
-        checkIfWheelHasFlipped360(angle)
+//        checkIfWheelHasFlipped360(angle)
         checkIfRotatingClockwise(angle)
         
         // Prevent the user from rotating to the left.
@@ -380,14 +387,15 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
             dampenRotation = true
         }
                                     
-//        if currentWedgeValue > userState.wedgeValueBeforeTouch {
-//            dampenRotation = true
-//        }
-        
-        if userState.wheelHasFlipped360 {
+        if currentImage > userState.initialImage {
             dampenRotation = true
-            angleDifference = angleDifference + fullCircle
         }
+        
+        // TODO: Replace using ImageIndex
+//        if userState.wheelHasFlipped360 {
+//            dampenRotation = true
+//            angleDifference = angleDifference + fullCircle
+//        }
         
         var angleDifferenceDamped = angleDifference
         if dampenRotation {
@@ -415,7 +423,9 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
         self.sendActionsForControlEvents(UIControlEvents.TouchDragInside)
 
-        wheelRotatedTo(currentRotation)
+                                    
+        
+        wheelRotatedTo(currentRotation, turningDirection: userState.direction)
 
         // Remember state during user rotation
         userState.previousAngle = angle
@@ -430,15 +440,16 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         userState.currently = .NotInteracting
         
         // Animate the wheel to rest at one of the wedges.
+// TODO: restore userState.initialWedge code
         if userState.snapTo == .InitialWedge {
-            animateToWedgeByValue(userState.initialWedge)
+            animateToImage(userState.initialImage)
         } else {
-            animateToWedgeByValue(currentWedge.value)
+            animateToImage(currentImage)
         }
         
         // Callback to block/closure based 'delegate' to
         // inform it that the wheel has been rewound.
-        if userState.initialWedgeIsNotWedge(currentWedgeValue) &&
+        if userState.initialImageIsNotImage(currentImage) &&
            userState.snapTo == .CurrentWedge {
             
             wheelTurnedBack()
@@ -459,229 +470,174 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
     
 
     
+
     
     
     // MARK: -
-    // MARK: Wedge Rotation Methods (Without Animating)
-    func rotateToWedgeByValue(value: Int) {
-        let wedge = wedgeFromValue(value)
-        rotateToWedge(wedge)
-    }
-    
-    func rotateToWedge(wedge: WedgeRegion) {
-        rotateToAngle(wedge.midRadian)
-    }
-    
-    func rotateToAngle(angle: CGFloat) {
-        if (userState.currently == .NotInteracting) {
-            let newRotation = currentRotation - angle
-            let t = CGAffineTransformRotate(container.transform, newRotation)
-            container.transform = t;
-            wheelRotatedTo(angle)
+    // MARK: Wheel Animation-per-frame methods
+    func pop_animationDidApply(anim: Animation!) {
+        
+        var direction: DirectionRotated = .Clockwise
+        
+        if anim.name == "Basic Rotation" {
+            if let basicRotation = wheelAnimations["Basic Rotation"] {
+                let from = basicRotation.fromValue as! CGFloat
+                let to = basicRotation.toValue as! CGFloat
+                if to > from {
+                    direction = .CounterClockwise
+                }
+            }
         }
-        self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+        
+        wheelRotatedTo(currentRotation, turningDirection: direction)
     }
+
+    private func wheelRotatedTo(angle: CGFloat,
+        turningDirection direction: DirectionRotated) {
+            
+            let previousState       = currentState
+            let wedgeValue          = wedgeForAngle(angle).value
+            var additionalRotations = previousState.additionalRotations
+            
+            // Passing 360° Clockwise
+            if direction == .Clockwise {
+                if previousState.wedgeValue > wedgeValue {
+                    ++additionalRotations
+                }
+            }
+            
+            // Passing 360° CounterClockwise
+            if direction == .CounterClockwise {
+                if previousState.wedgeValue < wedgeValue {
+                    --additionalRotations
+                }
+            }
+            
+            let currentImage: ImageIndex
+            if additionalRotations >= 0 {
+                let wedgesCountForRotations = wedges.count *  additionalRotations
+                currentImage                =  wedgeValue  +  wedgesCountForRotations
+            } else {
+                // TODO: need to calculate currentImage for negitive rotation values
+                let wedgesCountForRotations = wedges.count * abs(additionalRotations)
+                currentImage                =  wedgeValue  -  wedgesCountForRotations
+            }
+            
+            currentState = WheelState(additionalRotations: additionalRotations,
+                                               wedgeValue: wedgeValue,
+                                                    image: currentImage)
+            
+            setImageOpacityForCurrentAngle(angle)
+            setImagesForCurrentState()
+            //        println("currentImage \(currentState.image) wedgeValue \(currentState.wedgeValue) angle \(pad(angle)) additionalRotations: \(currentState.additionalRotations) previous additionalRotations: \(previousState.additionalRotations)")
+            
+    }
+    
+    private func setImagesForCurrentState() {
+        // TODO: swap out Images for Wedges
+        
+    }
+    
+    private func setImageOpacityForCurrentAngle(var angle: CGFloat) {
+        
+        visualState.initOpacityListWithWedges(wedges)
+        
+        // Shift the rotation 1/2 a wedge width angle
+        // This is to center the effect of changing the opacity.
+        angle = angle + (wedgeWidthAngle / 2)
+        angle = normalizedAngleForAngle(angle)
+        
+        for wedge in wedges {
+            
+            if angle >= wedge.minRadian &&
+                angle <=  wedge.maxRadian    {
+                    
+                    let percent = percentValue( angle,
+                        isBetweenLow: wedge.minRadian,
+                        AndHigh: wedge.maxRadian)
+                    
+                    visualState.wedgeOpacityList[wedge.value]    = percent
+                    
+                    
+                    let neighbor = neighboringWedge(wedge)
+                    let invertedPercent = 1 - percent
+                    visualState.wedgeOpacityList[neighbor.value] = invertedPercent
+                    
+            }
+        }
+        visualState.setOpacityOfWedgeImageViews(allWedgeImageViews)
+    }
+    
     
     func wheelTurnedBack() {
         
         // TODO: Fix math and simplify
         // Callback to notify there was a change to the wheel wedge position
-        var currentValue = currentWedgeValue
-        if currentValue > userState.initialWedge {
-            currentValue -= numberOfWedges
-        }
-        let wedgeCount = userState.initialWedge - currentValue
-        
-        let percentageStep = 1 / CGFloat((numberOfWedges - 1))
-        let percentage = percentageStep * CGFloat(wedgeCount)
-        println("turned back.  At % \(percentage)")
+//        var currentValue = currentWedgeValue
+//        if currentValue > userState.initialWedge {
+//            currentValue -= numberOfWedges
+//        }
+//        let wedgeCount = userState.initialWedge - currentValue
+//        
+//        let percentageStep = 1 / CGFloat((numberOfWedges - 1))
+//        let percentage = percentageStep * CGFloat(wedgeCount)
+//        println("turned back.  At % \(percentage)")
         
 //        wheelTurnedBackBy(wedgeCount, AndPercentage: percentage)
     }
     
     // MARK: Wedge Animation Methods
     
-    func animateToWedgeByValue(value: Int) {
-        animateToWedgeByValue(value, inDirection: .Closest)
-    }
+//    func animateToWedgeByValue(value: Int) {
+//        animateToWedgeByValue(value, inDirection: .Closest)
+//    }
 
-    func animateToWedgeByValue(value: Int,
-               inDirection direction: DirectionToRotate) {
-        let wedge = wedgeFromValue(value)
-        animateToWedge(wedge, inDirection: direction)
-    }
+//    func animateToWedgeByValue(value: Int,
+//               inDirection direction: DirectionToRotate) {
+//        let wedge = wedgeFromValue(value)
+//        animateToWedge(wedge, inDirection: direction)
+//    }
 
 
     
-    // TODO: remove method and other 'wedge' methods that are not needed after
-    //       transitioning to 'image' methods
-    func animateToWedge(wedge: WedgeRegion,
-        inDirection direction: DirectionToRotate) {
-        
-        var currentWedge = self.currentWedge
-        var steps: [ImageWheelRotationKey] = []
-        let resolved = resolveDirectionAndCountToWedge( wedge,
-                                           inDirection: direction)
-            
-        if resolved.count == 0 {
-            let aStep = ImageWheelRotationKey(timePercent: 1.0,
-                                                    image: currentWedge.value)
-            steps.append(aStep)
-            
-        } else {
-            let initialTimeSlice = 1.0 / CGFloat(resolved.count)
-            let partialWedgeSlice = partialWedgeTimeSlice(resolved.direction)
-            let partialTimeSlice = initialTimeSlice * partialWedgeSlice
-            let timeSlice = (1.0 - partialTimeSlice) / CGFloat(resolved.count)
-
-            for i in 1...resolved.count {
-                if resolved.direction == .Clockwise {
-                    currentWedge = nextWedge(currentWedge)
-                } else {
-                    currentWedge = previousWedge(currentWedge)
-                }
-                
-                
-                let aStep = ImageWheelRotationKey(timePercent: timeSlice,
-                                                        image: currentWedge.value)
-                steps.append(aStep)
-            }
-        }
-
-        animateToEachStep(steps)
-    }
+//    func animateToWedge(wedge: WedgeRegion,
+//        inDirection direction: DirectionToRotate) {
+//        
+//        let resolved = resolveDirectionAndCountToWedge( wedge,
+//                                           inDirection: direction)
+//            
+//        var angle = wedge.midRadian
+//        if resolved.direction == .Clockwise {
+//            if angle > currentRotation {
+//                angle -= fullCircle
+//            }
+//        } else {
+//            if angle < currentRotation {
+//                angle += fullCircle
+//            }
+//        }
+//            
+//        animateToAngle(angle)
+//    }
     
-    func partialWedgeTimeSlice(direction: DirectionToRotate) -> CGFloat {
-        var currentWedge = self.currentWedge
-        var percentOfWedge: CGFloat = 0.0
-        if direction == .Clockwise {
-            currentWedge = nextWedge(currentWedge)
-        } else {
-            currentWedge = previousWedge(currentWedge)
-        }
-        percentOfWedge = abs(currentRotation - currentWedge.midRadian)
-        return percentOfWedge
-    }
-    
-
-    func animateToEachStep(var steps: [ImageWheelRotationKey]) {
-        var stop = false
-        if steps.count > 0 {
-            if steps.first?.image == 11 {
-                stop = true
-            }
-        }
-
-        // If there are no steps, then be done.
-        // (and avoid the crashes that will come later 
-        //  from the assumption we have steps to do)
-        if steps.count == 0 { return }
-        // TODO: change 2 to be greater when closer to images.count
-        let duration = animateWedgeDuration * CFTimeInterval(steps.count) / 2
-        
-        let lastStep = steps.last!
-        // Remove the last step, because this final step will be animated
-        // in the completion block.
-        steps.removeLast()
-        
-        var imageSteps: [BasicAnimation] = []
-        
-        var startTime = CFTimeInterval(0)
-        var stepDuration = CFTimeInterval(0)
-        for step in steps {
-            let wedge = self.wedgeForImage(step.image)
-            stepDuration = CFTimeInterval(step.timePercent * CGFloat(animateWedgeDuration))
-            
-            let imageStep = BasicAnimation(duration: CGFloat(stepDuration))
-            imageStep.property = AnimatableProperty(name: kPOPLayerRotation)
-            imageStep.toValue = wedge.midRadian
-            imageStep.beginTime = startTime
-            imageStep.name = "Image-\(step.image)"
-            imageStep.delegate = self
-            
-            imageSteps.append(imageStep)
-            Animation.addAnimation( imageStep,
-                               key: imageStep.property.name,
-                               obj: self.container.layer)
-            
-            startTime = startTime + stepDuration
-        }
-    
-        let wedge = wedgeForImage(lastStep.image)
-
-        let lastImage = SpringAnimation(tension: 1000,
-                                       friction: 30,
-                                           mass: 1)
-        lastImage.property = AnimatableProperty(name: kPOPLayerRotation)
-        var rotation = wedge.midRadian
-        lastImage.toValue = rotation
-        lastImage.name = "LastRotation"
-        lastImage.beginTime = startTime
-        lastImage.delegate = self
-        lastImage.completionBlock = { anim, finsihed in
-            println("Completed Last Animation Step of \(steps.count + 1)")
-            self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-            self.visualState.imageWheelFullRotations = lastStep.image / self.wedges.count
-        }
-        
-        if stop {
-            println("stopping")
-        }
-        
-        
-        Animation.addAnimation( lastImage,
-                           key: lastImage.property.name,
-                           obj: self.container.layer)
-    }
+//    func testRotation() {
+//        let test = BasicAnimation(duration: 1.0)
+//        test.property = AnimatableProperty(name: kPOPLayerRotation)
+//        test.toValue = currentRotation - wedgeWidthAngle
+//        test.name = "test"
+//        test.beginTime = 0
+//        test.delegate = self
+//        test.completionBlock = { anim, finsihed in
+//            self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+//        }
+//        Animation.addAnimation( test,
+//            key: "test",
+//            obj: self.container.layer)
+//    }
     
     
-    func testRotation() {
-        let test = BasicAnimation(duration: 1.0)
-        test.property = AnimatableProperty(name: kPOPLayerRotation)
-        test.toValue = currentRotation - wedgeWidthAngle
-        test.name = "test"
-        test.beginTime = 0
-        test.delegate = self
-        test.completionBlock = { anim, finsihed in
-            self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-        }
-        Animation.addAnimation( test,
-            key: "test",
-            obj: self.container.layer)
-    }
     
     
-    func pop_animationDidApply(anim: POPAnimation!) {
-        wheelRotatedTo(currentRotation)
-        // TODO: swap out Images for Wedges
-    }
-        
-    
-    func imageForWedge(             wedge: WedgeRegion,
-         WhileCurrentImageIs currentImage: ImageIndex) -> ImageIndex {
-            
-        var currentWedge = wedgeForImage(currentImage)
-        let resolved = resolveDirectionAndCountToWedge( wedge,
-                                     GivenCurrentWedge: currentWedge,
-                                           inDirection: .Closest)
-
-        let image: ImageIndex
-        if resolved.direction == .Clockwise {
-            image = currentImage + resolved.count
-        } else {
-            image = currentImage - resolved.count
-        }
-            
-        return image
-    }
-    
-    func wedgeForImage(image: ImageIndex) -> WedgeRegion {
-        var wedgeValue = image % wedges.count
-        if wedgeValue == 0 {
-            wedgeValue = wedges.count
-        }
-        return wedgeFromValue(wedgeValue)
-    }
     
     // MARK: -
     // MARK: Image Rotation Methods (Without Animating)
@@ -699,40 +655,95 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
     
     func animateToImage(image: ImageIndex,
         inDirection direction: DirectionToRotate) {
-            
-        var steps: [ImageWheelRotationKey] = []
+        
         let resolved = resolveDirectionAndCountToImage( image,
                                            inDirection: direction)
-        var currentImage = self.currentImage
+        
+        let wedgeWidthAngleTmp = wedgeWidthAngle
 
-        if resolved.count == 0 {
-            let aStep = ImageWheelRotationKey(timePercent: 1.0,
-                image: currentImage)
-            steps.append(aStep)
-            
-        } else {
-            let timeSlice = 1.0 / CGFloat(resolved.count)
-            for i in 1...resolved.count {
-                if resolved.direction == .Clockwise {
-                    currentImage = nextImage(currentImage)
-                } else {
-                    currentImage = previousImage(currentImage)
-                }
-                
-                
-                let aStep = ImageWheelRotationKey(timePercent: timeSlice,
-                                                        image: currentImage)
-                steps.append(aStep)
+        var angle = currentWedge.midRadian
+            if resolved.direction == .Clockwise {
+                angle -= CGFloat(resolved.count) * wedgeWidthAngle
+            } else {
+                angle += CGFloat(resolved.count) * wedgeWidthAngle
             }
-        }
 
-        animateToEachStep(steps)
+            if image == 11 {
+                println("image \(image) angle: \(pad(angle))")
+            }
+            
+        animateToAngle(angle)
     }
     
-    func resolveDirectionAndCountToImage(image: ImageIndex,
-                     var inDirection direction: DirectionToRotate)
-                                 -> (direction: DirectionToRotate, count: Int) {
+    
+    private func animateToAngle(angle: CGFloat) {
+        
+        
+//        if angle > (2 * wedgeWidthAngle) {
+            let rotation = BasicAnimation(duration: 0.25)
             
+            rotation.property = AnimatableProperty(name: kPOPLayerRotation)
+            rotation.toValue = angle
+            rotation.name = "Basic Rotation"
+            rotation.delegate = self
+            rotation.completionBlock = { anim, finished in
+                self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+                self.wheelAnimations.removeValueForKey("Basic Rotation")
+            }
+            Animation.addAnimation( rotation,
+                               key: rotation.name,
+                               obj: self.container.layer)
+        wheelAnimations["Basic Rotation"] = rotation
+//        } else {
+        
+//            let rotation = SpringAnimation(tension: 1000,
+//                                          friction: 30,
+//                                              mass: 1)
+//            
+//            rotation.property = AnimatableProperty(name: kPOPLayerRotation)
+//            rotation.toValue = angle
+//            rotation.name = "Spring Rotation"
+//            rotation.delegate = self
+//            rotation.completionBlock = { anim, finished in
+//                self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+//            }
+//            Animation.addAnimation( rotation,
+//                               key: rotation.name,
+//                               obj: self.container.layer)
+//        }
+        
+    }
+    
+    private func imageForWedge(             wedge: WedgeRegion,
+                 WhileCurrentImageIs currentImage: ImageIndex) -> ImageIndex {
+            
+            var currentWedge = wedgeForImage(currentImage)
+            let resolved = resolveDirectionAndCountToWedge( wedge,
+                GivenCurrentWedge: currentWedge,
+                inDirection: .Closest)
+            
+            let image: ImageIndex
+            if resolved.direction == .Clockwise {
+                image = currentImage + resolved.count
+            } else {
+                image = currentImage - resolved.count
+            }
+            
+            return image
+    }
+    
+    private func wedgeForImage(image: ImageIndex) -> WedgeRegion {
+        var wedgeValue = image % wedges.count
+        if wedgeValue == 0 {
+            wedgeValue = wedges.count
+        }
+        return wedgeFromValue(wedgeValue)
+    }
+
+    private func resolveDirectionAndCountToImage(image: ImageIndex,
+                             var inDirection direction: DirectionToRotate)
+                                         -> (direction: DirectionToRotate,
+                                                 count: Int) {
         let count: Int
         
         switch direction {
@@ -768,31 +779,36 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         }
         
         return (direction, count)
-            
     }
     
-    func countFromImage( fromImage: ImageIndex,
-                   ToImage toImage: ImageIndex,
-             inDirection direction: DirectionRotated) -> Int {
-            
-            var image = fromImage
-            var count = 0
-            while true {
-                if image == toImage {
-                    break
-                }
-                if direction == .Clockwise {
-                    image = nextImage(image)
-                } else {
-                    image = previousImage(image)
-                }
-                ++count
-            }
+    private func countFromImage( fromImage: ImageIndex,
+                           ToImage toImage: ImageIndex,
+                     inDirection direction: DirectionRotated) -> Int {
                 
-            return count
+                
+        assert(fromImage >= 1, "countFromImage: fromImage too low \(fromImage)")
+        assert(toImage >= 1, "countFromImage: toImage too low \(toImage)")
+        assert(fromImage <= images.count, "countFromImage: fromImage too high \(fromImage)")
+        assert(toImage <= images.count, "countFromImage: toImage too high \(toImage)")
+
+        var image = fromImage
+        var count = 0
+        while true {
+            if image == toImage {
+                break
+            }
+            if direction == .Clockwise {
+                image = nextImage(image)
+            } else {
+                image = previousImage(image)
+            }
+            ++count
+        }
+            
+        return count
     }
     
-    func nextImage(var image: ImageIndex) -> ImageIndex {
+    private func nextImage(var image: ImageIndex) -> ImageIndex {
         ++image
         if image > images.count {
             image = 1
@@ -800,7 +816,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         return image
     }
     
-    func previousImage(var image: ImageIndex) -> ImageIndex {
+    private func previousImage(var image: ImageIndex) -> ImageIndex {
         --image
         if image < 1 {
             image = images.count
@@ -810,57 +826,83 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
     
     
     // MARK: -
+    // MARK: Wedge Rotation Methods (Without Animating)
+    private func rotateToWedgeByValue(value: Int) {
+        let wedge = wedgeFromValue(value)
+        rotateToWedge(wedge)
+    }
+    
+    private func rotateToWedge(wedge: WedgeRegion) {
+        rotateToAngle(wedge.midRadian)
+    }
+    
+    private func rotateToAngle(angle: CGFloat) {
+        if (userState.currently == .NotInteracting) {
+            let newRotation = currentRotation - angle
+            let t = CGAffineTransformRotate(container.transform, newRotation)
+            container.transform = t;
+            
+            
+            // TODO: Calculate direction
+            wheelRotatedTo(angle,turningDirection: .Clockwise)
+        }
+        self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+    }
+
     // MARK: Wedge Methods
-    func resolveDirectionAndCountToWedge(wedge: WedgeRegion,
-                     var inDirection direction: DirectionToRotate)
-                                 -> (direction: DirectionToRotate, count: Int) {
+    private func resolveDirectionAndCountToWedge(wedge: WedgeRegion,
+                             var inDirection direction: DirectionToRotate)
+                                         -> (direction: DirectionToRotate,
+                                                 count: Int) {
+                                                    
          return resolveDirectionAndCountToWedge( wedge,
                               GivenCurrentWedge: self.currentWedge,
                                     inDirection: direction)
     }
     
-    func resolveDirectionAndCountToWedge(wedge: WedgeRegion,
-                GivenCurrentWedge currentWedge: WedgeRegion,
-                     var inDirection direction: DirectionToRotate)
-                                 -> (direction: DirectionToRotate, count: Int) {
+    private func resolveDirectionAndCountToWedge(wedge: WedgeRegion,
+                        GivenCurrentWedge currentWedge: WedgeRegion,
+                             var inDirection direction: DirectionToRotate)
+                                        ->  (direction: DirectionToRotate,
+                                                 count: Int) {
             
-            let count: Int
+        let count: Int
+        
+        switch direction {
+        case .Closest:
+            let positiveCount = countFromWedgeValue( currentWedge.value,
+                                       ToWedgeValue: wedge.value,
+                                        inDirection: .Clockwise)
+            let negitiveCount = countFromWedgeValue( currentWedge.value,
+                                       ToWedgeValue: wedge.value,
+                                        inDirection: .CounterClockwise)
             
-            switch direction {
-            case .Closest:
-                let positiveCount = countFromWedgeValue( currentWedge.value,
-                                           ToWedgeValue: wedge.value,
-                                            inDirection: .Clockwise)
-                let negitiveCount = countFromWedgeValue( currentWedge.value,
-                                           ToWedgeValue: wedge.value,
-                                            inDirection: .CounterClockwise)
-                
-                if positiveCount <= negitiveCount {
-                    count     = positiveCount
-                    direction = .Clockwise
-                } else {
-                    count     = negitiveCount
-                    direction = .CounterClockwise
-                }
-                
-            case .Clockwise:
-                count = countFromWedgeValue( currentWedge.value,
-                               ToWedgeValue: wedge.value,
-                                inDirection: .Clockwise)
-                
-            case .CounterClockwise:
-                count = countFromWedgeValue( currentWedge.value,
-                               ToWedgeValue: wedge.value,
-                                inDirection: .CounterClockwise)
+            if positiveCount <= negitiveCount {
+                count     = positiveCount
+                direction = .Clockwise
+            } else {
+                count     = negitiveCount
+                direction = .CounterClockwise
             }
             
-            return (direction, count)
+        case .Clockwise:
+            count = countFromWedgeValue( currentWedge.value,
+                           ToWedgeValue: wedge.value,
+                            inDirection: .Clockwise)
+            
+        case .CounterClockwise:
+            count = countFromWedgeValue( currentWedge.value,
+                           ToWedgeValue: wedge.value,
+                            inDirection: .CounterClockwise)
+        }
+        
+        return (direction, count)
             
     }
 
-    func countFromWedgeValue( fromValue: Int,
-                 ToWedgeValue toValue: Int,
-       inDirection direction: DirectionRotated) -> Int {
+    private func countFromWedgeValue( fromValue: Int,
+                         ToWedgeValue   toValue: Int,
+                          inDirection direction: DirectionRotated) -> Int {
         
         var value = fromValue
         var count = 0
@@ -878,17 +920,17 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         return count
     }
     
-    func nextWedge(wedge: WedgeRegion) -> WedgeRegion {
+    private func nextWedge(wedge: WedgeRegion) -> WedgeRegion {
         let value = nextWedgeValue(wedge.value)
         return wedgeFromValue(value)
     }
     
-    func previousWedge(wedge: WedgeRegion) -> WedgeRegion {
+    private func previousWedge(wedge: WedgeRegion) -> WedgeRegion {
         let value = previousWedgeValue(wedge.value)
         return wedgeFromValue(value)
     }
     
-    func nextWedgeValue(var value: Int) -> Int {
+    private func nextWedgeValue(var value: Int) -> Int {
         ++value
         if value > wedges.count {
             value = 1
@@ -896,7 +938,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         return value
     }
     
-    func previousWedgeValue(var value: Int) -> Int {
+    private func previousWedgeValue(var value: Int) -> Int {
         --value
         if value < 1 {
             value = wedges.count
@@ -905,7 +947,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
     }
     
     
-    func wedgeFromValue(value: Int) -> WedgeRegion {
+    private func wedgeFromValue(value: Int) -> WedgeRegion {
         
         var returnWedge: WedgeRegion?
         
@@ -920,14 +962,28 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
     }
 
     
-    func wedgeForAngle(var angle: CGFloat) -> WedgeRegion {
+    private func thisAngle(angle: CGFloat,
+        isWithinWedge wedge: WedgeRegion) -> Bool {
+            var angleIsWithinWedge = false
+            
+            if (angle >= wedge.minRadian &&
+                angle <= wedge.maxRadian   ) {
+                    
+                    angleIsWithinWedge = true
+            }
+            
+            return angleIsWithinWedge
+    }
+
+    
+    private func wedgeForAngle(angle: CGFloat) -> WedgeRegion {
         
-        angle = normalizedAngleForAngle(angle)
+        let normAngle = normalizedAngleForAngle(angle)
         
         // Determin where the wheel is (which wedge we are within)
         var currentWedge: WedgeRegion?
         for wedge in wedges {
-            if currentRotation(angle, isWithinWedge: wedge) {
+            if thisAngle(normAngle, isWithinWedge: wedge) {
                 currentWedge = wedge
                 break
             }
@@ -937,76 +993,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
     }
     
     
-    
-    
-    
-    func wheelRotatedTo(angle: CGFloat) {
-        setImageOpacityForCurrentAngle(angle)
-        
-        let previousState = currentState
-        let wedgeValue = wedgeForAngle(angle).value
-        var additionalRotations = previousState.additionalRotations
-
-        if wedgeValue == wedges.count && wedgeValue == 1 {
-            ++additionalRotations
-        }
-            
-        if wedgeValue == 1 && wedgeValue == wedges.count {
-            --additionalRotations
-        }
-        
-        let wedgesCountForRotations = wedges.count * additionalRotations
-        let currentImage = wedgeValue + wedgesCountForRotations
-
-        println("currentImage \(currentImage) wedgeValue \(wedgeValue) angle \(pad(angle))")
-            
-        
-        currentState = WheelState(additionalRotations: additionalRotations,
-                                           wedgeValue: wedgeValue,
-                                                image: currentImage)
-        
-    }
-    
-    
-    
-    func setImageOpacityForCurrentAngle(var angle: CGFloat) {
-        visualState.initOpacityListWithWedges(wedges)
-
-        // Shift the rotation 1/2 a wedge width angle
-        // This is to center the effect of changing the opacity.
-        angle = angle + (wedgeWidthAngle / 2)
-        angle = normalizedAngleForAngle(angle)
-        
-        for wedge in wedges {
-            
-            if angle >= wedge.minRadian &&
-               angle <=  wedge.maxRadian    {
-                
-                let percent = percentValue( angle,
-                              isBetweenLow: wedge.minRadian,
-                                   AndHigh: wedge.maxRadian)
-                
-                visualState.wedgeOpacityList[wedge.value]    = percent
-                    
-                    
-                let neighbor = neighboringWedge(wedge)
-                let invertedPercent = 1 - percent
-                visualState.wedgeOpacityList[neighbor.value] = invertedPercent
-                    
-            }
-        }
-        visualState.setOpacityOfWedgeImageViews(allWedgeImageViews)
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    func neighboringWedge(wedge: WedgeRegion) -> WedgeRegion {
+    private func neighboringWedge(wedge: WedgeRegion) -> WedgeRegion {
         var wedgeValue = wedge.value
         if wedgeValue == wedges.count {
             wedgeValue = 1
@@ -1018,20 +1005,87 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         return otherWedge
     }
     
+
+
     
-    func currentRotation(currentRotation: CGFloat,
-                     isWithinWedge wedge: WedgeRegion) -> Bool {
-        var withinWedge = false
-        
-        if (currentRotation >= wedge.minRadian &&
-            currentRotation <= wedge.maxRadian   ) {
-                withinWedge = true
+    
+   // MARK: -
+   // MARK: Whole Wheel Helpers
+    private func checkIfWheelHasFlipped360(angle: CGFloat) {
+        // TODO: This is janky.  Is there bettter math???
+        if (userState.previousAngle < -2) && (angle > 2) {
+            userState.wheelHasFlipped360 = true
         }
-        
-        return withinWedge
     }
     
-    func normalizedAngleForAngle(var angle: CGFloat) -> CGFloat {
+    private func checkIfRotatingClockwise(angle: CGFloat) {
+        let angleDifference = userState.initialAngle - angle
+        if angleDifference > 0 {
+            userState.direction = .Clockwise
+        } else {
+            userState.direction = .CounterClockwise
+        }
+    }
+
+    
+    // MARK: UITouch Helpers
+    private func touchPointWithTouch(touch: UITouch) -> CGPoint {
+        return touch.locationInView(self)
+    }
+    
+    private func angleAtTouch(touch: UITouch) -> CGFloat {
+        let touchPoint = touchPointWithTouch(touch)
+        return angleAtTouchPoint(touchPoint)
+    }
+    
+    private func angleAtTouchPoint(touchPoint: CGPoint) -> CGFloat {
+        let dx = touchPoint.x - container.center.x
+        let dy = touchPoint.y - container.center.y
+        let angle = atan2(dy,dx)
+        
+        return angle
+    }
+    
+    private func touchIsOnWheel(touch: UITouch) -> Bool {
+        let dist = distanceFromCenterWithTouch(touch)
+        var touchIsOnWheel = true
+        
+        if (dist < centerCircle) {
+            touchIsOnWheel = false
+        }
+        if (dist > outsideCircle) {
+            touchIsOnWheel = false
+        }
+        return touchIsOnWheel
+    }
+    
+    private func touchIsOffWheel(touch: UITouch) -> Bool {
+        return !touchIsOnWheel(touch)
+    }
+    
+    private func distanceFromCenterWithTouch(touch: UITouch) -> CGFloat {
+        let touchPoint = touchPointWithTouch(touch)
+        return distanceFromCenterWithPoint(touchPoint)
+    }
+    
+    private func distanceFromCenterWithPoint(point: CGPoint) -> CGFloat {
+        let center = CGPointMake(self.bounds.size.width  / 2.0,
+            self.bounds.size.height / 2.0)
+        
+        return distanceBetweenPointA(center, AndPointB: point)
+    }
+    
+    private func distanceBetweenPointA(pointA: CGPoint,
+                             AndPointB pointB: CGPoint) -> CGFloat {
+        let dx = pointA.x - pointB.x
+        let dy = pointA.y - pointB.y
+        let sqrtOf = dx * dx + dy * dy
+        
+        return sqrt(sqrtOf)
+    }
+
+    // MARK: Angle Helpers
+    private func normalizedAngleForAngle(var angle: CGFloat) -> CGFloat {
         let positiveHalfCircle =  halfCircle
         let negitiveHalfCircle = -halfCircle
         
@@ -1045,90 +1099,8 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         }
         return angle
     }
-    
-    
-    
-    
-    
-    
-    
-   // MARK: -
-   // MARK: Whole Wheel Helpers
-    func checkIfWheelHasFlipped360(angle: CGFloat) {
-        // TODO: This is janky.  Is there bettter math???
-        if (userState.previousAngle < -2) && (angle > 2) {
-            userState.wheelHasFlipped360 = true
-        }
-    }
-    
-    func checkIfRotatingClockwise(angle: CGFloat) {
-        let angleDifference = userState.initialAngle - angle
-        if angleDifference > 0 {
-            userState.direction = .Clockwise
-        } else {
-            userState.direction = .CounterClockwise
-        }
-    }
 
-    
-    // MARK: UITouch Helpers
-    func touchPointWithTouch(touch: UITouch) -> CGPoint {
-        return touch.locationInView(self)
-    }
-    
-    func angleAtTouch(touch: UITouch) -> CGFloat {
-        let touchPoint = touchPointWithTouch(touch)
-        return angleAtTouchPoint(touchPoint)
-    }
-    
-    func angleAtTouchPoint(touchPoint: CGPoint) -> CGFloat {
-        let dx = touchPoint.x - container.center.x
-        let dy = touchPoint.y - container.center.y
-        let angle = atan2(dy,dx)
-        
-        return angle
-    }
-    
-    func touchIsOnWheel(touch: UITouch) -> Bool {
-        let dist = distanceFromCenterWithTouch(touch)
-        var touchIsOnWheel = true
-        
-        if (dist < centerCircle) {
-            touchIsOnWheel = false
-        }
-        if (dist > outsideCircle) {
-            touchIsOnWheel = false
-        }
-        return touchIsOnWheel
-    }
-    
-    func touchIsOffWheel(touch: UITouch) -> Bool {
-        return !touchIsOnWheel(touch)
-    }
-    
-    func distanceFromCenterWithTouch(touch: UITouch) -> CGFloat {
-        let touchPoint = touchPointWithTouch(touch)
-        return distanceFromCenterWithPoint(touchPoint)
-    }
-    
-    func distanceFromCenterWithPoint(point: CGPoint) -> CGFloat {
-        let center = CGPointMake(self.bounds.size.width  / 2.0,
-            self.bounds.size.height / 2.0)
-        
-        return distanceBetweenPointA(center, AndPointB: point)
-    }
-    
-    func distanceBetweenPointA(pointA: CGPoint,
-                     AndPointB pointB: CGPoint) -> CGFloat {
-        let dx = pointA.x - pointB.x
-        let dy = pointA.y - pointB.y
-        let sqrtOf = dx * dx + dy * dy
-        
-        return sqrt(sqrtOf)
-    }
-
-    // MARK: Angle Helpers
-    func radiansFromTransform(transform: CGAffineTransform) -> CGFloat {
+    private func radiansFromTransform(transform: CGAffineTransform) -> CGFloat {
         let b = transform.b
         let a = transform.a
         let radians = atan2(b, a)
@@ -1136,19 +1108,20 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         return radians
     }
     
-    func dampenRotation(angle: CGFloat) -> CGFloat {
+    private func dampenRotation(angle: CGFloat) -> CGFloat {
         return (log((angle * rotationDampeningFactor) + 1) / rotationDampeningFactor)
     }
     
     // MARK: Math Helpers
-    func percentValue(value: CGFloat,
-        isBetweenLow   low: CGFloat,
-        AndHigh       high: CGFloat ) -> CGFloat {
-            return (value - low) / (high - low)
+    private func percentValue(value: CGFloat,
+                 isBetweenLow   low: CGFloat,
+                 AndHigh       high: CGFloat ) -> CGFloat {
+        return (value - low) / (high - low)
     }
     
     // MARK: Debug printing methods
-    func padd(number: CGFloat) -> String {
+    // TODO: Remove after main developement
+    private func padd(number: CGFloat) -> String {
         var paddedNumber = " 1.000"
         if let numberString = padNumber.stringFromNumber(number) {
             paddedNumber = numberString
@@ -1156,7 +1129,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         return paddedNumber
     }
     
-    func pad(number: CGFloat) -> String {
+    private func pad(number: CGFloat) -> String {
         var paddedNumber = " 1.000"
         if let numberString = padNumber.stringFromNumber(number) {
             paddedNumber = numberString
@@ -1165,7 +1138,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
     }
     
     // MARK: Other
-    func wedgeImageViewFromValue(value: Int) -> UIImageView? {
+    private func wedgeImageViewFromValue(value: Int) -> UIImageView? {
         
         var wedgeView: UIImageView?
         
@@ -1179,7 +1152,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         return wedgeView
     }
     
-    func imageOfNumber(i: Int) -> UIImage {
+    private func imageOfNumber(i: Int) -> UIImage {
         return images[i - 1]
     }
 

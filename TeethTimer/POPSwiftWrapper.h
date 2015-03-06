@@ -8,36 +8,6 @@
 
 
 
-@protocol _POPAnimationDelegate <NSObject>
-@optional
-
-/**
- @abstract Called on animation start.
- @param anim The relevant animation.
- */
-- (void)pop_animationDidStart:(POPAnimation *)anim;
-
-/**
- @abstract Called when value meets or exceeds to value.
- @param anim The relevant animation.
- */
-- (void)pop_animationDidReachToValue:(POPAnimation *)anim;
-
-/**
- @abstract Called on animation stop.
- @param anim The relevant animation.
- @param finished Flag indicating finished state. Flag is true if the animation reached completion before being removed.
- */
-- (void)pop_animationDidStop:(POPAnimation *)anim finished:(BOOL)finished;
-
-/**
- @abstract Called each frame animation is applied.
- @param anim The relevant animation.
- */
-- (void)pop_animationDidApply:(POPAnimation *)anim;
-
-@end
-
 
 
 /// Abstract animation effect class
@@ -300,3 +270,33 @@ POPAnimatableProperty* ref;
 
 
 
+
+@protocol _POPAnimationDelegate <NSObject>
+@optional
+
+/**
+ @abstract Called on animation start.
+ @param anim The relevant animation.
+ */
+- (void)pop_animationDidStart:(_POPAnimation *)anim;
+
+/**
+ @abstract Called when value meets or exceeds to value.
+ @param anim The relevant animation.
+ */
+- (void)pop_animationDidReachToValue:(_POPAnimation *)anim;
+
+/**
+ @abstract Called on animation stop.
+ @param anim The relevant animation.
+ @param finished Flag indicating finished state. Flag is true if the animation reached completion before being removed.
+ */
+- (void)pop_animationDidStop:(_POPAnimation *)anim finished:(BOOL)finished;
+
+/**
+ @abstract Called each frame animation is applied.
+ @param anim The relevant animation.
+ */
+- (void)pop_animationDidApply:(_POPAnimation *)anim;
+
+@end
