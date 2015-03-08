@@ -357,36 +357,35 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         }
         
         let angle = angleAtTouch(touch)
-//        checkIfWheelHasFlipped360(angle)
-        checkIfRotatingClockwise(angle)
-        
-        // Prevent the user from rotating to the left.
+        calcStateForAngle(angle)
+                                    
+        // Prevent the user from rotating CounterClockwise.
         var angleDifference = userState.initialAngle - angle
         var dampenRotation  = false
         
-        
-        // The wheel is turned to the left when
-        // angleDifference is positive.
-        if userState.direction == .Clockwise {
-            dampenRotation = true
-        }
+//        if currentImage > userState.initialImage {
+//        if userState.direction == .Clockwise {
+//            dampenRotation = true
+//        }
                                     
         if currentImage > userState.initialImage {
             dampenRotation = true
         }
         
-        // TODO: Replace using ImageIndex
-//        if userState.wheelHasFlipped360 {
-//            dampenRotation = true
-//            angleDifference = angleDifference + fullCircle
-//        }
+        // Test is new state struct can replace the need for this
+        if userState.wheelHasFlipped360 {
+            dampenRotation = true
+            angleDifference = angleDifference + fullCircle
+        }
+                                    
+        // TODO: Test if Image is greater than
         
         var angleDifferenceDamped = angleDifference
         if dampenRotation {
-            angleDifferenceDamped = self.dampenRotation(angleDifference)
-            userState.snapTo = .InitialWedge
+            angleDifferenceDamped = dampenRotationAngle(angleDifference)
+            userState.snapTo = .InitialImage
         } else {
-            userState.snapTo = .CurrentWedge
+            userState.snapTo = .CurrentImage
         }
                                     
         // If the wheel rotates far enough, it will flip the 360 and
@@ -424,19 +423,26 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         userState.currently = .NotInteracting
         
         // Animate the wheel to rest at one of the wedges.
-// TODO: restore userState.initialWedge code
-        if userState.snapTo == .InitialWedge {
-            animateToImage(userState.initialImage)
-        } else {
-            animateToImage(currentImage)
+        switch userState.snapTo {
+            case .InitialImage:
+                animateToImage(userState.initialImage)
+            case .CurrentImage:
+                animateToImage(currentImage)
+            case .FirstImage:
+                animateToImage(1)
+            case .LastImage:
+                animateToImage(images.count)
         }
+        
         
         // Callback to block/closure based 'delegate' to
         // inform it that the wheel has been rewound.
-        if userState.initialImageIsNotImage(currentImage) &&
-           userState.snapTo == .CurrentWedge {
+        if userState.initialImageIsNotImage(currentImage) {
+           if userState.snapTo == .CurrentImage ||
+              userState.snapTo == .FirstImage {
             
-            wheelTurnedBack()
+                wheelWasTurnedBack()
+            }
         }
         
         // User rotation has ended.  Forget the state.
@@ -444,7 +450,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         
         comments(){
             /*
-            NOTE: Possible Events to impliment (but some come free, so check)
+            TODO: Possible Events to impliment (but some come free, so check)
             self.sendActionsForControlEvents(UIControlEvents.TouchUpInside)  Comes for free
             self.sendActionsForControlEvents(UIControlEvents.TouchUpOutside)
             self.sendActionsForControlEvents(UIControlEvents.TouchCancel)
@@ -553,7 +559,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
     }
     
     
-    func wheelTurnedBack() {
+    func wheelWasTurnedBack() {
         
         // TODO: Fix math and simplify
         // Callback to notify there was a change to the wheel wedge position
@@ -569,57 +575,6 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         
 //        wheelTurnedBackBy(wedgeCount, AndPercentage: percentage)
     }
-    
-    // MARK: Wedge Animation Methods
-    
-//    func animateToWedgeByValue(value: Int) {
-//        animateToWedgeByValue(value, inDirection: .Closest)
-//    }
-
-//    func animateToWedgeByValue(value: Int,
-//               inDirection direction: DirectionToRotate) {
-//        let wedge = wedgeFromValue(value)
-//        animateToWedge(wedge, inDirection: direction)
-//    }
-
-
-    
-//    func animateToWedge(wedge: WedgeRegion,
-//        inDirection direction: DirectionToRotate) {
-//        
-//        let resolved = resolveDirectionAndCountToWedge( wedge,
-//                                           inDirection: direction)
-//            
-//        var angle = wedge.midRadian
-//        if resolved.direction == .Clockwise {
-//            if angle > currentRotation {
-//                angle -= fullCircle
-//            }
-//        } else {
-//            if angle < currentRotation {
-//                angle += fullCircle
-//            }
-//        }
-//            
-//        animateToAngle(angle)
-//    }
-    
-//    func testRotation() {
-//        let test = BasicAnimation(duration: 1.0)
-//        test.property = AnimatableProperty(name: kPOPLayerRotation)
-//        test.toValue = currentRotation - wedgeWidthAngle
-//        test.name = "test"
-//        test.beginTime = 0
-//        test.delegate = self
-//        test.completionBlock = { anim, finsihed in
-//            self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-//        }
-//        Animation.addAnimation( test,
-//            key: "test",
-//            obj: self.container.layer)
-//    }
-    
-    
     
     
     
@@ -988,6 +943,12 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
     
    // MARK: -
    // MARK: Whole Wheel Helpers
+    private func calcStateForAngle(angle: CGFloat) {
+        checkIfWheelHasFlipped360(angle)
+        calcRotationDirectionWithAngle(angle)
+    }
+    
+   // TODO: Test is new state struct can replace the need for this
     private func checkIfWheelHasFlipped360(angle: CGFloat) {
         // TODO: This is janky.  Is there bettter math???
         if (userState.previousAngle < -2) && (angle > 2) {
@@ -995,7 +956,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         }
     }
     
-    private func checkIfRotatingClockwise(angle: CGFloat) {
+    private func calcRotationDirectionWithAngle(angle: CGFloat) {
         let angleDifference = userState.initialAngle - angle
         if angleDifference > 0 {
             userState.direction = .Clockwise
@@ -1085,7 +1046,7 @@ class ImageWheelControl: UIControl, AnimationDelegate  {
         return radians
     }
     
-    private func dampenRotation(angle: CGFloat) -> CGFloat {
+    private func dampenRotationAngle(angle: CGFloat) -> CGFloat {
         return (log((angle * rotationDampeningFactor) + 1) / rotationDampeningFactor)
     }
     

@@ -73,7 +73,6 @@
 		D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */; };
 		D3B7BC7519EA383A00F50DF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3B7BC7319EA383A00F50DF7 /* Main.storyboard */; };
 		D3B7BC7A19EA383A00F50DF7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3B7BC7819EA383A00F50DF7 /* LaunchScreen.xib */; };
-		D3D406F41A985FA700FDD117 /* ImageWheelControl+Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D406F31A985FA700FDD117 /* ImageWheelControl+Images.swift */; };
 		D3DC4C481A95877400984A24 /* ImageWheelVisualState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */; };
 /* End PBXBuildFile section */
 
@@ -153,7 +152,6 @@
 		D3B7BC7919EA383A00F50DF7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		D3B7BC8419EA383A00F50DF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3B7BC8519EA383A00F50DF7 /* TeethTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeethTimerTests.swift; sourceTree = "<group>"; };
-		D3D406F31A985FA700FDD117 /* ImageWheelControl+Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImageWheelControl+Images.swift"; sourceTree = "<group>"; };
 		D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheelVisualState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -284,7 +282,6 @@
 				D3354FF41A2953E700C667A0 /* ImageWheelControl.swift */,
 				D307719C1A8873DB003BA7E1 /* ImageWheelInteractionState.swift */,
 				D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */,
-				D3D406F31A985FA700FDD117 /* ImageWheelControl+Images.swift */,
 				D3354FF71A298AD100C667A0 /* wedgeRegion.swift */,
 				D31F95E01A2C5FE700219B32 /* ColorImage.swift */,
 				D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */,
@@ -502,7 +499,6 @@
 				D3485C8519ECEEB900C6E495 /* Timer.swift in Sources */,
 				D31F95E11A2C5FE700219B32 /* ColorImage.swift in Sources */,
 				D3354FF51A2953E700C667A0 /* ImageWheelControl.swift in Sources */,
-				D3D406F41A985FA700FDD117 /* ImageWheelControl+Images.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

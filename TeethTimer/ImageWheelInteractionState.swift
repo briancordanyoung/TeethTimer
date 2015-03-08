@@ -1,8 +1,10 @@
 import CoreGraphics
 
 enum SnapWheelTo {
-    case InitialWedge
-    case CurrentWedge
+    case InitialImage
+    case CurrentImage
+    case FirstImage
+    case LastImage
 }
 
 enum InteractionState {
@@ -22,7 +24,7 @@ class ImageWheelInteractionState {
     
     var currently: InteractionState  = .NotInteracting
     var direction: DirectionRotated  = .Clockwise
-    var snapTo:    SnapWheelTo       = .InitialWedge
+    var snapTo:    SnapWheelTo       = .CurrentImage
     
     init() {
         reset()
@@ -34,7 +36,7 @@ class ImageWheelInteractionState {
         previousAngle      = 0.0
         currently          = .NotInteracting
         direction          = .Clockwise
-        snapTo             = .CurrentWedge
+        snapTo             = .CurrentImage
         wheelHasFlipped360 = false
     }
     
