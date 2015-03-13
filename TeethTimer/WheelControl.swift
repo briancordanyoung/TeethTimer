@@ -23,20 +23,6 @@ struct WheelState {
             previousRotation: angle - WheelState.initialVelocity,
             previousDirection: .Clockwise)
     }
-
-    
-    var velosity: CGFloat {
-        get {
-            return abs(currentRotation - previousRotation)
-        }
-    }
-    
-    var velosityFudgeFactor: CGFloat {
-        get {
-            return velosity * 2
-        }
-    }
-    
 }
 
 enum DirectionToRotate {
@@ -257,46 +243,37 @@ class WheelControl: UIControl, AnimationDelegate  {
     func reset() {
         container.transform = CGAffineTransformMakeRotation(0.0)
         wheelState = WheelState(angle: currentAngle)
-        println("F:        T:        A:\(pad(currentAngle)) R:\(pad(currentRotation))")
     }
     
     // MARK: -
     // MARK: UIControl methods handling the touches
     override func beginTrackingWithTouch(touch: UITouch,
         withEvent event: UIEvent) -> Bool {
-            userState.reset()
-            
-            // Set state at the beginning of the users rotation
-            userState.currently          = .Interacting
-            userState.initialTransform   = container.transform
-            userState.initialRotation    = currentRotation
-            userState.initialTouchAngle  = angleAtTouch(touch)
-            
-            return true
+        userState.reset()
+        
+        // Set state at the beginning of the users rotation
+        userState.currently          = .Interacting
+        userState.initialTransform   = container.transform
+        userState.initialRotation    = currentRotation
+        userState.initialTouchAngle  = angleAtTouch(touch)
+        
+        return true
     }
     
     override func continueTrackingWithTouch(touch: UITouch,
         withEvent event: UIEvent) -> Bool {
 
-            let angleDifference = angleDifferenceBetweenTouch(touch,
-                                AndAngle: userState.initialTouchAngle)
-            
-            container.transform = CGAffineTransformRotate( userState.initialTransform,
-                angleDifference )
-            currentRotation = userState.initialRotation + angleDifference
-            
-            self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-            self.sendActionsForControlEvents(UIControlEvents.TouchDragInside)
-            
-            
-            func near(x: CGFloat) -> CGFloat { return floor(x * 4) }
-            var diffMarker = "    "
-            let curRot = near(wheelState.currentRotation)
-            let curAng = near(currentAngle)
-            if curAng != curRot {diffMarker = "DIFF"}
-            println("F:        T:        A:\(pad(currentAngle)) R:\(pad(wheelState.currentRotation))   \(diffMarker)      D: \(pad(angleDifference))")
-            
-            return true
+        let angleDifference = angleDifferenceBetweenTouch(touch,
+                            AndAngle: userState.initialTouchAngle)
+        
+        container.transform = CGAffineTransformRotate( userState.initialTransform,
+            angleDifference )
+        currentRotation = userState.initialRotation + angleDifference
+        
+        self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+        self.sendActionsForControlEvents(UIControlEvents.TouchDragInside)
+    
+        return true
     }
     
     override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
@@ -343,15 +320,13 @@ class WheelControl: UIControl, AnimationDelegate  {
     
     
     private func angleAtTouchPoint(touchPoint: CGPoint) -> CGFloat {
-
-        
         let dx = touchPoint.x - container.center.x
         let dy = touchPoint.y - container.center.y
         var angle = atan2(dy,dx)
         
         // Somewhere in the rotation of the container will be a discontinuity
-        // where the angle of the affine transformation flips from negitive to
-        // positive or back.  This adgustment places that point in negitive Y.
+        // where the angle flips from -3.14 to 3.14 or  back.  This adgustment
+        // places that point in negitive Y.
         if angle >= quarterCircle {
             angle = angle - fullCircle
         }
