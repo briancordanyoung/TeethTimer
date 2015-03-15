@@ -59,16 +59,22 @@ private let threeQuarterCircle = quarterCircle + halfCircle
 
 class WheelControl: UIControl, AnimationDelegate  {
     // Configure WheelControl
-    var startingRotation: CGFloat = fullCircle * 10
+    var startingRotation: CGFloat = 0.0
     
     var minRotation: CGFloat?    = nil
     var maxRotation: CGFloat?    = nil
-    var dampenClockwise          = true
+    var dampenClockwise          = false
     var dampenCounterClockwise   = false
-    var rotationDampeningFactor  =  CGFloat(5)
+    
+    // How strong should the users rotation be dampened as they
+    // rotate past the allowed point
+    var rotationDampeningFactor  = CGFloat(5)
 
     var centerCircle: CGFloat =  10.0
 
+    
+    
+    
     // Internal Properties
     
     private var outsideCircle: CGFloat {
@@ -330,8 +336,8 @@ class WheelControl: UIControl, AnimationDelegate  {
             
         let angleDifference = angleDifferenceUsing(touch)
         
-        container.transform = CGAffineTransformRotate( userState.initialTransform,
-            angleDifference )
+        let t = CGAffineTransformRotate( userState.initialTransform, angleDifference )
+        container.transform = t
         currentRotation = userState.initialRotation + angleDifference
         
         self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
@@ -347,17 +353,18 @@ class WheelControl: UIControl, AnimationDelegate  {
         userState.currently = .NotInteracting
         
         switch userState.snapTo {
-        case .InitialImage:
-            animateToRotation(userState.initialRotation)
-        case .CurrentImage:
+        case .InitialRotation:
+//            animateToRotation(userState.initialRotation)
             break
-        case .FirstImage:
+        case .CurrentRotation:
+            break
+        case .MinRotation:
             if let rotation = minRotation {
-                animateToRotation(rotation)
+//                animateToRotation(rotation)
             }
-        case .LastImage:
+        case .MaxRotation:
             if let rotation = maxRotation {
-                animateToRotation(rotation)
+//                animateToRotation(rotation)
             }
         }
         
@@ -369,57 +376,75 @@ class WheelControl: UIControl, AnimationDelegate  {
 
     // MARK: -
     // MARK: Animation
+    
     private func animateToRotation(rotation: CGFloat) {
         Animation.removeAllAnimations(container.layer)
-        
         let currentRotation = self.currentRotation
-
-        let durationPerRadian = CGFloat(1)
-        let totalDuration = abs(currentRotation - rotation) * durationPerRadian
         
-        let part1Duration = totalDuration * 0.5
-        let part1Rotation = ((rotation - currentRotation ) * 0.5) + currentRotation
+        let springAngularDistance = halfCircle / 3
+        let totalAngularDistance = abs(currentRotation - rotation)
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        let rotate = BasicAnimation(duration: CGFloat(part1Duration))
+        if totalAngularDistance <= springAngularDistance {
+            springRotationAnimation( from: currentRotation,
+                                       to: rotation)
+        } else {
+            let durationPerRadian = CGFloat(0.25)
+            let baseDuration = totalAngularDistance * durationPerRadian
+            let totalDuration = speedUpDurationByDistance(baseDuration)
+            
+            let part1Distance    = totalAngularDistance - springAngularDistance
+            let part1Percentage  = part1Distance / totalAngularDistance
+            let part1Duration    = totalDuration * part1Percentage
+            let part1Rotation    = ((rotation - currentRotation ) * part1Percentage) + currentRotation
+            
+            basicRotationAnimation( from: currentRotation,
+                                      to: part1Rotation,
+                duration: part1Duration) { anim, finsihed in
+                    self.springRotationAnimation(from: part1Rotation,
+                                                   to: rotation)
+            }
+            
+        }
+    }
+    
+    func speedUpDurationByDistance(duration: CGFloat) -> CGFloat {
+        let durationDistanceFactor = CGFloat(1)
+        return log((duration * durationDistanceFactor) + 1) / durationDistanceFactor
+    }
+    
+    func basicRotationAnimation(#from: CGFloat, to: CGFloat, duration: CGFloat, completion: (Animation, Bool)->()) {
+        let rotate = BasicAnimation(duration: duration)
         rotate.property = AnimatableProperty(name: kPOPLayerRotation)
-        rotate.fromValue = currentRotation
-        rotate.toValue = part1Rotation
+        rotate.fromValue = from
+        rotate.toValue = to
         rotate.name = "Basic Rotation"
         rotate.delegate = self
         Animation.addAnimation( rotate,
                            key: rotate.property.name,
                            obj: container.layer)
-        
-        
-        
+
+    }
+
+    
+    func springRotationAnimation(#from: CGFloat, to: CGFloat) {
         let spring = SpringAnimation( tension: 1000,
                                      friction: 30,
                                          mass: 1)
         spring.property = AnimatableProperty(name: kPOPLayerRotation)
-        spring.fromValue = part1Rotation
-        spring.toValue = rotation
-        spring.beginTime = CFTimeInterval(part1Duration)
+        spring.fromValue = from
+        spring.toValue = to
         spring.name = "Spring Rotation"
         spring.delegate = self
         spring.completionBlock = { anim, finished in
             if finished {
-                self.currentRotation = rotation
+                self.currentRotation = to
+//                let t = CGAffineTransformMakeRotation(self.angleFromRotation(to))
+//                self.container.transform = t
             }
         }
         Animation.addAnimation( spring,
                            key: spring.property.name,
                            obj: container.layer)
-
     }
     
     func pop_animationDidApply(anim: Animation!) {
@@ -429,7 +454,39 @@ class WheelControl: UIControl, AnimationDelegate  {
         self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
     }
     
+    func test() {
+        let step1 = currentRotation
+        let step2 = maxRotation
+        let step3 = maxRotation
+        
+        let rotate = BasicAnimation(duration: 2.0,
+            timingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn))
+        rotate.property = AnimatableProperty(name: kPOPLayerRotation)
+        rotate.fromValue = step1
+        rotate.toValue = step2
+        rotate.name = "Basic Rotation"
+        rotate.delegate = self
+        rotate.completionBlock = {anim, finsihed in
+            if finsihed {
+                let spring = SpringAnimation( tension: 100,
+                    friction: 15,
+                    mass: 1)
+                spring.property = AnimatableProperty(name: kPOPLayerRotation)
+                spring.fromValue = step2
+                spring.toValue = step3
+                spring.name = "Spring Rotation"
+                spring.delegate = self
+                Animation.addAnimation( spring,
+                    key: spring.property.name,
+                    obj: self.container.layer)
+            }
+        }
+        Animation.addAnimation( rotate,
+            key: rotate.property.name,
+            obj: container.layer)
+    }
     
+
     // MARK: -
     // MARK: Development Helpers
     // TODO: Remove after main development
@@ -477,25 +534,25 @@ class WheelControl: UIControl, AnimationDelegate  {
 
         if currentRotation < userState.initialRotation && dampenCounterClockwise {
             dampenRotation.counterClockwise = true
-            userState.snapTo = .InitialImage
+            userState.snapTo = .InitialRotation
         }
 
         if currentRotation > userState.initialRotation && dampenClockwise {
             dampenRotation.clockwise = true
-            userState.snapTo = .InitialImage
+            userState.snapTo = .InitialRotation
         }
 
         
         if let min = minRotation {
             if currentRotation < min {
                 dampenRotation.counterClockwise = true
-                userState.snapTo = .FirstImage
+                userState.snapTo = .MinRotation
             }
         }
         if let max = maxRotation {
             if currentRotation > max {
-                dampenRotation.clockwise = true
-                userState.snapTo = .LastImage
+                dampenRotation.counterClockwise = true
+                userState.snapTo = .MaxRotation
             }
         }
         return dampenRotation
@@ -517,11 +574,17 @@ class WheelControl: UIControl, AnimationDelegate  {
         // subtracting a full 2 radians from the angle. This does not allow for
         // beyond full 360° rotations, but works up to 360° before it snaps back.
         // dampening infinately rotations would require tracking previous angle.
+        
+        let oldAngle = angle
+        
         while angle <= 0 {
             angle += fullCircle
         }
         
-        return (log((angle * rotationDampeningFactor) + 1) / rotationDampeningFactor)
+        let newAngle = (log((angle * rotationDampeningFactor) + 1) / rotationDampeningFactor)
+        
+        println("o: \(pad(oldAngle))  n: \(pad(newAngle))")
+        return newAngle
     }
     
     private func dampenCounterClockwiseAngleDifference(var angle: CGFloat) -> CGFloat {
