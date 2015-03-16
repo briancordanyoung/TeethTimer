@@ -9,6 +9,12 @@ struct WheelState {
     var previousRotation: CGFloat = -initialVelocity
     var previousDirection: DirectionRotated = .Clockwise
 
+    init() {
+      currentRotation   =  0.0
+      previousRotation  = -WheelState.initialVelocity
+      previousDirection = .Clockwise
+
+  }
     
     init( currentRotation: CGFloat,
          previousRotation: CGFloat,
@@ -102,9 +108,6 @@ final class WheelControl: UIControl, AnimationDelegate  {
     
     
     // Internal Properties
-    private var tmpMessage = ""
-    
-    
     private var outsideCircle: CGFloat {
         get {
             return container.bounds.height * 2
@@ -118,42 +121,45 @@ final class WheelControl: UIControl, AnimationDelegate  {
             return angleFromTransform(container.transform)
         }
     }
-    
-    var wheelState = WheelState(currentRotation: 0.0,
-                               previousRotation:-0.0001,
-                              previousDirection: .Clockwise)
+  
+  // See: rotationFromAngle(_,AndWheelState:) for and explination of the
+  // the wheelState property and struct.
+  var wheelState = WheelState()
 
-    var currentRotation: CGFloat {
-        
-        get {
-            return self.wheelState.currentRotation
-        }
-        
-        set(newRotation) {
-            let wheelState = self.wheelState
-            let adjustedRotation = rotationFromAngle( newRotation,
-                                       AndWheelState: wheelState)
-            
-            let newDirection: DirectionRotated
-            if adjustedRotation > wheelState.currentRotation {
-                newDirection = .Clockwise
-            } else if adjustedRotation < wheelState.currentRotation {
-                newDirection = .CounterClockwise
-            } else {
-                newDirection = wheelState.previousDirection
-            }
-            
-            self.wheelState = WheelState( currentRotation: adjustedRotation,
-                                         previousRotation: wheelState.currentRotation,
-                                        previousDirection: newDirection)
-        }
+  // See: rotationFromAngle(_,AndWheelState:) for and explination of the
+  // the currentRotation property, wheelState property and backing struct.
+  var currentRotation: CGFloat {
+    
+    get {
+      return wheelState.currentRotation
     }
     
-    private let userState   = ImageWheelInteractionState()
+    set(newRotation) {
+      let wheelState = self.wheelState
+      let adjustedRotation = rotationFromAngle( newRotation,
+                                 AndWheelState: wheelState)
+      
+      let newDirection: DirectionRotated
+      if adjustedRotation > wheelState.currentRotation {
+        newDirection = .Clockwise
+      } else if adjustedRotation < wheelState.currentRotation {
+        newDirection = .CounterClockwise
+      } else {
+        newDirection = wheelState.previousDirection
+      }
+      
+      self.wheelState = WheelState( currentRotation: adjustedRotation,
+                                   previousRotation: wheelState.currentRotation,
+                                  previousDirection: newDirection)
+    }
+  }
 
-    
+  // See: the UIControl methods handling the touches to understand userState
+  private let userState   = ImageWheelInteractionState()
 
-    
+  
+
+  
     func addConstraintsToViews() {
         container.userInteractionEnabled = false
         self.addSubview(container)
@@ -530,12 +536,37 @@ final class WheelControl: UIControl, AnimationDelegate  {
         return paddedNumber
     }
 
-    // MARK: Wheel State
+  // MARK: Wheel State
   private func rotationFromAngle(angle: CGFloat,
-    AndWheelState wheelState: WheelState) -> CGFloat {
+              AndWheelState wheelState: WheelState) -> CGFloat {
+                
+      // This method is a hack!  This class is based on the idea that the
+      // accumulated rotation angle (in radians) can be known.
+      // At the time of this method, only the absolute angle from -3.14 to 3.14
+      // can be determined. Unless another API is pointed out, this method
+      // is used to make a best guess on tracking the accumulated rotations
+      // of the wheel as it passes over the dicontinuity of the absolute angle
+      // returned from the affine transform.
+                
+      // In various conditions, this algorithm breaks down and can not
+      // determin the correct accumulated rotation.  It returns the last
+      // know good state in the hopes that the next evaluation can figure it out.
+                
+      // Overly large jumps between evaluations may produce the wrong guess.
+      // Execptionally fast rotations from the user or animation could do this.
+                
+      // During user interaction, this works. The angle difference from the initial
+      // touch is recalculated each time, so ONLY the final evaluation of
+      // this method, when touch ends, is used to keep the rotation in sync
+      // with the current absolute angle.
+                
+      // During animations, it is best to use the expected end state of the
+      // animation to set the currentRotation property to the expected value,
+      // (or more precicly, the wheelState property holding backing struct)
+      // overriding the accumulated changes made throughout the animation
       
-      let rotationsFromZero = Int(abs(angle / fullCircle))
-      let tooManyTries      = rotationsFromZero + 2
+      let rotationCountFromZero = Int(abs(angle / fullCircle))
+      let tooManyTries          = rotationCountFromZero + 2
       
       var rotation = angle
       
@@ -545,9 +576,13 @@ final class WheelControl: UIControl, AnimationDelegate  {
       // When rotating over the dicontinuity between
       // the -3.14 and 3.14 angles, we need to figure out
       // the what to add/substract from rotation to
-      // keep incrementing rotation in the right direction
+      // keep incrementing the rotation in the correct direction
       var addOrSubtract = true
       var tries: [String] = []
+                
+      // TODO: Test how close to a full circle the difference can be compared to.
+      //       the closer to 2 * M_PI we get, the less room for problems during
+      //       fast rotations.
       while difference > threeQuarterCircle {
         if difference >= previousDifference {
           addOrSubtract = !addOrSubtract
@@ -609,22 +644,34 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   
   private func directionsToDampenUsingAngle(angle: CGFloat) -> DampenDirection {
-    var dampenRotation  = DampenDirection( clockwise: .no,
-                                    counterClockwise: .no)
+
+    // Each change in the touch angle of the WheelControl calls
+    // directionsToDampenUsingAngle()  At each check, assume that
+    // the userState.snapTo should be .CurrentRotation until the angle
+    // is evaluated.
+    userState.snapTo = .CurrentRotation
     
+    // Assume also that their is no dampening to be done at this angle
+    // until it is evaluated below. New DampenDirection structs are '.no' in
+    // both directions.
+    var dampenRotation  = DampenDirection()
+    
+    
+    // Determine what WOULD the new currentRotation be at this angle
+    // IF there was no dampening of the rotation.  Use this to judge
+    // if the angle needs to be dampened.
     let rotation = rotationFromAngle(angle, AndWheelState: wheelState)
-    tmpMessage = "rotationFromAngle  \(pad(rotation))"
     
-    if rotation > userState.initialRotation && dampenClockwise {
-      dampenRotation.clockwise = .atAngle(0.0)
-      userState.snapTo = .InitialRotation
-    }
     
-    if rotation < userState.initialRotation && dampenCounterClockwise {
-      dampenRotation.counterClockwise = .atAngle(0.0)
-      userState.snapTo = .InitialRotation
-    }
+    // Check for the optional minRotation & maxRotation properties.
+    // If they exist, the wheel is limited in how far it may rotate.
+    // We need to pass back via the dampenRotation varriable, at what angle to
+    // start dampening the rotation.  This number (passed in the .atAngle() enum)
+    // is the difference in the angle between the user begining to rotate,
+    // and the angle to start dampening.
     
+    // Also set the userState to snapTo what possition after the 
+    // user interaction is complete.
     
     if let min = minRotation {
       if rotation < min {
@@ -638,12 +685,27 @@ final class WheelControl: UIControl, AnimationDelegate  {
         userState.snapTo = .MaxRotation
       }
     }
+    
+    
+    // If the dampenClockwise or dampenCounterClockwise properties are set,
+    // they override the either minRotation & maxRotation and set the
+    // dampening to begin imediately on user interaction.
+    if rotation > userState.initialRotation && dampenClockwise {
+      dampenRotation.clockwise = .atAngle(0.0)
+      userState.snapTo = .InitialRotation
+    }
+    
+    if rotation < userState.initialRotation && dampenCounterClockwise {
+      dampenRotation.counterClockwise = .atAngle(0.0)
+      userState.snapTo = .InitialRotation
+    }
+    
     return dampenRotation
   }
   
     // MARK: Wheel State Helpers
   private func angleDifferenceBetweenTouch( touch: UITouch,
-                                   AndAngle angle: CGFloat) -> CGFloat {
+    AndAngle angle: CGFloat) -> CGFloat {
       let touchAngle = angleAtTouch(touch)
       var angleDifference = angle - touchAngle
       
@@ -667,7 +729,6 @@ final class WheelControl: UIControl, AnimationDelegate  {
     angle += startAngle
                           
     return angle
-                              
   }
   
   private func dampenCounterClockwiseAngleDifference(var angle: CGFloat,
@@ -680,110 +741,111 @@ final class WheelControl: UIControl, AnimationDelegate  {
   }
   
     // MARK: UITouch Helpers
-    private func touchPointWithTouch(touch: UITouch) -> CGPoint {
-        return touch.locationInView(self)
+  private func touchPointWithTouch(touch: UITouch) -> CGPoint {
+    return touch.locationInView(self)
+  }
+  
+  private func angleAtTouch(touch: UITouch) -> CGFloat {
+    let touchPoint = touchPointWithTouch(touch)
+    return angleAtTouchPoint(touchPoint)
+  }
+  
+  
+  private func angleAtTouchPoint(touchPoint: CGPoint) -> CGFloat {
+    let dx = touchPoint.x - container.center.x
+    let dy = touchPoint.y - container.center.y
+    var angle = atan2(dy,dx)
+    
+    // Somewhere in the rotation of the container will be a discontinuity
+    // where the angle flips from -3.14 to 3.14 or  back.  This adgustment
+    // places that point in negitive Y.
+    if angle >= quarterCircle {
+      angle = angle - fullCircle
+    }
+    return angle
+  }
+  
+  
+  private func distanceFromCenterWithTouch(touch: UITouch) -> CGFloat {
+    let touchPoint = touchPointWithTouch(touch)
+    return distanceFromCenterWithPoint(touchPoint)
+  }
+  
+  private func distanceFromCenterWithPoint(point: CGPoint) -> CGFloat {
+    let center = CGPointMake(self.bounds.size.width  / 2.0,
+      self.bounds.size.height / 2.0)
+    
+    return distanceBetweenPointA(center, AndPointB: point)
+  }
+  
+  private func distanceBetweenPointA(pointA: CGPoint,
+    AndPointB pointB: CGPoint) -> CGFloat {
+      let dx = pointA.x - pointB.x
+      let dy = pointA.y - pointB.y
+      let sqrtOf = dx * dx + dy * dy
+      
+      return sqrt(sqrtOf)
+  }
+  
+  private func touchRegion(touch: UITouch) -> WheelRegion {
+    
+    let dist = distanceFromCenterWithTouch(touch)
+    var region: WheelRegion = .On
+    
+    if (dist < centerCircle) {
+      region = .Center
+    }
+    if (dist > outsideCircle) {
+      region = .Off
     }
     
-    private func angleAtTouch(touch: UITouch) -> CGFloat {
-        let touchPoint = touchPointWithTouch(touch)
-        return angleAtTouchPoint(touchPoint)
-    }
-    
-    
-    private func angleAtTouchPoint(touchPoint: CGPoint) -> CGFloat {
-        let dx = touchPoint.x - container.center.x
-        let dy = touchPoint.y - container.center.y
-        var angle = atan2(dy,dx)
-        
-        // Somewhere in the rotation of the container will be a discontinuity
-        // where the angle flips from -3.14 to 3.14 or  back.  This adgustment
-        // places that point in negitive Y.
-        if angle >= quarterCircle {
-            angle = angle - fullCircle
-        }
-        return angle
-    }
-    
-    
-    private func distanceFromCenterWithTouch(touch: UITouch) -> CGFloat {
-        let touchPoint = touchPointWithTouch(touch)
-        return distanceFromCenterWithPoint(touchPoint)
-    }
-    
-    private func distanceFromCenterWithPoint(point: CGPoint) -> CGFloat {
-        let center = CGPointMake(self.bounds.size.width  / 2.0,
-            self.bounds.size.height / 2.0)
-        
-        return distanceBetweenPointA(center, AndPointB: point)
-    }
-    
-    private func distanceBetweenPointA(pointA: CGPoint,
-        AndPointB pointB: CGPoint) -> CGFloat {
-            let dx = pointA.x - pointB.x
-            let dy = pointA.y - pointB.y
-            let sqrtOf = dx * dx + dy * dy
-            
-            return sqrt(sqrtOf)
-    }
-    
-    private func touchRegion(touch: UITouch) -> WheelRegion {
+    return region
+  }
+  
 
-        let dist = distanceFromCenterWithTouch(touch)
-        var region: WheelRegion = .On
-        
-        if (dist < centerCircle) {
-            region = .Center
-        }
-        if (dist > outsideCircle) {
-            region = .Off
-        }
-        return region
+  // MARK: Angle Helpers
+  private func angleFromRotation(rotation: CGFloat) -> CGFloat {
+    var angle = rotation
+    
+    if angle >  halfCircle {
+      angle += halfCircle
+      let totalRotations = floor(angle / fullCircle)
+      angle  = angle - (fullCircle * totalRotations)
+      angle -= halfCircle
     }
     
+    if angle < -halfCircle {
+      angle -= halfCircle
+      let totalRotations = floor(abs(angle) / fullCircle)
+      angle  = angle + (fullCircle * totalRotations)
+      angle += halfCircle
+    }
+    
+    return angle
+  }
+  
+  
+  private func normalizAngle(var angle: CGFloat) -> CGFloat {
+    let positiveHalfCircle =  halfCircle
+    let negitiveHalfCircle = -halfCircle
+    
+    while angle > positiveHalfCircle || angle < negitiveHalfCircle {
+      if angle > positiveHalfCircle {
+        angle -= fullCircle
+      }
+      if angle < negitiveHalfCircle {
+        angle += fullCircle
+      }
+    }
+    return angle
+  }
 
-    // MARK: Angle Helpers
-    private func angleFromRotation(rotation: CGFloat) -> CGFloat {
-        var angle = rotation
-        
-        if angle >  halfCircle {
-            angle += halfCircle
-            let totalRotations = floor(angle / fullCircle)
-            angle  = angle - (fullCircle * totalRotations)
-            angle -= halfCircle
-        }
-        
-        if angle < -halfCircle {
-            angle -= halfCircle
-            let totalRotations = floor(abs(angle) / fullCircle)
-            angle  = angle + (fullCircle * totalRotations)
-            angle += halfCircle
-        }
-        
-        return angle
-    }
+  private func angleFromTransform(transform: CGAffineTransform) -> CGFloat {
+    let b = transform.b
+    let a = transform.a
+    let angle = atan2(b, a)
     
-    
-    private func normalizAngle(var angle: CGFloat) -> CGFloat {
-        let positiveHalfCircle =  halfCircle
-        let negitiveHalfCircle = -halfCircle
-        
-        while angle > positiveHalfCircle || angle < negitiveHalfCircle {
-            if angle > positiveHalfCircle {
-                angle -= fullCircle
-            }
-            if angle < negitiveHalfCircle {
-                angle += fullCircle
-            }
-        }
-        return angle
-    }
-
-    private func angleFromTransform(transform: CGAffineTransform) -> CGFloat {
-        let b = transform.b
-        let a = transform.a
-        let radians = atan2(b, a)
-        
-        return radians
-    }
+    return angle
+  }
 
 }
