@@ -1,48 +1,50 @@
 import CoreGraphics
 
-enum SnapWheelTo {
-    case InitialImage
-    case CurrentImage
-    case FirstImage
-    case LastImage
+enum SnapWheelTo: String, Printable {
+  case InitialRotation = "InitialRotation"
+  case CurrentRotation = "CurrentRotation"
+  case MinRotation = "MinRotation"
+  case MaxRotation = "MaxRotation"
+  
+  var description: String {
+    return self.rawValue
+  }
 }
 
-enum InteractionState {
-    case Interacting
-    case NotInteracting
+enum InteractionState: String, Printable {
+  case Interacting = "Interacting"
+  case NotInteracting = "NotInteracting"
+  
+  var description: String {
+    return self.rawValue
+  }
 }
 
 class ImageWheelInteractionState {
-    
-    var initialTransform = CGAffineTransformMakeRotation(0)
-    var initialImage: ImageIndex = 1
-    
-    var initialAngle:  CGFloat  = 0.0
-    var previousAngle: CGFloat  = 0.0
-    
-    var wheelHasFlipped360: Bool = false
-    
-    var currently: InteractionState  = .NotInteracting
-    var direction: DirectionRotated  = .Clockwise
-    var snapTo:    SnapWheelTo       = .CurrentImage
-    
-    init() {
-        reset()
-    }
-    
-    func reset() {
-        initialTransform   = CGAffineTransformMakeRotation(0)
-        initialAngle       = 0.0
-        previousAngle      = 0.0
-        currently          = .NotInteracting
-        direction          = .Clockwise
-        snapTo             = .CurrentImage
-        wheelHasFlipped360 = false
-    }
-    
-    func initialImageIsNotImage(image: ImageIndex) -> Bool {
-        return initialImage != image
-    }
-
+  
+  var initialImage: ImageIndex = 1
+  
+  var initialTransform = CGAffineTransformMakeRotation(0)
+  var initialTouchAngle: CGFloat = 0.0
+  var initialRotation:   CGFloat = 0.0
+  var maxDampenAngle:    CGFloat =  CGFloat(FLT_MAX)
+  var minDampenAngle:    CGFloat = -CGFloat(FLT_MAX)
+  
+  var currently: InteractionState = .NotInteracting
+  var snapTo:    SnapWheelTo      = .CurrentRotation
+  
+  init() {
+    reset()
+  }
+  
+  func reset() {
+    initialTransform   = CGAffineTransformMakeRotation(0)
+    initialTouchAngle  = 0.0
+    initialRotation    = 0.0
+    currently          = .NotInteracting
+    snapTo             = .CurrentRotation
+    maxDampenAngle     =  CGFloat(FLT_MAX)
+    minDampenAngle     = -CGFloat(FLT_MAX)
+  }
 }
 
