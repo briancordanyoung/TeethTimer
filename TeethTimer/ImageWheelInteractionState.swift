@@ -20,24 +20,20 @@ enum InteractionState: String, Printable {
   }
 }
 
-class ImageWheelInteractionState {
+struct ImageWheelInteractionState {
   
   var initialImage: ImageIndex = 1
   
-  var initialTransform = CGAffineTransformMakeRotation(0)
-  var initialTouchAngle: CGFloat = 0.0
-  var initialRotation:   CGFloat = 0.0
-  var maxDampenAngle:    CGFloat =  CGFloat(FLT_MAX)
-  var minDampenAngle:    CGFloat = -CGFloat(FLT_MAX)
+  var initialTransform: CGAffineTransform
+  var initialTouchAngle: CGFloat
+  var initialRotation:   CGFloat
+  var maxDampenAngle:    CGFloat
+  var minDampenAngle:    CGFloat
   
-  var currently: InteractionState = .NotInteracting
-  var snapTo:    SnapWheelTo      = .CurrentRotation
+  var currently: InteractionState
+  var snapTo:    SnapWheelTo
   
   init() {
-    reset()
-  }
-  
-  func reset() {
     initialTransform   = CGAffineTransformMakeRotation(0)
     initialTouchAngle  = 0.0
     initialRotation    = 0.0

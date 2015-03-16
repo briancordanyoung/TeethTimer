@@ -90,37 +90,33 @@ private let quarterCircle = CGFloat(M_PI) / 2
 private let threeQuarterCircle = quarterCircle + halfCircle
 
 final class WheelControl: UIControl, AnimationDelegate  {
-    // Configure WheelControl
-    var startingRotation: CGFloat = fullCircle * 3
-    
-    var minRotation: CGFloat?    = nil
-    var maxRotation: CGFloat?    = nil
-    var dampenClockwise          = false
-    var dampenCounterClockwise   = false
-    
-    // How strong should the users rotation be dampened as they
-    // rotate past the allowed point
-    var rotationDampeningFactor  = CGFloat(5)
+  // Configure WheelControl
+  var startingRotation: CGFloat = fullCircle * 3
+  
+  var minRotation: CGFloat?    = nil
+  var maxRotation: CGFloat?    = nil
+  var dampenClockwise          = false
+  var dampenCounterClockwise   = false
+  
+  // How strong should the users rotation be dampened as they
+  // rotate past the allowed point
+  var rotationDampeningFactor  = CGFloat(5)
+  
+  var centerCircle: CGFloat =  10.0
+  
+  
+  
+  
+  // Internal Properties
+  private var container = UIView()
 
-    var centerCircle: CGFloat =  10.0
-
-    
-    
-    
-    // Internal Properties
-    private var outsideCircle: CGFloat {
-        get {
-            return container.bounds.height * 2
-        }
-    }
-    
-   
-    private var container = UIView()
-    private var currentAngle: CGFloat {
-        get {
-            return angleFromTransform(container.transform)
-        }
-    }
+  private var outsideCircle: CGFloat {
+      return container.bounds.height * 2
+  }
+  
+  private var currentAngle: CGFloat {
+      return angleFromTransform(container.transform)
+  }
   
   // See: rotationFromAngle(_,AndWheelState:) for and explination of the
   // the wheelState property and struct.
@@ -134,248 +130,248 @@ final class WheelControl: UIControl, AnimationDelegate  {
       return wheelState.currentRotation
     }
     
-    set(newRotation) {
-      let wheelState = self.wheelState
-      let adjustedRotation = rotationFromAngle( newRotation,
-                                 AndWheelState: wheelState)
+    set(newAngle) {
+      let newRotation = rotationFromAngle( newAngle, AndWheelState: wheelState)
       
       let newDirection: DirectionRotated
-      if adjustedRotation > wheelState.currentRotation {
+      if newRotation > wheelState.currentRotation {
         newDirection = .Clockwise
-      } else if adjustedRotation < wheelState.currentRotation {
+      } else if newRotation < wheelState.currentRotation {
         newDirection = .CounterClockwise
       } else {
         newDirection = wheelState.previousDirection
       }
       
-      self.wheelState = WheelState( currentRotation: adjustedRotation,
-                                   previousRotation: wheelState.currentRotation,
-                                  previousDirection: newDirection)
+      wheelState = WheelState( currentRotation: newRotation,
+                              previousRotation: wheelState.currentRotation,
+                             previousDirection: newDirection)
     }
   }
 
-  // See: the UIControl methods handling the touches to understand userState
-  private let userState   = ImageWheelInteractionState()
+  // See: The UIControl methods handling the touches to understand userState
+  //      beginTrackingWithTouch(_,withEvent:)
+  //      continueTrackingWithTouch(_,withEvent:)
+  //      endTrackingWithTouch(_,withEvent:)
+  private var userState   = ImageWheelInteractionState()
 
   
 
   
-    func addConstraintsToViews() {
-        container.userInteractionEnabled = false
-        self.addSubview(container)
+  func addConstraintsToViews() {
+    container.userInteractionEnabled = false
+    self.addSubview(container)
+    
+    self.setTranslatesAutoresizingMaskIntoConstraints(false)
+    container.setTranslatesAutoresizingMaskIntoConstraints(false)
+    
+    
+    // constraints
+    let viewsDictionary = ["controlView":container]
+    
+    //position constraints
+    let view_constraint_H:[AnyObject] =
+    NSLayoutConstraint.constraintsWithVisualFormat( "H:|[controlView]|",
+                                           options: NSLayoutFormatOptions(0),
+                                           metrics: nil,
+                                             views: viewsDictionary)
+    
+    let view_constraint_V:[AnyObject] =
+    NSLayoutConstraint.constraintsWithVisualFormat( "V:|[controlView]|",
+                                           options: NSLayoutFormatOptions(0),
+                                           metrics: nil,
+                                             views: viewsDictionary)
+    
+    self.addConstraints(view_constraint_H)
+    self.addConstraints(view_constraint_V)
+    
+    let wheelImageView     = UIImageView(image: UIImage(named: "WheelImage"))
+    let wheelImageTypeView = UIImageView(image: UIImage(named: "WheelImageType"))
+    
+    wheelImageView.opaque = false
+    wheelImageTypeView.opaque = false
+    
+    container.addSubview(wheelImageView)
+    container.addSubview(wheelImageTypeView)
+    
+    
+    wheelImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+    wheelImageTypeView.setTranslatesAutoresizingMaskIntoConstraints(false)
+    
+    container.addConstraint(NSLayoutConstraint(item: wheelImageView,
+                                          attribute: NSLayoutAttribute.CenterY,
+                                          relatedBy: NSLayoutRelation.Equal,
+                                             toItem: container,
+                                          attribute: NSLayoutAttribute.CenterY,
+                                         multiplier: 1.0,
+                                           constant: 0.0))
+    
+    container.addConstraint(NSLayoutConstraint(item: wheelImageView,
+                                          attribute: NSLayoutAttribute.CenterX,
+                                          relatedBy: NSLayoutRelation.Equal,
+                                             toItem: container,
+                                          attribute: NSLayoutAttribute.CenterX,
+                                         multiplier: 1.0,
+                                           constant: 0.0))
+    
+    wheelImageView.addConstraint( NSLayoutConstraint(item: wheelImageView,
+                                                attribute: NSLayoutAttribute.Height,
+                                                relatedBy: NSLayoutRelation.Equal,
+                                                   toItem: nil,
+                                                attribute: NSLayoutAttribute.NotAnAttribute,
+                                               multiplier: 1.0,
+                                                 constant: 600.0))
+    
+    wheelImageView.addConstraint( NSLayoutConstraint(item: wheelImageView,
+                                                attribute: NSLayoutAttribute.Width,
+                                                relatedBy: NSLayoutRelation.Equal,
+                                                   toItem: nil,
+                                                attribute: NSLayoutAttribute.NotAnAttribute,
+                                               multiplier: 1.0,
+                                                 constant: 600.0))
+    
+    container.addConstraint(NSLayoutConstraint(item: wheelImageTypeView,
+                                          attribute: NSLayoutAttribute.CenterY,
+                                          relatedBy: NSLayoutRelation.Equal,
+                                             toItem: container,
+                                          attribute: NSLayoutAttribute.CenterY,
+                                         multiplier: 1.0,
+                                           constant: 0.0))
+    
+    container.addConstraint(NSLayoutConstraint(item: wheelImageTypeView,
+                                          attribute: NSLayoutAttribute.CenterX,
+                                          relatedBy: NSLayoutRelation.Equal,
+                                             toItem: container,
+                                          attribute: NSLayoutAttribute.CenterX,
+                                         multiplier: 1.0,
+                                           constant: 0.0))
+    
+    wheelImageTypeView.addConstraint( NSLayoutConstraint(item: wheelImageTypeView,
+                                                    attribute: NSLayoutAttribute.Height,
+                                                    relatedBy: NSLayoutRelation.Equal,
+                                                       toItem: nil,
+                                                    attribute: NSLayoutAttribute.NotAnAttribute,
+                                                   multiplier: 1.0,
+                                                     constant: 400.0))
+    
+    wheelImageTypeView.addConstraint( NSLayoutConstraint(item: wheelImageTypeView,
+                                                    attribute: NSLayoutAttribute.Width,
+                                                    relatedBy: NSLayoutRelation.Equal,
+                                                       toItem: nil,
+                                                    attribute: NSLayoutAttribute.NotAnAttribute,
+                                                   multiplier: 1.0,
+                                                     constant: 400.0))
+    
+    reset()
+  }
+  
+  
+  func reset() {
+    startingRotation = -halfCircle
+    minRotation = startingRotation
+    maxRotation = startingRotation + fullCircle + threeQuarterCircle
+    
+    wheelState = WheelState(currentRotation: startingRotation,
+                           previousRotation: startingRotation,
+                          previousDirection: .Clockwise)
+    container.transform = CGAffineTransformMakeRotation(angleFromRotation(currentRotation))
+    
+  }
+  
+  // MARK: -
+  // MARK: UIControl methods handling the touches
+  override func beginTrackingWithTouch(touch: UITouch,
+                             withEvent event: UIEvent) -> Bool {
+      
+    if touchRegion(touch) == .Center {
+      return false  // Ends current touches to the control
+    }
 
-        self.setTranslatesAutoresizingMaskIntoConstraints(false)
-        container.setTranslatesAutoresizingMaskIntoConstraints(false)
-        
-        
-        // constraints
-        let viewsDictionary = ["controlView":container]
-        
-        //position constraints
-        let view_constraint_H:[AnyObject] =
-        NSLayoutConstraint.constraintsWithVisualFormat( "H:|[controlView]|",
-                                               options: NSLayoutFormatOptions(0),
-                                               metrics: nil,
-                                                 views: viewsDictionary)
-        
-        let view_constraint_V:[AnyObject] =
-        NSLayoutConstraint.constraintsWithVisualFormat( "V:|[controlView]|",
-                                               options: NSLayoutFormatOptions(0),
-                                               metrics: nil,
-                                                 views: viewsDictionary)
-        
-        self.addConstraints(view_constraint_H)
-        self.addConstraints(view_constraint_V)
-        
-        let wheelImageView     = UIImageView(image: UIImage(named: "WheelImage"))
-        let wheelImageTypeView = UIImageView(image: UIImage(named: "WheelImageType"))
-        
-        wheelImageView.opaque = false
-        wheelImageTypeView.opaque = false
-        
-        container.addSubview(wheelImageView)
-        container.addSubview(wheelImageTypeView)
-        
-        
-        wheelImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
-        wheelImageTypeView.setTranslatesAutoresizingMaskIntoConstraints(false)
-
-        container.addConstraint(NSLayoutConstraint(item: wheelImageView,
-            attribute: NSLayoutAttribute.CenterY,
-            relatedBy: NSLayoutRelation.Equal,
-            toItem: container,
-            attribute: NSLayoutAttribute.CenterY,
-            multiplier: 1.0,
-            constant: 0.0))
-        
-        container.addConstraint(NSLayoutConstraint(item: wheelImageView,
-            attribute: NSLayoutAttribute.CenterX,
-            relatedBy: NSLayoutRelation.Equal,
-            toItem: container,
-            attribute: NSLayoutAttribute.CenterX,
-            multiplier: 1.0,
-            constant: 0.0))
-        
-        wheelImageView.addConstraint( NSLayoutConstraint(item: wheelImageView,
-            attribute: NSLayoutAttribute.Height,
-            relatedBy: NSLayoutRelation.Equal,
-            toItem: nil,
-            attribute: NSLayoutAttribute.NotAnAttribute,
-            multiplier: 1.0,
-            constant: 600.0))
-        
-        wheelImageView.addConstraint( NSLayoutConstraint(item: wheelImageView,
-            attribute: NSLayoutAttribute.Width,
-            relatedBy: NSLayoutRelation.Equal,
-            toItem: nil,
-            attribute: NSLayoutAttribute.NotAnAttribute,
-            multiplier: 1.0,
-            constant: 600.0))
-
-        container.addConstraint(NSLayoutConstraint(item: wheelImageTypeView,
-            attribute: NSLayoutAttribute.CenterY,
-            relatedBy: NSLayoutRelation.Equal,
-            toItem: container,
-            attribute: NSLayoutAttribute.CenterY,
-            multiplier: 1.0,
-            constant: 0.0))
-        
-        container.addConstraint(NSLayoutConstraint(item: wheelImageTypeView,
-            attribute: NSLayoutAttribute.CenterX,
-            relatedBy: NSLayoutRelation.Equal,
-            toItem: container,
-            attribute: NSLayoutAttribute.CenterX,
-            multiplier: 1.0,
-            constant: 0.0))
-        
-        wheelImageTypeView.addConstraint( NSLayoutConstraint(item: wheelImageTypeView,
-            attribute: NSLayoutAttribute.Height,
-            relatedBy: NSLayoutRelation.Equal,
-            toItem: nil,
-            attribute: NSLayoutAttribute.NotAnAttribute,
-            multiplier: 1.0,
-            constant: 400.0))
-        
-        wheelImageTypeView.addConstraint( NSLayoutConstraint(item: wheelImageTypeView,
-            attribute: NSLayoutAttribute.Width,
-            relatedBy: NSLayoutRelation.Equal,
-            toItem: nil,
-            attribute: NSLayoutAttribute.NotAnAttribute,
-            multiplier: 1.0,
-            constant: 400.0))
-
-        reset()
+                            
+    Animation.removeAllAnimations(container.layer)
+                            
+    // Clear and set state at the beginning of the users rotation
+    userState                    = ImageWheelInteractionState()
+    userState.currently          = .Interacting
+    userState.initialTransform   = container.transform
+    userState.initialRotation    = currentRotation
+    userState.initialTouchAngle  = angleAtTouch(touch)
+    
+    if let min = minRotation {
+      userState.minDampenAngle   = -(currentRotation - min)
+    }
+    if let max = maxRotation {
+      userState.maxDampenAngle   =   max - currentRotation
     }
     
     
-    func reset() {
-        startingRotation = -halfCircle
-        minRotation = startingRotation
-        maxRotation = startingRotation + fullCircle + threeQuarterCircle
-        
-        wheelState = WheelState(currentRotation: startingRotation,
-                               previousRotation: startingRotation,
-                              previousDirection: .Clockwise)
-        container.transform = CGAffineTransformMakeRotation(angleFromRotation(currentRotation))
+    return beginAndContinueTrackingWithTouch( touch, withEvent: event)
+  }
+  
+  override func continueTrackingWithTouch(touch: UITouch,
+                                withEvent event: UIEvent) -> Bool {
+      
+    return beginAndContinueTrackingWithTouch( touch, withEvent: event)
+  }
+  
+  private func beginAndContinueTrackingWithTouch(touch: UITouch,
+                                       withEvent event: UIEvent) -> Bool {
+    switch touchRegion(touch) {
+    case .Off:
+      self.sendActionsForControlEvents(UIControlEvents.TouchDragOutside)
+      self.sendActionsForControlEvents(UIControlEvents.TouchUpOutside)
+      endTrackingWithTouch(touch, withEvent: event)
+      return false  // Ends current touches to the control
+    case .Center:
+      self.sendActionsForControlEvents(UIControlEvents.TouchDragExit)
+      endTrackingWithTouch(touch, withEvent: event)
+      return false  // Ends current touches to the control
+    case .On:
+      break // continueTrackingWithTouch
+    }
+    
+    let angleDifference = angleDifferenceUsing(touch)
+    
+    let t = CGAffineTransformRotate( userState.initialTransform, angleDifference )
+    container.transform = t
+    currentRotation = userState.initialRotation + angleDifference
+    
+    self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+    self.sendActionsForControlEvents(UIControlEvents.TouchDragInside)
+    
+    return true
+  }
+  
+  override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
+    
+    // User interaction has ended, but most of the state is
+    // still used through out this method.
+    userState.currently = .NotInteracting
+    
+    switch userState.snapTo {
+    case .InitialRotation:
+      animateToRotation(userState.initialRotation)
+      break
+    case .CurrentRotation:
+      break
+    case .MinRotation:
+      if let rotation = minRotation {
+        animateToRotation(rotation)
+      }
+    case .MaxRotation:
+      if let rotation = maxRotation {
+        animateToRotation(rotation)
+      }
+    }
+    
+    // User rotation has ended.  Forget the state.
+    userState = ImageWheelInteractionState()
+    
+  }
+  
 
-    }
-    
-    // MARK: -
-    // MARK: UIControl methods handling the touches
-    override func beginTrackingWithTouch(touch: UITouch,
-                               withEvent event: UIEvent) -> Bool {
-            
-        Animation.removeAllAnimations(self.container.layer)
-        userState.reset()
-            
-        if touchRegion(touch) == .Center {
-            return false  // Ends current touches to the control
-        }
-        
-        // Set state at the beginning of the users rotation
-        userState.currently          = .Interacting
-        userState.initialTransform   = container.transform
-        userState.initialRotation    = currentRotation
-        userState.initialTouchAngle  = angleAtTouch(touch)
-                                
-        if let min = minRotation {
-          userState.minDampenAngle   = -(currentRotation - min)
-        }
-        if let max = maxRotation {
-          userState.maxDampenAngle   =   max - currentRotation
-        }
-                                
-        
-        return beginAndContinueTrackingWithTouch( touch,
-                                       withEvent: event)
-    }
-    
-    override func continueTrackingWithTouch(touch: UITouch,
-        withEvent event: UIEvent) -> Bool {
-   
-        return beginAndContinueTrackingWithTouch( touch,
-                                       withEvent: event)
-    }
-    
-    private func beginAndContinueTrackingWithTouch(touch: UITouch,
-                                 withEvent event: UIEvent) -> Bool {
-        switch touchRegion(touch) {
-            case .Off:
-                self.sendActionsForControlEvents(UIControlEvents.TouchDragOutside)
-                self.sendActionsForControlEvents(UIControlEvents.TouchUpOutside)
-                endTrackingWithTouch(touch, withEvent: event)
-                return false  // Ends current touches to the control
-            case .Center:
-                self.sendActionsForControlEvents(UIControlEvents.TouchDragExit)
-                endTrackingWithTouch(touch, withEvent: event)
-                return false  // Ends current touches to the control
-            case .On:
-                break // continueTrackingWithTouch
-        }
-        
-        let angleDifference = angleDifferenceUsing(touch)
-                                    
-        let t = CGAffineTransformRotate( userState.initialTransform, angleDifference )
-        container.transform = t
-        currentRotation = userState.initialRotation + angleDifference
-        
-        self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-        self.sendActionsForControlEvents(UIControlEvents.TouchDragInside)
-    
-        return true
-    }
-    
-    override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
-        
-        // User interaction has ended, but most of the state is
-        // still used through out this method.
-        userState.currently = .NotInteracting
-        
-        switch userState.snapTo {
-        case .InitialRotation:
-            animateToRotation(userState.initialRotation)
-            break
-        case .CurrentRotation:
-            break
-        case .MinRotation:
-            if let rotation = minRotation {
-                animateToRotation(rotation)
-            }
-        case .MaxRotation:
-            if let rotation = maxRotation {
-                animateToRotation(rotation)
-            }
-        }
-        
-        // User rotation has ended.  Forget the state.
-        userState.reset()
-
-    }
-    
-
-    // MARK: -
-    // MARK: Animation
-    
+  // MARK: -
+  // MARK: Animation
+  
 //    private func animateToRotation(rotation: CGFloat) {
 //        Animation.removeAllAnimations(container.layer)
 //        let currentRotation = self.currentRotation
@@ -406,75 +402,80 @@ final class WheelControl: UIControl, AnimationDelegate  {
 //        }
 //    }
     
-    private func animateToRotation(rotation: CGFloat) {
-        Animation.removeAllAnimations(container.layer)
-        let durationPerRadian = CGFloat(0.25)
-        let totalAngularDistance = abs(currentRotation - rotation)
-        let baseDuration = totalAngularDistance * durationPerRadian
-        let totalDuration = speedUpDurationByDistance(baseDuration)
-        let timing = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        
-        let rotate = BasicAnimation(duration: totalDuration, timingFunction: timing)
-        rotate.property = AnimatableProperty(name: kPOPLayerRotation)
-        rotate.fromValue = currentRotation
-        rotate.toValue = rotation
-        rotate.name = "Basic Rotation"
-        rotate.delegate = self
-        rotate.completionBlock = { anim, finished in
-            if finished {
-                self.wheelState.currentRotation = rotation
-                self.wheelState.previousRotation = rotation
-                self.wheelState.previousDirection  = .Clockwise
-                let t = CGAffineTransformMakeRotation(self.angleFromRotation(rotation))
-                self.container.transform = t
-            }
-        }
+  private func animateToRotation(rotation: CGFloat) {
+    Animation.removeAllAnimations(container.layer)
+    let durationPerRadian = CGFloat(0.25)
+    let totalAngularDistance = abs(currentRotation - rotation)
+    let baseDuration = totalAngularDistance * durationPerRadian
+    let totalDuration = speedUpDurationByDistance(baseDuration)
+    let timing = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+    
+    let rotate = BasicAnimation(duration: totalDuration, timingFunction: timing)
+    rotate.property = AnimatableProperty(name: kPOPLayerRotation)
+    rotate.fromValue = currentRotation
+    rotate.toValue = rotation
+    rotate.name = "Basic Rotation"
+    rotate.delegate = self
+    rotate.completionBlock = { anim, finished in
+      if finished {
+        self.wheelState.currentRotation = rotation
+        self.wheelState.previousRotation = rotation
+        self.wheelState.previousDirection  = .Clockwise
+        let t = CGAffineTransformMakeRotation(self.angleFromRotation(rotation))
+        self.container.transform = t
+      }
+    }
+    
+    Animation.addAnimation( rotate,
+      key: rotate.property.name,
+      obj: container.layer)
+  }
+  
+  func speedUpDurationByDistance(duration: CGFloat) -> CGFloat {
+    let durationDistanceFactor = CGFloat(1)
+    return log((duration * durationDistanceFactor) + 1) / durationDistanceFactor
+  }
+  
+  func basicRotationAnimation(#from: CGFloat,
+                                 to: CGFloat,
+                           duration: CGFloat,
+                         completion: (Animation, Bool)->()) {
+                          
+    let rotate = BasicAnimation(duration: duration)
+    rotate.property = AnimatableProperty(name: kPOPLayerRotation)
+    rotate.fromValue = from
+    rotate.toValue = to
+    rotate.name = "Basic Rotation"
+    rotate.delegate = self
+    Animation.addAnimation( rotate,
+                       key: rotate.property.name,
+                       obj: container.layer)
+    
+  }
 
-        Animation.addAnimation( rotate,
-            key: rotate.property.name,
-            obj: container.layer)
-    }
+  
+  func springRotationAnimation(#from: CGFloat, to: CGFloat) {
     
-    func speedUpDurationByDistance(duration: CGFloat) -> CGFloat {
-        let durationDistanceFactor = CGFloat(1)
-        return log((duration * durationDistanceFactor) + 1) / durationDistanceFactor
+    let spring = SpringAnimation( tension: 1000,
+                        friction: 30,
+                            mass: 1)
+    spring.property = AnimatableProperty(name: kPOPLayerRotation)
+    spring.fromValue = from
+    spring.toValue = to
+    spring.name = "Spring Rotation"
+    spring.delegate = self
+    spring.completionBlock = { anim, finished in
+      if finished {
+        self.currentRotation = to
+        let t = CGAffineTransformMakeRotation(self.angleFromRotation(to))
+        self.container.transform = t
+      }
     }
-    
-    func basicRotationAnimation(#from: CGFloat, to: CGFloat, duration: CGFloat, completion: (Animation, Bool)->()) {
-        let rotate = BasicAnimation(duration: duration)
-        rotate.property = AnimatableProperty(name: kPOPLayerRotation)
-        rotate.fromValue = from
-        rotate.toValue = to
-        rotate.name = "Basic Rotation"
-        rotate.delegate = self
-        Animation.addAnimation( rotate,
-                           key: rotate.property.name,
-                           obj: container.layer)
-
-    }
-
-    
-    func springRotationAnimation(#from: CGFloat, to: CGFloat) {
-        let spring = SpringAnimation( tension: 1000,
-                                     friction: 30,
-                                         mass: 1)
-        spring.property = AnimatableProperty(name: kPOPLayerRotation)
-        spring.fromValue = from
-        spring.toValue = to
-        spring.name = "Spring Rotation"
-        spring.delegate = self
-        spring.completionBlock = { anim, finished in
-            if finished {
-                self.currentRotation = to
-                let t = CGAffineTransformMakeRotation(self.angleFromRotation(to))
-                self.container.transform = t
-            }
-        }
-        Animation.addAnimation( spring,
-                           key: spring.property.name,
-                           obj: container.layer)
-    }
-    
+    Animation.addAnimation( spring,
+                       key: spring.property.name,
+                       obj: container.layer)
+  }
+  
     func pop_animationDidApply(anim: Animation!) {
         let angle = angleFromRotation(wheelState.previousRotation)
         let angleDifference = currentAngle - angle
@@ -482,59 +483,59 @@ final class WheelControl: UIControl, AnimationDelegate  {
         self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
     }
     
-    func test() {
-        let step1 = currentRotation
-        let step2 = maxRotation
-        let step3 = maxRotation
-        
-        let rotate = BasicAnimation(duration: 2.0,
-            timingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn))
-        rotate.property = AnimatableProperty(name: kPOPLayerRotation)
-        rotate.fromValue = step1
-        rotate.toValue = step2
-        rotate.name = "Basic Rotation"
-        rotate.delegate = self
-        rotate.completionBlock = {anim, finsihed in
-            if finsihed {
-                let spring = SpringAnimation( tension: 100,
-                    friction: 15,
-                    mass: 1)
-                spring.property = AnimatableProperty(name: kPOPLayerRotation)
-                spring.fromValue = step2
-                spring.toValue = step3
-                spring.name = "Spring Rotation"
-                spring.delegate = self
-                Animation.addAnimation( spring,
-                    key: spring.property.name,
-                    obj: self.container.layer)
-            }
-        }
-        Animation.addAnimation( rotate,
-            key: rotate.property.name,
-            obj: container.layer)
-    }
+  func test() {
+    let step1 = currentRotation
+    let step2 = maxRotation
+    let step3 = maxRotation
     
+    let rotate = BasicAnimation(duration: 2.0,
+      timingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn))
+    rotate.property = AnimatableProperty(name: kPOPLayerRotation)
+    rotate.fromValue = step1
+    rotate.toValue = step2
+    rotate.name = "Basic Rotation"
+    rotate.delegate = self
+    rotate.completionBlock = {anim, finsihed in
+      if finsihed {
+        let spring = SpringAnimation( tension: 100,
+                                     friction: 15,
+                                         mass: 1)
+        spring.property = AnimatableProperty(name: kPOPLayerRotation)
+        spring.fromValue = step2
+        spring.toValue = step3
+        spring.name = "Spring Rotation"
+        spring.delegate = self
+        Animation.addAnimation( spring,
+                           key: spring.property.name,
+                           obj: self.container.layer)
+      }
+    }
+    Animation.addAnimation( rotate,
+                       key: rotate.property.name,
+                       obj: container.layer)
+  }
+  
 
-    // MARK: -
-    // MARK: Development Helpers
-    // TODO: Remove after main development
-    private lazy var padNumber: NSNumberFormatter = {
-        let numberFormater = NSNumberFormatter()
-        numberFormater.minimumIntegerDigits  = 2
-        numberFormater.maximumIntegerDigits  = 2
-        numberFormater.minimumFractionDigits = 3
-        numberFormater.maximumFractionDigits = 3
-        numberFormater.positivePrefix = " "
-        return numberFormater
-        }()
-    
-    private func pad(number: CGFloat) -> String {
-        var paddedNumber = " 1.000"
-        if let numberString = padNumber.stringFromNumber(number) {
-            paddedNumber = numberString
-        }
-        return paddedNumber
+  // MARK: -
+  // MARK: Development Helpers
+  // TODO: Remove after main development
+  private lazy var padNumber: NSNumberFormatter = {
+    let numberFormater = NSNumberFormatter()
+    numberFormater.minimumIntegerDigits  = 2
+    numberFormater.maximumIntegerDigits  = 2
+    numberFormater.minimumFractionDigits = 3
+    numberFormater.maximumFractionDigits = 3
+    numberFormater.positivePrefix = " "
+    return numberFormater
+    }()
+  
+  private func pad(number: CGFloat) -> String {
+    var paddedNumber = " 1.000"
+    if let numberString = padNumber.stringFromNumber(number) {
+      paddedNumber = numberString
     }
+    return paddedNumber
+  }
 
   // MARK: Wheel State
   private func rotationFromAngle(angle: CGFloat,
@@ -565,6 +566,10 @@ final class WheelControl: UIControl, AnimationDelegate  {
       // (or more precicly, the wheelState property holding backing struct)
       // overriding the accumulated changes made throughout the animation
       
+                
+      // TODO: track down rare exeption landing here:
+      //       Thread 1: EXC_BAD_INSTRUCTION (code=EXC_i386_INVOP,subcode=0x0)
+                
       let rotationCountFromZero = Int(abs(angle / fullCircle))
       let tooManyTries          = rotationCountFromZero + 2
       
@@ -619,6 +624,10 @@ final class WheelControl: UIControl, AnimationDelegate  {
                                        AndAngle: userState.initialTouchAngle)
     
     var dampenedDiff = angleDiff
+    
+    // TODO: Should undampenedNewRotation be feed in to directionsToDampenUsingAngle()?
+    //       seems like it should be userState.initialAngle + angleDiff
+    //       but that doesn't work.
     let undampenedNewRotation = userState.initialRotation + angleDiff
     
     var dampen = directionsToDampenUsingAngle(undampenedNewRotation)
