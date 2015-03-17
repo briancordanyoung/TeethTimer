@@ -1,15 +1,43 @@
 // MARK: - WheelControl Summery
 
 // Wheel Control
-// Differece between Angle and Rotation
-// must always set both angle and rotation, they do not set each other
-// the data of the control is the rotation.  The control only fires the ValueChange
-// event when currentRotation is changed.
-// There is only one correct angle for any one rotation.  Do not try to offset the angle
-// An offset angle will eventually be reset by the Rotation.
-
-
-
+// 
+//               The public API to WheelControl value (position) is set and get
+//               using the rotationAngle property.
+//               This is never referenced internally.
+//               Instead two properties are used:
+//                    currentAngle
+//                    currentRotation
+//
+// The difference between an angle and rotation is:
+//
+//    angle    - Ranges from -M_PI to M_PI (in radians)
+//
+//
+//    rotation - Has no theoretical min and max. (in radians)
+//               Rotation may be used to notate the absolute number
+//               of complete rotations around the wheel.
+//               Rotation acculmulates in each direction where the angle
+//               wraps around when passing min or max returning to the other.
+//
+//               i.e.:
+//               angle    - 0.0   1.0   2.0   3.0  -2.28 -1.28 -0.28  0.71  1.71
+//               rotation - 0.0   1.0   2.0   3.0   4.00  5.00  6.00  7.00  8.00
+//
+//    currentAngle & currentRotation:
+//               These properties are independant,  They are related, but if one
+//               is modified, the other is not automaticly kept in sync.  That
+//               must be done by the internal developer. rotationAngle DOES set
+//               both prperties, and that is why it is the only public property
+//               for working with the wheel position.
+//
+//               There is only one correct angle for any one rotation.
+//               Do not try to offset the angle from the rotation.
+//               Any offset in currentAngle will eventually be reset and synced
+//               to currentRotation.
+//
+//               The control only fires the ValueChange event when 
+//               currentRotation is modified.
 
 
 
@@ -143,12 +171,12 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
     set(newRotationAngle) {
       if let minRotation = minRotation {
-        let msg = "rotationAngle must be greater than minRotation."
-        assert(newRotationAngle > minRotation, msg)
+        let msg = "rotationAngle must be greater than or equal to minRotation."
+        assert(newRotationAngle >= minRotation, msg)
       }
       if let maxRotation = maxRotation {
-        let msg = "rotationAngle must be less than maxRotation."
-        assert(maxRotation > newRotationAngle, msg)
+        let msg = "rotationAngle must be less than or equal to maxRotation."
+        assert(maxRotation >= newRotationAngle, msg)
       }
       currentAngle = angleFromRotation(newRotationAngle)
       currentRotation = newRotationAngle
@@ -166,16 +194,16 @@ final class WheelControl: UIControl, AnimationDelegate  {
   var minRotation: CGFloat?    = nil {
     willSet(newMinRotation) {
       if let newMinRotation = newMinRotation {
-        let msg = "minRotation must be less than rotationAngle."
-        assert(currentRotation > newMinRotation, msg)
+        let msg = "minRotation must be less than or equal to rotationAngle."
+        assert(currentRotation >= newMinRotation, msg)
       }
     }
   }
   var maxRotation: CGFloat?    = nil {
     willSet(newMaxRotation) {
       if let newMaxRotation = newMaxRotation {
-        let msg = "maxRotation must be greater than rotationAngle."
-        assert(newMaxRotation > currentRotation, msg)
+        let msg = "maxRotation must be greater than or equal to rotationAngle."
+        assert(newMaxRotation >= currentRotation, msg)
       }
     }
   }
@@ -481,6 +509,12 @@ final class WheelControl: UIControl, AnimationDelegate  {
 //    }
     
   func animateToRotation(rotation: CGFloat) { // in module, make public //
+
+    func speedUpDurationByDistance(duration: CGFloat) -> CGFloat {
+      let durationDistanceFactor = CGFloat(1)
+      return log((duration * durationDistanceFactor) + 1) / durationDistanceFactor
+    }
+    
     Animation.removeAllAnimations(container.layer)
     let durationPerRadian = CGFloat(0.25)
     let totalAngularDistance = abs(currentRotation - rotation)
@@ -506,10 +540,6 @@ final class WheelControl: UIControl, AnimationDelegate  {
       obj: container.layer)
   }
   
-  func speedUpDurationByDistance(duration: CGFloat) -> CGFloat {
-    let durationDistanceFactor = CGFloat(1)
-    return log((duration * durationDistanceFactor) + 1) / durationDistanceFactor
-  }
   
   func basicRotationAnimation(#from: CGFloat,
                                  to: CGFloat,
@@ -610,7 +640,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
 
   }
   
-  
+  // MARK: Wheel State - during user interaction.
   func rotationUsingAngle(angle: CGFloat,
               AndWheelState wheelState: WheelState) -> CGFloat {
                 
@@ -619,7 +649,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
       // At the time of this method, only the absolute angle from -3.14 to 3.14
       // can be determined. Unless another API is pointed out, this method
       // is used to make a best guess on tracking the accumulated rotations
-      // of the wheel as it passes over the dicontinuity of the absolute angle
+      // of the wheel as it passes over the dicontinuity of this absolute angle
       // returned from the affine transform.
                 
       // In various conditions, this algorithm breaks down and can not

@@ -8,30 +8,34 @@ let threeQuarterCircle = quarterCircle + halfCircle
 var rotationDampeningFactor  = CGFloat(5)
 
 
-private func dampenClockwiseAngleDifference(var angle: CGFloat) -> CGFloat {
-    angle = -angle
-    
-    let oldAngle = angle
-    
-    while angle <= 0 {
-        angle += fullCircle
-    }
-    
-    
-    let newAngle = (log((angle * rotationDampeningFactor) + 1) / rotationDampeningFactor)
-    
-    //        println("o: \(pad(oldAngle))  n: \(pad(newAngle))")
-    return -newAngle
+func angleFromRotation(rotation: CGFloat) -> CGFloat {
+  var angle = rotation
+  
+  if angle >  halfCircle {
+    angle += halfCircle
+    let totalRotations = floor(angle / fullCircle)
+    angle  = angle - (fullCircle * totalRotations)
+    angle -= halfCircle
+  }
+  
+  if angle < -halfCircle {
+    angle -= halfCircle
+    let totalRotations = floor(abs(angle) / fullCircle)
+    angle  = angle + (fullCircle * totalRotations)
+    angle += halfCircle
+  }
+  
+  return angle
 }
 
-var numbers: [CGFloat] = [-0.151, -0.165, -0.188, -0.196, -0.216, -0.226, -0.247, -0.260]
-
-for n in numbers {
-    dampenClockwiseAngleDifference(n)
+for i in 1...8 {
+  let xx = CGFloat(i)
+  
+  angleFromRotation(xx)
+  
+  
+  
+  
+  
 }
 
-var x = numbers[0]
-while x > numbers.last {
-    dampenClockwiseAngleDifference(x)
-    x -= 0.01
-}
