@@ -1,50 +1,42 @@
+// MARK: - WheelControl Summery
+
+// Wheel Control
+// Differece between Angle and Rotation
+// must always set both angle and rotation, they do not set each other
+// the data of the control is the rotation.  The control only fires the ValueChange
+// event when currentRotation is changed.
+// There is only one correct angle for any one rotation.  Do not try to offset the angle
+// An offset angle will eventually be reset by the Rotation.
+
+
+
+
+
+
+
+
 import UIKit
+
+
 
 typealias ImageIndex = Int
 
-struct WheelState {
-    static let initialVelocity: CGFloat = 0.0000001
 
-    var currentRotation:  CGFloat =  0.0
-    var previousRotation: CGFloat = -initialVelocity
-    var previousDirection: DirectionRotated = .Clockwise
-
-    init() {
-      currentRotation   =  0.0
-      previousRotation  = -WheelState.initialVelocity
-      previousDirection = .Clockwise
-
-  }
-    
-    init( currentRotation: CGFloat,
-         previousRotation: CGFloat,
-        previousDirection: DirectionRotated) {
-            self.currentRotation   = currentRotation
-            self.previousRotation  = previousRotation
-            self.previousDirection = previousDirection
-    }
-    
-    init(angle: CGFloat) {
-        self.init(currentRotation: angle,
-                 previousRotation: angle - WheelState.initialVelocity,
-                previousDirection: .Clockwise)
-    }
-}
-
+// MARK: - Enums
 enum DampenAngle {
   case no
   case atAngle(CGFloat)
+
+  var description: String {
+    switch self {
+      case no:
+        return "No Dampening"
+      case atAngle(let angle):
+        return "Dampen at angle \(angle)"
+    }
+  }
 }
 
-struct DampenDirection {
-  var clockwise:        DampenAngle = .no
-  var counterClockwise: DampenAngle = .no
-}
-
-struct DirectionToggle {
-    var clockwise        = false
-    var counterClockwise = false
-}
 
 enum DirectionToRotate: String, Printable  {
     case Clockwise = "Clockwise"
@@ -84,6 +76,50 @@ enum WheelRegion: String, Printable  {
     }
 }
 
+
+// MARK: - Structs
+struct WheelState {
+  static let initialVelocity: CGFloat = 0.0000001
+  
+  var currentRotation:  CGFloat =  0.0
+  var previousRotation: CGFloat = -initialVelocity
+  var previousDirection: DirectionRotated = .Clockwise
+  
+  init() {
+    currentRotation   =  0.0
+    previousRotation  = -WheelState.initialVelocity
+    previousDirection = .Clockwise
+    
+  }
+  
+  init( currentRotation: CGFloat,
+    previousRotation: CGFloat,
+    previousDirection: DirectionRotated) {
+      self.currentRotation   = currentRotation
+      self.previousRotation  = previousRotation
+      self.previousDirection = previousDirection
+  }
+  
+  init(angle: CGFloat) {
+    self.init(currentRotation: angle,
+      previousRotation: angle - WheelState.initialVelocity,
+      previousDirection: .Clockwise)
+  }
+}
+
+struct DirectionToggle {
+  var clockwise        = false
+  var counterClockwise = false
+}
+
+struct DampenDirection {
+  var clockwise:        DampenAngle = .no
+  var counterClockwise: DampenAngle = .no
+}
+
+
+
+
 let halfCircle = CGFloat(M_PI)
 let fullCircle = CGFloat(M_PI) * 2
 let quarterCircle = CGFloat(M_PI) / 2
@@ -96,13 +132,30 @@ let threeQuarterCircle = quarterCircle + halfCircle
 // MARK: - WheelControl Class
 final class WheelControl: UIControl, AnimationDelegate  {
 
+  // The data of WheelControl
+  // Do not use this internally.
+  // This is the only interface for getting the data for this control.
+  // Externally set the data for this control with this property or 
+  //                                                animateToRotation()
+  var rotationAngle: CGFloat {  // in module, make public //
+    get {
+      return currentRotation
+    }
+    set(newRotationAngle) {
+      // TODO: Check for being within min & max
+      currentAngle = angleFromRotation(newRotationAngle)
+      currentRotation = newRotationAngle
+    }
+  }
   
   // Configure WheelControl
   var centerCircle:      CGFloat =  10.0
   var startingRotation:  CGFloat = fullCircle * 3
 
 
-  // Dampening Properties
+  // Configure Dampening Properties
+  // TODO: create willSet() for min/maxRotation to 
+  // throw an assert if max is less than min.
   var minRotation: CGFloat?    = nil
   var maxRotation: CGFloat?    = nil
   var dampenClockwise          = false
@@ -121,13 +174,20 @@ final class WheelControl: UIControl, AnimationDelegate  {
   }
   
   var currentAngle: CGFloat {
+    get {
       return angleFromTransform(container.transform)
+    }
+    set(newAngle) {
+      // TODO: test if the angle needs to be normalized into -halfCircle...halfCircle
+      container.transform = CGAffineTransformMakeRotation(newAngle)
+    }
   }
-  
   
   // See: rotationFromAngle(_,AndWheelState:) for and explination of the
   // the wheelState property and struct.
   var wheelState = WheelState()
+
+
 
   // See: rotationUseingAngle() for and explination of the
   // the currentRotation property, wheelState property and backing struct.
@@ -138,11 +198,9 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
     
     set(newRotation) {
-      let t = CGAffineTransformMakeRotation(angleFromRotation(currentRotation))
-      container.transform = t
-      wheelState = WheelState( currentRotation: newRotation,
-                              previousRotation: newRotation,
-                             previousDirection: .Clockwise)
+      wheelState   = WheelState( currentRotation: newRotation,
+                                previousRotation: newRotation,
+                               previousDirection: .Clockwise)
       self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
     }
   }
@@ -266,15 +324,10 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   func reset() {
     startingRotation = -halfCircle
-    minRotation = startingRotation
-    maxRotation = startingRotation + fullCircle + threeQuarterCircle
-    
-    wheelState = WheelState(currentRotation: startingRotation,
-                           previousRotation: startingRotation,
-                          previousDirection: .Clockwise)
-    let t = CGAffineTransformMakeRotation(angleFromRotation(currentRotation))
-    container.transform = t
-    self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+    minRotation      = startingRotation
+    maxRotation      = startingRotation + fullCircle + threeQuarterCircle
+    currentAngle     = angleFromRotation(startingRotation)
+    currentRotation  = startingRotation
   }
   
   
@@ -333,11 +386,13 @@ final class WheelControl: UIControl, AnimationDelegate  {
     
     let angleDifference = angleDifferenceUsing(touch)
     
+    // TODO: try to replace CGAffineTransformRotate() with CGAffineTransformMakeRotation()
+    //       If so, use currentAngle = userState.initialRotation + angleDifference
+    //       and remove initialTransform from userState.
     let t = CGAffineTransformRotate( userState.initialTransform, angleDifference )
     container.transform = t
     setRotationUsingAngle(userState.initialRotation + angleDifference)
                                         
-    self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
     self.sendActionsForControlEvents(UIControlEvents.TouchDragInside)
     
     return true
@@ -405,7 +460,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
 //        }
 //    }
     
-  func animateToRotation(rotation: CGFloat) {
+  func animateToRotation(rotation: CGFloat) { // in module, make public //
     Animation.removeAllAnimations(container.layer)
     let durationPerRadian = CGFloat(0.25)
     let totalAngularDistance = abs(currentRotation - rotation)
@@ -421,11 +476,8 @@ final class WheelControl: UIControl, AnimationDelegate  {
     rotate.delegate = self
     rotate.completionBlock = { anim, finished in
       if finished {
-        self.wheelState.currentRotation = rotation
-        self.wheelState.previousRotation = rotation
-        self.wheelState.previousDirection  = .Clockwise
-        let t = CGAffineTransformMakeRotation(self.angleFromRotation(rotation))
-        self.container.transform = t
+        self.currentAngle    = self.angleFromRotation(rotation)
+        self.currentRotation = rotation
       }
     }
     
@@ -469,9 +521,8 @@ final class WheelControl: UIControl, AnimationDelegate  {
     spring.delegate = self
     spring.completionBlock = { anim, finished in
       if finished {
+        self.currentAngle = self.angleFromRotation(to)
         self.setRotationUsingAngle(to)
-        let t = CGAffineTransformMakeRotation(self.angleFromRotation(to))
-        self.container.transform = t
       }
     }
     Animation.addAnimation( spring,
@@ -479,13 +530,12 @@ final class WheelControl: UIControl, AnimationDelegate  {
                        obj: container.layer)
   }
   
-    func pop_animationDidApply(anim: Animation!) {
-      let angle = angleFromRotation(wheelState.previousRotation)
-      let angleDifference = currentAngle - angle
-      self.setRotationUsingAngle(currentRotation + angleDifference)
-      self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-    }
-    
+  func pop_animationDidApply(anim: Animation!) {
+    let angle = angleFromRotation(wheelState.previousRotation)
+    let angleDifference = currentAngle - angle
+    self.setRotationUsingAngle(currentRotation + angleDifference)
+  }
+  
   func test() {
     let step1 = currentRotation
     let step2 = maxRotation
@@ -536,6 +586,8 @@ final class WheelControl: UIControl, AnimationDelegate  {
       wheelState = WheelState( currentRotation: newRotation,
                               previousRotation: wheelState.currentRotation,
                              previousDirection: newDirection)
+      self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+
   }
   
   
