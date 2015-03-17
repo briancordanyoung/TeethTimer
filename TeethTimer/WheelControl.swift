@@ -92,8 +92,9 @@ let threeQuarterCircle = quarterCircle + halfCircle
 
 
 
-
-class WheelControl: UIControl, AnimationDelegate  {
+// MARK: -
+// MARK: - WheelControl Class
+final class WheelControl: UIControl, AnimationDelegate  {
 
   
   // Configure WheelControl
