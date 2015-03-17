@@ -32,7 +32,7 @@ enum DampenAngle {
       case no:
         return "No Dampening"
       case atAngle(let angle):
-        return "Dampen at angle \(angle)"
+        return "Dampen once angle reaches: \(angle)"
     }
   }
 }
@@ -142,7 +142,14 @@ final class WheelControl: UIControl, AnimationDelegate  {
       return currentRotation
     }
     set(newRotationAngle) {
-      // TODO: Check for being within min & max
+      if let minRotation = minRotation {
+        let msg = "rotationAngle must be greater than minRotation."
+        assert(newRotationAngle > minRotation, msg)
+      }
+      if let maxRotation = maxRotation {
+        let msg = "rotationAngle must be less than maxRotation."
+        assert(maxRotation > newRotationAngle, msg)
+      }
       currentAngle = angleFromRotation(newRotationAngle)
       currentRotation = newRotationAngle
     }
@@ -154,12 +161,25 @@ final class WheelControl: UIControl, AnimationDelegate  {
 
 
   // Configure Dampening Properties
-  // TODO: create willSet() for min/maxRotation to 
-  // throw an assert if max is less than min.
-  var minRotation: CGFloat?    = nil
-  var maxRotation: CGFloat?    = nil
   var dampenClockwise          = false
   var dampenCounterClockwise   = false
+  var minRotation: CGFloat?    = nil {
+    willSet(newMinRotation) {
+      if let newMinRotation = newMinRotation {
+        let msg = "minRotation must be less than rotationAngle."
+        assert(currentRotation > newMinRotation, msg)
+      }
+    }
+  }
+  var maxRotation: CGFloat?    = nil {
+    willSet(newMaxRotation) {
+      if let newMaxRotation = newMaxRotation {
+        let msg = "maxRotation must be greater than rotationAngle."
+        assert(newMaxRotation > currentRotation, msg)
+      }
+    }
+  }
+
   
   // How strong should the users rotation be dampened as they
   // rotate past the allowed point
