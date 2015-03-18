@@ -92,9 +92,9 @@ enum DampenAngle: Printable {
   var description: String {
     switch self {
       case no:
-        return "No Dampening"
+        return "<none>"
       case atAngle(let angle):
-        return "Dampen once angle reaches: \(angle)"
+        return "\(angle)"
     }
   }
 }
@@ -121,7 +121,7 @@ enum InteractionState: String, Printable {
 
 
 // MARK: - Structs
-struct WheelState {
+struct WheelState: Printable {
   static let initialVelocity: CGFloat = 0.0000001
   
   var currentRotation:   CGFloat
@@ -148,6 +148,13 @@ struct WheelState {
              previousRotation: angle - WheelState.initialVelocity,
             previousDirection: .Clockwise)
   }
+
+  var description: String {
+    var msg =  "Current Rotation: \(currentRotation) "
+    msg    +=  "Previous Rotation: \(previousRotation) "
+    msg    +=  "Previous Cirection: \(previousDirection)"
+    return msg
+  }
 }
 
 struct WheelInteractionState {
@@ -172,9 +179,15 @@ struct WheelInteractionState {
   }
 }
 
-struct DampenDirection {
+struct DampenDirection: Printable {
   var clockwise:        DampenAngle = .no
   var counterClockwise: DampenAngle = .no
+  
+  var description: String {
+    var msg = "Dampen when angle difference reaches: \(clockwise) (Clockwise) "
+    msg    += "or \(counterClockwise) (Counter Clockwise)"
+    return msg
+  }
 }
 
 
@@ -339,11 +352,12 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   
   func resetRotationAngle() {
-    startingRotation = -Circle.half
-    minRotation      = startingRotation
-    maxRotation      = startingRotation + Circle.full + Circle.threeQuarter
+    startingRotation = Circle.full * 3
     currentAngle     = angleFromRotation(startingRotation)
     currentRotation  = startingRotation
+    minRotation      = startingRotation
+    maxRotation      = startingRotation + Circle.full + Circle.threeQuarter
+    
   }
   
   
