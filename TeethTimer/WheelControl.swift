@@ -46,12 +46,46 @@
 import UIKit
 
 
-
-typealias ImageIndex = Int
-
-
 // MARK: - Enums
-enum DampenAngle {
+enum DirectionToRotate: String, Printable  {
+    case Clockwise        = "Clockwise"
+    case CounterClockwise = "CounterClockwise"
+    case Closest          = "Closest"
+
+    var description: String {
+        return self.rawValue
+    }
+}
+
+enum DirectionRotated: String, Printable {
+    case Clockwise        = "Clockwise"
+    case CounterClockwise = "CounterClockwise"
+
+    var description: String {
+        return self.rawValue
+    }
+}
+
+enum Parity: String, Printable  {
+    case Even = "Even"
+    case Odd  = "Odd"
+
+    var description: String {
+        return self.rawValue
+    }
+}
+
+enum WheelRegion: String, Printable  {
+    case On     = "On"
+    case Off    = "Off"
+    case Center = "Center"
+
+    var description: String {
+        return self.rawValue
+    }
+}
+
+enum DampenAngle: Printable {
   case no
   case atAngle(CGFloat)
 
@@ -65,43 +99,24 @@ enum DampenAngle {
   }
 }
 
-
-enum DirectionToRotate: String, Printable  {
-    case Clockwise = "Clockwise"
-    case CounterClockwise = "CounterClockwise"
-    case Closest = "Closest"
-
-    var description: String {
-        return self.rawValue
-    }
+enum SnapWheelTo: String, Printable {
+  case InitialRotation = "InitialRotation"
+  case CurrentRotation = "CurrentRotation"
+  case MinRotation     = "MinRotation"
+  case MaxRotation     = "MaxRotation"
+  
+  var description: String {
+    return self.rawValue
+  }
 }
 
-enum DirectionRotated: String, Printable {
-    case Clockwise = "Clockwise"
-    case CounterClockwise = "CounterClockwise"
-
-    var description: String {
-        return self.rawValue
-    }
-}
-
-enum Parity: String, Printable  {
-    case Even = "Even"
-    case Odd = "Odd"
-
-    var description: String {
-        return self.rawValue
-    }
-}
-
-enum WheelRegion: String, Printable  {
-    case On = "On"
-    case Off = "Off"
-    case Center = "Center"
-
-    var description: String {
-        return self.rawValue
-    }
+enum InteractionState: String, Printable {
+  case Interacting    = "Interacting"
+  case NotInteracting = "NotInteracting"
+  
+  var description: String {
+    return self.rawValue
+  }
 }
 
 
@@ -109,9 +124,9 @@ enum WheelRegion: String, Printable  {
 struct WheelState {
   static let initialVelocity: CGFloat = 0.0000001
   
-  var currentRotation:  CGFloat =  0.0
-  var previousRotation: CGFloat = -initialVelocity
-  var previousDirection: DirectionRotated = .Clockwise
+  var currentRotation:   CGFloat
+  var previousRotation:  CGFloat
+  var previousDirection: DirectionRotated
   
   init() {
     currentRotation   =  0.0
@@ -121,8 +136,8 @@ struct WheelState {
   }
   
   init( currentRotation: CGFloat,
-    previousRotation: CGFloat,
-    previousDirection: DirectionRotated) {
+       previousRotation: CGFloat,
+      previousDirection: DirectionRotated) {
       self.currentRotation   = currentRotation
       self.previousRotation  = previousRotation
       self.previousDirection = previousDirection
@@ -130,14 +145,31 @@ struct WheelState {
   
   init(angle: CGFloat) {
     self.init(currentRotation: angle,
-      previousRotation: angle - WheelState.initialVelocity,
-      previousDirection: .Clockwise)
+             previousRotation: angle - WheelState.initialVelocity,
+            previousDirection: .Clockwise)
   }
 }
 
-struct DirectionToggle {
-  var clockwise        = false
-  var counterClockwise = false
+struct WheelInteractionState {
+  
+  var initialTransform:  CGAffineTransform
+  var initialTouchAngle: CGFloat
+  var initialRotation:   CGFloat
+  var maxDampenAngle:    CGFloat
+  var minDampenAngle:    CGFloat
+  
+  var currently: InteractionState
+  var snapTo:    SnapWheelTo
+  
+  init() {
+    initialTransform   = CGAffineTransformMakeRotation(0)
+    initialTouchAngle  = 0.0
+    initialRotation    = 0.0
+    currently          = .NotInteracting
+    snapTo             = .CurrentRotation
+    maxDampenAngle     =  CGFloat(FLT_MAX)
+    minDampenAngle     = -CGFloat(FLT_MAX)
+  }
 }
 
 struct DampenDirection {
@@ -146,12 +178,13 @@ struct DampenDirection {
 }
 
 
+struct Circle {
+  static let half         =  CGFloat(M_PI)
+  static let full         =  CGFloat(M_PI) * 2
+  static let quarter      =  CGFloat(M_PI) / 2
+  static let threeQuarter = (CGFloat(M_PI) / 2) + CGFloat(M_PI)
+}
 
-
-let halfCircle = CGFloat(M_PI)
-let fullCircle = CGFloat(M_PI) * 2
-let quarterCircle = CGFloat(M_PI) / 2
-let threeQuarterCircle = quarterCircle + halfCircle
 
 
 
@@ -184,8 +217,8 @@ final class WheelControl: UIControl, AnimationDelegate  {
   }
   
   // Configure WheelControl
-  var centerCircle:      CGFloat =  10.0
-  var startingRotation:  CGFloat = fullCircle * 3
+  var centerCircle:      CGFloat = 10.0
+  var startingRotation:  CGFloat =  0.0
   let wheelView                  = UIView()
   var backgroundView: UIView {
     return self
@@ -306,9 +339,9 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   
   func resetRotationAngle() {
-    startingRotation = -halfCircle
+    startingRotation = -Circle.half
     minRotation      = startingRotation
-    maxRotation      = startingRotation + fullCircle + threeQuarterCircle
+    maxRotation      = startingRotation + Circle.full + Circle.threeQuarter
     currentAngle     = angleFromRotation(startingRotation)
     currentRotation  = startingRotation
   }
@@ -588,15 +621,15 @@ final class WheelControl: UIControl, AnimationDelegate  {
       // returned from the affine transform.
                 
       // In various conditions, this algorithm breaks down and can not
-      // determin the correct accumulated rotation.  It returns the last
-      // know good state in the hopes that the next evaluation can figure it out.
+      // determin the correct accumulated rotation.  It returns the last know
+      // good state in the hopes that the next evaluation can figure it out.
                 
       // Overly large jumps between evaluations may produce the wrong guess.
       // Execptionally fast rotations from the user or animation could do this.
                 
-      // During user interaction, this works. The angle difference from the initial
-      // touch is recalculated each time, so ONLY the final evaluation of
-      // this method, when touch ends, is used to keep the rotation in sync
+      // During user interaction, this works. The angle difference from the
+      // initial touch is recalculated each time, so ONLY the final evaluation
+      // of this method, when touch ends, is used to keep the rotation in sync
       // with the current absolute angle.
                 
       // During animations, it is best to use the expected end state of the
@@ -608,7 +641,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
       // TODO: track down rare exeption landing here:
       //       Thread 1: EXC_BAD_INSTRUCTION (code=EXC_i386_INVOP,subcode=0x0)
                 
-      let rotationCountFromZero = Int(abs(angle / fullCircle))
+      let rotationCountFromZero = Int(abs(angle / Circle.full))
       let tooManyTries          = rotationCountFromZero + 2
       
       var rotation = angle
@@ -626,15 +659,15 @@ final class WheelControl: UIControl, AnimationDelegate  {
       // TODO: Test how close to a full circle the difference can be compared to.
       //       the closer to 2 * M_PI we get, the less room for problems during
       //       fast rotations.
-      while difference > threeQuarterCircle {
+      while difference > Circle.threeQuarter {
         if difference >= previousDifference {
           addOrSubtract = !addOrSubtract
         }
         if addOrSubtract {
-          rotation -= fullCircle
+          rotation -= Circle.full
           tries.append("Rotation After Adding:      \(rotation) d:\(difference)")
         } else {
-          rotation += fullCircle
+          rotation += Circle.full
           tries.append("Rotation After Subtracting: \(rotation) d:\(difference)")
         }
         previousDifference = difference
@@ -769,7 +802,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
     // dampening infinately rotations would require tracking previous angle.
     
     while angle <= 0 {
-      angle += fullCircle
+      angle += Circle.full
     }
     angle -= startAngle
     angle  = (log((angle * rotationDampeningFactor) + 1) / rotationDampeningFactor)
@@ -806,8 +839,8 @@ final class WheelControl: UIControl, AnimationDelegate  {
     // Somewhere in the rotation of the wheelView will be a discontinuity
     // where the angle flips from -3.14 to 3.14 or  back.  This adgustment
     // places that point in negitive Y.
-    if angle >= quarterCircle {
-      angle = angle - fullCircle
+    if angle >= Circle.quarter {
+      angle = angle - Circle.full
     }
     return angle
   }
@@ -854,18 +887,18 @@ final class WheelControl: UIControl, AnimationDelegate  {
   func angleFromRotation(rotation: CGFloat) -> CGFloat {
     var angle = rotation
     
-    if angle >  halfCircle {
-      angle += halfCircle
-      let totalRotations = floor(angle / fullCircle)
-      angle  = angle - (fullCircle * totalRotations)
-      angle -= halfCircle
+    if angle >  Circle.half {
+      angle += Circle.half
+      let totalRotations = floor(angle / Circle.full)
+      angle  = angle - (Circle.full * totalRotations)
+      angle -= Circle.half
     }
     
-    if angle < -halfCircle {
-      angle -= halfCircle
-      let totalRotations = floor(abs(angle) / fullCircle)
-      angle  = angle + (fullCircle * totalRotations)
-      angle += halfCircle
+    if angle < -Circle.half {
+      angle -= Circle.half
+      let totalRotations = floor(abs(angle) / Circle.full)
+      angle  = angle + (Circle.full * totalRotations)
+      angle += Circle.half
     }
     
     return angle
@@ -873,15 +906,15 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   
   func normalizAngle(var angle: CGFloat) -> CGFloat {
-    let positiveHalfCircle =  halfCircle
-    let negitiveHalfCircle = -halfCircle
+    let positiveHalfCircle =  Circle.half
+    let negitiveHalfCircle = -Circle.half
     
     while angle > positiveHalfCircle || angle < negitiveHalfCircle {
       if angle > positiveHalfCircle {
-        angle -= fullCircle
+        angle -= Circle.full
       }
       if angle < negitiveHalfCircle {
-        angle += fullCircle
+        angle += Circle.full
       }
     }
     return angle
