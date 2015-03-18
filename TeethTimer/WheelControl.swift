@@ -186,6 +186,10 @@ final class WheelControl: UIControl, AnimationDelegate  {
   // Configure WheelControl
   var centerCircle:      CGFloat =  10.0
   var startingRotation:  CGFloat = fullCircle * 3
+  let wheelView                  = UIView()
+  var backgroundView: UIView {
+    return self
+  }
 
 
   // Configure Dampening Properties
@@ -215,19 +219,18 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   
   // Internal Properties
-  var container = UIView()
 
   var outsideCircle: CGFloat {
-      return container.bounds.height * 2
+      return wheelView.bounds.height * 2
   }
   
   var currentAngle: CGFloat {
     get {
-      return angleFromTransform(container.transform)
+      return angleFromTransform(wheelView.transform)
     }
     set(newAngle) {
       // TODO: test if the angle needs to be normalized into -halfCircle...halfCircle
-      container.transform = CGAffineTransformMakeRotation(newAngle)
+      wheelView.transform = CGAffineTransformMakeRotation(newAngle)
     }
   }
   
@@ -260,18 +263,28 @@ final class WheelControl: UIControl, AnimationDelegate  {
   var userState   = WheelInteractionState()
 
   
-
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    setupViews()
+    resetRotationAngle()
+  }
   
-  func addConstraintsToViews() {
-    container.userInteractionEnabled = false
-    self.addSubview(container)
+  required init(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    setupViews()
+    resetRotationAngle()
+  }
+  
+  func setupViews() {
+    wheelView.userInteractionEnabled = false
+    self.addSubview(wheelView)
     
     self.setTranslatesAutoresizingMaskIntoConstraints(false)
-    container.setTranslatesAutoresizingMaskIntoConstraints(false)
+    wheelView.setTranslatesAutoresizingMaskIntoConstraints(false)
     
     
     // constraints
-    let viewsDictionary = ["controlView":container]
+    let viewsDictionary = ["controlView":wheelView]
     
     //position constraints
     let view_constraint_H:[AnyObject] =
@@ -288,89 +301,11 @@ final class WheelControl: UIControl, AnimationDelegate  {
     
     self.addConstraints(view_constraint_H)
     self.addConstraints(view_constraint_V)
-    
-    let wheelImageView     = UIImageView(image: UIImage(named: "WheelImage"))
-    let wheelImageTypeView = UIImageView(image: UIImage(named: "WheelImageType"))
-    
-    wheelImageView.opaque = false
-    wheelImageTypeView.opaque = false
-    
-    container.addSubview(wheelImageView)
-    container.addSubview(wheelImageTypeView)
-    
-    
-    wheelImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
-    wheelImageTypeView.setTranslatesAutoresizingMaskIntoConstraints(false)
-    
-    container.addConstraint(NSLayoutConstraint(item: wheelImageView,
-                                          attribute: NSLayoutAttribute.CenterY,
-                                          relatedBy: NSLayoutRelation.Equal,
-                                             toItem: container,
-                                          attribute: NSLayoutAttribute.CenterY,
-                                         multiplier: 1.0,
-                                           constant: 0.0))
-    
-    container.addConstraint(NSLayoutConstraint(item: wheelImageView,
-                                          attribute: NSLayoutAttribute.CenterX,
-                                          relatedBy: NSLayoutRelation.Equal,
-                                             toItem: container,
-                                          attribute: NSLayoutAttribute.CenterX,
-                                         multiplier: 1.0,
-                                           constant: 0.0))
-    
-    wheelImageView.addConstraint( NSLayoutConstraint(item: wheelImageView,
-                                                attribute: NSLayoutAttribute.Height,
-                                                relatedBy: NSLayoutRelation.Equal,
-                                                   toItem: nil,
-                                                attribute: NSLayoutAttribute.NotAnAttribute,
-                                               multiplier: 1.0,
-                                                 constant: 600.0))
-    
-    wheelImageView.addConstraint( NSLayoutConstraint(item: wheelImageView,
-                                                attribute: NSLayoutAttribute.Width,
-                                                relatedBy: NSLayoutRelation.Equal,
-                                                   toItem: nil,
-                                                attribute: NSLayoutAttribute.NotAnAttribute,
-                                               multiplier: 1.0,
-                                                 constant: 600.0))
-    
-    container.addConstraint(NSLayoutConstraint(item: wheelImageTypeView,
-                                          attribute: NSLayoutAttribute.CenterY,
-                                          relatedBy: NSLayoutRelation.Equal,
-                                             toItem: container,
-                                          attribute: NSLayoutAttribute.CenterY,
-                                         multiplier: 1.0,
-                                           constant: 0.0))
-    
-    container.addConstraint(NSLayoutConstraint(item: wheelImageTypeView,
-                                          attribute: NSLayoutAttribute.CenterX,
-                                          relatedBy: NSLayoutRelation.Equal,
-                                             toItem: container,
-                                          attribute: NSLayoutAttribute.CenterX,
-                                         multiplier: 1.0,
-                                           constant: 0.0))
-    
-    wheelImageTypeView.addConstraint( NSLayoutConstraint(item: wheelImageTypeView,
-                                                    attribute: NSLayoutAttribute.Height,
-                                                    relatedBy: NSLayoutRelation.Equal,
-                                                       toItem: nil,
-                                                    attribute: NSLayoutAttribute.NotAnAttribute,
-                                                   multiplier: 1.0,
-                                                     constant: 400.0))
-    
-    wheelImageTypeView.addConstraint( NSLayoutConstraint(item: wheelImageTypeView,
-                                                    attribute: NSLayoutAttribute.Width,
-                                                    relatedBy: NSLayoutRelation.Equal,
-                                                       toItem: nil,
-                                                    attribute: NSLayoutAttribute.NotAnAttribute,
-                                                   multiplier: 1.0,
-                                                     constant: 400.0))
-    
-    reset()
   }
+
   
   
-  func reset() {
+  func resetRotationAngle() {
     startingRotation = -halfCircle
     minRotation      = startingRotation
     maxRotation      = startingRotation + fullCircle + threeQuarterCircle
@@ -390,12 +325,12 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
 
                             
-    Animation.removeAllAnimations(container.layer)
+    Animation.removeAllAnimations(wheelView.layer)
                             
     // Clear and set state at the beginning of the users rotation
     userState                    = WheelInteractionState()
     userState.currently          = .Interacting
-    userState.initialTransform   = container.transform
+    userState.initialTransform   = wheelView.transform
     userState.initialRotation    = currentRotation
     userState.initialTouchAngle  = angleAtTouch(touch)
     
@@ -438,7 +373,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
     //       If so, use currentAngle = userState.initialRotation + angleDifference
     //       and remove initialTransform from userState.
     let t = CGAffineTransformRotate( userState.initialTransform, angleDifference )
-    container.transform = t
+    wheelView.transform = t
     setRotationUsingAngle(userState.initialRotation + angleDifference)
                                         
     self.sendActionsForControlEvents(UIControlEvents.TouchDragInside)
@@ -478,7 +413,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
   // MARK: Animation
   
 //    func animateToRotation(rotation: CGFloat) {
-//        Animation.removeAllAnimations(container.layer)
+//        Animation.removeAllAnimations(wheelView.layer)
 //        let currentRotation = self.currentRotation
 //
 //        
@@ -515,7 +450,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
       return log((duration * durationDistanceFactor) + 1) / durationDistanceFactor
     }
     
-    Animation.removeAllAnimations(container.layer)
+    Animation.removeAllAnimations(wheelView.layer)
     let durationPerRadian = CGFloat(0.25)
     let totalAngularDistance = abs(currentRotation - rotation)
     let baseDuration = totalAngularDistance * durationPerRadian
@@ -537,7 +472,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
     
     Animation.addAnimation( rotate,
       key: rotate.property.name,
-      obj: container.layer)
+      obj: wheelView.layer)
   }
   
   
@@ -554,7 +489,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
     rotate.delegate = self
     Animation.addAnimation( rotate,
                        key: rotate.property.name,
-                       obj: container.layer)
+                       obj: wheelView.layer)
     
   }
 
@@ -577,7 +512,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
     Animation.addAnimation( spring,
                        key: spring.property.name,
-                       obj: container.layer)
+                       obj: wheelView.layer)
   }
   
   func pop_animationDidApply(anim: Animation!) {
@@ -610,12 +545,12 @@ final class WheelControl: UIControl, AnimationDelegate  {
         spring.delegate = self
         Animation.addAnimation( spring,
                            key: spring.property.name,
-                           obj: self.container.layer)
+                           obj: self.wheelView.layer)
       }
     }
     Animation.addAnimation( rotate,
                        key: rotate.property.name,
-                       obj: container.layer)
+                       obj: wheelView.layer)
   }
   
 
@@ -864,11 +799,11 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   
   func angleAtTouchPoint(touchPoint: CGPoint) -> CGFloat {
-    let dx = touchPoint.x - container.center.x
-    let dy = touchPoint.y - container.center.y
+    let dx = touchPoint.x - wheelView.center.x
+    let dy = touchPoint.y - wheelView.center.y
     var angle = atan2(dy,dx)
     
-    // Somewhere in the rotation of the container will be a discontinuity
+    // Somewhere in the rotation of the wheelView will be a discontinuity
     // where the angle flips from -3.14 to 3.14 or  back.  This adgustment
     // places that point in negitive Y.
     if angle >= quarterCircle {
@@ -982,6 +917,5 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
     return paddedNumber
   }
-  
   
 }
