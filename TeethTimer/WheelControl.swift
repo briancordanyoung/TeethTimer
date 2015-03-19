@@ -370,7 +370,6 @@ final class WheelControl: UIControl, AnimationDelegate  {
     if touchRegion(touch) == .Center {
       return false  // Ends current touches to the control
     }
-
                             
     Animation.removeAllAnimations(wheelView.layer)
                             
@@ -827,8 +826,6 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   func dampenCounterClockwiseAngleDifference(var angle: CGFloat,
                                     startingAtAngle startAngle: CGFloat) -> CGFloat {
-
-    print("angle counter: \(pad(angle)) ")
                                       
     angle = -angle
     angle = dampenClockwiseAngleDifference(angle, startingAtAngle: -startAngle)
