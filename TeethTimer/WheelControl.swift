@@ -650,11 +650,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
       // animation to set the currentRotation property to the expected value,
       // (or more precicly, the wheelState property holding backing struct)
       // overriding the accumulated changes made throughout the animation
-      
-                
-      // TODO: track down rare exeption landing here:
-      //       Thread 1: EXC_BAD_INSTRUCTION (code=EXC_i386_INVOP,subcode=0x0)
-                
+                      
       let rotationCountFromZero = Int(abs(angle / Circle.full))
       let tooManyTries          = rotationCountFromZero + 2
       
@@ -722,16 +718,17 @@ final class WheelControl: UIControl, AnimationDelegate  {
         dampenedDiff = dampenClockwiseAngleDifference( angleDiff,
                                       startingAtAngle: startAngle)
       case .no:
-      break
+        break
     }
 
     switch dampen.counterClockwise {
-    case .atAngle(let startAngle):
-      dampenedDiff = dampenCounterClockwiseAngleDifference( angleDiff,
-                                           startingAtAngle: startAngle)
-    case .no:
-      break
+      case .atAngle(let startAngle):
+        dampenedDiff = dampenCounterClockwiseAngleDifference( angleDiff,
+                                             startingAtAngle: startAngle)
+      case .no:
+        break
     }
+    
     
     return dampenedDiff
   }
@@ -804,33 +801,39 @@ final class WheelControl: UIControl, AnimationDelegate  {
       var angleDifference = angle - touchAngle
       
       // Notice the angleDifference is flipped to negitive
-      return -angleDifference
+      let result = -angleDifference
+      
+      return result
   }
   
   func dampenClockwiseAngleDifference(var angle: CGFloat,
                              startingAtAngle startAngle: CGFloat) -> CGFloat {
-    
-    // To prevent NaN result assume positive angles are still positive by
-    // subtracting a full 2 radians from the angle. This does not allow for
-    // beyond full 360° rotations, but works up to 360° before it snaps back.
-    // dampening infinately rotations would require tracking previous angle.
-    
+    angle -= startAngle
+
+    // To prevent NaN result assume negitive angles are still positive by
+    // adding a full 2 radians to the angle while it is negitive. This does not
+    // allow for beyond full 360° rotations, but works up to 360° before it
+    // snaps back. dampening infinately rotations would require tracking 
+    // previous angle.
     while angle <= 0 {
       angle += Circle.full
     }
-    angle -= startAngle
+
     angle  = (log((angle * rotationDampeningFactor) + 1) / rotationDampeningFactor)
     angle += startAngle
-                          
+
     return angle
   }
   
   func dampenCounterClockwiseAngleDifference(var angle: CGFloat,
                                     startingAtAngle startAngle: CGFloat) -> CGFloat {
+
+    print("angle counter: \(pad(angle)) ")
+                                      
     angle = -angle
     angle = dampenClockwiseAngleDifference(angle, startingAtAngle: -startAngle)
     angle = -angle
-    
+                                      
     return angle
   }
   
