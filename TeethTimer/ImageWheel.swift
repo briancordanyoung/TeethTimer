@@ -32,21 +32,22 @@ struct WedgeRegion: Printable {
 // MARK: -
 // MARK: - ImageWheel Class
 class ImageWheel: UIView {
-  
-  // ImageWheel builds completely on WheelControl
-  let wheel: WheelControl
-  var container: UIView {
-    return wheel.wheelView
+
+  // public properties
+
+  // ImageWheel builds completely on the state of currentRotation
+  var rotationAngle = CGFloat(0) { //rotationAngle
+    didSet {
+      updateAppearanceForRotation(currentRotation)
+    }
   }
   
-  var currentRotation: CGFloat {
-    return wheel.currentRotation
-  }
   
-  // TODO: remove currentAngle.
-  // ImageWheel should be completely based on rotation, not angle
-  var currentAngle: CGFloat {
-    return wheel.currentAngle
+  var currentImageMidRotation: CGFloat {
+    // TODO: create methods for determining what image we are on
+    //       and return what the rotation would be for the center of the wedge
+    //       of that image.
+    return 0.0
   }
   
   // Image and Wedge Properties
@@ -60,105 +61,35 @@ class ImageWheel: UIView {
   var visualState = ImageWheelVisualState()
   
 
-  
-  // Image Properties
-  var allWedgeImageViews: [UIImageView] {
-      let views = container.subviews
-      
-      var wedgeImageViews: [UIImageView] = []
-      for image in views {
-        if image.isKindOfClass(UIImageView.self) {
-          let imageView = image as! UIImageView
-          if imageView.tag != 0 {
-            wedgeImageViews.append(imageView)
-          }
-        }
-      }
-      return wedgeImageViews
+  // Internal properties
+  var currentRotation: CGFloat {
+    return angleFromRotation(rotationAngle)
   }
   
-  var currentImage: ImageIndex {
-      func near(x: CGFloat) -> CGFloat { return round(x * 4) }
-      
-      var image    = currentWedgeValue
-      
-      var rotation = currentRotation
-      let angle    = currentAngle
-      
-      while near(rotation) != near(angle) {
-        
-        if near(rotation) > near(angle) {
-          for i in 1...numberOfWedges {
-            image = previousImage(image)
-          }
-          rotation -= Circle.full
-        }
-        
-        if near(rotation) < near(angle) {
-          for i in 1...numberOfWedges {
-            image = nextImage(image)
-          }
-          rotation += Circle.full
-        }
-      }
-      
-      return image
+  var currentAngle: CGFloat {
+    return angleFromRotation(currentRotation)
   }
   
-  var firstImageRotation: CGFloat {
-    return wedgeFromValue(1).midRadian
-  }
-  
-  var lastImageRotation: CGFloat {
-    let rotationAmountFromFristToLast = wedgeWidthAngle * CGFloat(images.count)
-    return firstImageRotation - rotationAmountFromFristToLast
-  }
-  
-  
-  // Wedge Properties
-  var currentWedge: WedgeRegion {
-    return wedgeForAngle(currentAngle)
-  }
-  
-  var currentWedgeValue: WedgeValue {
-    return currentWedge.value
-  }
-  
-  var wedgeWidthAngle: CGFloat {
-    return Circle.full / CGFloat(numberOfWedges)
-  }
-  
-  var wedgeCountParity: Parity {
-    var result: Parity
-    if numberOfWedges % 2 == 0 {
-      result = .Even
-    } else {
-      result = .Odd
-    }
-    return result
-  }
-
   
   
   
   
   // MARK: -
   // MARK: Initialization
-  init(WithWheelControl wheel: WheelControl,
-       Sections sectionsCount: Int,
+  init(Sections sectionsCount: Int,
              AndImages images: [UIImage]) {
               
-    self.wheel = wheel
     super.init(frame: CGRect())
     
     self.images    = images
     numberOfWedges = sectionsCount
     createWedges()
+    addContraints()
+    updateAppearanceForRotation(currentRotation)
   }
   
   required init(coder: NSCoder) {
     // TODO: impliment coder and decoder
-    wheel = WheelControl()
     super.init(coder: coder)
     fatalError("init(coder:) has not been implemented")
   }
@@ -169,7 +100,7 @@ class ImageWheel: UIView {
   // MARK: Setup Methods
   func createWedges() {
     
-    let wedgeStartingAngle = (Circle.half * 3) + CGFloat(self.wedgeWidthAngle / 2)
+    let wedgeStartingAngle = (Circle.half * 3) + (wedgeWidthAngle / 2)
     // Build UIViews for each pie piece
     for i in 1...numberOfWedges {
       
@@ -180,12 +111,11 @@ class ImageWheel: UIView {
       imageView.transform = CGAffineTransformMakeRotation(wedgeAngle)
       imageView.tag = i
       
-      container.addSubview(imageView)
+      self.addSubview(imageView)
     }
     
     
-    container.userInteractionEnabled = false
-    self.addSubview(container)
+    self.userInteractionEnabled = false
     
     if wedgeCountParity == .Even {
       createWedgeRegionsEven()
@@ -248,9 +178,178 @@ class ImageWheel: UIView {
       wedges.append(wedge)
     }
   }
+  
+  func addContraints() {
+    self.setTranslatesAutoresizingMaskIntoConstraints(false)
+
+    for i in 1...numberOfWedges {
+      if let imageView = imageViewFromValue(i) {
+        
+        imageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        
+        self.addConstraint(NSLayoutConstraint(item: imageView,
+                                         attribute: NSLayoutAttribute.CenterY,
+                                         relatedBy: NSLayoutRelation.Equal,
+                                            toItem: self,
+                                         attribute: NSLayoutAttribute.CenterY,
+                                        multiplier: 1.0,
+                                          constant: 0.0))
+        
+        self.addConstraint(NSLayoutConstraint(item: imageView,
+                                         attribute: NSLayoutAttribute.CenterX,
+                                         relatedBy: NSLayoutRelation.Equal,
+                                            toItem: self,
+                                         attribute: NSLayoutAttribute.CenterX,
+                                        multiplier: 1.0,
+                                          constant: 0.0))
+        
+        imageView.addConstraint( NSLayoutConstraint(item: imageView,
+                                    attribute: NSLayoutAttribute.Height,
+                                    relatedBy: NSLayoutRelation.Equal,
+                                       toItem: nil,
+                                    attribute: NSLayoutAttribute.NotAnAttribute,
+                                   multiplier: 1.0,
+                                     constant: wedgeImageHeight))
+        
+        imageView.addConstraint( NSLayoutConstraint(item: imageView,
+                                    attribute: NSLayoutAttribute.Width,
+                                    relatedBy: NSLayoutRelation.Equal,
+                                       toItem: nil,
+                                    attribute: NSLayoutAttribute.NotAnAttribute,
+                                   multiplier: 1.0,
+                                     constant: wedgeImageWidth))
+      }
+    }
+
+  }
+
+  
+  override func didMoveToSuperview() {
+    if let superview = self.superview {
+      let viewsDictionary = ["wheel":self]
+      
+      let view_constraint_H:[AnyObject] =
+      NSLayoutConstraint.constraintsWithVisualFormat(  "H:|[wheel]|",
+        options: NSLayoutFormatOptions(0),
+        metrics: nil,
+        views: viewsDictionary)
+      
+      let view_constraint_V:[AnyObject] =
+      NSLayoutConstraint.constraintsWithVisualFormat(  "V:|[wheel]|",
+        options: NSLayoutFormatOptions(0),
+        metrics: nil,
+        views: viewsDictionary)
+      
+      superview.addConstraints(view_constraint_H)
+      superview.addConstraints(view_constraint_V)
+    }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+
+  // MARK: -
+  // MARK: Visual representation of the wheel
+  func updateAppearanceForRotation(rotation: CGFloat) {
+    let angle = angleFromRotation(rotation)
+    setImageOpacityForCurrentAngle(angle)
+  }
+  
+  
+  func setImageOpacityForCurrentAngle(var angle: CGFloat) {
+    
+    visualState.initOpacityListWithWedges(wedges)
+    
+    // Shift the rotation 1/2 a wedge width angle
+    // This is to center the effect of changing the opacity.
+    angle = angle + (wedgeWidthAngle / 2)
+    angle = normalizAngle(angle)
+    
+    for wedge in wedges {
+      
+      if angle >= wedge.minRadian &&
+        angle <=  wedge.maxRadian    {
+          
+          let percent = percentValue( angle,
+            isBetweenLow: wedge.minRadian,
+            AndHigh: wedge.maxRadian)
+          
+          visualState.wedgeOpacityList[wedge.value]    = percent
+          
+          
+          let neighbor = neighboringWedge(wedge)
+          let invertedPercent = 1 - percent
+          visualState.wedgeOpacityList[neighbor.value] = invertedPercent
+          
+      }
+    }
+    visualState.setOpacityOfWedgeImageViews(allWedgeImageViews)
+  }
 
   
   
+  
+  // MARK: -
+  // MARK: Image Computed Properties
+  var allWedgeImageViews: [UIImageView] {
+    let views = self.subviews
+    
+    var wedgeImageViews: [UIImageView] = []
+    for image in views {
+      if image.isKindOfClass(UIImageView.self) {
+        let imageView = image as! UIImageView
+        if imageView.tag != 0 {
+          wedgeImageViews.append(imageView)
+        }
+      }
+    }
+    return wedgeImageViews
+  }
+  
+  var currentImage: ImageIndex {
+    func near(x: CGFloat) -> CGFloat { return round(x * 4) }
+    
+    var image    = currentWedgeValue
+    var rotation = currentRotation
+    let angle    = currentAngle
+    
+    while near(rotation) != near(angle) {
+      
+      if near(rotation) > near(angle) {
+        for i in 1...numberOfWedges {
+          image = previousImage(image)
+        }
+        rotation -= Circle.full
+      }
+      
+      if near(rotation) < near(angle) {
+        for i in 1...numberOfWedges {
+          image = nextImage(image)
+        }
+        rotation += Circle.full
+      }
+    }
+    
+    return image
+  }
+  
+  var firstImageRotation: CGFloat {
+    return wedgeFromValue(1).midRadian
+  }
+  
+  var lastImageRotation: CGFloat {
+    let rotationAmountFromFirstToLast = wedgeWidthAngle * CGFloat(images.count)
+    return firstImageRotation - rotationAmountFromFirstToLast
+  }
+  
+  
+  
+  // MARK: Image methods
   func imageForWedge(          wedge: WedgeRegion,
     WhileCurrentImageIs currentImage: ImageIndex) -> ImageIndex {
       
@@ -368,38 +467,30 @@ class ImageWheel: UIView {
   
   
   // MARK: -
-  // MARK: Wedge Rotation Methods (Without Animating)
-  func rotateToWedgeByValue(value: Int) {
-    let wedge = wedgeFromValue(value)
-    rotateToWedge(wedge)
+  // MARK: Wedge Computed Properties
+  var currentWedge: WedgeRegion {
+    return wedgeForAngle(currentAngle)
   }
   
-  func rotateToWedge(wedge: WedgeRegion) {
-//    rotateToAngle(wedge.midRadian)
-    // TODO: This is wrong.  The following methods need to be removed 
-    // and replaced with image versions
-    // rotateToWedge
-    // rotateToWedgeByValue
-    wheel.currentRotation = wedge.midRadian
+  var currentWedgeValue: WedgeValue {
+    return currentWedge.value
   }
   
-//  func rotateToAngle(angle: CGFloat) {
-//    if (wheel.userState.currently == .NotInteracting) {
-//      
-//      let normilizedAngle = normalizAngle(angle)
-//      let newRotation = currentAngle - normilizedAngle
-//      let t = CGAffineTransformRotate(container.transform, newRotation)
-//      container.transform = t;
-//      
-//      
-//      // TODO: Calculate direction
-//      // WAS: Clockwise
-////      wheelRotatedTo( normilizedAngle,
-////        turningDirection: .CounterClockwise)
-//    }
-////    self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-//  }
+  var wedgeWidthAngle: CGFloat {
+    return Circle.full / CGFloat(numberOfWedges)
+  }
   
+  var wedgeCountParity: Parity {
+    var result: Parity
+    if numberOfWedges % 2 == 0 {
+      result = .Even
+    } else {
+      result = .Odd
+    }
+    return result
+  }
+  
+
   // MARK: Wedge Methods
   func resolveDirectionAndCountToWedge(wedge: WedgeRegion,
                    var inDirection direction: DirectionToRotate)
@@ -532,7 +623,7 @@ class ImageWheel: UIView {
   
   func wedgeForAngle(angle: CGFloat) -> WedgeRegion {
     
-    let normAngle = wheel.normalizAngle(angle)
+    let normAngle = normalizAngle(angle)
     
     // Determin where the wheel is (which wedge we are within)
     var currentWedge: WedgeRegion?
@@ -560,6 +651,44 @@ class ImageWheel: UIView {
   }
   
   
+  // MARK: -
+  // MARK: Angle Helpers
+  func normalizAngle(var angle: CGFloat) -> CGFloat {
+    let positiveHalfCircle =  Circle.half
+    let negitiveHalfCircle = -Circle.half
+    
+    while angle > positiveHalfCircle || angle < negitiveHalfCircle {
+      if angle > positiveHalfCircle {
+        angle -= Circle.full
+      }
+      if angle < negitiveHalfCircle {
+        angle += Circle.full
+      }
+    }
+    return angle
+  }
+
+  func angleFromRotation(rotation: CGFloat) -> CGFloat {
+    var angle = rotation
+    
+    if angle >  Circle.half {
+      angle += Circle.half
+      let totalRotations = floor(angle / Circle.full)
+      angle  = angle - (Circle.full * totalRotations)
+      angle -= Circle.half
+    }
+    
+    if angle < -Circle.half {
+      angle -= Circle.half
+      let totalRotations = floor(abs(angle) / Circle.full)
+      angle  = angle + (Circle.full * totalRotations)
+      angle += Circle.half
+    }
+    
+    return angle
+  }
+
+  
   // MARK: Math Helpers
   func percentValue(value: CGFloat,
        isBetweenLow   low: CGFloat,
@@ -567,8 +696,8 @@ class ImageWheel: UIView {
       return (value - low) / (high - low)
   }
   
-  // MARK: Other
-  func wedgeImageViewFromValue(value: Int) -> UIImageView? {
+  // MARK: image and imageView helpers
+  func imageViewFromValue(value: Int) -> UIImageView? {
     
     var wedgeView: UIImageView?
     
