@@ -213,9 +213,10 @@ final class WheelControl: UIControl, AnimationDelegate  {
   //                                                animateToRotation()
   var rotationAngle: CGFloat {  // in module, make public //
     get {
-      return currentRotation
+      return currentRotation - internalRotationOffset
     }
     set(newRotationAngle) {
+
       if let minRotation = minRotation {
         let msg = "rotationAngle must be greater than or equal to minRotation."
         assert(newRotationAngle >= minRotation, msg)
@@ -224,10 +225,14 @@ final class WheelControl: UIControl, AnimationDelegate  {
         let msg = "rotationAngle must be less than or equal to maxRotation."
         assert(maxRotation >= newRotationAngle, msg)
       }
-      currentAngle = angleFromRotation(newRotationAngle)
-      currentRotation = newRotationAngle
+      
+      let adjustRotationAngle = newRotationAngle + internalRotationOffset
+      
+      currentAngle = angleFromRotation(adjustRotationAngle)
+      currentRotation = adjustRotationAngle
     }
   }
+  
   
   // Configure WheelControl
   var centerCircle:      CGFloat = 10.0
@@ -238,22 +243,42 @@ final class WheelControl: UIControl, AnimationDelegate  {
   }
 
 
+  var snapToRotation: CGFloat?
+
   // Configure Dampening Properties
   var dampenClockwise          = false
   var dampenCounterClockwise   = false
-  var minRotation: CGFloat?    = nil {
-    willSet(newMinRotation) {
+  var minimumRotation: CGFloat? {
+    get {
+      return minRotation
+    }
+    set(newMinRotation) {
       if let newMinRotation = newMinRotation {
+        let newMinRotationWithOffset = newMinRotation + internalRotationOffset
+
         let msg = "minRotation must be less than or equal to rotationAngle."
-        assert(currentRotation >= newMinRotation, msg)
+        assert(currentRotation >= newMinRotationWithOffset, msg)
+        
+        minRotation = newMinRotationWithOffset
+      } else {
+        minRotation = nil
       }
     }
   }
-  var maxRotation: CGFloat?    = nil {
-    willSet(newMaxRotation) {
+  var maximumRotation: CGFloat? {
+    get {
+      return maxRotation
+    }
+    set(newMaxRotation) {
       if let newMaxRotation = newMaxRotation {
+        let newMaxRotationWithOffset = newMaxRotation + internalRotationOffset
+        
         let msg = "maxRotation must be greater than or equal to rotationAngle."
-        assert(newMaxRotation >= currentRotation, msg)
+        assert(newMaxRotationWithOffset >= currentRotation, msg)
+        
+        maxRotation = newMaxRotationWithOffset
+      } else {
+        maxRotation = nil
       }
     }
   }
@@ -265,6 +290,18 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   
   // Internal Properties
+  
+  var minRotation: CGFloat?
+  var maxRotation: CGFloat?
+  
+  
+  // The method rotationUsingAngle(AndWheelState:) is a hack to try and figure
+  // out what the currentRotation should be.  That method has less problems when
+  // the rotation is greater than 0.  This offset is used to internally add
+  // to the currentRotation.  The public properties that are used outside this
+  // class will add/subtract this offset when set/get.
+//  let internalRotationOffset = CGFloat(Circle.full * 3)
+  let internalRotationOffset = CGFloat(0)
 
   var outsideCircle: CGFloat {
       return wheelView.bounds.height * 2
@@ -352,12 +389,11 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   
   func resetRotationAngle() {
-    startingRotation = Circle.full * 3
+    startingRotation = internalRotationOffset
     currentAngle     = angleFromRotation(startingRotation)
     currentRotation  = startingRotation
     minRotation      = startingRotation
     maxRotation      = startingRotation + Circle.full + Circle.threeQuarter
-    
   }
   
   
@@ -438,6 +474,10 @@ final class WheelControl: UIControl, AnimationDelegate  {
       animateToRotation(userState.initialRotation)
       break
     case .CurrentRotation:
+      if let snapToRotation = snapToRotation {
+        animateToRotation(snapToRotation)
+        self.snapToRotation = nil
+      }
       break
     case .MinRotation:
       if let rotation = minRotation {
