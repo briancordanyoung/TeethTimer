@@ -63,15 +63,12 @@ class ImageWheel: UIView {
 
   // Internal properties
   var currentRotation: CGFloat {
-    return angleFromRotation(rotationAngle)
+    return rotationAngle
   }
   
   var currentAngle: CGFloat {
     return angleFromRotation(currentRotation)
   }
-  
-  
-  
   
   
   // MARK: -
