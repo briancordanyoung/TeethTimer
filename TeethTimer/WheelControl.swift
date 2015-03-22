@@ -392,8 +392,8 @@ final class WheelControl: UIControl, AnimationDelegate  {
     startingRotation = internalRotationOffset
     currentAngle     = angleFromRotation(startingRotation)
     currentRotation  = startingRotation
-    minRotation      = startingRotation
-    maxRotation      = startingRotation + Circle.full + Circle.threeQuarter
+//    minRotation      = startingRotation
+//    maxRotation      = startingRotation + Circle.full + Circle.threeQuarter
   }
   
   
