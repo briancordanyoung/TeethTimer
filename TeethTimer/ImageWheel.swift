@@ -260,8 +260,37 @@ class ImageWheel: UIView {
   // MARK: -
   // MARK: Visual representation of the wheel
   func updateAppearanceForRotation(rotation: CGFloat) {
+    setImagesForCurrentRotation(rotation)
+    
     let angle = angleFromRotation(rotation)
     setImageOpacityForCurrentAngle(angle)
+  }
+
+  func setImagesForCurrentRotation(rotation: CGFloat) {
+    // get the rotation of the wedge at the bottom of the wheel.
+    // if the
+    let wedgeCountBack: Int
+    if wedgeCountParity == .Even {
+      wedgeCountBack =  wedges.count / 2
+    } else {
+      wedgeCountBack = (wedges.count / 2) + 1
+    }
+    let rotationBack = CGFloat(wedgeCountBack) * wedgeWidthAngle
+    let startingRotation = rotation - rotationBack
+
+    for i in 1...wedges.count {
+      let rotationForward = (wedgeWidthAngle * CGFloat(i))
+      let rotationToCheck = startingRotation + rotationForward
+      let imageIndex      = imageForRotation(rotationToCheck)
+      let image           = imageOfNumber(imageIndex)
+
+      let angle           = angleFromRotation(rotationToCheck)
+      let wedge           = wedgeForAngle(angle)
+      let imageView       = imageViewFromValue(wedge.value)
+
+      imageView?.image    = image
+
+    }
   }
   
   
@@ -363,16 +392,17 @@ class ImageWheel: UIView {
     return imageForRotation(currentRotation)
   }
   
+  // assumes: images increase as rotation decreases
   var rotationFromFirstToLast: CGFloat {
-    return wedgeWidthAngle * CGFloat(images.count)
+    return wedgeWidthAngle * CGFloat(images.count - 1)
   }
   
+  // assumes: images increase as rotation decreases
   var firstImageRotation: CGFloat {
     return wedgeFromValue(1).midRadian
   }
   
   var lastImageRotation: CGFloat {
-    let rotationAmountFromFirstToLast = wedgeWidthAngle * CGFloat(images.count)
     // assumes: images increase as rotation decreases
     return firstImageRotation - rotationFromFirstToLast
   }

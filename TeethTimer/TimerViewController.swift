@@ -40,10 +40,9 @@ class TimerViewController: UIViewController {
       styleButton(resetButton)
       styleButton(startPauseButton)
       
-      let images = arrayOfImages(13)
+      let images = arrayOfImages(9)
       let gavinWheel = WheelControl()
-//      addTestImagesToView(gavinWheel.wheelView)
-    
+
       controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
 
       gavinWheelHeight = NSLayoutConstraint(item: gavinWheel,
@@ -118,8 +117,8 @@ class TimerViewController: UIViewController {
 
       imageWheel.rotationAngle = CGFloat(startingRotation)
       gavinWheel.rotationAngle = CGFloat(startingRotation)
-      gavinWheel.maximumRotation = imageWheel.firstImageRotation
-      gavinWheel.minimumRotation = imageWheel.lastImageRotation
+//      gavinWheel.maximumRotation = imageWheel.firstImageRotation
+//      gavinWheel.minimumRotation = imageWheel.lastImageRotation
       self.gavinWheel = gavinWheel
       
   }
