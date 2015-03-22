@@ -43,8 +43,21 @@ class ImageWheel: UIView {
   }
   
   
-  var currentImageMidRotation: CGFloat {
-    return rotationForImage(currentImage)
+  var centerRotationForSection: CGFloat {
+    var angle      = angleFromRotation(currentRotation)
+    let midAngle   = currentWedge.midRadian
+
+    var difference = angle - midAngle
+    while abs(difference) > wedgeWidthAngle {
+      if difference > 0 {
+        angle -= Circle.full
+      } else {
+        angle += Circle.full
+      }
+      difference = angle - midAngle
+    }
+
+    return currentRotation - difference
   }
   
   // Image and Wedge Properties
