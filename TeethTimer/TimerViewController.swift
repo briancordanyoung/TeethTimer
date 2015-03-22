@@ -40,7 +40,6 @@ class TimerViewController: UIViewController {
       styleButton(resetButton)
       styleButton(startPauseButton)
       
-      let images = arrayOfImages(9)
       let gavinWheel = WheelControl()
 
       controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
@@ -108,8 +107,9 @@ class TimerViewController: UIViewController {
       }
       
       //        gavinWheel.wheelTurnedBackBy = wheelTurnedBackByFunc
-      
-      let imageWheel = ImageWheel(Sections: 6, AndImages: images)
+
+      let images = arrayOfImages(19)
+      let imageWheel = ImageWheel(Sections: 7, AndImages: images)
       gavinWheel.wheelView.addSubview(imageWheel)
       
       // Set the inital
@@ -117,8 +117,8 @@ class TimerViewController: UIViewController {
 
       imageWheel.rotationAngle = CGFloat(startingRotation)
       gavinWheel.rotationAngle = CGFloat(startingRotation)
-//      gavinWheel.maximumRotation = imageWheel.firstImageRotation
-//      gavinWheel.minimumRotation = imageWheel.lastImageRotation
+      gavinWheel.maximumRotation = imageWheel.firstImageRotation
+      gavinWheel.minimumRotation = imageWheel.lastImageRotation
       self.gavinWheel = gavinWheel
       
   }
@@ -142,23 +142,25 @@ class TimerViewController: UIViewController {
   
   // MARK: Button Actions
   @IBAction func startStopPressed(sender: UIButton) {
-    gavinWheel?.test()
-    
-    //     if timer.hasCompleted {
-    //         timer.reset()
-    //         return
-    //     }
-    //
-    //     if timer.notCurrentlyRunning {
-    //         timer.start()
-    //     } else {
-    //         timer.pause()
-    //     }
+//    if let gavinWheel = gavinWheel, imageWheelView = imageWheelView {
+//      gavinWheel.animateToRotation(imageWheelView.firstImageRotation)
+//    }
+
+     if timer.hasCompleted {
+         timer.reset()
+         return
+     }
+
+     if timer.notCurrentlyRunning {
+         timer.start()
+     } else {
+         timer.pause()
+     }
   }
   
   @IBAction func resetPressed(sender: UIButton) {
-    gavinWheel?.resetRotationAngle()
-    //      timer.reset()
+//    gavinWheel?.resetRotationAngle()
+    timer.reset()
   }
   
   @IBAction func testPresses(sender: UIButton) {
@@ -174,9 +176,7 @@ class TimerViewController: UIViewController {
     if let imageWheelView = imageWheelView {
       let rotation = gavinWheel.currentRotation
       imageWheelView.rotationAngle = rotation
-      gavinWheel.snapToRotation = imageWheelView.centerRotationForSection
-      imageWheelView.utilAfterInit()
-      
+      gavinWheel.snapToRotation    = imageWheelView.centerRotationForSection
 //      println("rotation: \(rotation)")
     }
   }
@@ -201,38 +201,33 @@ class TimerViewController: UIViewController {
     timer.addTimeByPercentage(percentage)
   }
   
-//    func updatePercentageDone(percentageDone: CGFloat) {
-//        
-//        if let gavinWheel = gavinWheel {
-//            // At 100% should always be the first image
-//            // But, as soon as it is less, advance to the 2nd image.
-//            // This done on the lines marked belowe 1, 2 & 3
-//
-//            var steps = gavinWheel.images.count - 1
-//            steps = steps - 1  // 1
-//            
-//            var currentWheelValue = 1 + currentWheelValueFromPrecent( percentageDone,
-//                                                    WithSectionCount: steps)
-//            currentWheelValue = currentWheelValue + 1 // 2
-//
-//            if percentageDone == 1.0 { // 3
-//                if gavinWheel.currentImage != 1 {
-//                    gavinWheel.animateToImage( 1,
-//                                  inDirection: .Clockwise)
-//                }
-//            } else if gavinWheel.currentImage != currentWheelValue {
-//                gavinWheel.animateToImage( currentWheelValue,
-//                              inDirection: .CounterClockwise)
-//            }
-//        }
-//    }
-    
   func updatePercentageDone(percentageDone: CGFloat) {
-    if let gavinWheel = gavinWheel {
+
+    if let gavinWheel = gavinWheel, let imageWheelView = imageWheelView {
+      // At 100% should always be the first image
+      // But, as soon as it is less, advance to the 2nd image.
+      // This done on the lines marked belowe 1, 2 & 3
+
+      var steps = imageWheelView.images.count - 1
+      steps = steps - 1  // 1
+
+      var currentImage = 1 + currentWheelValueFromPrecent( percentageDone,
+                                         WithSectionCount: steps)
+      currentImage = currentImage + 1 // 2
+
+      if percentageDone == 1.0 { // 3
+        if imageWheelView.currentImage != 1 {
+          let rotation = imageWheelView.rotationForImage(1)
+          gavinWheel.animateToRotation(rotation)
+        }
+      } else if imageWheelView.currentImage != currentImage {
+        let rotation = imageWheelView.rotationForImage(currentImage)
+        gavinWheel.animateToRotation(rotation)
+      }
     }
   }
-  
-  
+
+
   // MARK: Timer Callback helper Methods
   func clamp(value: Int, ToValue maximumValue: Int) -> Int {
     
