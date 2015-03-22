@@ -174,7 +174,7 @@ class TimerViewController: UIViewController {
     if let imageWheelView = imageWheelView {
       let rotation = gavinWheel.currentRotation
       imageWheelView.rotationAngle = rotation
-      gavinWheel.snapToRotation = imageWheelView.currentImageMidRotation
+      gavinWheel.snapToRotation = imageWheelView.centerRotationForSection
       imageWheelView.utilAfterInit()
       
 //      println("rotation: \(rotation)")
