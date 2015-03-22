@@ -60,10 +60,10 @@
 -(void)setCompletionBlock:(void (^)(_POPAnimation *, BOOL))completionBlock {
   _completionBlock = completionBlock;
   self.ref.completionBlock = ^(POPAnimation* anim, BOOL finished){
-      // TODO: When reating a weakSelf reference, self is being dealloced
+      // TODO: When creating a weakSelf reference, self is being dealloced
       //       before the completionBlock is called.  Switched to use a
       //       strongSelf.  But, need to find a solution.
-      //       Must be realted to creating a wrapper around the Objective-C++
+      //       Must be related to creating a wrapper around the Objective-C++
       //       code to be called by swift.
       _POPAnimation* strongSelf = self; //wself
       if (strongSelf == nil) {
