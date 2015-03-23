@@ -6,6 +6,18 @@ import UIKit
 typealias ImageIndex = Int
 typealias WedgeValue = Int
 
+// MARK: - Enums
+enum Parity: String, Printable  {
+  case Even = "Even"
+  case Odd  = "Odd"
+
+  var description: String {
+    return self.rawValue
+  }
+}
+
+
+
 // MARK: - Structs
 struct WedgeRegion: Printable {
   var minRadian: CGFloat
@@ -65,8 +77,6 @@ class ImageWheel: UIView {
   let wedgeImageWidth:  CGFloat  = (734 * 0.9)
   var images:          [UIImage] = []
 
-  // Image and Wedge Properties
-  var numberOfWedges: Int = 0
   var wedges: [WedgeRegion] = []
   var visualState = ImageWheelVisualState()
   
@@ -77,7 +87,15 @@ class ImageWheel: UIView {
   }
   
   var wedgeWidthAngle: CGFloat {
-    return Circle.full / CGFloat(numberOfWedges)
+    return Circle.full / CGFloat(wedges.count)
+  }
+
+  func wedgeWidthAngleForWedgeCount(wedgeCount: Int) -> CGFloat {
+    return Circle.full / CGFloat(wedgeCount)
+  }
+
+  var wedgeCountParity: Parity {
+    return wedgeCountParityForCount(wedges.count)
   }
 
   // MARK: -
@@ -88,8 +106,7 @@ class ImageWheel: UIView {
     super.init(frame: CGRect())
     
     self.images    = images
-    numberOfWedges = sectionsCount
-    createWedges()
+    createWedges(sectionsCount)
     addWedgeContraints()
     updateAppearanceForRotation(currentRotation)
   }
@@ -104,11 +121,11 @@ class ImageWheel: UIView {
   
   
   // MARK: Setup Methods
-  func createWedges() {
+  func createWedges(count: Int) {
     
     let wedgeStartingAngle = (Circle.half * 3) + (wedgeWidthAngle / 2)
     // Build UIViews for each pie piece
-    for i in 1...numberOfWedges {
+    for i in 1...count {
       
       let wedgeAngle = (CGFloat(wedgeWidthAngle) * CGFloat(i)) - wedgeStartingAngle
       
@@ -123,17 +140,17 @@ class ImageWheel: UIView {
     
     self.userInteractionEnabled = false
     
-    if wedgeCountParity == .Even {
-      createWedgeRegionsEven()
+    if wedgeCountParityForCount(count) == .Even {
+      createWedgeRegionsEven(count)
     } else {
-      createWedgeRegionsOdd()
+      createWedgeRegionsOdd(count)
     }
   }
   
   
-  var wedgeCountParity: Parity {
+  func wedgeCountParityForCount(count: Int) -> Parity {
     var result: Parity
-    if numberOfWedges % 2 == 0 {
+    if count % 2 == 0 {
       result = .Even
     } else {
       result = .Odd
@@ -142,20 +159,14 @@ class ImageWheel: UIView {
   }
   
   
-  func createWedgeAtIndex(i: Int, AndAngle angle: CGFloat) -> UIImageView {
-    var imageView = UIImageView()
-    imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
-    imageView.transform = CGAffineTransformMakeRotation(angle)
-    imageView.tag = i
-    return imageView
-  }
-  
-  func createWedgeRegionsEven() {
+  func createWedgeRegionsEven(count: Int) {
+    let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(count)
+
     var mid = Circle.half - (wedgeWidthAngle / 2)
     var max = Circle.half
     var min = Circle.half - wedgeWidthAngle
     
-    for i in 1...numberOfWedges {
+    for i in 1...count {
       max = mid + (wedgeWidthAngle / 2)
       min = mid - (wedgeWidthAngle / 2)
       
@@ -171,12 +182,14 @@ class ImageWheel: UIView {
   }
   
   
-  func createWedgeRegionsOdd() {
+  func createWedgeRegionsOdd(count: Int) {
+    let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(count)
+
     var mid = Circle.half - (wedgeWidthAngle / 2)
     var max = Circle.half
     var min = Circle.half -  wedgeWidthAngle
     
-    for i in 1...numberOfWedges {
+    for i in 1...count {
       max = mid + (wedgeWidthAngle / 2)
       min = mid - (wedgeWidthAngle / 2)
       
@@ -199,7 +212,7 @@ class ImageWheel: UIView {
   func addWedgeContraints() {
     self.setTranslatesAutoresizingMaskIntoConstraints(false)
 
-    for i in 1...numberOfWedges {
+    for i in 1...wedges.count {
       if let imageView = imageViewFromValue(i) {
         
         imageView.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -274,7 +287,7 @@ class ImageWheel: UIView {
   // MARK: Visual representation of the wheel
   func updateAppearanceForRotation(rotation: CGFloat) {
     setImagesForCurrentRotation(rotation)
-    
+
     let angle = angleFromRotation(rotation)
     setImageOpacityForCurrentAngle(angle)
   }
@@ -356,51 +369,8 @@ class ImageWheel: UIView {
     }
     return wedgeImageViews
   }
-  
-//  var currentImage: ImageIndex {
-//    func near(x: CGFloat) -> CGFloat { return round(x * 4) }
-//    
-//    var image    = currentWedgeValue
-//    var rotation = currentRotation
-//    let angle    = currentAngle
-//    
-//    while near(rotation) != near(angle) {
-//      
-//      if near(rotation) > near(angle) {
-//        for i in 1...numberOfWedges {
-//          image = previousImage(image)
-//        }
-//        rotation -= Circle.full
-//      }
-//      
-//      if near(rotation) < near(angle) {
-//        for i in 1...numberOfWedges {
-//          image = nextImage(image)
-//        }
-//        rotation += Circle.full
-//      }
-//    }
-//    
-//    return image
-//  }
-  func utilAfterInit() {
-    
-//    let halfWedgeWidthAngle = wedgeWidthAngle / 2
-//    println("wedge Width \(wedgeWidthAngle) | half wedge width \(halfWedgeWidthAngle)")
-//    
-//    let startingRotation = wedgeFromValue(1).minRadian
-//    println("startingRotation: \(startingRotation)\n\n")
-//    
-//    for wedge in wedges {
-//      println(wedge)
-//    }
-    
-//    println("Current Image: \(currentImage)")
-  }
-  
-  
-  
-  
+
+
   var currentImage: ImageIndex {
     return imageForRotation(currentRotation)
   }
@@ -419,7 +389,8 @@ class ImageWheel: UIView {
     // assumes: images increase as rotation decreases
     return firstImageRotation - rotationFromFirstToLast
   }
-  
+
+  // MARK: Image methods
   func imageForRotation(rotation: CGFloat) -> ImageIndex {
     let startingRotationDifference = -firstImageRotation
     let rotationStartingAtZero = rotation + startingRotationDifference
@@ -447,123 +418,6 @@ class ImageWheel: UIView {
     return  startingRotation - rotationToImage
   }
   
-  // MARK: Image methods
-  func imageForWedge(          wedge: WedgeRegion,
-    WhileCurrentImageIs currentImage: ImageIndex) -> ImageIndex {
-      
-      var currentWedge = wedgeForImage(currentImage)
-      let resolved = resolveDirectionAndCountToWedge( wedge,
-        GivenCurrentWedge: currentWedge,
-        inDirection: .Closest)
-      
-      let image: ImageIndex
-      if resolved.direction == .Clockwise {
-        // WAS: image = currentImage + resolved.count
-        image = currentImage - resolved.count
-      } else {
-        // WAS: image = currentImage - resolved.count
-        image = currentImage + resolved.count
-      }
-      
-      return image
-  }
-  
-  
-  func wedgeForImage(image: ImageIndex) -> WedgeRegion {
-    var wedgeValue = image % wedges.count
-    if wedgeValue == 0 {
-      wedgeValue = wedges.count
-    }
-    return wedgeFromValue(wedgeValue)
-  }
-  
-//  func resolveDirectionAndCountToImage(image: ImageIndex,
-//                   var inDirection direction: DirectionToRotate)
-//                               -> (direction: DirectionToRotate, count: Int) {
-//      let count: Int
-//      
-//      switch direction {
-//      case .Closest:
-//        // WAS: .Clockwise
-//        let positiveCount = countFromImage( currentImage,
-//                                   ToImage: image,
-//                               inDirection: .CounterClockwise)
-//        // WAS: .CounterClockwise
-//        let negitiveCount = countFromImage( currentImage,
-//                                   ToImage: image,
-//                               inDirection: .Clockwise)
-//        
-//        // WAS: .Clockwise
-//        if positiveCount <= negitiveCount {
-//          count     = positiveCount
-//          direction = .CounterClockwise
-//        } else {
-//          // WAS: .CounterClockwise
-//          count     = negitiveCount
-//          direction = .Clockwise
-//        }
-//        
-//      case .Clockwise:
-//        
-//        count = countFromImage( currentImage,
-//                       ToImage: image,
-//                   inDirection: .Clockwise)
-//        
-//      case .CounterClockwise:
-//        count = countFromImage( currentImage,
-//                       ToImage: image,
-//                   inDirection: .CounterClockwise)
-//        
-//      }
-//      
-//      return (direction, count)
-//  }
-
-//  func countFromImage( fromImage: ImageIndex,
-//                 ToImage toImage: ImageIndex,
-//           inDirection direction: DirectionRotated) -> Int {
-//      
-//      
-//      assert(fromImage >= 1, "countFromImage: fromImage too low \(fromImage)")
-//      assert(toImage >= 1, "countFromImage: toImage too low \(toImage)")
-//      assert(fromImage <= images.count, "countFromImage: fromImage too high \(fromImage)")
-//      assert(toImage <= images.count, "countFromImage: toImage too high \(toImage)")
-//      
-//      var image = fromImage
-//      var count = 0
-//      while true {
-//        if image == toImage {
-//          break
-//        }
-//        // WAS: if direction == .Clockwise {
-//        if direction == .CounterClockwise {
-//          image = nextImage(image)
-//        } else {
-//          image = previousImage(image)
-//        }
-//        ++count
-//      }
-//      
-//      return count
-//  }
-  
-//  func nextImage(var image: ImageIndex) -> ImageIndex {
-//    ++image
-//    if image > images.count {
-//      image = 1
-//    }
-//    return image
-//  }
-  
-//  func previousImage(var image: ImageIndex) -> ImageIndex {
-//    --image
-//    if image < 1 {
-//      image = images.count
-//    }
-//    return image
-//  }
-  
-  
   // MARK: -
   // MARK: Wedge Computed Properties
   var currentWedge: WedgeRegion {
@@ -574,110 +428,8 @@ class ImageWheel: UIView {
   var currentWedgeValue: WedgeValue {
     return currentWedge.value
   }
-  
-  
 
-  // MARK: Wedge Methods
-  func resolveDirectionAndCountToWedge(wedge: WedgeRegion,
-                   var inDirection direction: DirectionToRotate)
-                               -> (direction: DirectionToRotate, count: Int) {
-      
-      return resolveDirectionAndCountToWedge( wedge,
-                           GivenCurrentWedge: self.currentWedge,
-                                 inDirection: direction)
-  }
-  
-  func resolveDirectionAndCountToWedge(wedge: WedgeRegion,
-              GivenCurrentWedge currentWedge: WedgeRegion,
-                   var inDirection direction: DirectionToRotate)
-                              ->  (direction: DirectionToRotate, count: Int) {
-      
-      let count: Int
-      
-      switch direction {
-      case .Closest:
-        // WAS: Clockwise
-        let positiveCount = countFromWedgeValue( currentWedge.value,
-                                   ToWedgeValue: wedge.value,
-                                    inDirection: .CounterClockwise)
-        // WAS: CounterClockwise
-        let negitiveCount = countFromWedgeValue( currentWedge.value,
-                                   ToWedgeValue: wedge.value,
-                                    inDirection: .Clockwise)
-        
-        // WAS: Clockwise
-        if positiveCount <= negitiveCount {
-          count     = positiveCount
-          direction = .CounterClockwise
-        } else {
-          // WAS: CounterClockwise
-          count     = negitiveCount
-          direction = .Clockwise
-        }
-        
-      case .Clockwise:
-        count = countFromWedgeValue( currentWedge.value,
-                       ToWedgeValue: wedge.value,
-                        inDirection: .Clockwise)
-        
-      case .CounterClockwise:
-        count = countFromWedgeValue( currentWedge.value,
-                       ToWedgeValue: wedge.value,
-                        inDirection: .CounterClockwise)
-      }
-      
-      return (direction, count)
-      
-  }
-  
-  func countFromWedgeValue( fromValue: Int,
-               ToWedgeValue   toValue: Int,
-                inDirection direction: DirectionRotated) -> Int {
-      
-      var value = fromValue
-      var count = 0
-      while true {
-        if value == toValue {
-          break
-        }
-        // WAS: Clockwise
-        if direction == .CounterClockwise {
-          value = nextWedgeValue(value)
-        } else {
-          value = previousWedgeValue(value)
-        }
-        ++count
-      }
-      return count
-  }
-  
-  func nextWedge(wedge: WedgeRegion) -> WedgeRegion {
-    let value = nextWedgeValue(wedge.value)
-    return wedgeFromValue(value)
-  }
-  
-  func previousWedge(wedge: WedgeRegion) -> WedgeRegion {
-    let value = previousWedgeValue(wedge.value)
-    return wedgeFromValue(value)
-  }
-  
-  func nextWedgeValue(var value: Int) -> Int {
-    ++value
-    if value > wedges.count {
-      value = 1
-    }
-    return value
-  }
-  
-  func previousWedgeValue(var value: Int) -> Int {
-    --value
-    if value < 1 {
-      value = wedges.count
-    }
-    return value
-  }
-  
-  
+  // MARK: Wedge methods
   func wedgeFromValue(value: Int) -> WedgeRegion {
     
     var returnWedge: WedgeRegion?
@@ -691,7 +443,7 @@ class ImageWheel: UIView {
     assert(returnWedge != nil, "wedgeFromValue():  No wedge found with value \(value)")
     return returnWedge!
   }
-  
+
   
   func thisAngle(angle: CGFloat,
     isWithinWedge wedge: WedgeRegion) -> Bool {
@@ -705,7 +457,7 @@ class ImageWheel: UIView {
       
       return angleIsWithinWedge
   }
-  
+
   
   func wedgeForAngle(angle: CGFloat) -> WedgeRegion {
     
@@ -781,7 +533,7 @@ class ImageWheel: UIView {
        AndHigh       high: CGFloat ) -> CGFloat {
       return (value - low) / (high - low)
   }
-  
+
   // MARK: image and imageView helpers
   func imageViewFromValue(value: Int) -> UIImageView? {
     
@@ -800,6 +552,6 @@ class ImageWheel: UIView {
   func imageOfNumber(i: Int) -> UIImage {
     return images[i - 1]
   }
-  
+
   
 }

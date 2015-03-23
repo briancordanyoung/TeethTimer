@@ -46,29 +46,9 @@
 import UIKit
 
 
-// MARK: - Enums
-enum DirectionToRotate: String, Printable  {
-    case Clockwise        = "Clockwise"
-    case CounterClockwise = "CounterClockwise"
-    case Closest          = "Closest"
-
-    var description: String {
-        return self.rawValue
-    }
-}
-
 enum DirectionRotated: String, Printable {
     case Clockwise        = "Clockwise"
     case CounterClockwise = "CounterClockwise"
-
-    var description: String {
-        return self.rawValue
-    }
-}
-
-enum Parity: String, Printable  {
-    case Even = "Even"
-    case Odd  = "Odd"
 
     var description: String {
         return self.rawValue
@@ -607,38 +587,38 @@ final class WheelControl: UIControl, AnimationDelegate  {
     self.setRotationUsingAngle(currentRotation + angleDifference)
   }
   
-  func test() {
-    let step1 = currentRotation
-    let step2 = maxRotation
-    let step3 = maxRotation
-    
-    let rotate = BasicAnimation(duration: 2.0,
-      timingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn))
-    rotate.property = AnimatableProperty(name: kPOPLayerRotation)
-    rotate.fromValue = step1
-    rotate.toValue = step2
-    rotate.name = "Basic Rotation"
-    rotate.delegate = self
-    rotate.completionBlock = {anim, finsihed in
-      if finsihed {
-        let spring = SpringAnimation( tension: 100,
-                                     friction: 15,
-                                         mass: 1)
-        spring.property = AnimatableProperty(name: kPOPLayerRotation)
-        spring.fromValue = step2
-        spring.toValue = step3
-        spring.name = "Spring Rotation"
-        spring.delegate = self
-        Animation.addAnimation( spring,
-                           key: spring.property.name,
-                           obj: self.wheelView.layer)
-      }
-    }
-    Animation.addAnimation( rotate,
-                       key: rotate.property.name,
-                       obj: wheelView.layer)
-  }
-  
+//  func test() {
+//    let step1 = currentRotation
+//    let step2 = maxRotation
+//    let step3 = maxRotation
+//    
+//    let rotate = BasicAnimation(duration: 2.0,
+//      timingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn))
+//    rotate.property = AnimatableProperty(name: kPOPLayerRotation)
+//    rotate.fromValue = step1
+//    rotate.toValue = step2
+//    rotate.name = "Basic Rotation"
+//    rotate.delegate = self
+//    rotate.completionBlock = {anim, finsihed in
+//      if finsihed {
+//        let spring = SpringAnimation( tension: 100,
+//                                     friction: 15,
+//                                         mass: 1)
+//        spring.property = AnimatableProperty(name: kPOPLayerRotation)
+//        spring.fromValue = step2
+//        spring.toValue = step3
+//        spring.name = "Spring Rotation"
+//        spring.delegate = self
+//        Animation.addAnimation( spring,
+//                           key: spring.property.name,
+//                           obj: self.wheelView.layer)
+//      }
+//    }
+//    Animation.addAnimation( rotate,
+//                       key: rotate.property.name,
+//                       obj: wheelView.layer)
+//  }
+
 
   
   // MARK: Wheel State
