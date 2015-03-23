@@ -78,7 +78,6 @@ class ImageWheel: UIView {
   var images:          [UIImage] = []
 
   // Image and Wedge Properties
-  var numberOfWedges: Int = 0
   var wedges: [WedgeRegion] = []
   var visualState = ImageWheelVisualState()
   
@@ -89,7 +88,7 @@ class ImageWheel: UIView {
   }
   
   var wedgeWidthAngle: CGFloat {
-    return Circle.full / CGFloat(numberOfWedges)
+    return Circle.full / CGFloat(wedges.count)
   }
 
   func wedgeWidthAngleForWedgeCount(wedgeCount: Int) -> CGFloat {
@@ -107,10 +106,10 @@ class ImageWheel: UIView {
               
     super.init(frame: CGRect())
     
-    self.images    = images
-    numberOfWedges = sectionsCount
+    self.images = images
+
     createWedges(sectionsCount)
-    addWedgeContraints()
+    addWedgeContraints(sectionsCount)
     updateAppearanceForRotation(currentRotation)
   }
   
@@ -125,10 +124,11 @@ class ImageWheel: UIView {
   
   // MARK: Setup Methods
   func createWedges(count: Int) {
-    
+    let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(count)
+
     let wedgeStartingAngle = (Circle.half * 3) + (wedgeWidthAngle / 2)
     // Build UIViews for each pie piece
-    for i in 1...numberOfWedges {
+    for i in 1...count {
       
       let wedgeAngle = (CGFloat(wedgeWidthAngle) * CGFloat(i)) - wedgeStartingAngle
       
@@ -143,17 +143,17 @@ class ImageWheel: UIView {
     
     self.userInteractionEnabled = false
     
-    if wedgeCountParityForCount(numberOfWedges) == .Even {
-      createWedgeRegionsEven(numberOfWedges)
+    if wedgeCountParityForCount(count) == .Even {
+      createWedgeRegionsEven(count)
     } else {
-      createWedgeRegionsOdd(numberOfWedges)
+      createWedgeRegionsOdd(count)
     }
   }
   
   
   func wedgeCountParityForCount(count: Int) -> Parity {
     var result: Parity
-    if numberOfWedges % 2 == 0 {
+    if count % 2 == 0 {
       result = .Even
     } else {
       result = .Odd
@@ -163,13 +163,13 @@ class ImageWheel: UIView {
   
   
   func createWedgeRegionsEven(count: Int) {
-    let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(numberOfWedges)
+    let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(count)
 
     var mid = Circle.half - (wedgeWidthAngle / 2)
     var max = Circle.half
     var min = Circle.half - wedgeWidthAngle
     
-    for i in 1...numberOfWedges {
+    for i in 1...count {
       max = mid + (wedgeWidthAngle / 2)
       min = mid - (wedgeWidthAngle / 2)
       
@@ -186,13 +186,13 @@ class ImageWheel: UIView {
   
   
   func createWedgeRegionsOdd(count: Int) {
-    let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(numberOfWedges)
+    let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(count)
 
     var mid = Circle.half - (wedgeWidthAngle / 2)
     var max = Circle.half
     var min = Circle.half -  wedgeWidthAngle
     
-    for i in 1...numberOfWedges {
+    for i in 1...count {
       max = mid + (wedgeWidthAngle / 2)
       min = mid - (wedgeWidthAngle / 2)
       
@@ -212,10 +212,10 @@ class ImageWheel: UIView {
     }
   }
   
-  func addWedgeContraints() {
+  func addWedgeContraints(count: Int) {
     self.setTranslatesAutoresizingMaskIntoConstraints(false)
 
-    for i in 1...numberOfWedges {
+    for i in 1...count {
       if let imageView = imageViewFromValue(i) {
         
         imageView.setTranslatesAutoresizingMaskIntoConstraints(false)
