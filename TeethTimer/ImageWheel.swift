@@ -72,10 +72,11 @@ class ImageWheel: UIView {
     return currentRotation - difference
   }
   
+  // Internal properties
   // Image and Wedge Properties
   let wedgeImageHeight: CGFloat  = (800 * 0.9)
   let wedgeImageWidth:  CGFloat  = (734 * 0.9)
-  var images:          [UIImage] = []
+  let images:          [UIImage]
 
   // Image and Wedge Properties
   var wedges: [WedgeRegion] = []
@@ -104,9 +105,9 @@ class ImageWheel: UIView {
   init(Sections sectionsCount: Int,
              AndImages images: [UIImage]) {
               
+    self.images = images
     super.init(frame: CGRect())
     
-    self.images = images
 
     createWedges(sectionsCount)
     addWedgeContraints(sectionsCount)
@@ -115,6 +116,7 @@ class ImageWheel: UIView {
   
   required init(coder: NSCoder) {
     // TODO: impliment coder and decoder
+    self.images = []
     super.init(coder: coder)
     fatalError("init(coder:) has not been implemented")
   }
@@ -310,18 +312,16 @@ class ImageWheel: UIView {
     for i in 1...wedges.count {
       let rotationForward = (wedgeWidthAngle * CGFloat(i))
       let rotationToCheck = startingRotation + rotationForward
-      let imageIndex      = imageForRotation(rotationToCheck)
-      let image           = imageOfNumber(imageIndex)
 
-      let angle           = angleFromRotation(rotationToCheck)
-      let wedge           = wedgeForAngle(angle)
-      let imageView       = imageViewFromValue(wedge.value)
-
-      imageView?.image    = image
-
+      if let imageView  = imageViewForRotation(rotationToCheck),
+                  image = imageForRotation(rotationToCheck) {
+        if imageView.image !== image {
+          imageView.image = image
+        }
+      }
     }
   }
-  
+    
   
   func setImageOpacityForCurrentAngle(var angle: CGFloat) {
     
@@ -375,7 +375,7 @@ class ImageWheel: UIView {
 
 
   var currentImage: ImageIndex {
-    return imageForRotation(currentRotation)
+    return imageIndexForRotation(currentRotation)
   }
   
   // assumes: images increase as rotation decreases
@@ -394,7 +394,27 @@ class ImageWheel: UIView {
   }
 
   // MARK: Image methods
-  func imageForRotation(rotation: CGFloat) -> ImageIndex {
+  func imageForRotation (rotation: CGFloat) -> UIImage? {
+    var image: UIImage? = nil
+
+    let imageIndex = imageIndexForRotation(rotation)
+    
+    if imageIndex <= images.count {
+      image = imageOfNumber(imageIndex)
+    }
+    
+    return image
+  }
+  
+  func imageViewForRotation(rotation: CGFloat) -> UIImageView? {
+    let angle     = angleFromRotation(rotation)
+    let wedge     = wedgeForAngle(angle)
+    let imageView = imageViewFromValue(wedge.value)
+    
+    return imageView
+  }
+  
+  func imageIndexForRotation(rotation: CGFloat) -> ImageIndex {
     let startingRotationDifference = -firstImageRotation
     let rotationStartingAtZero = rotation + startingRotationDifference
     let wedgesFromStart = rotationStartingAtZero / wedgeWidthAngle
