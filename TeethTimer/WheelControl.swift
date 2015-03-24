@@ -975,28 +975,5 @@ final class WheelControl: UIControl, AnimationDelegate  {
     
     return angle
   }
-
-  
-  
-  // MARK: -
-  // MARK: Development Helpers
-  // TODO: Remove after main development
-  lazy var padNumber: NSNumberFormatter = {
-    let numberFormater = NSNumberFormatter()
-    numberFormater.minimumIntegerDigits  = 2
-    numberFormater.maximumIntegerDigits  = 2
-    numberFormater.minimumFractionDigits = 3
-    numberFormater.maximumFractionDigits = 3
-    numberFormater.positivePrefix = " "
-    return numberFormater
-    }()
-  
-  func pad(number: CGFloat) -> String {
-    var paddedNumber = " 1.000"
-    if let numberString = padNumber.stringFromNumber(number) {
-      paddedNumber = numberString
-    }
-    return paddedNumber
-  }
   
 }
