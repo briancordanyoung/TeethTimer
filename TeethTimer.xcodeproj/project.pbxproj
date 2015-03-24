@@ -63,6 +63,7 @@
 		D33540D21A3764E80064C81C /* Gavin Poses-s10.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540991A3764E80064C81C /* Gavin Poses-s10.png */; };
 		D33540D41A3764E80064C81C /* Gavin Poses-s10@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335409A1A3764E80064C81C /* Gavin Poses-s10@2x.png */; };
 		D33540D61A3764E80064C81C /* Gavin Poses-s10@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335409B1A3764E80064C81C /* Gavin Poses-s10@3x.png */; };
+		D341D23F1AC1FB24007D0593 /* Developement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341D23E1AC1FB24007D0593 /* Developement.swift */; };
 		D3485C8519ECEEB900C6E495 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3485C8419ECEEB900C6E495 /* Timer.swift */; };
 		D34DC0561A0FF26000AA7420 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D34DC0551A0FF26000AA7420 /* Settings.bundle */; };
 		D34F10B91AAEA1D0009E2A9B /* WheelControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34F10B81AAEA1D0009E2A9B /* WheelControl.swift */; };
@@ -135,6 +136,7 @@
 		D33540991A3764E80064C81C /* Gavin Poses-s10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s10.png"; sourceTree = "<group>"; };
 		D335409A1A3764E80064C81C /* Gavin Poses-s10@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s10@2x.png"; sourceTree = "<group>"; };
 		D335409B1A3764E80064C81C /* Gavin Poses-s10@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s10@3x.png"; sourceTree = "<group>"; };
+		D341D23E1AC1FB24007D0593 /* Developement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Developement.swift; sourceTree = "<group>"; };
 		D3485C8319ECE77200C6E495 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		D3485C8419ECEEB900C6E495 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		D34DC0551A0FF26000AA7420 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				D3485C8419ECEEB900C6E495 /* Timer.swift */,
 				D36DB7361AB7D03800F080C8 /* ImageWheel.swift */,
 				D34F10B81AAEA1D0009E2A9B /* WheelControl.swift */,
+				D341D23E1AC1FB24007D0593 /* Developement.swift */,
 				D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */,
 				D31F95E01A2C5FE700219B32 /* ColorImage.swift */,
 				D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */,
@@ -496,6 +499,7 @@
 				D388C3021A9F7B50007D4F8B /* POPProperty.swift in Sources */,
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
 				D34F10B91AAEA1D0009E2A9B /* WheelControl.swift in Sources */,
+				D341D23F1AC1FB24007D0593 /* Developement.swift in Sources */,
 				D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
 				D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */,
 				D388C3031A9F7B50007D4F8B /* POPSwiftWrapper.m in Sources */,
