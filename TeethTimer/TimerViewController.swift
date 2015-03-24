@@ -1,5 +1,7 @@
 import UIKit
 
+// MARK: -
+// MARK: TimerViewController class
 class TimerViewController: UIViewController {
 
   // MARK: Properties
@@ -32,98 +34,97 @@ class TimerViewController: UIViewController {
     return imageWheel
   }
 
-    // MARK: View Controller Methods
-    override func viewDidLoad() {
-        
-      super.viewDidLoad()
-        
-//      fullScreenImage.image = UIImage(named: "background")
+  // MARK: -
+  // MARK: View Controller Methods
+  override func viewDidLoad() {
       
-      styleButton(resetButton)
-      styleButton(startPauseButton)
+    super.viewDidLoad()
       
-      let gavinWheel = WheelControl()
-
-      controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
-
-      gavinWheelHeight = NSLayoutConstraint(item: gavinWheel,
-                                       attribute: NSLayoutAttribute.Height,
-                                       relatedBy: NSLayoutRelation.Equal,
-                                          toItem: nil,
-                                       attribute: NSLayoutAttribute.NotAnAttribute,
-                                      multiplier: 1.0,
-                                        constant: gavinWheelSize())
-      if let gavinWheelHeight = gavinWheelHeight {
-          gavinWheel.addConstraint(gavinWheelHeight)
-      }
-      
-      gavinWheelWidth = NSLayoutConstraint(item: gavinWheel,
-                                      attribute: NSLayoutAttribute.Width,
-                                      relatedBy: NSLayoutRelation.Equal,
-                                         toItem: nil,
-                                      attribute: NSLayoutAttribute.NotAnAttribute,
-                                     multiplier: 1.0,
-                                       constant: gavinWheelSize())
-      if let gavinWheelWidth = gavinWheelWidth {
-          gavinWheel.addConstraint(gavinWheelWidth)
-      }
+//  fullScreenImage.image = UIImage(named: "background")
     
-      gavinWheel.setTranslatesAutoresizingMaskIntoConstraints(false)
+    styleButton(resetButton)
+    styleButton(startPauseButton)
+    
+    let gavinWheel = WheelControl()
 
-      self.view.addConstraint(NSLayoutConstraint(item: gavinWheel,
-                                            attribute: NSLayoutAttribute.CenterY,
-                                            relatedBy: NSLayoutRelation.Equal,
-                                               toItem: timerLabel,
-                                            attribute: NSLayoutAttribute.CenterY,
-                                           multiplier: 1.0,
-                                             constant: 0.0))
-      
+    controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
 
-      self.view.addConstraint(NSLayoutConstraint(item: gavinWheel,
-                                            attribute: NSLayoutAttribute.CenterX,
-                                            relatedBy: NSLayoutRelation.Equal,
-                                               toItem: timerLabel,
-                                            attribute: NSLayoutAttribute.CenterX,
-                                           multiplier: 1.0,
-                                             constant: 0.0))
-      
+    gavinWheelHeight = NSLayoutConstraint(item: gavinWheel,
+                                     attribute: NSLayoutAttribute.Height,
+                                     relatedBy: NSLayoutRelation.Equal,
+                                        toItem: nil,
+                                     attribute: NSLayoutAttribute.NotAnAttribute,
+                                    multiplier: 1.0,
+                                      constant: gavinWheelSize())
+    if let gavinWheelHeight = gavinWheelHeight {
+        gavinWheel.addConstraint(gavinWheelHeight)
+    }
+    
+    gavinWheelWidth = NSLayoutConstraint(item: gavinWheel,
+                                    attribute: NSLayoutAttribute.Width,
+                                    relatedBy: NSLayoutRelation.Equal,
+                                       toItem: nil,
+                                    attribute: NSLayoutAttribute.NotAnAttribute,
+                                   multiplier: 1.0,
+                                     constant: gavinWheelSize())
+    if let gavinWheelWidth = gavinWheelWidth {
+        gavinWheel.addConstraint(gavinWheelWidth)
+    }
+  
+    gavinWheel.setTranslatesAutoresizingMaskIntoConstraints(false)
+
+    self.view.addConstraint(NSLayoutConstraint(item: gavinWheel,
+                                          attribute: NSLayoutAttribute.CenterY,
+                                          relatedBy: NSLayoutRelation.Equal,
+                                             toItem: timerLabel,
+                                          attribute: NSLayoutAttribute.CenterY,
+                                         multiplier: 1.0,
+                                           constant: 0.0))
+    
+
+    self.view.addConstraint(NSLayoutConstraint(item: gavinWheel,
+                                          attribute: NSLayoutAttribute.CenterX,
+                                          relatedBy: NSLayoutRelation.Equal,
+                                             toItem: timerLabel,
+                                          attribute: NSLayoutAttribute.CenterX,
+                                         multiplier: 1.0,
+                                           constant: 0.0))
+    
+    gavinWheel.addTarget( self,
+                  action: "gavinWheelChanged:",
+        forControlEvents: UIControlEvents.ValueChanged)
+    
+    gavinWheel.addTarget( self,
+                  action: "gavinWheelTouchedByUser:",
+        forControlEvents: UIControlEvents.TouchDown)
+    
+    
+    let events: [UIControlEvents] = [ .TouchUpInside,
+                                      .TouchUpOutside,
+                                      .TouchDragExit,
+                                      .TouchDragOutside,
+                                      .TouchCancel ]
+    
+    for event in events {
       gavinWheel.addTarget( self,
-                    action: "gavinWheelChanged:",
-          forControlEvents: UIControlEvents.ValueChanged)
-      
-      gavinWheel.addTarget( self,
-                    action: "gavinWheelTouchedByUser:",
-          forControlEvents: UIControlEvents.TouchDown)
-      
-      
-      let events: [UIControlEvents] = [ .TouchUpInside,
-                                        .TouchUpOutside,
-                                        .TouchDragExit,
-                                        .TouchDragOutside,
-                                        .TouchCancel ]
-      
-      for event in events {
-        gavinWheel.addTarget( self,
-                      action: "gavinWheelRotatedByUser:",
-            forControlEvents: event)
-      }
-      
-      //        gavinWheel.wheelTurnedBackBy = wheelTurnedBackByFunc
+                    action: "gavinWheelRotatedByUser:",
+          forControlEvents: event)
+    }
+    
+    let images = arrayOfImages(19)
+    let imageWheel = ImageWheel(Sections: 7, AndImages: images)
+    gavinWheel.wheelView.addSubview(imageWheel)
+    
+    // Set the inital rotation
+    let startingRotation = imageWheel.wedgeFromValue(1).midRadian
 
-      let images = arrayOfImages(19)
-      let imageWheel = ImageWheel(Sections: 7, AndImages: images)
-      gavinWheel.wheelView.addSubview(imageWheel)
-      
-      // Set the inital
-      let startingRotation = imageWheel.wedgeFromValue(1).midRadian
-
-      imageWheel.rotationAngle = CGFloat(startingRotation)
-      gavinWheel.rotationAngle = CGFloat(startingRotation)
-      gavinWheel.maximumRotation = imageWheel.firstImageRotation
-      gavinWheel.minimumRotation = imageWheel.lastImageRotation
-      gavinWheel.dampenCounterClockwise = true
-      self.gavinWheel = gavinWheel
-      
+    imageWheel.rotationAngle = CGFloat(startingRotation)
+    gavinWheel.rotationAngle = CGFloat(startingRotation)
+    gavinWheel.maximumRotation = imageWheel.firstImageRotation
+    gavinWheel.minimumRotation = imageWheel.lastImageRotation
+    gavinWheel.dampenCounterClockwise = true
+    self.gavinWheel = gavinWheel
+    
   }
   
   
@@ -142,13 +143,23 @@ class TimerViewController: UIViewController {
     super.didReceiveMemoryWarning()
   }
   
+  // MARK: View Controller Rotation Methods
+  override func viewWillTransitionToSize(size: CGSize,
+    withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+      updateGavinWheelSize()
+  }
   
+  override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation,
+    duration: NSTimeInterval) {
+  }
+  
+  override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+    updateGavinWheelSize()
+  }
+  
+  // MARK: -
   // MARK: Button Actions
   @IBAction func startStopPressed(sender: UIButton) {
-//    if let gavinWheel = gavinWheel, imageWheelView = imageWheelView {
-//      gavinWheel.animateToRotation(imageWheelView.firstImageRotation)
-//    }
-
      if timer.hasCompleted {
          timer.reset()
          return
@@ -162,13 +173,10 @@ class TimerViewController: UIViewController {
   }
   
   @IBAction func resetPressed(sender: UIButton) {
-//    gavinWheel?.resetRotationAngle()
     timer.reset()
   }
   
-  @IBAction func testPresses(sender: UIButton) {
-  }
-  
+  // MARK: -
   // MARK: ImageWheelControl Target/Action Callbacks
   func gavinWheelTouchedByUser(gavinWheel: WheelControl) {
     // User touches the wheel
@@ -191,13 +199,23 @@ class TimerViewController: UIViewController {
 
       if previousImageBeforeTouch > imageWheelView.currentImage {
         // The wheel was turned back.
-        // TODO: calc percent turned back
-        println("    current rotation \(gavinWheel.rotationAngle)")
-        println("Change % to rotation \(gavinWheel.targetRotationAngle)")
+        let targetRotation = gavinWheel.targetRotationAngle
+        let targetImage = imageWheelView.imageIndexForRotation(targetRotation)
+        let wheelTurnedBackByTmp = previousImageBeforeTouch - targetImage
+        let wheelTurnedBackBy = max(wheelTurnedBackByTmp,0)
+        
+                                              // 1st image is not in count down
+        let imagesInCountDown = imageWheelView.images.count - 1
+        let percentageTurnedBackBy = CGFloat(wheelTurnedBackBy) /
+                                     CGFloat(imagesInCountDown)
+        
+        timer.addTimeByPercentage(percentageTurnedBackBy)
       }
+      self.previousImageBeforeTouch = nil
     }
   }
   
+  // MARK: -
   // MARK: Callbacks to pass to the Timer class
   func updateTimeLabelWithText(labelText: String) {
     timerLabel.text = labelText
@@ -207,14 +225,10 @@ class TimerViewController: UIViewController {
     startPauseButton.setTitle(buttonText, forState: UIControlState.Normal)
   }
   
-  // MARK: Callbacks to pass to the ImageWheel class
-  func wheelTurnedBackByFunc(image: Int,  AndPercentage percentage: CGFloat) {
-    timer.addTimeByPercentage(percentage)
-  }
-  
   func updatePercentageDone(percentageDone: CGFloat) {
 
-    if let gavinWheel = gavinWheel, let imageWheelView = imageWheelView {
+    if let     gavinWheel = gavinWheel,
+       let imageWheelView = imageWheelView {
       // At 100% should always be the first image
       // But, as soon as it is less, advance to the 2nd image.
       // This done on the lines marked belowe 1, 2 & 3
@@ -254,7 +268,7 @@ class TimerViewController: UIViewController {
   }
   
   // TODO: Create a dictionary for Image and percent total time
-  //       alter method to return the corrent image
+  //       alter method to return the current image
   func currentWheelValueFromPrecent(percentageDone: CGFloat,
     WithSectionCount sections: Int) -> Int {
       let percentageToGo = 1.0 - percentageDone
@@ -266,6 +280,7 @@ class TimerViewController: UIViewController {
   }
   
   
+  // MARK: -
   // MARK: Layout Methods
   func gavinWheelSize() -> (CGFloat) {
     let height = self.view.bounds.height
@@ -282,20 +297,6 @@ class TimerViewController: UIViewController {
   func updateGavinWheelSize() {
     gavinWheelHeight?.constant = gavinWheelSize()
     gavinWheelWidth?.constant  = gavinWheelSize()
-  }
-  
-  // MARK: Rotation Methods
-  override func viewWillTransitionToSize(size: CGSize,
-    withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-      updateGavinWheelSize()
-  }
-  
-  override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation,
-    duration: NSTimeInterval) {
-  }
-  
-  override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-    updateGavinWheelSize()
   }
   
   // MARK: -
@@ -331,98 +332,6 @@ class TimerViewController: UIViewController {
     return imageArray
   }
   
-  
-  
-  // MARK: Appearance Helper
-  private func styleButton(button: UIButton) {
-    button.layer.borderWidth = 1
-    button.layer.cornerRadius = 15
-    button.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).CGColor
-    button.titleLabel?.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-  }
-  
-  
-  func addTestImagesToView(view: UIView) {
-    let wheelImageView     = UIImageView(image: UIImage(named: "WheelImage"))
-    let wheelImageTypeView = UIImageView(image: UIImage(named: "WheelImageType"))
-    
-    wheelImageView.opaque = false
-    wheelImageTypeView.opaque = false
-    
-    view.addSubview(wheelImageView)
-    view.addSubview(wheelImageTypeView)
-    
-    
-    wheelImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
-    wheelImageTypeView.setTranslatesAutoresizingMaskIntoConstraints(false)
-    
-    view.addConstraint(NSLayoutConstraint( item: wheelImageView,
-                                      attribute: NSLayoutAttribute.CenterY,
-                                      relatedBy: NSLayoutRelation.Equal,
-                                         toItem: view,
-                                      attribute: NSLayoutAttribute.CenterY,
-                                     multiplier: 1.0,
-                                       constant: 0.0))
-                                    
-    view.addConstraint(NSLayoutConstraint( item: wheelImageView,
-                                      attribute: NSLayoutAttribute.CenterX,
-                                      relatedBy: NSLayoutRelation.Equal,
-                                         toItem: view,
-                                      attribute: NSLayoutAttribute.CenterX,
-                                     multiplier: 1.0,
-                                       constant: 0.0))
-    
-    wheelImageView.addConstraint( NSLayoutConstraint(item: wheelImageView,
-                                    attribute: NSLayoutAttribute.Height,
-                                    relatedBy: NSLayoutRelation.Equal,
-                                       toItem: nil,
-                                    attribute: NSLayoutAttribute.NotAnAttribute,
-                                   multiplier: 1.0,
-                                     constant: 600.0))
-    
-    wheelImageView.addConstraint( NSLayoutConstraint(item: wheelImageView,
-                                    attribute: NSLayoutAttribute.Width,
-                                    relatedBy: NSLayoutRelation.Equal,
-                                       toItem: nil,
-                                    attribute: NSLayoutAttribute.NotAnAttribute,
-                                   multiplier: 1.0,
-                                     constant: 600.0))
-    
-    view.addConstraint(NSLayoutConstraint( item: wheelImageTypeView,
-                                      attribute: NSLayoutAttribute.CenterY,
-                                      relatedBy: NSLayoutRelation.Equal,
-                                         toItem: view,
-                                      attribute: NSLayoutAttribute.CenterY,
-                                     multiplier: 1.0,
-                                       constant: 0.0))
-    
-    view.addConstraint(NSLayoutConstraint( item: wheelImageTypeView,
-                                      attribute: NSLayoutAttribute.CenterX,
-                                      relatedBy: NSLayoutRelation.Equal,
-                                         toItem: view,
-                                      attribute: NSLayoutAttribute.CenterX,
-                                     multiplier: 1.0,
-                                       constant: 0.0))
-    
-    wheelImageTypeView.addConstraint( NSLayoutConstraint(item: wheelImageTypeView,
-                                    attribute: NSLayoutAttribute.Height,
-                                    relatedBy: NSLayoutRelation.Equal,
-                                       toItem: nil,
-                                    attribute: NSLayoutAttribute.NotAnAttribute,
-                                   multiplier: 1.0,
-                                     constant: 400.0))
-                                  
-    wheelImageTypeView.addConstraint( NSLayoutConstraint(item: wheelImageTypeView,
-                                    attribute: NSLayoutAttribute.Width,
-                                    relatedBy: NSLayoutRelation.Equal,
-                                       toItem: nil,
-                                    attribute: NSLayoutAttribute.NotAnAttribute,
-                                   multiplier: 1.0,
-                                     constant: 400.0))
-    
-  }
-
-
   func imageWheelFromWheelControl(wheelControl: WheelControl) -> ImageWheel? {
     var imageWheel: ImageWheel? = nil
     for viewinWheel in wheelControl.wheelView.subviews {
@@ -432,6 +341,15 @@ class TimerViewController: UIViewController {
     }
     return imageWheel
   }
+  
+  // MARK: Appearance Helper
+  private func styleButton(button: UIButton) {
+    button.layer.borderWidth = 1
+    button.layer.cornerRadius = 15
+    button.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).CGColor
+    button.titleLabel?.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+  }
+
   
 }
 
