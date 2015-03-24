@@ -21,6 +21,8 @@ class TimerViewController: UIViewController {
   var gavinWheelWidth: NSLayoutConstraint?
   var gavinWheel: WheelControl?
   
+  var previousImageBeforeTouch: ImageIndex?
+  
   // A computed property to make it easy to access the ImageWheel inside gavinWheel
   var imageWheelView: ImageWheel? {
     var imageWheel: ImageWheel? = nil
@@ -119,6 +121,7 @@ class TimerViewController: UIViewController {
       gavinWheel.rotationAngle = CGFloat(startingRotation)
       gavinWheel.maximumRotation = imageWheel.firstImageRotation
       gavinWheel.minimumRotation = imageWheel.lastImageRotation
+      gavinWheel.dampenCounterClockwise = true
       self.gavinWheel = gavinWheel
       
   }
@@ -167,25 +170,33 @@ class TimerViewController: UIViewController {
   }
   
   // MARK: ImageWheelControl Target/Action Callbacks
-  func gavinWheelRotatedByUser(gavinWheel: WheelControl) {
-    
+  func gavinWheelTouchedByUser(gavinWheel: WheelControl) {
+    // User touches the wheel
+    if let imageWheelView = imageWheelView {
+      previousImageBeforeTouch = imageWheelView.currentImage
+    }
   }
   
   func gavinWheelChanged(gavinWheel: WheelControl) {
     // Update the state of the ImageWheel to the WheelControl state
     if let imageWheelView = imageWheelView {
-      let rotation = gavinWheel.currentRotation
-      imageWheelView.rotationAngle = rotation
+      imageWheelView.rotationAngle = gavinWheel.rotationAngle
       gavinWheel.snapToRotation    = imageWheelView.centerRotationForSection
-//      println("rotation: \(rotation)")
     }
   }
   
-  func gavinWheelTouchedByUser(gavinWheel: WheelControl) {
-    // No plans to use this method.  But, if anything needs to happen when first
-    // touching the wheelControl, do it here.
+  func gavinWheelRotatedByUser(gavinWheel: WheelControl) {
+    if let previousImageBeforeTouch = previousImageBeforeTouch,
+                     imageWheelView = imageWheelView {
+
+      if previousImageBeforeTouch > imageWheelView.currentImage {
+        // The wheel was turned back.
+        // TODO: calc percent turned back
+        println("    current rotation \(gavinWheel.rotationAngle)")
+        println("Change % to rotation \(gavinWheel.targetRotationAngle)")
+      }
+    }
   }
-  
   
   // MARK: Callbacks to pass to the Timer class
   func updateTimeLabelWithText(labelText: String) {

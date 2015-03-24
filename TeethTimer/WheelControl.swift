@@ -107,6 +107,7 @@ struct WheelState: Printable {
   var currentRotation:   CGFloat
   var previousRotation:  CGFloat
   var previousDirection: DirectionRotated
+  var targetRotation:    CGFloat?
   
   init() {
     currentRotation   =  0.0
@@ -213,6 +214,15 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
   }
   
+  var targetRotationAngle: CGFloat {  // in module, make public //
+    get {
+      var targetRotationAngle = rotationAngle
+      if let target = wheelState.targetRotation {
+        targetRotationAngle = target - internalRotationOffset
+      }
+      return targetRotationAngle
+    }
+  }
   
   // Configure WheelControl
   var centerCircle:      CGFloat = 10.0
@@ -280,6 +290,8 @@ final class WheelControl: UIControl, AnimationDelegate  {
   // the rotation is greater than 0.  This offset is used to internally add
   // to the currentRotation.  The public properties that are used outside this
   // class will add/subtract this offset when set/get.
+  
+  // TODO: This is currently not working.  Must debug
 //  let internalRotationOffset = CGFloat(Circle.full * 3)
   let internalRotationOffset = CGFloat(0)
 
@@ -372,8 +384,6 @@ final class WheelControl: UIControl, AnimationDelegate  {
     startingRotation = internalRotationOffset
     currentAngle     = angleFromRotation(startingRotation)
     currentRotation  = startingRotation
-//    minRotation      = startingRotation
-//    maxRotation      = startingRotation + Circle.full + Circle.threeQuarter
   }
   
   
@@ -452,13 +462,13 @@ final class WheelControl: UIControl, AnimationDelegate  {
     switch userState.snapTo {
     case .InitialRotation:
       animateToRotation(userState.initialRotation)
-      break
+
     case .CurrentRotation:
       if let snapToRotation = snapToRotation {
         animateToRotation(snapToRotation)
         self.snapToRotation = nil
       }
-      break
+      
     case .MinRotation:
       if let rotation = minRotation {
         animateToRotation(rotation)
@@ -510,7 +520,9 @@ final class WheelControl: UIControl, AnimationDelegate  {
 //    }
     
   func animateToRotation(rotation: CGFloat) { // in module, make public //
-
+    wheelState.targetRotation = rotation
+    
+    
     func speedUpDurationByDistance(duration: CGFloat) -> CGFloat {
       let durationDistanceFactor = CGFloat(1)
       return log((duration * durationDistanceFactor) + 1) / durationDistanceFactor
@@ -533,6 +545,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
       if finished {
         self.currentAngle    = self.angleFromRotation(rotation)
         self.currentRotation = rotation
+        self.wheelState.targetRotation = nil
       }
     }
     
@@ -574,6 +587,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
       if finished {
         self.currentAngle = self.angleFromRotation(to)
         self.setRotationUsingAngle(to)
+        self.wheelState.targetRotation = nil
       }
     }
     Animation.addAnimation( spring,
@@ -643,7 +657,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   // MARK: Wheel State - during user interaction.
   func rotationUsingAngle(angle: CGFloat,
-              AndWheelState wheelState: WheelState) -> CGFloat {
+       AndWheelState wheelState: WheelState) -> CGFloat {
                 
       // This method is a hack!  This class is based on the idea that the
       // accumulated rotation angle (in radians) can be known.
