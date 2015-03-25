@@ -125,8 +125,8 @@ class TimerViewController: UIViewController {
           forControlEvents: event)
     }
     
-    let images = arrayOfImages(19)
-    let imageWheel = ImageWheel(Sections: 7, AndImages: images)
+    let images = arrayOfImages(10)
+    let imageWheel = ImageWheel(Sections: 6, AndImages: images)
     gavinWheel.wheelView.addSubview(imageWheel)
     
     // Set the inital rotation
@@ -342,8 +342,8 @@ class TimerViewController: UIViewController {
   }
   
   func imageNameForNumber(i: Int) -> String {
-    //        return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
-    return "num-\(paddedTwoDigitNumber(i))"
+    return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
+//    return "num-\(paddedTwoDigitNumber(i))"
   }
   
   func arrayOfImages(count: Int) -> [UIImage] {
