@@ -1,6 +1,19 @@
 import UIKit
 
 // MARK: -
+// MARK: - Enums
+enum TimerStateAtTouch: String, Printable {
+  case Running = "Running"
+  case Paused  = "Paused"
+
+  var description: String {
+    return self.rawValue
+  }
+}
+
+
+
+// MARK: -
 // MARK: TimerViewController class
 class TimerViewController: UIViewController {
 
@@ -24,6 +37,7 @@ class TimerViewController: UIViewController {
   var gavinWheel: WheelControl?
   
   var previousImageBeforeTouch: ImageIndex?
+  var timerStateBeforeTouch: TimerStateAtTouch = .Paused
   
   // A computed property to make it easy to access the ImageWheel inside gavinWheel
   var imageWheelView: ImageWheel? {
@@ -183,6 +197,13 @@ class TimerViewController: UIViewController {
     if let imageWheelView = imageWheelView {
       previousImageBeforeTouch = imageWheelView.currentImage
     }
+    
+    if timer.currentlyRunning {
+      timerStateBeforeTouch = .Running
+      timer.pause()
+    } else {
+      timerStateBeforeTouch = .Paused
+    }
   }
   
   func gavinWheelChanged(gavinWheel: WheelControl) {
@@ -212,6 +233,10 @@ class TimerViewController: UIViewController {
         timer.addTimeByPercentage(percentageTurnedBackBy)
       }
       self.previousImageBeforeTouch = nil
+    }
+    
+    if timerStateBeforeTouch == .Running {
+      timer.start()
     }
   }
   

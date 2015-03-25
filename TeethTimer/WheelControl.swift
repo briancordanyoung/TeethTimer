@@ -46,6 +46,8 @@
 import UIKit
 
 
+// MARK: -
+// MARK: - Enums
 enum DirectionRotated: String, Printable {
     case Clockwise        = "Clockwise"
     case CounterClockwise = "CounterClockwise"
@@ -100,6 +102,7 @@ enum InteractionState: String, Printable {
 }
 
 
+// MARK: -
 // MARK: - Structs
 struct WheelState: Printable {
   static let initialVelocity: CGFloat = 0.0000001
