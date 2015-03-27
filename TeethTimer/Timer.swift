@@ -14,8 +14,8 @@ enum TimerVisiblity: String, Printable {
   }
 }
 
-enum TimerState: String, Printable {
-  case Reset      = "Reset"
+enum TimerStatus: String, Printable {
+  case Ready      = "Ready"
   case Counting   = "Counting"
   case Paused     = "Paused"
   case Completed  = "Completed"
@@ -44,15 +44,7 @@ class Timer: NSObject {
   
   var visibility: TimerVisiblity = .Visible
   
-  var currentlyRunning = false
-  var notCurrentlyRunning: Bool {
-    get {
-      return !currentlyRunning
-    }
-    set(notRunning) {
-      currentlyRunning = !notRunning
-    }
-  }
+  var status: TimerStatus = .Ready
   
   var hasStarted: Bool {
     var timerHasStarted = false
@@ -65,7 +57,7 @@ class Timer: NSObject {
       timerHasStarted = true
     }
     
-    if currentlyRunning {
+    if status == .Counting {
       timerHasStarted = true
     }
     
@@ -165,7 +157,7 @@ class Timer: NSObject {
     
   // MARK: Timer Actions
   func start() {
-    currentlyRunning = true
+    status = .Counting
     lastStartTime = NSDate.timeIntervalSinceReferenceDate()
     if startTime == nil {
       startTime = lastStartTime
@@ -178,7 +170,7 @@ class Timer: NSObject {
   }
   
   func pause() {
-    notCurrentlyRunning = true
+    status = .Paused
     updateUIControlText("Continue")
   }
   
@@ -192,7 +184,7 @@ class Timer: NSObject {
     startTime = nil
     lastStartTime = nil
     timerUUID = nil
-    notCurrentlyRunning = true
+    status = .Ready
     hasNotCompleted = true
     elapsedTimeAtPause = 0
     additionalElapsedTime = 0
@@ -204,7 +196,7 @@ class Timer: NSObject {
   }
   
   private func complete(elapsedTime: NSTimeInterval) {
-    notCurrentlyRunning = true
+    status = .Completed
     rememberTimerAtPause(elapsedTime)
     hasCompleted = true
     
@@ -233,7 +225,7 @@ class Timer: NSObject {
       additionalElapsedTime = elapsedTime
     }
     
-    if notCurrentlyRunning {
+    if status != .Counting {
       updateTimerTo(timeRemaining)
     }
     
@@ -331,7 +323,7 @@ class Timer: NSObject {
     
     if let start = lastStartTime {
       
-      if notCurrentlyRunning {
+      if status != .Counting {
         rememberTimerAtPause(elapsedTime)
         return
       }

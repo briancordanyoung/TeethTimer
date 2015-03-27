@@ -179,7 +179,7 @@ class TimerViewController: UIViewController {
          return
      }
 
-     if timer.notCurrentlyRunning {
+     if timer.status != .Counting {
          timer.start()
      } else {
          timer.pause()
@@ -198,7 +198,7 @@ class TimerViewController: UIViewController {
       previousImageBeforeTouch = imageWheelView.currentImage
     }
     
-    if timer.currentlyRunning {
+    if timer.status == .Counting {
       timerStateBeforeTouch = .Running
       timer.pause()
     } else {
