@@ -42,15 +42,7 @@ class Timer: NSObject {
       .integerForKey("defaultDurationInSeconds")
   }
   
-  var hidden = false
-  var visible: Bool {
-    get {
-      return !hidden
-    }
-    set(isVisible) {
-      hidden = !isVisible
-    }
-  }
+  var visibility: TimerVisiblity = .Visible
   
   var currentlyRunning = false
   var notCurrentlyRunning: Bool {
@@ -251,11 +243,11 @@ class Timer: NSObject {
   }
   
   func transitionToHidden() {
-    hidden = true
+    visibility = .Hidden
   }
   
   func transitionToVisible() {
-    visible = true
+    visibility = .Visible
     if hasStarted {
       incrementTimer()
     } else {
@@ -333,7 +325,7 @@ class Timer: NSObject {
   func incrementTimer() {
     
     // Stop updating the timer if the app or view controler is not visable
-    if hidden {
+    if visibility == .Hidden {
       return
     }
     
