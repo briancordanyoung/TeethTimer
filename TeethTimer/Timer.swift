@@ -3,6 +3,29 @@ import CoreGraphics
 
 //static let kTimerDefaultsDurationKey = "defaultDurationInSeconds"
 
+
+
+enum TimerVisiblity: String, Printable {
+  case Visible = "Visible"
+  case Hidden  = "Hidden"
+  
+  var description: String {
+    return self.rawValue
+  }
+}
+
+enum TimerState: String, Printable {
+  case Reset      = "Reset"
+  case Counting   = "Counting"
+  case Paused     = "Paused"
+  case Completed  = "Completed"
+  
+  var description: String {
+    return self.rawValue
+  }
+}
+
+
 class Timer: NSObject {
   
   // MARK: Properties
@@ -13,8 +36,8 @@ class Timer: NSObject {
   var elapsedTimeAtPause = NSTimeInterval(0)
   var additionalElapsedTime = NSTimeInterval(0)
   
-  var brushingDuration = NSTimeInterval(60 * 4) // 4 Minute Default
-  var brushingDurationSetting: Int  {
+  var duration = NSTimeInterval(60 * 4) // 4 Minute Default
+  var durationSetting: Int  {
     return NSUserDefaults.standardUserDefaults()
       .integerForKey("defaultDurationInSeconds")
   }
@@ -73,18 +96,18 @@ class Timer: NSObject {
   }
   
   var elapsedTime: NSTimeInterval {
-    var elapsedTime_: NSTimeInterval
+    var _elapsedTime: NSTimeInterval
     if let start = lastStartTime {
       let now = NSDate.timeIntervalSinceReferenceDate()
-      elapsedTime_ = now - start + elapsedTimeAtPause
+      _elapsedTime = now - start + elapsedTimeAtPause
     } else {
-      elapsedTime_ = elapsedTimeAtPause
+      _elapsedTime = elapsedTimeAtPause
     }
-    return elapsedTime_
+    return _elapsedTime
   }
   
   var timeRemaining: NSTimeInterval {
-    return (brushingDuration + additionalElapsedTime) - elapsedTime
+    return (duration + additionalElapsedTime) - elapsedTime
   }
   
   
@@ -98,8 +121,7 @@ class Timer: NSObject {
   
   
   
-  // MARK:
-  // =============================================================================
+  // MARK: -
   // MARK: Init methods
   convenience override init() {
     // I couldn't figure out how to initilize a UIViewController
@@ -183,9 +205,9 @@ class Timer: NSObject {
     elapsedTimeAtPause = 0
     additionalElapsedTime = 0
     
-    syncBrushingDurationSetting()
+    syncDurationSetting()
     
-    updateTimerTo(brushingDuration)
+    updateTimerTo(duration)
     updateUIControlText("Start")
   }
   
@@ -197,23 +219,23 @@ class Timer: NSObject {
     updateUIControlText("Done")
     updateTimerTo(0.0)
     
-    println("original timer:        \(brushingDuration)")
+    println("original timer:        \(duration)")
     println("total running time:    \(elapsedTimeAtPause)")
     println("total additional time: \(additionalElapsedTime)")
   }
   
   
   func addTimeByPercentage(percentage: CGFloat) {
-    // Don't use brushingDuration + additionalElapsedTime because
+    // Don't use duration + additionalElapsedTime because
     // we only want to add a percentage of the original duration
     // without any additional seconds added
-    let additionalSeconds = brushingDuration * NSTimeInterval(percentage)
+    let additionalSeconds = duration * NSTimeInterval(percentage)
     addTimeBySeconds(additionalSeconds)
   }
   
   func addTimeBySeconds(seconds: NSTimeInterval) {
     // Don't add sooo much to the timer that the time left
-    // if more than the original brushing duration
+    // if more than the original duration
     additionalElapsedTime = additionalElapsedTime + seconds
     if additionalElapsedTime > elapsedTime {
       additionalElapsedTime = elapsedTime
@@ -241,10 +263,10 @@ class Timer: NSObject {
     }
   }
   
-  private func syncBrushingDurationSetting() {
-    let brushingDurationSetting = self.brushingDurationSetting
-    if (brushingDurationSetting != 0) {
-      brushingDuration = NSTimeInterval(brushingDurationSetting)
+  private func syncDurationSetting() {
+    let durationSetting = self.durationSetting
+    if (durationSetting != 0) {
+      duration = NSTimeInterval(durationSetting)
     }
   }
   
@@ -256,7 +278,8 @@ class Timer: NSObject {
   
   private func timeStringFromDuration(duration: NSTimeInterval) -> String {
     let durationParts = timeAsParts(duration)
-    return timeStringFromMinutes(durationParts.minutes, AndSeconds: durationParts.seconds)
+    return timeStringFromMinutes( durationParts.minutes,
+                      AndSeconds: durationParts.seconds)
   }
   
   private func timeAsParts(elapsedTimeInterval: NSTimeInterval)
@@ -272,7 +295,7 @@ class Timer: NSObject {
   }
   
   private func secondsToPercentage(secondsRemaining: NSTimeInterval) -> CGFloat {
-    return CGFloat(secondsRemaining / brushingDuration)
+    return CGFloat(secondsRemaining / duration)
   }
   
   private func updateTimerTo(timeRemaining: NSTimeInterval) {
@@ -309,8 +332,7 @@ class Timer: NSObject {
   
   func incrementTimer() {
     
-    // Stop updating the timer if the app or view controler
-    // is not visable
+    // Stop updating the timer if the app or view controler is not visable
     if hidden {
       return
     }
@@ -322,7 +344,7 @@ class Timer: NSObject {
         return
       }
       
-      if (elapsedTime > (brushingDuration + additionalElapsedTime)) {
+      if (elapsedTime > (duration + additionalElapsedTime)) {
         complete(elapsedTime)
       } else {
         updateTimerTo(timeRemaining)
