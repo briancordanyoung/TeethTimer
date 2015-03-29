@@ -174,16 +174,14 @@ class TimerViewController: UIViewController {
   // MARK: -
   // MARK: Button Actions
   @IBAction func startStopPressed(sender: UIButton) {
-     if timer.hasCompleted {
-         timer.reset()
-         return
-     }
-
-     if timer.status != .Counting {
-         timer.start()
-     } else {
-         timer.pause()
-     }
+    switch timer.status {
+      case .Ready, .Paused:
+        timer.start()
+      case .Counting:
+        timer.pause()
+      case .Completed:
+        timer.reset()
+    }
   }
   
   @IBAction func resetPressed(sender: UIButton) {
