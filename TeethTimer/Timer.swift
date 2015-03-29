@@ -1,19 +1,6 @@
 import Foundation
 import CoreGraphics
 
-//static let kTimerDefaultsDurationKey = "defaultDurationInSeconds"
-
-
-
-enum TimerVisiblity: String, Printable {
-  case Visible = "Visible"
-  case Hidden  = "Hidden"
-  
-  var description: String {
-    return self.rawValue
-  }
-}
-
 enum TimerStatus: String, Printable {
   case Ready      = "Ready"
   case Counting   = "Counting"
@@ -29,24 +16,25 @@ enum TimerStatus: String, Printable {
 class Timer: NSObject {
   
   // MARK: Properties
-  var startTime:         NSTimeInterval?
-  var previousStartTime: NSTimeInterval?
-  var timerUUID:         String?
+  var status: TimerStatus   = .Ready
+
+  var startTime:              NSTimeInterval?
+  var previousStartTime:      NSTimeInterval?
+  var timerUUID:              String?
   
   var timerUpdateInterval   = NSTimeInterval(0.1)
   var elapsedTimeAtPause    = NSTimeInterval(0)
-  var additionalElapsedTime = NSTimeInterval(0)
-  
-  var duration = NSTimeInterval(60 * 4) // 4 Minute Default
+
+  var timeAddedAfterStart   = NSTimeInterval(0)
+  var duration              = NSTimeInterval(60 * 4) // 4 Minute Default
   var durationSetting: Int  {
     return NSUserDefaults.standardUserDefaults()
       .integerForKey("defaultDurationInSeconds")
   }
   
-  var visibility: TimerVisiblity = .Visible
-  var status:     TimerStatus    = .Ready
   
   
+  // MARK: Computed Properties
   var elapsedTime: NSTimeInterval {
     var _elapsedTime: NSTimeInterval
     if let start = previousStartTime {
@@ -59,7 +47,7 @@ class Timer: NSObject {
   }
   
   var timeRemaining: NSTimeInterval {
-    return (duration + additionalElapsedTime) - elapsedTime
+    return (duration + timeAddedAfterStart) - elapsedTime
   }
   
   
@@ -139,13 +127,12 @@ class Timer: NSObject {
   
   func pause() {
     status = .Paused
+    rememberTimerAtPause(elapsedTime)
     updateUIControlText("Continue")
   }
   
-  func pauseAfterDoneAndAddTime() {
-    status = .Paused
-    updateUIControlText("Continue")
-    updateTimerTo(timeRemaining)
+  func completed() {
+    notifyTimerCompleted(elapsedTime)
   }
   
   func reset() {
@@ -154,29 +141,29 @@ class Timer: NSObject {
     timerUUID = nil
     status = .Ready
     elapsedTimeAtPause = 0
-    additionalElapsedTime = 0
+    timeAddedAfterStart = 0
     
     syncDurationSetting()
     
-    updateTimerTo(duration)
+    notifyTimerRemaining(duration)
     updateUIControlText("Start")
   }
   
-  private func complete(elapsedTime: NSTimeInterval) {
+  private func notifyTimerCompleted(elapsedTime: NSTimeInterval) {
     status = .Completed
     rememberTimerAtPause(elapsedTime)
     
     updateUIControlText("Done")
-    updateTimerTo(0.0)
+    notifyTimerRemaining(0.0)
     
     println("original timer:        \(duration)")
     println("total running time:    \(elapsedTimeAtPause)")
-    println("total additional time: \(additionalElapsedTime)")
+    println("total additional time: \(timeAddedAfterStart)")
   }
   
   
   func addTimeByPercentage(percentage: CGFloat) {
-    // Don't use duration + additionalElapsedTime because
+    // Don't use duration + timeAddedAfterStart because
     // we only want to add a percentage of the original duration
     // without any additional seconds added
     let additionalSeconds = duration * NSTimeInterval(percentage)
@@ -184,19 +171,23 @@ class Timer: NSObject {
   }
   
   func addTimeBySeconds(seconds: NSTimeInterval) {
-    // Don't add sooo much to the timer that the time left
-    // if more than the original duration
-    additionalElapsedTime = additionalElapsedTime + seconds
-    if additionalElapsedTime > elapsedTime {
-      additionalElapsedTime = elapsedTime
-    }
     
-    if status != .Counting {
-      updateTimerTo(timeRemaining)
+    var timeToAdd = timeAddedAfterStart + seconds
+    if timeToAdd > elapsedTime {
+      // limit additional time to at most,
+      timeToAdd = elapsedTime
     }
+    timeAddedAfterStart = timeToAdd
     
-    if status == .Completed {
-      pauseAfterDoneAndAddTime()
+    switch status {
+      case .Ready, .Paused:
+        notifyTimerRemaining(timeRemaining)
+      case .Counting:
+          break
+      case .Completed:
+        status = .Paused
+        updateUIControlText("Continue")
+        notifyTimerRemaining(timeRemaining)
     }
   }
   
@@ -210,19 +201,6 @@ class Timer: NSObject {
     return timerHasStarted
   }
 
-  func transitionToHidden() {
-    visibility = .Hidden
-  }
-  
-  func transitionToVisible() {
-    visibility = .Visible
-    if hasStarted {
-      incrementTimer()
-    } else {
-      reset()
-    }
-  }
-  
   // MARK: -
   private func syncDurationSetting() {
     let durationSetting = self.durationSetting
@@ -259,9 +237,8 @@ class Timer: NSObject {
     return CGFloat(secondsRemaining / duration)
   }
   
-  private func updateTimerTo(timeRemaining: NSTimeInterval) {
+  private func notifyTimerRemaining(timeRemaining: NSTimeInterval) {
     let percentageLeft = secondsToPercentage(timeRemaining)
-    
     updateTimerWithPercentage(percentageLeft)
     updateTimerWithText(timeStringFromDuration(timeRemaining))
     updateTimerWithSeconds(timeRemaining)
@@ -283,21 +260,15 @@ class Timer: NSObject {
   }
   
   func incrementTimerCount() {
-    if (elapsedTime > (duration + additionalElapsedTime)) {
-      complete(elapsedTime)
+    if (elapsedTime > (duration + timeAddedAfterStart)) {
+      notifyTimerCompleted(elapsedTime)
     } else {
-      updateTimerTo(timeRemaining)
+      notifyTimerRemaining(timeRemaining)
       incrementTimerAgain()
     }
   }
   
   func incrementTimer() {
-    
-    // Stop updating the timer if the app or view controler is not visable
-    if visibility == .Hidden {
-      return
-    }
-
     switch status {
       case .Ready:
         break
