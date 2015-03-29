@@ -29,11 +29,12 @@ enum TimerStatus: String, Printable {
 class Timer: NSObject {
   
   // MARK: Properties
-  var startTime: NSTimeInterval?
-  var lastStartTime: NSTimeInterval?
-  var timerUUID: String?
+  var startTime:         NSTimeInterval?
+  var previousStartTime: NSTimeInterval?
+  var timerUUID:         String?
   
-  var elapsedTimeAtPause = NSTimeInterval(0)
+  var timerUpdateInterval   = NSTimeInterval(0.1)
+  var elapsedTimeAtPause    = NSTimeInterval(0)
   var additionalElapsedTime = NSTimeInterval(0)
   
   var duration = NSTimeInterval(60 * 4) // 4 Minute Default
@@ -43,45 +44,12 @@ class Timer: NSObject {
   }
   
   var visibility: TimerVisiblity = .Visible
+  var status:     TimerStatus    = .Ready
   
-  var status: TimerStatus = .Ready
-  
-  var hasStarted: Bool {
-    var timerHasStarted = false
-    
-    if lastStartTime != nil {
-      timerHasStarted = true
-    }
-    
-    if elapsedTimeAtPause != 0 {
-      timerHasStarted = true
-    }
-    
-    if status == .Counting {
-      timerHasStarted = true
-    }
-    
-    return timerHasStarted
-  }
-  
-  var hasNotStarted: Bool {
-    return !hasStarted
-  }
-  
-  
-  var hasCompleted = false
-  var hasNotCompleted: Bool {
-    get {
-      return !hasCompleted
-    }
-    set(hasCompleted) {
-      self.hasCompleted = !hasCompleted
-    }
-  }
   
   var elapsedTime: NSTimeInterval {
     var _elapsedTime: NSTimeInterval
-    if let start = lastStartTime {
+    if let start = previousStartTime {
       let now = NSDate.timeIntervalSinceReferenceDate()
       _elapsedTime = now - start + elapsedTimeAtPause
     } else {
@@ -147,7 +115,7 @@ class Timer: NSObject {
   init( WithControlTextFunc  updateUIControlTextFunc: (String) -> (),
         AndUpdateTimerFunc           updateTimerFunc: (String) -> (),
         AndUpdateSecondsFunc       updateSecondsFunc: (NSTimeInterval) -> (),
-        AndUpdatePercentageFunc updatePercentageFunc: (CGFloat) -> ()    ) {
+        AndUpdatePercentageFunc updatePercentageFunc: (CGFloat) -> ()) {
           
     updateUIControlText       = updateUIControlTextFunc
     updateTimerWithText       = updateTimerFunc
@@ -158,9 +126,9 @@ class Timer: NSObject {
   // MARK: Timer Actions
   func start() {
     status = .Counting
-    lastStartTime = NSDate.timeIntervalSinceReferenceDate()
+    previousStartTime = NSDate.timeIntervalSinceReferenceDate()
     if startTime == nil {
-      startTime = lastStartTime
+      startTime = previousStartTime
     }
     if timerUUID == nil {
       timerUUID = NSUUID().UUIDString
@@ -175,17 +143,16 @@ class Timer: NSObject {
   }
   
   func pauseAfterDoneAndAddTime() {
-    hasNotCompleted = true
+    status = .Paused
     updateUIControlText("Continue")
     updateTimerTo(timeRemaining)
   }
   
   func reset() {
     startTime = nil
-    lastStartTime = nil
+    previousStartTime = nil
     timerUUID = nil
     status = .Ready
-    hasNotCompleted = true
     elapsedTimeAtPause = 0
     additionalElapsedTime = 0
     
@@ -198,7 +165,6 @@ class Timer: NSObject {
   private func complete(elapsedTime: NSTimeInterval) {
     status = .Completed
     rememberTimerAtPause(elapsedTime)
-    hasCompleted = true
     
     updateUIControlText("Done")
     updateTimerTo(0.0)
@@ -229,11 +195,21 @@ class Timer: NSObject {
       updateTimerTo(timeRemaining)
     }
     
-    if hasCompleted {
+    if status == .Completed {
       pauseAfterDoneAndAddTime()
     }
   }
   
+  // MARK: -
+  // MARK: Visible State
+  var hasStarted: Bool {
+    var timerHasStarted = false
+    if previousStartTime  != nil { timerHasStarted = true }
+    if elapsedTimeAtPause != 0   { timerHasStarted = true }
+    if status == .Counting       { timerHasStarted = true }
+    return timerHasStarted
+  }
+
   func transitionToHidden() {
     visibility = .Hidden
   }
@@ -247,6 +223,7 @@ class Timer: NSObject {
     }
   }
   
+  // MARK: -
   private func syncDurationSetting() {
     let durationSetting = self.durationSetting
     if (durationSetting != 0) {
@@ -283,35 +260,35 @@ class Timer: NSObject {
   }
   
   private func updateTimerTo(timeRemaining: NSTimeInterval) {
-    // TODO: More testing to make sure that the timer always ends...
-    //       on 0 and 00:00.  Percentage left reuqired special handling
-    
-    let percentageLeft: CGFloat
-    if hasCompleted {
-      percentageLeft = 0.0
-    } else {
-      percentageLeft = secondsToPercentage(timeRemaining)
-    }
+    let percentageLeft = secondsToPercentage(timeRemaining)
     
     updateTimerWithPercentage(percentageLeft)
     updateTimerWithText(timeStringFromDuration(timeRemaining))
     updateTimerWithSeconds(timeRemaining)
-    
   }
   
   
   // MARK: Timer
   private func rememberTimerAtPause(elapsedTime: NSTimeInterval) {
-    lastStartTime = nil
+    previousStartTime = nil
     elapsedTimeAtPause = elapsedTime
   }
   
   private func incrementTimerAgain() {
-    var timer = NSTimer.scheduledTimerWithTimeInterval( 0.1,
-      target: self,
-      selector:  Selector("incrementTimer"),
-      userInfo: nil,
-      repeats: false)
+    NSTimer.scheduledTimerWithTimeInterval( timerUpdateInterval,
+                                    target: self,
+                                  selector: Selector("incrementTimer"),
+                                  userInfo: nil,
+                                   repeats: false)
+  }
+  
+  func incrementTimerCount() {
+    if (elapsedTime > (duration + additionalElapsedTime)) {
+      complete(elapsedTime)
+    } else {
+      updateTimerTo(timeRemaining)
+      incrementTimerAgain()
+    }
   }
   
   func incrementTimer() {
@@ -320,23 +297,18 @@ class Timer: NSObject {
     if visibility == .Hidden {
       return
     }
-    
-    if let start = lastStartTime {
-      
-      if status != .Counting {
+
+    switch status {
+      case .Ready:
+        break
+      case .Paused:
         rememberTimerAtPause(elapsedTime)
-        return
-      }
-      
-      if (elapsedTime > (duration + additionalElapsedTime)) {
-        complete(elapsedTime)
-      } else {
-        updateTimerTo(timeRemaining)
-        incrementTimerAgain()
-      }
-      
+      case .Counting:
+        incrementTimerCount()
+      case .Completed:
+        break
     }
   }
-
-  
 }
+
+
