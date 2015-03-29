@@ -147,8 +147,9 @@ class TimerViewController: UIViewController {
     
     // Timer uses a Closure/Block based callback API
     // Set the properties with our callback functions
-    timer.updateTimerWithText = updateTimeLabelWithText
-    timer.updateUIControlText = updateButtonTitleWithText
+    timer.statusChangedHandler = updateButtonTitleWithText
+//    timer.timerUpdatedHandler  = updateButtonTitleWithText
+    timer.updateTimeLabelWithText = updateTimeLabelWithText
     timer.updateTimerWithPercentage = updatePercentageDone
     timer.reset()
   }
@@ -244,7 +245,20 @@ class TimerViewController: UIViewController {
     timerLabel.text = labelText
   }
   
-  func updateButtonTitleWithText(buttonText: String) {
+  func updateButtonTitleWithText(status: TimerStatus) {
+    var buttonText: String
+    
+    switch status {
+      case .Ready:
+        buttonText = "Start"
+      case .Counting:
+        buttonText = "Pause"
+      case .Paused:
+        buttonText = "Continue"
+      case .Completed:
+        buttonText = "Done"
+    }
+    
     startPauseButton.setTitle(buttonText, forState: UIControlState.Normal)
   }
   

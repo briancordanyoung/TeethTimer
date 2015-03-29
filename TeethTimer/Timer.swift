@@ -16,7 +16,11 @@ enum TimerStatus: String, Printable {
 class Timer: NSObject {
   
   // MARK: Properties
-  var status: TimerStatus   = .Ready
+  var status: TimerStatus   = .Ready {
+    didSet {
+      statusChangedHandler(status)
+    }
+  }
 
   var startTime:              NSTimeInterval?
   var previousStartTime:      NSTimeInterval?
@@ -46,16 +50,23 @@ class Timer: NSObject {
     return _elapsedTime
   }
   
-  var timeRemaining: NSTimeInterval {
+  var secondsRemaining: NSTimeInterval {
     return (duration + timeAddedAfterStart) - elapsedTime
   }
   
+  var percentageRemaining: CGFloat {
+    return secondsToPercentage(secondsRemaining)
+  }
   
-  // Properties that hold functions. (a.k.a. a block based API)
+
+  
+  // Callback Properties (block based API)
   // These should be used as call backs alerting a view controller
   // that one of these events occurred.
-  var updateTimerWithText: (String) -> ()
-  var updateUIControlText: (String) -> ()
+  var statusChangedHandler: (TimerStatus) -> ()
+//  var timerUpdatedHandler:  (Timer) -> ()
+
+  var updateTimeLabelWithText: (String) -> ()
   var updateTimerWithSeconds: (NSTimeInterval) -> ()
   var updateTimerWithPercentage: (CGFloat) -> ()
   
@@ -70,9 +81,16 @@ class Timer: NSObject {
     // creates these stand-in println() functions.  These should be
     // replaced in the timer class instance by the callbacks that
     // update any controls like a UIButton or UILabel in the UIViewController.
-    func printControlText(controlText: String) {
+    
+    func printStatus(status: TimerStatus) {
       #if DEBUG
-        println("Change Timer Control Text to: \(controlText)")
+        println("Change Timer Control Text to: \(printStatus)")
+      #endif
+    }
+    
+    func printSecondsRemaining(secondsRemaining: NSTimeInterval) {
+      #if DEBUG
+        println("Seconds left: \(secondsRemaining)")
       #endif
     }
     
@@ -94,26 +112,25 @@ class Timer: NSObject {
       #endif
     }
     
-    self.init(WithControlTextFunc: printControlText,
-               AndUpdateTimerFunc: printTime,
-             AndUpdateSecondsFunc: printSeconds,
-          AndUpdatePercentageFunc: printPercentage)
+    self.init(WithStatusChangedHandler: printStatus,
+                    AndUpdateTimerFunc: printTime,
+                  AndUpdateSecondsFunc: printSeconds,
+               AndUpdatePercentageFunc: printPercentage)
   }
   
-  init( WithControlTextFunc  updateUIControlTextFunc: (String) -> (),
-        AndUpdateTimerFunc           updateTimerFunc: (String) -> (),
-        AndUpdateSecondsFunc       updateSecondsFunc: (NSTimeInterval) -> (),
-        AndUpdatePercentageFunc updatePercentageFunc: (CGFloat) -> ()) {
+  init( WithStatusChangedHandler statusChangedHandlerFunc: (TimerStatus) -> (),
+        AndUpdateTimerFunc                updateTimerFunc: (String) -> (),
+        AndUpdateSecondsFunc            updateSecondsFunc: (NSTimeInterval) -> (),
+        AndUpdatePercentageFunc      updatePercentageFunc: (CGFloat) -> ()) {
           
-    updateUIControlText       = updateUIControlTextFunc
-    updateTimerWithText       = updateTimerFunc
+    statusChangedHandler      = statusChangedHandlerFunc
+    updateTimeLabelWithText   = updateTimerFunc
     updateTimerWithSeconds    = updateSecondsFunc
     updateTimerWithPercentage = updatePercentageFunc
   }
     
   // MARK: Timer Actions
   func start() {
-    status = .Counting
     previousStartTime = NSDate.timeIntervalSinceReferenceDate()
     if startTime == nil {
       startTime = previousStartTime
@@ -121,14 +138,13 @@ class Timer: NSObject {
     if timerUUID == nil {
       timerUUID = NSUUID().UUIDString
     }
-    updateUIControlText("Pause")
+    status = .Counting
     incrementTimer()
   }
   
   func pause() {
     status = .Paused
     rememberTimerAtPause(elapsedTime)
-    updateUIControlText("Continue")
   }
   
   func completed() {
@@ -139,22 +155,18 @@ class Timer: NSObject {
     startTime = nil
     previousStartTime = nil
     timerUUID = nil
-    status = .Ready
     elapsedTimeAtPause = 0
     timeAddedAfterStart = 0
+    status = .Ready
     
     syncDurationSetting()
-    
     notifyTimerRemaining(duration)
-    updateUIControlText("Start")
   }
   
   private func notifyTimerCompleted(elapsedTime: NSTimeInterval) {
-    status = .Completed
     rememberTimerAtPause(elapsedTime)
-    
-    updateUIControlText("Done")
     notifyTimerRemaining(0.0)
+    status = .Completed
     
     println("original timer:        \(duration)")
     println("total running time:    \(elapsedTimeAtPause)")
@@ -181,13 +193,12 @@ class Timer: NSObject {
     
     switch status {
       case .Ready, .Paused:
-        notifyTimerRemaining(timeRemaining)
+        notifyTimerRemaining(secondsRemaining)
       case .Counting:
           break
       case .Completed:
         status = .Paused
-        updateUIControlText("Continue")
-        notifyTimerRemaining(timeRemaining)
+        notifyTimerRemaining(secondsRemaining)
     }
   }
   
@@ -240,7 +251,7 @@ class Timer: NSObject {
   private func notifyTimerRemaining(timeRemaining: NSTimeInterval) {
     let percentageLeft = secondsToPercentage(timeRemaining)
     updateTimerWithPercentage(percentageLeft)
-    updateTimerWithText(timeStringFromDuration(timeRemaining))
+    updateTimeLabelWithText(timeStringFromDuration(timeRemaining))
     updateTimerWithSeconds(timeRemaining)
   }
   
@@ -263,7 +274,7 @@ class Timer: NSObject {
     if (elapsedTime > (duration + timeAddedAfterStart)) {
       notifyTimerCompleted(elapsedTime)
     } else {
-      notifyTimerRemaining(timeRemaining)
+      notifyTimerRemaining(secondsRemaining)
       incrementTimerAgain()
     }
   }
