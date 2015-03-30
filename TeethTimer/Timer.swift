@@ -20,12 +20,6 @@ enum TimerStatus: String, Printable {
 class Timer: NSObject {
   
   // MARK: Properties
-  var status: TimerStatus = .Ready {
-    didSet {
-      onNextRunloopNotifyStatusUpdated()
-    }
-  }
-
   var originalStartTime:       NSTimeInterval?
   var recentStartTime:         NSTimeInterval?
   var timerUUID:               String?
@@ -47,6 +41,24 @@ class Timer: NSObject {
 
   
   // MARK: Computed Properties
+  var status: TimerStatus {
+    get {
+      return _status
+    }
+    set(newStatus) {
+      switch newStatus {
+      case .Ready:
+        reset()
+      case .Counting:
+        start()
+      case .Paused:
+        pause()
+      case .Completed:
+        complete()
+      }
+    }
+  }
+  
   var secondsElapsed: NSTimeInterval {
     var _secondsElapsed: NSTimeInterval
     if let recentStartTime = recentStartTime {
@@ -74,14 +86,14 @@ class Timer: NSObject {
     return percentage
   }
   
-  var hasStarted: Bool {
-    var timerHasStarted       = false
-    if recentStartTime       != nil { timerHasStarted = true }
-    if secondsElapsedAtPause != 0   { timerHasStarted = true }
-    return timerHasStarted
+  // MARK: Internal Properties
+  var _status: TimerStatus = .Ready {
+    didSet {
+      onNextRunloopNotifyStatusUpdated()
+    }
   }
-
-
+  
+  
   // MARK: -
   // MARK: Init methods
   convenience override init() {
@@ -120,7 +132,7 @@ class Timer: NSObject {
   // MARK: -
   // MARK: Timer Actions
   func reset() {
-    status                 = .Ready
+    _status                = .Ready
     originalStartTime      = nil
     recentStartTime        = nil
     timerUUID              = nil
@@ -132,7 +144,7 @@ class Timer: NSObject {
   }
   
   func start() {
-    status = .Counting
+    _status = .Counting
     
     recentStartTime = NSDate.timeIntervalSinceReferenceDate()
     if originalStartTime == nil {
@@ -146,12 +158,12 @@ class Timer: NSObject {
   }
   
   func pause() {
-    status = .Paused
+    _status = .Paused
     rememberTimerAtPause()
   }
   
   func complete() {
-    status = .Completed
+    _status = .Completed
     rememberTimerAtPause()
     notifyTimerUpdated()
   }
@@ -180,7 +192,7 @@ class Timer: NSObject {
       case .Counting:
           break
       case .Completed:
-        status = .Paused
+        _status = .Paused
         notifyTimerUpdated()
     }
   }
@@ -244,7 +256,7 @@ class Timer: NSObject {
   
   // The statusChangedHandler() is intended for acting on a change of status
   // only, and not intended as a callback to check property values of the
-  // Timer class. (hense, only the status emun is passed as the sole argument.)
+  // Timer class. (hense, only the TimerStatus emun is passed as the sole argument.)
   // If this callback IS used to check properties, they may not represent
   // the state of the timer correctly since the status is changed first and 
   // drives rest of the class.  Properties sensitive to this are:
