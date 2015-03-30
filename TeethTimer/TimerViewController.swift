@@ -1,19 +1,6 @@
 import UIKit
 
 // MARK: -
-// MARK: - Enums
-enum TimerStateAtTouch: String, Printable {
-  case Running = "Running"
-  case Paused  = "Paused"
-
-  var description: String {
-    return self.rawValue
-  }
-}
-
-
-
-// MARK: -
 // MARK: TimerViewController class
 class TimerViewController: UIViewController {
 
@@ -37,7 +24,7 @@ class TimerViewController: UIViewController {
   var gavinWheel: WheelControl?
   
   var previousImageBeforeTouch: ImageIndex?
-  var timerStateBeforeTouch: TimerStateAtTouch = .Paused
+  var timerStateBeforeTouch: TimerStatus = .Paused
   
   // A computed property to make it easy to access the ImageWheel inside gavinWheel
   var imageWheelView: ImageWheel? {
@@ -174,7 +161,8 @@ class TimerViewController: UIViewController {
   // MARK: Button Actions
   @IBAction func startStopPressed(sender: UIButton) {
     switch timer.status {
-      case .Ready, .Paused:
+      case .Ready,
+           .Paused:
         timer.start()
       case .Counting:
         timer.pause()
@@ -195,11 +183,9 @@ class TimerViewController: UIViewController {
       previousImageBeforeTouch = imageWheelView.currentImage
     }
     
-    if timer.status == .Counting {
-      timerStateBeforeTouch = .Running
+    timerStateBeforeTouch = timer.status
+    if timerStateBeforeTouch == .Counting {
       timer.pause()
-    } else {
-      timerStateBeforeTouch = .Paused
     }
   }
   
@@ -232,7 +218,7 @@ class TimerViewController: UIViewController {
       self.previousImageBeforeTouch = nil
     }
     
-    if timerStateBeforeTouch == .Running {
+    if timerStateBeforeTouch == .Counting {
       timer.start()
     }
   }
@@ -263,11 +249,10 @@ class TimerViewController: UIViewController {
       
       timerLabel.text = timeStringFromDuration(timer.secondsRemaining)
       
-      if percentageDone == 0 {
+      if timer.status == .Completed {
         println("original timer:        \(timer.duration)")
         println("total running time:    \(timer.secondsElapsedAtPause)")
         println("total additional time: \(timer.secondsAddedAfterStart)")
-
       }
     }
   }
