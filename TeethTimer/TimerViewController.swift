@@ -6,16 +6,16 @@ class TimerViewController: UIViewController {
 
   // MARK: Properties
   @IBOutlet weak var startPauseButton: UIButton!
-  @IBOutlet weak var resetButton: UIButton!
-  @IBOutlet weak var timerLabel: UILabel!
-  @IBOutlet weak var fullScreenImage: UIImageView!
-  @IBOutlet weak var controlView: UIView!
-  @IBOutlet weak var lowerThirdView: UIView!
+  @IBOutlet weak var resetButton:      UIButton!
+  @IBOutlet weak var timerLabel:       UILabel!
+  @IBOutlet weak var fullScreenImage:  UIImageView!
+  @IBOutlet weak var controlView:      UIView!
+  @IBOutlet weak var lowerThirdView:   UIView!
   
-  @IBOutlet weak var testButton: UIButton!
+  @IBOutlet weak var testButton:       UIButton!
   
-  @IBOutlet weak var posNegLabel: UILabel!
-  @IBOutlet weak var flippedLabel: UILabel!
+  @IBOutlet weak var posNegLabel:      UILabel!
+  @IBOutlet weak var flippedLabel:     UILabel!
   
   let timer = Timer()
   
