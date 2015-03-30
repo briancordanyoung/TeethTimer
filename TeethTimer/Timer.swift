@@ -20,15 +20,15 @@ enum TimerStatus: String, Printable {
 class Timer: NSObject {
   
   // MARK: Properties
-  var status: TimerStatus   = .Ready {
+  var status: TimerStatus = .Ready {
     didSet {
-      statusChangedHandler(status)
+      onNextRunloopNotifyStatusUpdated()
     }
   }
 
-  var originalStartTime:      NSTimeInterval?
-  var recentStartTime:        NSTimeInterval?
-  var timerUUID:              String?
+  var originalStartTime:       NSTimeInterval?
+  var recentStartTime:         NSTimeInterval?
+  var timerUUID:               String?
   
   var timerUpdateInterval    = NSTimeInterval(0.1)
   var secondsElapsedAtPause  = NSTimeInterval(0)
@@ -120,18 +120,20 @@ class Timer: NSObject {
   // MARK: -
   // MARK: Timer Actions
   func reset() {
+    status                 = .Ready
     originalStartTime      = nil
     recentStartTime        = nil
     timerUUID              = nil
     secondsElapsedAtPause  = 0
     secondsAddedAfterStart = 0
-    status                 = .Ready
     
     syncDurationSetting()
     notifyTimerUpdated()
   }
   
   func start() {
+    status = .Counting
+    
     recentStartTime = NSDate.timeIntervalSinceReferenceDate()
     if originalStartTime == nil {
       originalStartTime = recentStartTime
@@ -140,18 +142,17 @@ class Timer: NSObject {
       timerUUID = NSUUID().UUIDString
     }
     
-    status = .Counting
     incrementTimer()
   }
   
   func pause() {
-    rememberTimerAtPause(secondsElapsed)
     status = .Paused
+    rememberTimerAtPause()
   }
   
   func complete() {
-    rememberTimerAtPause(secondsElapsed)
     status = .Completed
+    rememberTimerAtPause()
     notifyTimerUpdated()
   }
   
@@ -166,12 +167,12 @@ class Timer: NSObject {
   
   func addTimeBySeconds(seconds: NSTimeInterval) {
     
-    var secondsToAdd = secondsAddedAfterStart + seconds
-    if secondsToAdd > secondsElapsed {
+    var secondsAdded = secondsAddedAfterStart + seconds
+    if secondsAdded > secondsElapsed {
       // limit seconds to add to at most the seconds already elapsed
-      secondsToAdd = secondsElapsed
+      secondsAdded = secondsElapsed
     }
-    secondsAddedAfterStart = secondsToAdd
+    secondsAddedAfterStart = secondsAdded
     
     switch status {
       case .Ready, .Paused:
@@ -192,7 +193,7 @@ class Timer: NSObject {
       case .Ready:
         break
       case .Paused:
-        rememberTimerAtPause(secondsElapsed)
+        rememberTimerAtPause()
       case .Counting:
         incrementOrComplete()
       case .Completed:
@@ -200,7 +201,7 @@ class Timer: NSObject {
     }
   }
   
-  func incrementOrComplete() {
+  private func incrementOrComplete() {
     if (secondsElapsed > (duration + secondsAddedAfterStart)) {
       complete()
     } else {
@@ -217,9 +218,9 @@ class Timer: NSObject {
                                    repeats: false)
   }
   
-  private func rememberTimerAtPause(secondsElapsed: NSTimeInterval) {
-    recentStartTime = nil
+  private func rememberTimerAtPause() {
     secondsElapsedAtPause = secondsElapsed
+    recentStartTime = nil
   }
   
   // MARK: -
@@ -239,6 +240,31 @@ class Timer: NSObject {
     weak var weakSelf = self
     timerUpdatedHandler(weakSelf)
   }
+  
+  
+  // The statusChangedHandler() is intended for acting on a change of status
+  // only, and not intended as a callback to check property values of the
+  // Timer class. (hense, only the status emun is passed as the sole argument.)
+  // If this callback IS used to check properties, they may not represent
+  // the state of the timer correctly since the status is changed first and 
+  // drives rest of the class.  Properties sensitive to this are:
+  //     secondsElapsedAtPause
+  //     recentStartTime
+  //     secondsElapsed (computed)
+  // To mitigate this case, the status callback is delayed until the next
+  // runloop using NSTimer with a delay of 0.0.
+  private func onNextRunloopNotifyStatusUpdated() {
+    NSTimer.scheduledTimerWithTimeInterval( 0.0,
+                                    target: self,
+                                  selector: Selector("notifyStatusUpdated"),
+                                  userInfo: nil,
+                                   repeats: false)
+  }
+  
+  func notifyStatusUpdated() {
+    statusChangedHandler(status)
+  }
+  
 }
 
 
