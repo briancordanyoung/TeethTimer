@@ -148,9 +148,7 @@ class TimerViewController: UIViewController {
     // Timer uses a Closure/Block based callback API
     // Set the properties with our callback functions
     timer.statusChangedHandler = updateButtonTitleWithText
-//    timer.timerUpdatedHandler  = updateButtonTitleWithText
-    timer.updateTimeLabelWithText = updateTimeLabelWithText
-    timer.updateTimerWithPercentage = updatePercentageDone
+    timer.timerUpdatedHandler  = updateTimerDisplay
     timer.reset()
   }
   
@@ -241,10 +239,6 @@ class TimerViewController: UIViewController {
   
   // MARK: -
   // MARK: Callbacks to pass to the Timer class
-  func updateTimeLabelWithText(labelText: String) {
-    timerLabel.text = labelText
-  }
-  
   func updateButtonTitleWithText(status: TimerStatus) {
     var buttonText: String
     
@@ -261,8 +255,25 @@ class TimerViewController: UIViewController {
     
     startPauseButton.setTitle(buttonText, forState: UIControlState.Normal)
   }
+
+  func updateTimerDisplay(timer: Timer?) {
+    if let timer = timer {
+      let percentageDone = timer.percentageRemaining
+      updateWheelWithPercentageDone(percentageDone)
+      
+      timerLabel.text = timeStringFromDuration(timer.secondsRemaining)
+      
+      if percentageDone == 0 {
+        println("original timer:        \(timer.duration)")
+        println("total running time:    \(timer.secondsElapsedAtPause)")
+        println("total additional time: \(timer.secondsAddedAfterStart)")
+
+      }
+    }
+  }
+
   
-  func updatePercentageDone(percentageDone: CGFloat) {
+  func updateWheelWithPercentageDone(percentageDone: CGFloat) {
 
     if let     gavinWheel = gavinWheel,
        let imageWheelView = imageWheelView {
@@ -291,18 +302,6 @@ class TimerViewController: UIViewController {
 
 
   // MARK: Timer Callback helper Methods
-  func clamp(value: Int, ToValue maximumValue: Int) -> Int {
-    
-    if value > maximumValue {
-      return 1
-    }
-    
-    if value < 0 {
-      return 0
-    }
-    
-    return value
-  }
   
   // TODO: Create a dictionary for Image and percent total time
   //       alter method to return the current image
@@ -316,9 +315,26 @@ class TimerViewController: UIViewController {
       return current
   }
   
+  func clamp(value: Int, ToValue maximumValue: Int) -> Int {
+    
+    if value > maximumValue {
+      return 1
+    }
+    
+    if value < 0 {
+      return 0
+    }
+    
+    return value
+  }
   
   // MARK: -
   // MARK: Layout Methods
+  func updateGavinWheelSize() {
+    gavinWheelHeight?.constant = gavinWheelSize()
+    gavinWheelWidth?.constant  = gavinWheelSize()
+  }
+  
   func gavinWheelSize() -> (CGFloat) {
     let height = self.view.bounds.height
     let width = self.view.bounds.width
@@ -329,11 +345,6 @@ class TimerViewController: UIViewController {
     }
     
     return gavinWheelSize * 2
-  }
-  
-  func updateGavinWheelSize() {
-    gavinWheelHeight?.constant = gavinWheelSize()
-    gavinWheelWidth?.constant  = gavinWheelSize()
   }
   
   // MARK: -
@@ -387,6 +398,29 @@ class TimerViewController: UIViewController {
     button.titleLabel?.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
   }
 
+  // MARK: Time to String Helpers
+  private func timeStringFromMinutes(minutes: Int,
+    AndSeconds seconds: Int) -> String {
+      return NSString(format: "%02i:%02i",minutes,seconds) as! String
+  }
   
+  private func timeStringFromDuration(duration: NSTimeInterval) -> String {
+    let durationParts = timeAsParts(duration)
+    return timeStringFromMinutes( durationParts.minutes,
+      AndSeconds: durationParts.seconds)
+  }
+
+  private func timeAsParts(elapsedTimeInterval: NSTimeInterval)
+                                            -> (minutes: Int,seconds: Int) {
+      var elapsedTime = elapsedTimeInterval
+      let elapsedMinsTime = elapsedTime / 60.0
+      let elapsedMins = Int(elapsedMinsTime)
+      elapsedTime = elapsedMinsTime * 60
+      let elapsedSecsTime = elapsedTime - (NSTimeInterval(elapsedMins) * 60)
+      let elapsedSecs = Int(elapsedSecsTime)
+      
+      return (elapsedMins, elapsedSecs)
+  }
+
 }
 

@@ -1,6 +1,8 @@
 import Foundation
 import CoreGraphics
 
+// MARK: -
+// MARK: - Enums
 enum TimerStatus: String, Printable {
   case Ready      = "Ready"
   case Counting   = "Counting"
@@ -13,6 +15,8 @@ enum TimerStatus: String, Printable {
 }
 
 
+// MARK: -
+// MARK: Timer class
 class Timer: NSObject {
   
   // MARK: Properties
@@ -22,61 +26,67 @@ class Timer: NSObject {
     }
   }
 
-  var startTime:              NSTimeInterval?
-  var previousStartTime:      NSTimeInterval?
+  var originalStartTime:      NSTimeInterval?
+  var recentStartTime:        NSTimeInterval?
   var timerUUID:              String?
   
-  var timerUpdateInterval   = NSTimeInterval(0.1)
-  var elapsedTimeAtPause    = NSTimeInterval(0)
-
-  var timeAddedAfterStart   = NSTimeInterval(0)
-  var duration              = NSTimeInterval(60 * 4) // 4 Minute Default
+  var timerUpdateInterval    = NSTimeInterval(0.1)
+  var secondsElapsedAtPause  = NSTimeInterval(0)
+  var secondsAddedAfterStart = NSTimeInterval(0)
+  var duration               = NSTimeInterval(60 * 4) // 4 Minute Default
   var durationSetting: Int  {
     return NSUserDefaults.standardUserDefaults()
       .integerForKey("defaultDurationInSeconds")
   }
   
-  
-  
-  // MARK: Computed Properties
-  var elapsedTime: NSTimeInterval {
-    var _elapsedTime: NSTimeInterval
-    if let start = previousStartTime {
-      let now = NSDate.timeIntervalSinceReferenceDate()
-      _elapsedTime = now - start + elapsedTimeAtPause
-    } else {
-      _elapsedTime = elapsedTimeAtPause
-    }
-    return _elapsedTime
-  }
-  
-  var secondsRemaining: NSTimeInterval {
-    return (duration + timeAddedAfterStart) - elapsedTime
-  }
-  
-  var percentageRemaining: CGFloat {
-    return secondsToPercentage(secondsRemaining)
-  }
-  
-
-  
-  // Callback Properties (block based API)
+  // Callback Handler Properties (block based API)
   // These should be used as call backs alerting a view controller
   // that one of these events occurred.
   var statusChangedHandler: (TimerStatus) -> ()
-//  var timerUpdatedHandler:  (Timer) -> ()
+  var timerUpdatedHandler:  (Timer?) -> ()
 
-  var updateTimeLabelWithText: (String) -> ()
-  var updateTimerWithSeconds: (NSTimeInterval) -> ()
-  var updateTimerWithPercentage: (CGFloat) -> ()
   
+  // MARK: Computed Properties
+  var secondsElapsed: NSTimeInterval {
+    var _secondsElapsed: NSTimeInterval
+    if let recentStartTime = recentStartTime {
+      let now = NSDate.timeIntervalSinceReferenceDate()
+      _secondsElapsed = now - recentStartTime + secondsElapsedAtPause
+    } else {
+      _secondsElapsed = secondsElapsedAtPause
+    }
+    return _secondsElapsed
+  }
   
+  var secondsRemaining: NSTimeInterval {
+    var seconds = (duration + secondsAddedAfterStart) - secondsElapsed
+    if seconds < 0 || status == .Completed {
+      seconds = 0
+    }
+    return seconds
+  }
   
+  var percentageRemaining: CGFloat {
+    var percentage = secondsToPercentage(secondsRemaining)
+    if status == .Completed {
+      percentage = 0
+    }
+    return percentage
+  }
+  
+  var hasStarted: Bool {
+    var timerHasStarted       = false
+    if recentStartTime       != nil { timerHasStarted = true }
+    if secondsElapsedAtPause != 0   { timerHasStarted = true }
+    return timerHasStarted
+  }
+
+
   // MARK: -
   // MARK: Init methods
   convenience override init() {
     // I couldn't figure out how to initilize a UIViewController
-    // with the nessesary functions at the time the Timer
+    // with the nessesary functions as the time the Timer
     // intance is created.  So, I made this convenience init which
     // creates these stand-in println() functions.  These should be
     // replaced in the timer class instance by the callbacks that
@@ -88,94 +98,66 @@ class Timer: NSObject {
       #endif
     }
     
-    func printSecondsRemaining(secondsRemaining: NSTimeInterval) {
+    func printSecondsRemaining(timer: Timer?) {
       #if DEBUG
-        println("Seconds left: \(secondsRemaining)")
-      #endif
-    }
-    
-    func printTime(timeAsString: String) {
-      #if DEBUG
-        println("Time Left: \(timeAsString)")
-      #endif
-    }
-    
-    func printSeconds(timeAsSeconds: NSTimeInterval) {
-      #if DEBUG
-        println("Seconds left: \(timeAsSeconds)")
-      #endif
-    }
-    
-    func printPercentage(timeAsPercentage: CGFloat) {
-      #if DEBUG
-        println("Percentage left: \(timeAsPercentage)")
+        if let timer = timer {
+          println("Seconds left: \(timer.secondsRemaining)")
+        }
       #endif
     }
     
     self.init(WithStatusChangedHandler: printStatus,
-                    AndUpdateTimerFunc: printTime,
-                  AndUpdateSecondsFunc: printSeconds,
-               AndUpdatePercentageFunc: printPercentage)
+                AndTimerUpdatedHandler: printSecondsRemaining)
   }
   
   init( WithStatusChangedHandler statusChangedHandlerFunc: (TimerStatus) -> (),
-        AndUpdateTimerFunc                updateTimerFunc: (String) -> (),
-        AndUpdateSecondsFunc            updateSecondsFunc: (NSTimeInterval) -> (),
-        AndUpdatePercentageFunc      updatePercentageFunc: (CGFloat) -> ()) {
-          
-    statusChangedHandler      = statusChangedHandlerFunc
-    updateTimeLabelWithText   = updateTimerFunc
-    updateTimerWithSeconds    = updateSecondsFunc
-    updateTimerWithPercentage = updatePercentageFunc
+        AndTimerUpdatedHandler   timerUpdatedHandlerFunc:  (Timer?) -> ()    ) {
+      statusChangedHandler  = statusChangedHandlerFunc
+      timerUpdatedHandler   = timerUpdatedHandlerFunc
   }
-    
+  
+  
+  // MARK: -
   // MARK: Timer Actions
+  func reset() {
+    originalStartTime      = nil
+    recentStartTime        = nil
+    timerUUID              = nil
+    secondsElapsedAtPause  = 0
+    secondsAddedAfterStart = 0
+    status                 = .Ready
+    
+    syncDurationSetting()
+    notifyTimerUpdated()
+  }
+  
   func start() {
-    previousStartTime = NSDate.timeIntervalSinceReferenceDate()
-    if startTime == nil {
-      startTime = previousStartTime
+    recentStartTime = NSDate.timeIntervalSinceReferenceDate()
+    if originalStartTime == nil {
+      originalStartTime = recentStartTime
     }
     if timerUUID == nil {
       timerUUID = NSUUID().UUIDString
     }
+    
     status = .Counting
     incrementTimer()
   }
   
   func pause() {
+    rememberTimerAtPause(secondsElapsed)
     status = .Paused
-    rememberTimerAtPause(elapsedTime)
   }
   
-  func completed() {
-    notifyTimerCompleted(elapsedTime)
-  }
-  
-  func reset() {
-    startTime = nil
-    previousStartTime = nil
-    timerUUID = nil
-    elapsedTimeAtPause = 0
-    timeAddedAfterStart = 0
-    status = .Ready
-    
-    syncDurationSetting()
-    notifyTimerRemaining(duration)
-  }
-  
-  private func notifyTimerCompleted(elapsedTime: NSTimeInterval) {
-    rememberTimerAtPause(elapsedTime)
-    notifyTimerRemaining(0.0)
+  func complete() {
+    rememberTimerAtPause(secondsElapsed)
     status = .Completed
-    
-    println("original timer:        \(duration)")
-    println("total running time:    \(elapsedTimeAtPause)")
-    println("total additional time: \(timeAddedAfterStart)")
+    notifyTimerUpdated()
   }
   
   
   func addTimeByPercentage(percentage: CGFloat) {
-    // Don't use duration + timeAddedAfterStart because
+    // Don't use duration + secondsAddedAfterStart because
     // we only want to add a percentage of the original duration
     // without any additional seconds added
     let additionalSeconds = duration * NSTimeInterval(percentage)
@@ -184,82 +166,47 @@ class Timer: NSObject {
   
   func addTimeBySeconds(seconds: NSTimeInterval) {
     
-    var timeToAdd = timeAddedAfterStart + seconds
-    if timeToAdd > elapsedTime {
-      // limit additional time to at most,
-      timeToAdd = elapsedTime
+    var secondsToAdd = secondsAddedAfterStart + seconds
+    if secondsToAdd > secondsElapsed {
+      // limit seconds to add to at most the seconds already elapsed
+      secondsToAdd = secondsElapsed
     }
-    timeAddedAfterStart = timeToAdd
+    secondsAddedAfterStart = secondsToAdd
     
     switch status {
       case .Ready, .Paused:
-        notifyTimerRemaining(secondsRemaining)
+        notifyTimerUpdated()
       case .Counting:
           break
       case .Completed:
         status = .Paused
-        notifyTimerRemaining(secondsRemaining)
+        notifyTimerUpdated()
     }
   }
   
-  // MARK: -
-  // MARK: Visible State
-  var hasStarted: Bool {
-    var timerHasStarted = false
-    if previousStartTime  != nil { timerHasStarted = true }
-    if elapsedTimeAtPause != 0   { timerHasStarted = true }
-    if status == .Counting       { timerHasStarted = true }
-    return timerHasStarted
-  }
 
   // MARK: -
-  private func syncDurationSetting() {
-    let durationSetting = self.durationSetting
-    if (durationSetting != 0) {
-      duration = NSTimeInterval(durationSetting)
+  // MARK: Timer
+  func incrementTimer() {
+    switch status {
+      case .Ready:
+        break
+      case .Paused:
+        rememberTimerAtPause(secondsElapsed)
+      case .Counting:
+        incrementOrComplete()
+      case .Completed:
+        break
     }
   }
   
-  // MARK: Time Helper Methods
-  private func timeStringFromMinutes(minutes: Int,
-                          AndSeconds seconds: Int) -> String {
-      return NSString(format: "%02i:%02i",minutes,seconds) as! String
-  }
-  
-  private func timeStringFromDuration(duration: NSTimeInterval) -> String {
-    let durationParts = timeAsParts(duration)
-    return timeStringFromMinutes( durationParts.minutes,
-                      AndSeconds: durationParts.seconds)
-  }
-  
-  private func timeAsParts(elapsedTimeInterval: NSTimeInterval)
-    -> (minutes: Int,seconds: Int) {
-      var elapsedTime = elapsedTimeInterval
-      let elapsedMinsTime = elapsedTime / 60.0
-      let elapsedMins = Int(elapsedMinsTime)
-      elapsedTime = elapsedMinsTime * 60
-      let elapsedSecsTime = elapsedTime - (NSTimeInterval(elapsedMins) * 60)
-      let elapsedSecs = Int(elapsedSecsTime)
-      
-      return (elapsedMins, elapsedSecs)
-  }
-  
-  private func secondsToPercentage(secondsRemaining: NSTimeInterval) -> CGFloat {
-    return CGFloat(secondsRemaining / duration)
-  }
-  
-  private func notifyTimerRemaining(timeRemaining: NSTimeInterval) {
-    let percentageLeft = secondsToPercentage(timeRemaining)
-    updateTimerWithPercentage(percentageLeft)
-    updateTimeLabelWithText(timeStringFromDuration(timeRemaining))
-    updateTimerWithSeconds(timeRemaining)
-  }
-  
-  
-  // MARK: Timer
-  private func rememberTimerAtPause(elapsedTime: NSTimeInterval) {
-    previousStartTime = nil
-    elapsedTimeAtPause = elapsedTime
+  func incrementOrComplete() {
+    if (secondsElapsed > (duration + secondsAddedAfterStart)) {
+      complete()
+    } else {
+      notifyTimerUpdated()
+      incrementTimerAgain()
+    }
   }
   
   private func incrementTimerAgain() {
@@ -270,26 +217,27 @@ class Timer: NSObject {
                                    repeats: false)
   }
   
-  func incrementTimerCount() {
-    if (elapsedTime > (duration + timeAddedAfterStart)) {
-      notifyTimerCompleted(elapsedTime)
-    } else {
-      notifyTimerRemaining(secondsRemaining)
-      incrementTimerAgain()
+  private func rememberTimerAtPause(secondsElapsed: NSTimeInterval) {
+    recentStartTime = nil
+    secondsElapsedAtPause = secondsElapsed
+  }
+  
+  // MARK: -
+  // MARK: Helpers
+  private func syncDurationSetting() {
+    let durationSetting = self.durationSetting
+    if (durationSetting != 0) {
+      duration = NSTimeInterval(durationSetting)
     }
   }
   
-  func incrementTimer() {
-    switch status {
-      case .Ready:
-        break
-      case .Paused:
-        rememberTimerAtPause(elapsedTime)
-      case .Counting:
-        incrementTimerCount()
-      case .Completed:
-        break
-    }
+  private func secondsToPercentage(secondsRemaining: NSTimeInterval) -> CGFloat {
+    return CGFloat(secondsRemaining / duration)
+  }
+  
+  private func notifyTimerUpdated() {
+    weak var weakSelf = self
+    timerUpdatedHandler(weakSelf)
   }
 }
 
