@@ -2,7 +2,7 @@ import UIKit
 
 // MARK: -
 // MARK: TimerViewController class
-class TimerViewController: UIViewController {
+final class TimerViewController: UIViewController {
 
   // MARK: Properties
   @IBOutlet weak var startPauseButton: UIButton!
@@ -245,6 +245,8 @@ class TimerViewController: UIViewController {
   func updateTimerDisplay(timer: Timer?) {
     if let timer = timer {
       let percentageDone = timer.percentageRemaining
+      
+      let d = Developement()
       updateWheelWithPercentageDone(percentageDone)
       
       timerLabel.text = timeStringFromDuration(timer.secondsRemaining)
@@ -257,14 +259,20 @@ class TimerViewController: UIViewController {
     }
   }
 
-  
+  // TODO: Code smell!
+  //       This can be refactored to make more sence and be more clear
+  //       about why 1's are added and subtracted
+  //       when to call gavinWheel.animateToRotation(rotation) can be simplified
   func updateWheelWithPercentageDone(percentageDone: CGFloat) {
+    let d = Developement()
+    var message = "percentageDone: \(d.pad(percentageDone))"
+    
 
     if let     gavinWheel = gavinWheel,
        let imageWheelView = imageWheelView {
       // At 100% should always be the first image
       // But, as soon as it is less, advance to the 2nd image.
-      // This done on the lines marked belowe 1, 2 & 3
+      // This done on the lines marked below 1, 2 & 3
 
       var steps = imageWheelView.images.count - 1
       steps = steps - 1  // 1
@@ -279,10 +287,18 @@ class TimerViewController: UIViewController {
           gavinWheel.animateToRotation(rotation)
         }
       } else if imageWheelView.currentImage != currentImage {
-        let rotation = imageWheelView.rotationForImage(currentImage)
-        gavinWheel.animateToRotation(rotation)
+        
+        if gavinWheel.animationState == .AtRest {
+          let rotation = imageWheelView.rotationForImage(currentImage)
+          gavinWheel.animateToRotation(rotation)
+          message = "percentageDone: \(d.pad(percentageDone))  animateToRotation: \(d.pad(rotation))"
+        } else {
+          message = "percentageDone: \(d.pad(percentageDone))  animateToRotation:  AVOIDED "
+        }
       }
     }
+    
+    println(message)
   }
 
 
@@ -293,9 +309,8 @@ class TimerViewController: UIViewController {
   func currentWheelValueFromPrecent(percentageDone: CGFloat,
     WithSectionCount sections: Int) -> Int {
       let percentageToGo = 1.0 - percentageDone
-      let sectionsByPercent = percentageToGo * CGFloat(sections)
-      let current = clamp(Int(sectionsByPercent),
-        ToValue: sections)
+      let sectionsByPercent = Int(percentageToGo * CGFloat(sections))
+      let current = clamp(sectionsByPercent, ToValue: sections)
       
       return current
   }

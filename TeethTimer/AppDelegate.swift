@@ -32,7 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   func applicationWillResignActive(application: UIApplication) {
     if timerViewController.timer.status == TimerStatus.Counting {
-      println("Pausing Timer")
       timerViewController.timer.pause()
       continueTimerWhenEnteringForeground = true
     }
@@ -46,7 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   func applicationDidBecomeActive(application: UIApplication) {
     if continueTimerWhenEnteringForeground {
-      println("Starting Timer")
       timerViewController.timer.start()
       continueTimerWhenEnteringForeground = false
     }

@@ -101,6 +101,14 @@ enum InteractionState: String, Printable {
   }
 }
 
+enum AnimationState: String, Printable {
+  case AnimationInMotion  = "Animation In Motion"
+  case AtRest             = "At Rest"
+  
+  var description: String {
+    return self.rawValue
+  }
+}
 
 // MARK: -
 // MARK: - Structs
@@ -218,13 +226,25 @@ final class WheelControl: UIControl, AnimationDelegate  {
   }
   
   var targetRotationAngle: CGFloat {  // in module, make public //
-    get {
       var targetRotationAngle = rotationAngle
       if let target = wheelState.targetRotation {
         targetRotationAngle = target - internalRotationOffset
       }
       return targetRotationAngle
+  }
+  
+  var animationState: AnimationState {
+    
+    let animations = Animation.animations(wheelView.layer)
+    
+    let state: AnimationState
+    if animations.count == 0 {
+      state = .AtRest
+    } else {
+      state = .AnimationInMotion
     }
+    
+    return state
   }
   
   // Configure WheelControl
@@ -295,7 +315,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
   // class will add/subtract this offset when set/get.
   
   // TODO: This is currently not working.  Must debug
-//  let internalRotationOffset = CGFloat(Circle.full * 3)
+  //  let internalRotationOffset = CGFloat(Circle.full * 3)
   let internalRotationOffset = CGFloat(0)
 
   var outsideCircle: CGFloat {
@@ -307,7 +327,6 @@ final class WheelControl: UIControl, AnimationDelegate  {
       return angleFromTransform(wheelView.transform)
     }
     set(newAngle) {
-      // TODO: test if the angle needs to be normalized into -halfCircle...halfCircle
       wheelView.transform = CGAffineTransformMakeRotation(newAngle)
     }
   }
@@ -552,9 +571,10 @@ final class WheelControl: UIControl, AnimationDelegate  {
       }
     }
     
+    Animation.removeAllAnimations(wheelView.layer)
     Animation.addAnimation( rotate,
-      key: rotate.property.name,
-      obj: wheelView.layer)
+                       key: rotate.property.name,
+                       obj: wheelView.layer)
   }
   
   
@@ -569,6 +589,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
     rotate.toValue = to
     rotate.name = "Basic Rotation"
     rotate.delegate = self
+    Animation.removeAllAnimations(wheelView.layer)
     Animation.addAnimation( rotate,
                        key: rotate.property.name,
                        obj: wheelView.layer)
@@ -593,6 +614,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
         self.wheelState.targetRotation = nil
       }
     }
+    Animation.removeAllAnimations(wheelView.layer)
     Animation.addAnimation( spring,
                        key: spring.property.name,
                        obj: wheelView.layer)
@@ -671,12 +693,13 @@ final class WheelControl: UIControl, AnimationDelegate  {
       // returned from the affine transform.
                 
       // In various conditions, this algorithm breaks down and can not
-      // determin the correct accumulated rotation.  It returns the last know
+      // determin the correct accumulated rotation.  It returns the last known
       // good state in the hopes that the next evaluation can figure it out.
                 
-      // Overly large jumps between evaluations may produce the wrong guess.
-      // Execptionally fast rotations from the user or animation could do this.
-                
+      // Worce: execptionally fast rotations from the user or animation could
+      // create overly large jumps between evaluations may produce the wrong 
+      // guess.
+        
       // During user interaction, this works. The angle difference from the
       // initial touch is recalculated each time, so ONLY the final evaluation
       // of this method, when touch ends, is used to keep the rotation in sync
@@ -695,10 +718,9 @@ final class WheelControl: UIControl, AnimationDelegate  {
       var difference = abs(wheelState.currentRotation - rotation)
       var previousDifference = difference
       
-      // When rotating over the dicontinuity between
-      // the -3.14 and 3.14 angles, we need to figure out
-      // the what to add/substract from rotation to
-      // keep incrementing the rotation in the correct direction
+      // When rotating over the dicontinuity between the -3.14 and 3.14 angles,
+      // we need to figure out what to add/substract from rotation to keep
+      // incrementing the rotation in the correct direction
       var addOrSubtract = true
       var tries: [String] = []
                 

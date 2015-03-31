@@ -17,7 +17,7 @@ enum TimerStatus: String, Printable {
 
 // MARK: -
 // MARK: Timer class
-class Timer: NSObject {
+final class Timer: NSObject {
   
   // MARK: Properties
   var originalStartTime:       NSTimeInterval?

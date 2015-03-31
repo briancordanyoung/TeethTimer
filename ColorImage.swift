@@ -1,6 +1,6 @@
 import UIKit
 
-class ColorImage: NSObject {
+final class ColorImage: NSObject {
     
     class func colorizeImage(image: UIImage, withColor color: UIColor) -> UIImage {
         UIGraphicsBeginImageContext(image.size)

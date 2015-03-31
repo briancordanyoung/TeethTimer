@@ -1,6 +1,6 @@
 import UIKit
 
-class ImageWheelVisualState {
+final class ImageWheelVisualState {
     var wedgeOpacityList = Dictionary<Int, CGFloat>()
 
     init() {

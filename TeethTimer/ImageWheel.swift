@@ -43,7 +43,7 @@ struct WedgeRegion: Printable {
 
 // MARK: -
 // MARK: - ImageWheel Class
-class ImageWheel: UIView {
+final class ImageWheel: UIView {
 
   // public properties
 
