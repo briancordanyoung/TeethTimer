@@ -2,7 +2,6 @@ TODO:
 ---------------------------------------
 - TimerViewController:
 	- Implement percentage dictionary for length of time to display each image
-	- updateWheelWithPercentageDone(percentageDone: CGFloat)
 - ImageWheel
 	- Init() implement decoder
 - WheelControl:

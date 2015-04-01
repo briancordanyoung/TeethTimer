@@ -244,10 +244,10 @@ final class TimerViewController: UIViewController {
 
   func updateTimerDisplay(timer: Timer?) {
     if let timer = timer {
-      let percentageDone = timer.percentageRemaining
+      let percentageRemaining = timer.percentageRemaining
       
       let d = Developement()
-      updateWheelWithPercentageDone(percentageDone)
+      updateWheelWithpercentageRemaining(percentageRemaining)
       
       timerLabel.text = timeStringFromDuration(timer.secondsRemaining)
       
@@ -259,18 +259,18 @@ final class TimerViewController: UIViewController {
     }
   }
 
-  func updateWheelWithPercentageDone(percentageDone: CGFloat) {
+  func updateWheelWithpercentageRemaining(percentageRemaining: CGFloat) {
     if let     gavinWheel = gavinWheel,
        let imageWheelView = imageWheelView {
 
       let firstAndLastStep = 2
       let stepsToCountDown = imageWheelView.images.count - firstAndLastStep
 
-      let nextImageFromSteps = currentWheelValueFromPrecent( percentageDone,
+      let nextImageFromSteps = currentWheelValueFromPrecent( percentageRemaining,
                                            WithSectionCount: stepsToCountDown)
       let nextImage                 = nextImageFromSteps + firstAndLastStep
 
-      let countDownHasNotBegun      = percentageDone == 1.0
+      let countDownHasNotBegun      = percentageRemaining == 1.0
       
       let currentImage              = imageWheelView.currentImage
       let notDisplayingFirstImage   = currentImage > 1
@@ -290,7 +290,8 @@ final class TimerViewController: UIViewController {
         }
         
       } else if rotateToNextImage {
-        // As soon as it is less, advance to the 2nd image.
+        // As soon as percentageRemaining is less than 100%, 
+        // advance to the next image.
         let rotation = imageWheelView.rotationForImage(nextImage)
         gavinWheel.animateToRotation(rotation)
       }
@@ -302,11 +303,11 @@ final class TimerViewController: UIViewController {
   
   // TODO: Create a dictionary for Image and percent total time
   //       alter method to return the current image
-  func currentWheelValueFromPrecent(percentageDone: CGFloat,
-    WithSectionCount sections: Int) -> Int {
-      let percentageToGo = 1.0 - percentageDone
-      let sectionsByPercent = Int(percentageToGo * CGFloat(sections))
-      let current = clamp(sectionsByPercent, ToValue: sections)
+  func currentWheelValueFromPrecent(percentageRemaining: CGFloat,
+                              WithSectionCount sectionCount: Int) -> Int {
+      let percentageDone = 1.0 - percentageRemaining
+      let sectionsByPercent = Int(percentageDone * CGFloat(sectionCount))
+      let current = clamp(sectionsByPercent, ToValue: sectionCount)
       
       return current
   }
