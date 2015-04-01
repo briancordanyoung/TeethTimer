@@ -46,16 +46,7 @@ final class Timer: NSObject {
       return _status
     }
     set(newStatus) {
-      switch newStatus {
-      case .Ready:
-        reset()
-      case .Counting:
-        start()
-      case .Paused:
-        pause()
-      case .Completed:
-        complete()
-      }
+      changeStatus(newStatus)
     }
   }
   
@@ -131,6 +122,20 @@ final class Timer: NSObject {
   
   // MARK: -
   // MARK: Timer Actions
+  func changeStatus(status: TimerStatus) {
+    switch status {
+    case .Ready:
+      reset()
+    case .Counting:
+      start()
+    case .Paused:
+      pause()
+    case .Completed:
+      complete()
+    }
+  }
+  
+  
   func reset() {
     _status                = .Ready
     originalStartTime      = nil
