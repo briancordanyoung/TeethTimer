@@ -259,46 +259,42 @@ final class TimerViewController: UIViewController {
     }
   }
 
-  // TODO: Code smell!
-  //       This can be refactored to make more sence and be more clear
-  //       about why 1's are added and subtracted
-  //       when to call gavinWheel.animateToRotation(rotation) can be simplified
   func updateWheelWithPercentageDone(percentageDone: CGFloat) {
-    let d = Developement()
-    var message = "percentageDone: \(d.pad(percentageDone))"
-    
-
     if let     gavinWheel = gavinWheel,
        let imageWheelView = imageWheelView {
-      // At 100% should always be the first image
-      // But, as soon as it is less, advance to the 2nd image.
-      // This done on the lines marked below 1, 2 & 3
 
-      var steps = imageWheelView.images.count - 1
-      steps = steps - 1  // 1
+      let firstAndLastStep = 2
+      let stepsToCountDown = imageWheelView.images.count - firstAndLastStep
 
-      var currentImage = 1 + currentWheelValueFromPrecent( percentageDone,
-                                         WithSectionCount: steps)
-      currentImage = currentImage + 1 // 2
+      let nextImageFromSteps = currentWheelValueFromPrecent( percentageDone,
+                                           WithSectionCount: stepsToCountDown)
+      let nextImage                 = nextImageFromSteps + firstAndLastStep
 
-      if percentageDone == 1.0 { // 3
-        if imageWheelView.currentImage != 1 {
+      let countDownHasNotBegun      = percentageDone == 1.0
+      
+      let currentImage              = imageWheelView.currentImage
+      let notDisplayingFirstImage   = currentImage > 1
+      let rotateToFirstImage        = countDownHasNotBegun &&
+                                      notDisplayingFirstImage
+        
+      let notDisplayingCurrentImage = imageWheelView.currentImage != nextImage
+      let notAlreadyAnimating       = gavinWheel.animationState   == .AtRest
+      let rotateToNextImage         = notDisplayingCurrentImage &&
+                                      notAlreadyAnimating
+      
+      if countDownHasNotBegun {
+        // At 100% should always be the first image
+        if rotateToFirstImage  {
           let rotation = imageWheelView.rotationForImage(1)
           gavinWheel.animateToRotation(rotation)
         }
-      } else if imageWheelView.currentImage != currentImage {
         
-        if gavinWheel.animationState == .AtRest {
-          let rotation = imageWheelView.rotationForImage(currentImage)
-          gavinWheel.animateToRotation(rotation)
-          message = "percentageDone: \(d.pad(percentageDone))  animateToRotation: \(d.pad(rotation))"
-        } else {
-          message = "percentageDone: \(d.pad(percentageDone))  animateToRotation:  AVOIDED "
-        }
+      } else if rotateToNextImage {
+        // As soon as it is less, advance to the 2nd image.
+        let rotation = imageWheelView.rotationForImage(nextImage)
+        gavinWheel.animateToRotation(rotation)
       }
     }
-    
-    println(message)
   }
 
 
