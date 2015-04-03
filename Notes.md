@@ -3,22 +3,42 @@ TODO:
 - TimerViewController:
 	- Implement percentage dictionary for length of time to display each image
 - ImageWheel
-	- Init() implement decoder
+	- Init() implement decoder and state restoration
 - WheelControl:
-	- TODO: how close to a full circle the difference can be compared to
-	- TODO: Should undampenedNewRotation be feed in to directionsToDampenUsingAngle()?
-	- TODO: try to replace CGAffineTransformRotate() with CGAffineTransformMakeRotation()
-	- TODO: fix internalRotationOffset
-	- TODO: Figure out spring animation for WheelControl
+	- how close to a full circle the difference can be compared to
+	- Should undampenedNewRotation be feed in to directionsToDampenUsingAngle()?
+	- try to replace CGAffineTransformRotate() with CGAffineTransformMakeRotation()
+	- fix internalRotationOffset
+	- Figure out spring animation for WheelControl
+
+- Features
+	- Settings
+		- Turn on Multiple Users
+	- User ViewController
+		- history
+		- set user name
+	- per user history, stored in iCloud
+		- install Realm
+	- Save to home screen seprate users
+		- user url routing to set current user
+		- how to save to home screen a different user
 
 - Visual improvemets
+	- layout
+		- resize wheel to keep face near top of view
 	- create animating curved mask for each image
-	- Create Start/Pause/Done button
-	- Create Reset Button
-	- Add Blur Effect
-	- Create Background
-	- Create Drop Shadow
+	- Button:
+		- Start/Pause/Done button
+		- Reset Button
+	- Blur Effect to lowerThird
+	- Background
+		- bubbles filling up BG
+		- dynamics as wheel rotates
+		- disperce on reset
+		
+	- Drop Shadow
 	- Clean up images
+	- Draw Icon
 
 Design:
 ---------------------------------------

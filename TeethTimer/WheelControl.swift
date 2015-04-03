@@ -381,17 +381,17 @@ final class WheelControl: UIControl, AnimationDelegate  {
     
     
     // constraints
-    let viewsDictionary = ["controlView":wheelView]
+    let viewsDictionary = ["wheelView":wheelView]
     
     //position constraints
     let view_constraint_H:[AnyObject] =
-    NSLayoutConstraint.constraintsWithVisualFormat( "H:|[controlView]|",
+    NSLayoutConstraint.constraintsWithVisualFormat( "H:|[wheelView]|",
                                            options: NSLayoutFormatOptions(0),
                                            metrics: nil,
                                              views: viewsDictionary)
     
     let view_constraint_V:[AnyObject] =
-    NSLayoutConstraint.constraintsWithVisualFormat( "V:|[controlView]|",
+    NSLayoutConstraint.constraintsWithVisualFormat( "V:|[wheelView]|",
                                            options: NSLayoutFormatOptions(0),
                                            metrics: nil,
                                              views: viewsDictionary)

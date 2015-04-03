@@ -19,8 +19,6 @@ final class TimerViewController: UIViewController {
   
   let timer = Timer()
   
-  var gavinWheelHeight: NSLayoutConstraint?
-  var gavinWheelWidth: NSLayoutConstraint?
   var gavinWheel: WheelControl?
   
   var previousImageBeforeTouch: ImageIndex?
@@ -50,27 +48,23 @@ final class TimerViewController: UIViewController {
 
     controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
 
-    gavinWheelHeight = NSLayoutConstraint(item: gavinWheel,
-                                     attribute: NSLayoutAttribute.Height,
-                                     relatedBy: NSLayoutRelation.Equal,
-                                        toItem: nil,
-                                     attribute: NSLayoutAttribute.NotAnAttribute,
-                                    multiplier: 1.0,
-                                      constant: gavinWheelSize())
-    if let gavinWheelHeight = gavinWheelHeight {
-        gavinWheel.addConstraint(gavinWheelHeight)
-    }
-    
-    gavinWheelWidth = NSLayoutConstraint(item: gavinWheel,
-                                    attribute: NSLayoutAttribute.Width,
-                                    relatedBy: NSLayoutRelation.Equal,
-                                       toItem: nil,
-                                    attribute: NSLayoutAttribute.NotAnAttribute,
-                                   multiplier: 1.0,
-                                     constant: gavinWheelSize())
-    if let gavinWheelWidth = gavinWheelWidth {
-        gavinWheel.addConstraint(gavinWheelWidth)
-    }
+    let height = NSLayoutConstraint(item: gavinWheel,
+                               attribute: NSLayoutAttribute.Width,
+                               relatedBy: NSLayoutRelation.Equal,
+                                  toItem: self.view,
+                               attribute: NSLayoutAttribute.Height,
+                              multiplier: 1.5,
+                                constant: 0.0)
+    self.view.addConstraint(height)
+
+    let aspect = NSLayoutConstraint(item: gavinWheel,
+                               attribute: NSLayoutAttribute.Width,
+                               relatedBy: NSLayoutRelation.Equal,
+                                  toItem: gavinWheel,
+                               attribute: NSLayoutAttribute.Height,
+                              multiplier: 1.0,
+                                constant: 0.0)
+    gavinWheel.addConstraint(aspect)
   
     gavinWheel.setTranslatesAutoresizingMaskIntoConstraints(false)
 
@@ -146,7 +140,6 @@ final class TimerViewController: UIViewController {
   // MARK: View Controller Rotation Methods
   override func viewWillTransitionToSize(size: CGSize,
     withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-      updateGavinWheelSize()
   }
   
   override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation,
@@ -154,7 +147,6 @@ final class TimerViewController: UIViewController {
   }
   
   override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-    updateGavinWheelSize()
   }
   
   // MARK: -
@@ -325,24 +317,6 @@ final class TimerViewController: UIViewController {
     return value
   }
   
-  // MARK: -
-  // MARK: Layout Methods
-  func updateGavinWheelSize() {
-    gavinWheelHeight?.constant = gavinWheelSize()
-    gavinWheelWidth?.constant  = gavinWheelSize()
-  }
-  
-  func gavinWheelSize() -> (CGFloat) {
-    let height = self.view.bounds.height
-    let width = self.view.bounds.width
-    
-    var gavinWheelSize = height
-    if width > height {
-      gavinWheelSize = width
-    }
-    
-    return gavinWheelSize * 2
-  }
   
   // MARK: -
   // MARK: Helpers

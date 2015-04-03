@@ -74,8 +74,12 @@ final class ImageWheel: UIView {
   
   // Internal properties
   // Image and Wedge Properties
-  let wedgeImageHeight: CGFloat  = (800 * 0.9)
-  let wedgeImageWidth:  CGFloat  = (734 * 0.9)
+  let wedgeImageHeight: CGFloat  = 800 * 0.9
+  let wedgeImageWidth:  CGFloat  = 734 * 0.9
+  var wedgeImageAspect: CGFloat {
+    return wedgeImageWidth / wedgeImageHeight
+  }
+  
   let images:          [UIImage]
 
   // Image and Wedge Properties
@@ -110,7 +114,6 @@ final class ImageWheel: UIView {
     
 
     createWedges(sectionsCount)
-    addWedgeContraints(sectionsCount)
     updateAppearanceForRotation(currentRotation)
   }
   
@@ -214,6 +217,33 @@ final class ImageWheel: UIView {
     }
   }
   
+  
+  override func didMoveToSuperview() {
+    addSelfContraints()
+    addWedgeContraints(wedges.count)
+  }
+  
+  func addSelfContraints() {
+    if let superview = self.superview {
+      let viewsDictionary = ["wheel":self]
+      
+      let height:[AnyObject] =
+      NSLayoutConstraint.constraintsWithVisualFormat( "V:|[wheel]|",
+                                             options: NSLayoutFormatOptions(0),
+                                             metrics: nil,
+                                               views: viewsDictionary)
+      
+      let width:[AnyObject] =
+      NSLayoutConstraint.constraintsWithVisualFormat( "H:|[wheel]|",
+                                             options: NSLayoutFormatOptions(0),
+                                             metrics: nil,
+                                               views: viewsDictionary)
+      
+      superview.addConstraints(height)
+      superview.addConstraints(width)
+    }
+  }
+  
   func addWedgeContraints(count: Int) {
     self.setTranslatesAutoresizingMaskIntoConstraints(false)
 
@@ -238,47 +268,29 @@ final class ImageWheel: UIView {
                                         multiplier: 1.0,
                                           constant: 0.0))
         
-        imageView.addConstraint( NSLayoutConstraint(item: imageView,
-                                    attribute: NSLayoutAttribute.Height,
-                                    relatedBy: NSLayoutRelation.Equal,
-                                       toItem: nil,
-                                    attribute: NSLayoutAttribute.NotAnAttribute,
-                                   multiplier: 1.0,
-                                     constant: wedgeImageHeight))
+        let height = NSLayoutConstraint(item: imageView,
+                                   attribute: NSLayoutAttribute.Height,
+                                   relatedBy: NSLayoutRelation.Equal,
+                                      toItem: self,
+                                   attribute: NSLayoutAttribute.Height,
+                                  multiplier: 1.0,
+                                    constant: 0.0)
+        self.addConstraint(height)
         
-        imageView.addConstraint( NSLayoutConstraint(item: imageView,
-                                    attribute: NSLayoutAttribute.Width,
-                                    relatedBy: NSLayoutRelation.Equal,
-                                       toItem: nil,
-                                    attribute: NSLayoutAttribute.NotAnAttribute,
-                                   multiplier: 1.0,
-                                     constant: wedgeImageWidth))
+        let aspect = NSLayoutConstraint(item: imageView,
+                                   attribute: NSLayoutAttribute.Width,
+                                   relatedBy: NSLayoutRelation.Equal,
+                                      toItem: imageView,
+                                   attribute: NSLayoutAttribute.Height,
+                                  multiplier: wedgeImageAspect,
+                                    constant: 0.0)
+        self.addConstraint(aspect)
       }
     }
 
   }
 
   
-  override func didMoveToSuperview() {
-    if let superview = self.superview {
-      let viewsDictionary = ["wheel":self]
-      
-      let view_constraint_H:[AnyObject] =
-      NSLayoutConstraint.constraintsWithVisualFormat(  "H:|[wheel]|",
-        options: NSLayoutFormatOptions(0),
-        metrics: nil,
-        views: viewsDictionary)
-      
-      let view_constraint_V:[AnyObject] =
-      NSLayoutConstraint.constraintsWithVisualFormat(  "V:|[wheel]|",
-        options: NSLayoutFormatOptions(0),
-        metrics: nil,
-        views: viewsDictionary)
-      
-      superview.addConstraints(view_constraint_H)
-      superview.addConstraints(view_constraint_V)
-    }
-  }
   
   
   
