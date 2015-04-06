@@ -144,8 +144,12 @@ final class TimerViewController: UIViewController {
   
   override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation,
     duration: NSTimeInterval) {
-      imageWheelView?.updateWedgeImageViewContraints( duration,
-                                      AndOrientation: toInterfaceOrientation)
+      // pre iOS 8 only
+    if SystemVersion.iOS7AndBelow() {
+        imageWheelView?.updateWedgeImageViewContraints( duration,
+                                        AndOrientation: toInterfaceOrientation,
+                                 AndViewControllerSize: self.view.bounds.size)
+    }
   }
   
   override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
