@@ -103,7 +103,7 @@ final class ImageWheel: UIView {
   var wedgeCountParity: Parity {
     return wedgeCountParityForCount(wedges.count)
   }
-
+  
   // MARK: -
   // MARK: Initialization
   init(Sections sectionsCount: Int,
@@ -251,23 +251,40 @@ final class ImageWheel: UIView {
       if let imageView = imageViewFromValue(i) {
         
         imageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        createCenterContraintsForView(imageView)
+        if SystemVersion.iOS8AndUp() {
+          createHeightAndAspectContraintsForView(imageView)
+        } else {
+          createHeightAndWidthContraintsForView(imageView)
+        }
+      }
+    }
+  }
+
+  
+  func createCenterContraintsForView(imageView: UIView) {
+        let centerY = NSLayoutConstraint(item: imageView,
+                                    attribute: NSLayoutAttribute.CenterY,
+                                    relatedBy: NSLayoutRelation.Equal,
+                                       toItem: self,
+                                    attribute: NSLayoutAttribute.CenterY,
+                                   multiplier: 1.0,
+                                     constant: 0.0)
+        self.addConstraint(centerY)
         
-        self.addConstraint(NSLayoutConstraint(item: imageView,
-                                         attribute: NSLayoutAttribute.CenterY,
-                                         relatedBy: NSLayoutRelation.Equal,
-                                            toItem: self,
-                                         attribute: NSLayoutAttribute.CenterY,
-                                        multiplier: 1.0,
-                                          constant: 0.0))
-        
-        self.addConstraint(NSLayoutConstraint(item: imageView,
-                                         attribute: NSLayoutAttribute.CenterX,
-                                         relatedBy: NSLayoutRelation.Equal,
-                                            toItem: self,
-                                         attribute: NSLayoutAttribute.CenterX,
-                                        multiplier: 1.0,
-                                          constant: 0.0))
-        
+        let centerX = NSLayoutConstraint(item: imageView,
+                                    attribute: NSLayoutAttribute.CenterX,
+                                    relatedBy: NSLayoutRelation.Equal,
+                                       toItem: self,
+                                    attribute: NSLayoutAttribute.CenterX,
+                                   multiplier: 1.0,
+                                     constant: 0.0)
+    self.addConstraint(centerX)
+
+  }
+  
+  // pre iOS 8 only
+  func createHeightAndAspectContraintsForView(imageView: UIView) {
         let height = NSLayoutConstraint(item: imageView,
                                    attribute: NSLayoutAttribute.Height,
                                    relatedBy: NSLayoutRelation.Equal,
@@ -285,16 +302,74 @@ final class ImageWheel: UIView {
                                   multiplier: wedgeImageAspect,
                                     constant: 0.0)
         self.addConstraint(aspect)
+    
+  }
+  
+  // pre iOS 8 only
+  func createHeightAndWidthContraintsForView(imageView: UIView) {
+        let height = NSLayoutConstraint(item: imageView,
+                                   attribute: NSLayoutAttribute.Height,
+                                   relatedBy: NSLayoutRelation.Equal,
+                                      toItem: nil,
+                                   attribute: NSLayoutAttribute.NotAnAttribute,
+                                  multiplier: 1.0,
+                                    constant: wedgeImageHeight)
+        imageView.addConstraint(height)
+        
+        let width = NSLayoutConstraint(item: imageView,
+                                   attribute: NSLayoutAttribute.Width,
+                                   relatedBy: NSLayoutRelation.Equal,
+                                      toItem: nil,
+                                   attribute: NSLayoutAttribute.NotAnAttribute,
+                                  multiplier: 1.0,
+                                    constant: wedgeImageWidth)
+        imageView.addConstraint(width)
+  }
+  
+  // iOS 7 Only
+  func updateWedgeImageViewContraints(duration: NSTimeInterval,
+                    AndOrientation orientation: UIInterfaceOrientation,
+                    AndViewControllerSize size: CGSize) {
+    
+    println("iOS 7 contraint update")
+    let larger  = max(size.width, size.height)
+    let smaller = min(size.width, size.height)
+    let developementHeight = CGFloat(527.0)
+                      
+    let ratio: CGFloat
+    
+    switch orientation {
+      case .Unknown,
+           .Portrait,
+           .PortraitUpsideDown:
+        ratio = larger  / developementHeight
+      case .LandscapeLeft,
+           .LandscapeRight:
+        ratio = smaller / developementHeight
+    }
+    
+    let height = self.wedgeImageHeight * ratio
+    let width  = self.wedgeImageWidth  * ratio
+    
+    for i in 1...wedges.count {
+      if let imageView = imageViewFromValue(i) {
+        for constraintTmp in imageView.constraints() {
+          
+          let constraint = constraintTmp as! NSLayoutConstraint
+          if constraint.firstAttribute == NSLayoutAttribute.Height {
+            UIView.animateWithDuration(duration, animations: {
+              constraint.constant =  height
+            })
+          }
+          if constraint.firstAttribute == NSLayoutAttribute.Width {
+            UIView.animateWithDuration(duration, animations: {
+              constraint.constant =  width
+            })
+          }
+        }
       }
     }
-
   }
-
-  
-  
-  
-  
-  
   
   
   
