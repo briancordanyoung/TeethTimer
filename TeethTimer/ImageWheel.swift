@@ -331,7 +331,6 @@ final class ImageWheel: UIView {
                     AndOrientation orientation: UIInterfaceOrientation,
                     AndViewControllerSize size: CGSize) {
     
-    println("iOS 7 contraint update")
     let larger  = max(size.width, size.height)
     let smaller = min(size.width, size.height)
     let developementHeight = CGFloat(527.0)
