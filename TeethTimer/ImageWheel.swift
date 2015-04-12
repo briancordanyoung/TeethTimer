@@ -137,9 +137,27 @@ final class ImageWheel: UIView {
       
       let wedgeAngle = (CGFloat(wedgeWidthAngle) * CGFloat(i)) - wedgeStartingAngle
       
-      var imageView = UIImageView(image: imageOfNumber(i))
-      imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
-      imageView.transform = CGAffineTransformMakeRotation(wedgeAngle)
+//      var imageView = UIImageView(image: imageOfNumber(i))
+      var imageView = WedgeImageView(image: imageOfNumber(i))
+      let layer = imageView.layer as! PieSliceLayer
+      imageView.percentCoverage = 1.0
+//      layer.angleWidth = wedgeWidthAngle
+      
+//      let slice = pieSliceLayer(width: wedgeWidthAngle)
+//      let wedgeFrame = imageView.bounds
+//      slice.frame = wedgeFrame
+//      
+//      imageView.layer.addSublayer(slice)
+//      imageView.layer.mask = slice
+//      imageView.layer.shouldRasterize = true
+
+//      slice.anchorPoint = CGPoint(x: 0.465, y: 0.5)
+//      slice.anchorPoint = CGPoint(x: 0.465, y: 0.3070)
+//      imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
+      imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+//      imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+//      imageView.transform = CGAffineTransformMakeRotation(wedgeAngle)
+      imageView.layer.transform = CATransform3DMakeRotation(wedgeAngle, 0.0, 0.0, 1.0)
       imageView.tag = i
       
       self.addSubview(imageView)
@@ -154,6 +172,17 @@ final class ImageWheel: UIView {
       createWedgeRegionsOdd(count)
     }
 }
+  
+  func pieSliceLayer(#width: CGFloat) -> PieSliceLayer {
+
+    let slice = PieSliceLayer()
+    slice.angleWidth = width
+    slice.strokeWidth = 0.0
+    slice.fillColor = UIColor.blackColor()
+
+    return slice
+  }
+  
   
   
   func wedgeCountParityForCount(count: Int) -> Parity {
@@ -444,13 +473,13 @@ final class ImageWheel: UIView {
   
   // MARK: -
   // MARK: Image Computed Properties
-  var allWedgeImageViews: [UIImageView] {
+  var allWedgeImageViews: [WedgeImageView] {
     let views = self.subviews
     
-    var wedgeImageViews: [UIImageView] = []
+    var wedgeImageViews: [WedgeImageView] = []
     for image in views {
       if image.isKindOfClass(UIImageView.self) {
-        let imageView = image as! UIImageView
+        let imageView = image as! WedgeImageView
         if imageView.tag != 0 {
           wedgeImageViews.append(imageView)
         }
@@ -660,12 +689,16 @@ final class ImageWheel: UIView {
   }
 
   // MARK: image and imageView helpers
-  func imageViewFromValue(value: Int) -> UIImageView? {
+//  func imageViewFromValue(value: Int) -> UIImageView? {
+    func imageViewFromValue(value: Int) -> WedgeImageView? {
     
-    var wedgeView: UIImageView?
+//    var wedgeView: UIImageView?
+    var wedgeView: WedgeImageView?
     
     for image in allWedgeImageViews {
-      let imageView = image as UIImageView
+//      let imageView = image as UIImageView
+      let imageView = image
+
       if imageView.tag == value {
         wedgeView = imageView
       }
