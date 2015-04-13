@@ -44,6 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   
   func applicationDidBecomeActive(application: UIApplication) {
+    timerViewController.setupAppearenceOfLowerThird()
     if continueTimerWhenEnteringForeground {
       timerViewController.timer.start()
       continueTimerWhenEnteringForeground = false

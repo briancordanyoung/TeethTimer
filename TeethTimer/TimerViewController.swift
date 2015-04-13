@@ -10,7 +10,9 @@ final class TimerViewController: UIViewController {
   @IBOutlet weak var timerLabel:       UILabel!
   @IBOutlet weak var fullScreenImage:  UIImageView!
   @IBOutlet weak var controlView:      UIView!
-  @IBOutlet weak var lowerThirdView:   UIView!
+  @IBOutlet weak var lowerThirdView:   UIImageView!
+  @IBOutlet weak var snapshotView:     UIView!
+  @IBOutlet weak var testImageView:    UIImageView!
   
   @IBOutlet weak var testButton:       UIButton!
   
@@ -23,6 +25,11 @@ final class TimerViewController: UIViewController {
   
   var previousImageBeforeTouch: ImageIndex?
   var timerStateBeforeTouch: TimerStatus = .Paused
+  
+  var blurLowerThird: Bool  {
+    return NSUserDefaults.standardUserDefaults().boolForKey("blurLowerThird")
+  }
+  var viewsAreSetupForBlurring = false
   
   // A computed property to make it easy to access the ImageWheel inside gavinWheel
   var imageWheelView: ImageWheel? {
@@ -133,6 +140,16 @@ final class TimerViewController: UIViewController {
     timer.reset()
   }
   
+  override func viewDidAppear(animated: Bool) {
+    setupAppearenceOfLowerThird()
+//    NSTimer.scheduledTimerWithTimeInterval( 0.1,
+//                                    target: self,
+//                                  selector: Selector("setupAppearenceOfLowerThird"),
+//                                  userInfo: nil,
+//                                   repeats: false)
+
+  }
+  
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
   }
@@ -193,7 +210,15 @@ final class TimerViewController: UIViewController {
       imageWheelView.rotationAngle = gavinWheel.rotationAngle
       gavinWheel.snapToRotation    = imageWheelView.centerRotationForSection
     }
+
+    if blurLowerThird && viewsAreSetupForBlurring {
+      blurLowerThirdView()
+    }
   }
+  
+  
+  
+  
   
   func gavinWheelRotatedByUser(gavinWheel: WheelControl) {
     if let previousImageBeforeTouch = previousImageBeforeTouch,
@@ -368,12 +393,64 @@ final class TimerViewController: UIViewController {
   }
   
   // MARK: Appearance Helper
-  private func styleButton(button: UIButton) {
+  private func styleButton(button: UIButton)  {
     button.layer.borderWidth = 1
     button.layer.cornerRadius = 15
     button.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).CGColor
     button.titleLabel?.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
   }
+  
+  func takeSnapshotOfView(view: UIView) -> UIImage {
+    let resolutionScale = CGFloat(0.25)
+    
+    var size = view.frame.size
+    var rect = view.frame
+    size.width  *= resolutionScale
+    size.height *= resolutionScale
+    rect.size   = size
+    rect.origin.x = 0
+    rect.origin.y = 0
+    
+    UIGraphicsBeginImageContext(size)
+    view.drawViewHierarchyInRect(rect, afterScreenUpdates:false)
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    return image
+  }
+
+  func setupAppearenceOfLowerThird() {
+    viewsAreSetupForBlurring = true
+    if blurLowerThird {
+      blurLowerThirdView()
+      lowerThirdView.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
+    } else {
+      lowerThirdView.image = nil
+      lowerThirdView.backgroundColor = UIColor(white: 0.0, alpha: 0.5)
+    }
+  }
+  
+  
+  func blurLowerThirdView() {
+    
+    // TODO: Track down and stop fluttering on initial view of blurred image
+    var rect = lowerThirdView.frame
+    rect.size.height = 88.0;
+    rect.origin.y = 0
+    println("rect \(rect)")
+    
+    let lowerThirdImage = takeSnapshotOfView( snapshotView )
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+      let lowerThirdBlurredImage = lowerThirdImage.applyBlurWithRadius( 4.0,
+        tintColor: UIColor(white:0.0, alpha: 0.5),
+        saturationDeltaFactor: 2.0,
+        maskImage: nil)
+      dispatch_sync(dispatch_get_main_queue(), {
+        self.lowerThirdView.image = lowerThirdBlurredImage
+      })
+    })
+  }
+
 
   // MARK: Time to String Helpers
   private func timeStringFromMinutes(minutes: Int,
