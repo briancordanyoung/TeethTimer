@@ -112,11 +112,16 @@ final class Timer: NSObject {
     self.init(WithStatusChangedHandler: printStatus,
                 AndTimerUpdatedHandler: printSecondsRemaining)
   }
-  
+
   init( WithStatusChangedHandler statusChangedHandlerFunc: (TimerStatus) -> (),
         AndTimerUpdatedHandler   timerUpdatedHandlerFunc:  (Timer?) -> ()    ) {
       statusChangedHandler  = statusChangedHandlerFunc
       timerUpdatedHandler   = timerUpdatedHandlerFunc
+          
+    #if DEBUG
+       // if debug build, Default to TEST durations of 10 seconds
+      self.duration = NSTimeInterval(10)
+    #endif
   }
   
   
