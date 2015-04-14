@@ -25,7 +25,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="264" id="tbo-rn-9t0"/>
                                 </constraints>
@@ -71,26 +71,16 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1cv-w5-5l7" userLabel="test">
-                                <rect key="frame" x="20" y="40" width="160" height="132"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="160" id="82o-q1-h1s"/>
-                                    <constraint firstAttribute="height" constant="132" id="eRL-Xd-axz"/>
-                                </constraints>
-                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.8636999461" green="0.92927674969999996" blue="0.93136160710000004" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Vn1-Zx-sgu" secondAttribute="bottom" constant="30" id="2zD-1F-Gen"/>
                             <constraint firstAttribute="bottom" secondItem="BC6-ez-KJa" secondAttribute="bottom" constant="-176" id="Clr-1g-UWg"/>
-                            <constraint firstItem="1cv-w5-5l7" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="F7b-fp-zor"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="z2l-dT-yk7" secondAttribute="bottom" constant="30" id="INN-c3-b26"/>
                             <constraint firstItem="BC6-ez-KJa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Lau-v4-LzM"/>
                             <constraint firstAttribute="centerX" secondItem="OUX-Ix-O1U" secondAttribute="centerX" id="PRd-Ye-Pwg"/>
                             <constraint firstAttribute="trailing" secondItem="2WA-zu-ahV" secondAttribute="trailing" id="RXv-d8-s1V"/>
                             <constraint firstItem="Vn1-Zx-sgu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="30" id="SU3-o2-ShK"/>
-                            <constraint firstItem="1cv-w5-5l7" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="ZLA-W9-gDT"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="OUX-Ix-O1U" secondAttribute="bottom" constant="35" id="agX-fw-RkF"/>
                             <constraint firstItem="2WA-zu-ahV" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="fKa-X0-oBi"/>
                             <constraint firstAttribute="trailing" secondItem="BC6-ez-KJa" secondAttribute="trailing" id="iQz-o7-33F"/>
@@ -106,7 +96,6 @@
                         <outlet property="resetButton" destination="z2l-dT-yk7" id="vuu-wS-veL"/>
                         <outlet property="snapshotView" destination="BC6-ez-KJa" id="tKe-H0-5NK"/>
                         <outlet property="startPauseButton" destination="Vn1-Zx-sgu" id="59w-Mo-ILk"/>
-                        <outlet property="testImageView" destination="1cv-w5-5l7" id="us6-gF-6oa"/>
                         <outlet property="timerLabel" destination="OUX-Ix-O1U" id="6fW-xf-yBv"/>
                     </connections>
                 </viewController>
