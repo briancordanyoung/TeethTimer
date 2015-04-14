@@ -54,13 +54,14 @@ final class TimerViewController: UIViewController {
     let gavinWheel = WheelControl()
 
     controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
+//    self.snapshotView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
 
     let height = NSLayoutConstraint(item: gavinWheel,
                                attribute: NSLayoutAttribute.Width,
                                relatedBy: NSLayoutRelation.Equal,
                                   toItem: self.view,
                                attribute: NSLayoutAttribute.Height,
-                              multiplier: 1.5,
+                              multiplier: 1.5, // 2.0
                                 constant: 0.0)
     self.view.addConstraint(height)
 
@@ -142,12 +143,6 @@ final class TimerViewController: UIViewController {
   
   override func viewDidAppear(animated: Bool) {
     setupAppearenceOfLowerThird()
-//    NSTimer.scheduledTimerWithTimeInterval( 0.1,
-//                                    target: self,
-//                                  selector: Selector("setupAppearenceOfLowerThird"),
-//                                  userInfo: nil,
-//                                   repeats: false)
-
   }
   
   override func didReceiveMemoryWarning() {
@@ -436,7 +431,6 @@ final class TimerViewController: UIViewController {
     var rect = lowerThirdView.frame
     rect.size.height = 88.0;
     rect.origin.y = 0
-    println("rect \(rect)")
     
     let lowerThirdImage = takeSnapshotOfView( snapshotView )
     
