@@ -364,6 +364,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
     super.init(frame: frame)
     setupViews()
     resetRotationAngle()
+//    self.backgroundColor = UIColor.blueColor()
   }
   
   required init(coder aDecoder: NSCoder) {
@@ -374,6 +375,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   func setupViews() {
     wheelView.userInteractionEnabled = false
+//    wheelView.backgroundColor = UIColor.greenColor()
     self.addSubview(wheelView)
     
     self.setTranslatesAutoresizingMaskIntoConstraints(false)
