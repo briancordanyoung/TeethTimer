@@ -26,20 +26,54 @@ TODO:
 - Visual improvemets
 	- layout
 		- resize wheel to keep face near top of view
-	- create animating curved mask for each image
 	- Button:
 		- Start/Pause/Done button
 		- Reset Button
-	- Blur Effect to lowerThird
 	- Background
-		- bubbles filling up BG
-		- dynamics as wheel rotates
-		- disperce on reset
+		- Add video and sinc to rotation
 		
-	- Drop Shadow
-	- Clean up images
-	- Draw Icon
+	-Graphics
+		- Drop Shadow
+		- Clean up images
+		- Draw Icon
 
 Design:
 ---------------------------------------
 [Visual Inspiration](https://vimeo.com/118801020)
+
+Reference:
+---------------------------------------
+View Tree:
+
+	- View (Timer View Controller)
+		- snapshotView
+			- controlView
+				- WheelControl
+					- backgroundView (self)
+					- WheelView
+						ImageWheel
+							-imageView (Wedges)
+
+Contraints:
+
+	- View (Timer View Controller)
+		- snapshotView
+			- controlView
+				- WheelControl
+					- backgroundView (self)
+					- WheelView
+						ImageWheel
+							-imageView (Wedges)
+							
+							
+							
+
+
+
+
+
+
+
+
+
+
