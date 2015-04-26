@@ -139,7 +139,8 @@ final class ImageWheel: UIView {
       
       var imageView = UIImageView(image: imageOfNumber(i))
       imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
-      imageView.transform = CGAffineTransformMakeRotation(wedgeAngle)
+//      imageView.transform = CGAffineTransformMakeRotation(wedgeAngle)
+      imageView.layer.transform = CATransform3DMakeRotation(wedgeAngle,0,0,1)
       imageView.tag = i
       
       self.addSubview(imageView)
@@ -252,11 +253,11 @@ final class ImageWheel: UIView {
         
         imageView.setTranslatesAutoresizingMaskIntoConstraints(false)
         createCenterContraintsForView(imageView)
-        if SystemVersion.iOS8AndUp() {
+//        if SystemVersion.iOS8AndUp() {
           createHeightAndAspectContraintsForView(imageView)
-        } else {
-          createHeightAndWidthContraintsForView(imageView)
-        }
+//        } else {
+//          createHeightAndWidthContraintsForView(imageView)
+//        }
       }
     }
   }
@@ -284,13 +285,15 @@ final class ImageWheel: UIView {
   }
   
   // iOS 8 and up
+  // As this Control View is resized, these contraints keep the control
+  // property sized.
   func createHeightAndAspectContraintsForView(imageView: UIView) {
     let height = NSLayoutConstraint(item: imageView,
                                attribute: NSLayoutAttribute.Height,
                                relatedBy: NSLayoutRelation.Equal,
                                   toItem: self,
                                attribute: NSLayoutAttribute.Height,
-                              multiplier: 1.0,
+                              multiplier: 0.75,
                                 constant: 0.0)
     self.addConstraint(height)
     
@@ -305,7 +308,7 @@ final class ImageWheel: UIView {
 
   }
   
-  // pre iOS 8 only
+  // iOS 7 and before
   func createHeightAndWidthContraintsForView(imageView: UIView) {
     let height = NSLayoutConstraint(item: imageView,
                                attribute: NSLayoutAttribute.Height,

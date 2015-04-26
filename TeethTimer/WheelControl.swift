@@ -151,7 +151,8 @@ struct WheelState: Printable {
 
 struct WheelInteractionState {
   
-  var initialTransform:  CGAffineTransform
+//  var initialTransform:  CGAffineTransform
+  var initialTransform:  CATransform3D
   var initialTouchAngle: CGFloat
   var initialRotation:   CGFloat
   var maxDampenAngle:    CGFloat
@@ -161,7 +162,8 @@ struct WheelInteractionState {
   var snapTo:    SnapWheelTo
   
   init() {
-    initialTransform   = CGAffineTransformMakeRotation(0)
+//    initialTransform   = CGAffineTransformMakeRotation(0)
+    initialTransform   = CATransform3DMakeRotation(0,0,0,0)
     initialTouchAngle  = 0.0
     initialRotation    = 0.0
     currently          = .NotInteracting
@@ -324,10 +326,12 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   var currentAngle: CGFloat {
     get {
-      return angleFromTransform(wheelView.transform)
+//      return angleFromTransform(wheelView.transform)
+      return angleFromTransform(wheelView.layer.transform)
     }
     set(newAngle) {
-      wheelView.transform = CGAffineTransformMakeRotation(newAngle)
+//      wheelView.transform = CGAffineTransformMakeRotation(newAngle)
+      wheelView.layer.transform = CATransform3DMakeRotation(newAngle,0,0,1)
     }
   }
   
@@ -426,7 +430,8 @@ final class WheelControl: UIControl, AnimationDelegate  {
     // Clear and set state at the beginning of the users rotation
     userState                    = WheelInteractionState()
     userState.currently          = .Interacting
-    userState.initialTransform   = wheelView.transform
+    userState.initialTransform   = wheelView.layer.transform
+  //     userState.initialTransform   = wheelView.transform
     userState.initialRotation    = currentRotation
     userState.initialTouchAngle  = angleAtTouch(touch)
     
@@ -468,8 +473,9 @@ final class WheelControl: UIControl, AnimationDelegate  {
     // TODO: try to replace CGAffineTransformRotate() with CGAffineTransformMakeRotation()
     //       If so, use currentAngle = userState.initialRotation + angleDifference
     //       and remove initialTransform from userState.
-    let t = CGAffineTransformRotate( userState.initialTransform, angleDifference )
-    wheelView.transform = t
+//    let t = CGAffineTransformRotate( userState.initialTransform, angleDifference )
+//    wheelView.transform = t
+    wheelView.layer.transform = CATransform3DRotate(userState.initialTransform,angleDifference,0,0,1)
     setRotationUsingAngle(userState.initialRotation + angleDifference)
                                         
     self.sendActionsForControlEvents(UIControlEvents.TouchDragInside)
@@ -995,10 +1001,11 @@ final class WheelControl: UIControl, AnimationDelegate  {
     return angle
   }
 
-  func angleFromTransform(transform: CGAffineTransform) -> CGFloat {
-    let b = transform.b
-    let a = transform.a
-    let angle = atan2(b, a)
+  func angleFromTransform(transform: CATransform3D) -> CGFloat {
+//    let b = transform.b
+//    let a = transform.a
+//    let angle = atan2(b, a)
+    let angle = atan2(transform.m12, transform.m11)
     
     return angle
   }

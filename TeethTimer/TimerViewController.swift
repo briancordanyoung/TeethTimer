@@ -8,6 +8,7 @@ final class TimerViewController: UIViewController {
   @IBOutlet weak var startPauseButton: UIButton!
   @IBOutlet weak var resetButton:      UIButton!
   @IBOutlet weak var timerLabel:       UILabel!
+  @IBOutlet weak var wheelCenterView:  UIView!
   @IBOutlet weak var fullScreenImage:  UIImageView!
   @IBOutlet weak var controlView:      UIView!
   @IBOutlet weak var lowerThirdView:   UIImageView!
@@ -20,6 +21,8 @@ final class TimerViewController: UIViewController {
   @IBOutlet weak var flippedLabel:     UILabel!
   
   let timer = Timer()
+  
+  let dev = Developement()
   
   var gavinWheel: WheelControl?
   
@@ -53,45 +56,56 @@ final class TimerViewController: UIViewController {
     
     let gavinWheel = WheelControl()
 
-    controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
+    // TODO: Why do I need controlView? If I remove it and use any of the other
+    //       statements below, I loose all touch events.
+      controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
+//    snapshotView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
+//    snapshotView.addSubview(gavinWheel)
 //    self.snapshotView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
 
     let height = NSLayoutConstraint(item: gavinWheel,
-                               attribute: NSLayoutAttribute.Width,
-                               relatedBy: NSLayoutRelation.Equal,
+                               attribute: .Width,
+                               relatedBy: .Equal,
                                   toItem: self.view,
-                               attribute: NSLayoutAttribute.Height,
-                              multiplier: 1.5, // 2.0
+                               attribute: .Height,
+                              multiplier: 2.0,
                                 constant: 0.0)
     self.view.addConstraint(height)
 
     let aspect = NSLayoutConstraint(item: gavinWheel,
-                               attribute: NSLayoutAttribute.Width,
-                               relatedBy: NSLayoutRelation.Equal,
+                               attribute: .Width,
+                               relatedBy: .Equal,
                                   toItem: gavinWheel,
-                               attribute: NSLayoutAttribute.Height,
+                               attribute: .Height,
                               multiplier: 1.0,
                                 constant: 0.0)
     gavinWheel.addConstraint(aspect)
   
     gavinWheel.setTranslatesAutoresizingMaskIntoConstraints(false)
 
-    self.view.addConstraint(NSLayoutConstraint(item: gavinWheel,
-                                          attribute: NSLayoutAttribute.CenterY,
-                                          relatedBy: NSLayoutRelation.Equal,
-                                             toItem: timerLabel,
-                                          attribute: NSLayoutAttribute.CenterY,
-                                         multiplier: 1.0,
-                                           constant: 0.0))
+    let centerY = NSLayoutConstraint(item: gavinWheel,
+                                attribute: .CenterY,
+                                relatedBy: .Equal,
+                                   toItem: wheelCenterView,
+                                attribute: .CenterY,
+                               multiplier: 1.0,
+                                 constant: 0.0)
+//    centerY.priority = 100.0
+//    println("centerY.priority \(centerY.priority)")
+    self.view.addConstraint(centerY)
     
 
-    self.view.addConstraint(NSLayoutConstraint(item: gavinWheel,
-                                          attribute: NSLayoutAttribute.CenterX,
-                                          relatedBy: NSLayoutRelation.Equal,
-                                             toItem: timerLabel,
-                                          attribute: NSLayoutAttribute.CenterX,
-                                         multiplier: 1.0,
-                                           constant: 0.0))
+
+    let centerX = NSLayoutConstraint(item: gavinWheel,
+                                attribute: .CenterX,
+                                relatedBy: .Equal,
+                                   toItem: wheelCenterView,
+                                attribute: .CenterX,
+                               multiplier: 1.0,
+                                 constant: 0.0)
+//    centerX.priority = 100.0
+//    println("centerX.priority \(centerX.priority)")
+    self.view.addConstraint(centerX)
     
     gavinWheel.addTarget( self,
                   action: "gavinWheelChanged:",
@@ -107,7 +121,6 @@ final class TimerViewController: UIViewController {
                                       .TouchDragExit,
                                       .TouchDragOutside,
                                       .TouchCancel ]
-    
     for event in events {
       gavinWheel.addTarget( self,
                     action: "gavinWheelRotatedByUser:",
@@ -128,8 +141,36 @@ final class TimerViewController: UIViewController {
     gavinWheel.dampenCounterClockwise = true
     self.gavinWheel = gavinWheel
     
+    gavinWheel.backgroundColor = UIColor.redColor()
   }
   
+  override func viewWillLayoutSubviews() {
+    super.viewWillLayoutSubviews()
+  }
+  
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+  }
+  
+  func printCenters(label: String) {
+    let a = wheelCenterView.center//self.view.convertPoint(wheelCenterView.center, toView: wheelCenterView)
+    let b = self.view.convertPoint(gavinWheel!.center, toView: gavinWheel!)
+    println("\(label) x:\(dev.pad(a.x)) y:\(dev.pad(a.y))    x:\(dev.pad(b.x)) y:\(dev.pad(b.x))")
+  }
+  
+  
+  override func updateViewConstraints() {
+    super.updateViewConstraints()
+//    printCenters("updateViewConstraints")
+  }
+  
+  func updateViewConstraintsNextLoop() {
+    NSTimer.scheduledTimerWithTimeInterval( 0.0,
+                                    target: self,
+                                  selector: Selector("updateViewConstraints"),
+                                  userInfo: nil,
+                                   repeats: false)
+  }
   
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
@@ -151,12 +192,21 @@ final class TimerViewController: UIViewController {
   
   // MARK: View Controller Rotation Methods
   override func viewWillTransitionToSize(size: CGSize,
-    withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    // TODO: animate & stretch snapshot view through screen rotation
+      coordinator.animateAlongsideTransition(nil, completion: {
+        context in
+        if self.blurLowerThird && self.viewsAreSetupForBlurring {
+          self.blurLowerThirdView()
+        }
+      })
   }
+  
+
   
   override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation,
     duration: NSTimeInterval) {
-      // pre iOS 8 only
+      //  iOS 7 and before only
     if SystemVersion.iOS7AndBelow() {
         imageWheelView?.updateWedgeImageViewContraints( duration,
                                         AndOrientation: toInterfaceOrientation,
@@ -164,7 +214,13 @@ final class TimerViewController: UIViewController {
     }
   }
   
+  
+  
+      //  iOS 7 and before only
   override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+    if blurLowerThird && viewsAreSetupForBlurring {
+      blurLowerThirdView()
+    }
   }
   
   // MARK: -
@@ -407,6 +463,9 @@ final class TimerViewController: UIViewController {
     rect.origin.y = 0
     
     UIGraphicsBeginImageContext(size)
+    UIColor.whiteColor().setFill()
+    let ctx = UIGraphicsGetCurrentContext()
+    CGContextFillRect(ctx, rect)
     view.drawViewHierarchyInRect(rect, afterScreenUpdates:false)
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
@@ -426,8 +485,6 @@ final class TimerViewController: UIViewController {
   
   
   func blurLowerThirdView() {
-    
-    // TODO: Track down and stop fluttering on initial view of blurred image
     var rect = lowerThirdView.frame
     rect.size.height = 88.0;
     rect.origin.y = 0
@@ -435,10 +492,10 @@ final class TimerViewController: UIViewController {
     let lowerThirdImage = takeSnapshotOfView( snapshotView )
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-      let lowerThirdBlurredImage = lowerThirdImage.applyBlurWithRadius( 4.0,
-        tintColor: UIColor(white:0.0, alpha: 0.5),
-        saturationDeltaFactor: 2.0,
-        maskImage: nil)
+      let lowerThirdBlurredImage = lowerThirdImage.applyBlurWithRadius( 8.0,
+                                      tintColor: UIColor(white:0.0, alpha: 0.5),
+                          saturationDeltaFactor: 2.0,
+                                      maskImage: nil)
       dispatch_sync(dispatch_get_main_queue(), {
         self.lowerThirdView.image = lowerThirdBlurredImage
       })

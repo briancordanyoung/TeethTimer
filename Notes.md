@@ -1,6 +1,8 @@
 TODO:
 ---------------------------------------
 - TimerViewController:
+	- Cache all wedge images on startup
+	- Low memory warning - dump extra images
 	- Implement percentage dictionary for length of time to display each image
 - ImageWheel
 	- Init() implement decoder and state restoration
@@ -45,25 +47,25 @@ Reference:
 ---------------------------------------
 View Tree:
 
-	- View (Timer View Controller)
-		- snapshotView
-			- controlView
-				- WheelControl
-					- backgroundView (self)
-					- WheelView
+	View (Timer View Controller)
+		snapshotView
+			controlView
+				WheelControl
+					backgroundView (self)
+					WheelView
 						ImageWheel
-							-imageView (Wedges)
+							imageView (Wedges)
 
 Contraints:
 
-	- View (Timer View Controller)
-		- snapshotView
-			- controlView
-				- WheelControl
-					- backgroundView (self)
-					- WheelView
+	View (Timer View Controller)
+		snapshotView
+			controlView
+				WheelControl
+					backgroundView (self)
+					WheelView
 						ImageWheel
-							-imageView (Wedges)
+							imageView (Wedges)
 							
 							
 							
