@@ -20,7 +20,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BC6-ez-KJa" userLabel="snapshotView" customClass="SnapshotView" customModule="TeethTimer" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="579" width="375" height="264"/>
                                 <subviews>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Msc-xa-DWv" userLabel="VideoView">
+                                    <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Msc-xa-DWv" userLabel="VideoView">
                                         <rect key="frame" x="-313" y="-368" width="1000" height="1000"/>
                                         <color key="backgroundColor" red="0.0" green="1" blue="0.11684455389999999" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
@@ -33,11 +33,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="264" id="tbo-rn-9t0"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="subviews">
-                                        <exclude reference="Msc-xa-DWv"/>
-                                    </mask>
-                                </variation>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2WA-zu-ahV" userLabel="lowerThird">
                                 <rect key="frame" x="0.0" y="579" width="375" height="264"/>
