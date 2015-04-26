@@ -13,6 +13,7 @@ final class TimerViewController: UIViewController {
   @IBOutlet weak var lowerThirdView:   UIImageView!
   @IBOutlet weak var snapshotView:     UIView!
   @IBOutlet weak var testImageView:    UIImageView!
+  @IBOutlet weak var videoView: UIView!
   
   @IBOutlet weak var testButton:       UIButton!
   
@@ -61,7 +62,7 @@ final class TimerViewController: UIViewController {
                                relatedBy: NSLayoutRelation.Equal,
                                   toItem: self.view,
                                attribute: NSLayoutAttribute.Height,
-                              multiplier: 1.5, // 2.0
+                              multiplier: 2.0,
                                 constant: 0.0)
     self.view.addConstraint(height)
 

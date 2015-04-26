@@ -290,7 +290,7 @@ final class ImageWheel: UIView {
                                relatedBy: NSLayoutRelation.Equal,
                                   toItem: self,
                                attribute: NSLayoutAttribute.Height,
-                              multiplier: 1.0,
+                              multiplier: 0.75,
                                 constant: 0.0)
     self.addConstraint(height)
     
@@ -305,7 +305,7 @@ final class ImageWheel: UIView {
 
   }
   
-  // pre iOS 8 only
+  // iOS 7 below
   func createHeightAndWidthContraintsForView(imageView: UIView) {
     let height = NSLayoutConstraint(item: imageView,
                                attribute: NSLayoutAttribute.Height,
