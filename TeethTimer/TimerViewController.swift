@@ -128,6 +128,11 @@ final class TimerViewController: UIViewController {
     gavinWheel.dampenCounterClockwise = true
     self.gavinWheel = gavinWheel
     
+    if SystemVersion.iOS7AndBelow() {
+      imageWheelView?.updateWedgeImageViewContraints( 0,
+                                      AndOrientation: self.interfaceOrientation,
+                               AndViewControllerSize: self.view.bounds.size)
+    }
   }
   
   

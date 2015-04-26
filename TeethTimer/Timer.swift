@@ -27,7 +27,7 @@ final class Timer: NSObject {
   var timerUpdateInterval    = NSTimeInterval(0.1)
   var secondsElapsedAtPause  = NSTimeInterval(0)
   var secondsAddedAfterStart = NSTimeInterval(0)
-  var duration               = NSTimeInterval(60 * 4) // 4 Minute Default
+  var duration               = NSTimeInterval(10) // 4 Minute Default
   var durationSetting: Int  {
     return NSUserDefaults.standardUserDefaults()
       .integerForKey("defaultDurationInSeconds")

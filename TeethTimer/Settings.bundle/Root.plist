@@ -68,7 +68,7 @@
 			<key>Key</key>
 			<string>blurLowerThird</string>
 			<key>DefaultValue</key>
-			<false/>
+			<true/>
 		</dict>
 	</array>
 	<key>StringsTable</key>
