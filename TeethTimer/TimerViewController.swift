@@ -25,6 +25,7 @@ final class TimerViewController: UIViewController {
   let dev = Developement()
   
   var gavinWheel: WheelControl?
+  var gavinWheelContainer = BugFixContainerView()
   
   var previousImageBeforeTouch: ImageIndex?
   var timerStateBeforeTouch: TimerStatus = .Paused
@@ -53,37 +54,43 @@ final class TimerViewController: UIViewController {
     
     styleButton(resetButton)
     styleButton(startPauseButton)
+    gavinWheelContainer.backgroundColor = UIColor.clearColor()
+    gavinWheelContainer.opaque = false
     
     let gavinWheel = WheelControl()
-
+    gavinWheelContainer.addSubview(gavinWheel)
+    gavinWheelContainer.wheelControl = gavinWheel
+    
+    gavinWheelContainer.setTranslatesAutoresizingMaskIntoConstraints(false)
+    gavinWheel.setTranslatesAutoresizingMaskIntoConstraints(false)
+    
     // TODO: Why do I need controlView? If I remove it and use any of the other
     //       statements below, I loose all touch events.
-      controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
+      controlView.insertSubview(gavinWheelContainer, belowSubview: lowerThirdView)
 //    snapshotView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
 //    snapshotView.addSubview(gavinWheel)
 //    self.snapshotView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
 
-    let height = NSLayoutConstraint(item: gavinWheel,
+    let height = NSLayoutConstraint(item: gavinWheelContainer,
                                attribute: .Width,
                                relatedBy: .Equal,
                                   toItem: self.view,
                                attribute: .Height,
-                              multiplier: 2.0,
+                              multiplier: 2.0, // Twice the height of apps view
                                 constant: 0.0)
     self.view.addConstraint(height)
 
-    let aspect = NSLayoutConstraint(item: gavinWheel,
+    let aspect = NSLayoutConstraint(item: gavinWheelContainer,
                                attribute: .Width,
                                relatedBy: .Equal,
-                                  toItem: gavinWheel,
+                                  toItem: gavinWheelContainer,
                                attribute: .Height,
                               multiplier: 1.0,
                                 constant: 0.0)
-    gavinWheel.addConstraint(aspect)
-  
-    gavinWheel.setTranslatesAutoresizingMaskIntoConstraints(false)
+    gavinWheelContainer.addConstraint(aspect)
+    
 
-    let centerY = NSLayoutConstraint(item: gavinWheel,
+    let centerY = NSLayoutConstraint(item: gavinWheelContainer,
                                 attribute: .CenterY,
                                 relatedBy: .Equal,
                                    toItem: wheelCenterView,
@@ -96,7 +103,7 @@ final class TimerViewController: UIViewController {
     
 
 
-    let centerX = NSLayoutConstraint(item: gavinWheel,
+    let centerX = NSLayoutConstraint(item: gavinWheelContainer,
                                 attribute: .CenterX,
                                 relatedBy: .Equal,
                                    toItem: wheelCenterView,
@@ -106,6 +113,28 @@ final class TimerViewController: UIViewController {
 //    centerX.priority = 100.0
 //    println("centerX.priority \(centerX.priority)")
     self.view.addConstraint(centerX)
+
+    
+    let centerYb = NSLayoutConstraint(item: gavinWheel,
+                                attribute: .CenterY,
+                                relatedBy: .Equal,
+                                   toItem: gavinWheelContainer,
+                                attribute: .CenterY,
+                               multiplier: 1.0,
+                                 constant: 0.0)
+    gavinWheelContainer.addConstraint(centerYb)
+    
+
+
+    let centerXb = NSLayoutConstraint(item: gavinWheel,
+                                attribute: .CenterX,
+                                relatedBy: .Equal,
+                                   toItem: gavinWheelContainer,
+                                attribute: .CenterX,
+                               multiplier: 1.0,
+                                 constant: 0.0)
+    gavinWheelContainer.addConstraint(centerXb)
+    
     
     gavinWheel.addTarget( self,
                   action: "gavinWheelChanged:",

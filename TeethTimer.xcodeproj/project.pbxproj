@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B2B31E5C4E30211FC85A4DB9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1113560EAB34F926CF979D1 /* libPods.a */; };
+		D302721C1AED501C009543A2 /* BugFixContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D302721B1AED501C009543A2 /* BugFixContainerView.m */; };
 		D30771821A869B06003BA7E1 /* num-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716C1A869B06003BA7E1 /* num-01@2x.png */; };
 		D30771831A869B06003BA7E1 /* num-02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716D1A869B06003BA7E1 /* num-02@2x.png */; };
 		D30771841A869B06003BA7E1 /* num-03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716E1A869B06003BA7E1 /* num-03@2x.png */; };
@@ -85,6 +86,8 @@
 		494890643301A07092EB8CC0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A8D8BE3E5746E8CC9B850697 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B1113560EAB34F926CF979D1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D302721B1AED501C009543A2 /* BugFixContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugFixContainerView.m; sourceTree = "<group>"; };
+		D302721D1AED503B009543A2 /* BugFixContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugFixContainerView.h; sourceTree = "<group>"; };
 		D307716C1A869B06003BA7E1 /* num-01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-01@2x.png"; path = "TeethTimer/Numbers/num-01@2x.png"; sourceTree = "<group>"; };
 		D307716D1A869B06003BA7E1 /* num-02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-02@2x.png"; path = "TeethTimer/Numbers/num-02@2x.png"; sourceTree = "<group>"; };
 		D307716E1A869B06003BA7E1 /* num-03@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-03@2x.png"; path = "TeethTimer/Numbers/num-03@2x.png"; sourceTree = "<group>"; };
@@ -305,6 +308,8 @@
 				D388C2E41A9EE256007D4F8B /* TeethTimer-Bridging-Header.h */,
 				D3207F2C1ADAC00900ABE2FC /* UIImage+ImageEffects.h */,
 				D3207F2D1ADAC00900ABE2FC /* UIImage+ImageEffects.m */,
+				D302721D1AED503B009543A2 /* BugFixContainerView.h */,
+				D302721B1AED501C009543A2 /* BugFixContainerView.m */,
 			);
 			path = TeethTimer;
 			sourceTree = "<group>";
@@ -512,6 +517,7 @@
 				D3B95AD41ADB3CA300883051 /* SnapshotView.swift in Sources */,
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
 				D34F10B91AAEA1D0009E2A9B /* WheelControl.swift in Sources */,
+				D302721C1AED501C009543A2 /* BugFixContainerView.m in Sources */,
 				D341D23F1AC1FB24007D0593 /* Developement.swift in Sources */,
 				D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
 				D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */,
