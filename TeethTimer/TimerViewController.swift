@@ -1,3 +1,5 @@
+import AVFoundation
+import MediaPlayer
 import UIKit
 
 // MARK: -
@@ -13,7 +15,7 @@ final class TimerViewController: UIViewController {
   @IBOutlet weak var lowerThirdView:   UIImageView!
   @IBOutlet weak var snapshotView:     UIView!
   @IBOutlet weak var testImageView:    UIImageView!
-  @IBOutlet weak var videoView: UIView!
+  @IBOutlet weak var videoView:        VideoView!
   
   @IBOutlet weak var testButton:       UIButton!
   
@@ -21,6 +23,9 @@ final class TimerViewController: UIViewController {
   @IBOutlet weak var flippedLabel:     UILabel!
   
   let timer = Timer()
+  
+  var backgroundPlayer: AVPlayer?
+  var backgroundVideoTime = CMTime()
   
   var gavinWheel: WheelControl?
   
@@ -46,8 +51,6 @@ final class TimerViewController: UIViewController {
   override func viewDidLoad() {
       
     super.viewDidLoad()
-      
-//  fullScreenImage.image = UIImage(named: "background")
     
     styleButton(resetButton)
     styleButton(startPauseButton)
@@ -55,7 +58,6 @@ final class TimerViewController: UIViewController {
     let gavinWheel = WheelControl()
 
     controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
-//    self.snapshotView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
 
     let height = NSLayoutConstraint(item: gavinWheel,
                                attribute: NSLayoutAttribute.Width,
@@ -134,7 +136,51 @@ final class TimerViewController: UIViewController {
                                       AndOrientation: self.interfaceOrientation,
                                AndViewControllerSize: self.view.bounds.size)
     }
+    setupBackground()
   }
+  
+  
+  
+  func setupBackground() {
+    
+    if let filepath = NSBundle.mainBundle().pathForResource("forward", ofType: "m4v") {
+      let fileURL = NSURL.fileURLWithPath(filepath)
+      
+      let answer = NSFileManager.defaultManager().fileExistsAtPath(filepath)
+      if answer {
+        println("file exists")
+      }
+      
+      if let asset = AVURLAsset(URL: fileURL, options: nil) {
+        asset.loadValuesAsynchronouslyForKeys( ["tracks"],
+          completionHandler: {
+            self.setupPlayerWithAsset(asset)
+        })
+      }
+    }
+  }
+    
+  func setupPlayerWithAsset(asset: AVURLAsset) {
+    
+    backgroundVideoTime = asset.duration
+    
+    let playerItem = AVPlayerItem(asset: asset)
+    let player     = AVPlayer(playerItem: playerItem)
+    player.allowsExternalPlayback = false
+  
+    let playerLayer = AVPlayerLayer(player: player)!
+    videoView.layer.addSublayer(playerLayer)
+    playerLayer.frame = videoView.frame
+    
+    player.actionAtItemEnd = .None
+    
+    backgroundPlayer = player
+  
+    
+  }
+  
+  
+
   
   
   override func viewWillAppear(animated: Bool) {
@@ -210,6 +256,18 @@ final class TimerViewController: UIViewController {
     if let imageWheelView = imageWheelView {
       imageWheelView.rotationAngle = gavinWheel.rotationAngle
       gavinWheel.snapToRotation    = imageWheelView.centerRotationForSection
+      
+      let min = gavinWheel.minimumRotation
+      let max = gavinWheel.maximumRotation
+      
+      if let min = min, max = max {
+        let current = gavinWheel.currentRotation
+        let percentageBetween = percentValue( current,
+                                isBetweenLow: min,
+                                     AndHigh: max)
+        updateBackgroundForPercentDone(percentageBetween)
+      }
+      
     }
 
     if blurLowerThird && viewsAreSetupForBlurring {
@@ -217,7 +275,34 @@ final class TimerViewController: UIViewController {
     }
   }
   
+  func updateBackgroundForPercentDone(percent: CGFloat) {
+    if let backgroundPlayer = backgroundPlayer {
+      switch backgroundPlayer.status {
+      case .ReadyToPlay:
+        seekToTimeByPercentage(percent, inPlayer: backgroundPlayer)
+      case .Unknown:
+        println("unknown status")
+      case .Failed:
+        println("failed to play")
+      }
+    }
+  }
   
+  func seekToTimeByPercentage(percent: CGFloat, inPlayer player: AVPlayer) {
+    var seekToTime = backgroundVideoTime
+    seekToTime.value = 499 - (Int(499 * percent)) + 50
+    
+    let currentTime = player.currentTime()
+    
+    if currentTime.value != seekToTime.value {
+      var seekTolorance = seekToTime
+      seekTolorance.value = 1
+      
+      player.seekToTime(seekToTime, toleranceBefore: seekTolorance, toleranceAfter: seekTolorance)
+      println("seek value \(seekToTime.value)     currentTime \(currentTime.value)")
+    }
+
+  }
   
   
   
@@ -474,6 +559,12 @@ final class TimerViewController: UIViewController {
       let elapsedSecs = Int(elapsedSecsTime)
       
       return (elapsedMins, elapsedSecs)
+  }
+
+  func percentValue(value: CGFloat,
+    isBetweenLow   low: CGFloat,
+    AndHigh       high: CGFloat ) -> CGFloat {
+      return (value - low) / (high - low)
   }
 
 }
