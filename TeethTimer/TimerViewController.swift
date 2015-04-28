@@ -16,11 +16,6 @@ final class TimerViewController: UIViewController {
   @IBOutlet weak var testImageView:    UIImageView!
   @IBOutlet weak var videoView:        VideoView!
   
-  @IBOutlet weak var testButton:       UIButton!
-  
-  @IBOutlet weak var posNegLabel:      UILabel!
-  @IBOutlet weak var flippedLabel:     UILabel!
-  
   let timer = Timer()
   
   var backgroundPlayer: AVPlayer?
@@ -55,147 +50,14 @@ final class TimerViewController: UIViewController {
     styleButton(startPauseButton)
     
     let gavinWheel = WheelControl()
-
     controlView.insertSubview(gavinWheel, belowSubview: lowerThirdView)
-
-    let height = NSLayoutConstraint(item: gavinWheel,
-                               attribute: NSLayoutAttribute.Width,
-                               relatedBy: NSLayoutRelation.Equal,
-                                  toItem: self.view,
-                               attribute: NSLayoutAttribute.Height,
-                              multiplier: 2.0,
-                                constant: 0.0)
-    self.view.addConstraint(height)
-
-    let aspect = NSLayoutConstraint(item: gavinWheel,
-                               attribute: NSLayoutAttribute.Width,
-                               relatedBy: NSLayoutRelation.Equal,
-                                  toItem: gavinWheel,
-                               attribute: NSLayoutAttribute.Height,
-                              multiplier: 1.0,
-                                constant: 0.0)
-    gavinWheel.addConstraint(aspect)
-  
-    gavinWheel.setTranslatesAutoresizingMaskIntoConstraints(false)
-
-    self.view.addConstraint(NSLayoutConstraint(item: gavinWheel,
-                                          attribute: NSLayoutAttribute.CenterY,
-                                          relatedBy: NSLayoutRelation.Equal,
-                                             toItem: timerLabel,
-                                          attribute: NSLayoutAttribute.CenterY,
-                                         multiplier: 1.0,
-                                           constant: 0.0))
-    
-
-    self.view.addConstraint(NSLayoutConstraint(item: gavinWheel,
-                                          attribute: NSLayoutAttribute.CenterX,
-                                          relatedBy: NSLayoutRelation.Equal,
-                                             toItem: timerLabel,
-                                          attribute: NSLayoutAttribute.CenterX,
-                                         multiplier: 1.0,
-                                           constant: 0.0))
-    
-    gavinWheel.addTarget( self,
-                  action: "gavinWheelChanged:",
-        forControlEvents: UIControlEvents.ValueChanged)
-    
-    gavinWheel.addTarget( self,
-                  action: "gavinWheelTouchedByUser:",
-        forControlEvents: UIControlEvents.TouchDown)
-    
-    
-    let events: [UIControlEvents] = [ .TouchUpInside,
-                                      .TouchUpOutside,
-                                      .TouchDragExit,
-                                      .TouchDragOutside,
-                                      .TouchCancel ]
-    
-    for event in events {
-      gavinWheel.addTarget( self,
-                    action: "gavinWheelRotatedByUser:",
-          forControlEvents: event)
-    }
-    
-    let images = arrayOfImages(10)
-    let imageWheel = ImageWheel(Sections: 6, AndImages: images)
-    gavinWheel.wheelView.addSubview(imageWheel)
-    
-    // Set the inital rotation
-    let startingRotation = imageWheel.wedgeFromValue(1).midRadian
-
-    imageWheel.rotationAngle = CGFloat(startingRotation)
-    gavinWheel.rotationAngle = CGFloat(startingRotation)
-    gavinWheel.maximumRotation = imageWheel.firstImageRotation
-    gavinWheel.minimumRotation = imageWheel.lastImageRotation
-    gavinWheel.dampenCounterClockwise = true
+    setupGavinWheelConstraints(gavinWheel)
+    setupGavinWheelControlEvents(gavinWheel)
+    setupImageWheelAndAddToGavinWheel(gavinWheel)
     self.gavinWheel = gavinWheel
-    
-    if SystemVersion.iOS7AndBelow() {
-      imageWheelView?.updateWedgeImageViewContraints( 0,
-                                      AndOrientation: self.interfaceOrientation,
-                               AndViewControllerSize: self.view.bounds.size)
-    }
-    setupBackground()
+    setupVideoBackgroundConstraints()
+    setupVideoBackgroundAsset()
   }
-  
-  
-  
-  func setupBackground() {
-    
-    let height = NSLayoutConstraint(item: videoView,
-      attribute: NSLayoutAttribute.Width,
-      relatedBy: NSLayoutRelation.Equal,
-      toItem: self.view,
-      attribute: NSLayoutAttribute.Height,
-      multiplier: 1.0,
-      constant: 0.0)
-    self.view.addConstraint(height)
-    
-    let aspect = NSLayoutConstraint(item: videoView,
-      attribute: NSLayoutAttribute.Width,
-      relatedBy: NSLayoutRelation.Equal,
-      toItem: videoView,
-      attribute: NSLayoutAttribute.Height,
-      multiplier: 1.0,
-      constant: 0.0)
-    videoView.addConstraint(aspect)
-
-    
-    
-    
-    if let filepath = NSBundle.mainBundle().pathForResource("forward", ofType: "m4v") {
-      let fileURL = NSURL.fileURLWithPath(filepath)
-      
-      let answer = NSFileManager.defaultManager().fileExistsAtPath(filepath)
-      if !answer {
-        println("movie file doesn't exists")
-      }
-      
-      if let asset = AVURLAsset(URL: fileURL, options: nil) {
-        asset.loadValuesAsynchronouslyForKeys( ["tracks"],
-          completionHandler: {
-            self.setupPlayerWithAsset(asset)
-        })
-      }
-    }
-  }
-    
-  func setupPlayerWithAsset(asset: AVURLAsset) {
-    backgroundVideoTime = asset.duration
-    
-    println("duration \(backgroundVideoTime.value)")
-    
-    let playerItem = AVPlayerItem(asset: asset)
-    let player     = AVPlayer(playerItem: playerItem)
-    player.allowsExternalPlayback = false
-    let videoLayer = videoView.layer as? AVPlayerLayer
-    videoLayer?.player = player
-    player.actionAtItemEnd = .None
-    
-    backgroundPlayer = player
-  }
-
-  
   
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
@@ -231,6 +93,153 @@ final class TimerViewController: UIViewController {
   }
   
   override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+  }
+  
+  // MARK: -
+  // MARK: View Setup
+  func setupGavinWheelConstraints(gavinWheel: WheelControl) {
+    let height = NSLayoutConstraint(item: gavinWheel,
+      attribute: NSLayoutAttribute.Width,
+      relatedBy: NSLayoutRelation.Equal,
+      toItem: self.view,
+      attribute: NSLayoutAttribute.Height,
+      multiplier: 2.0,
+      constant: 0.0)
+    self.view.addConstraint(height)
+    
+    let aspect = NSLayoutConstraint(item: gavinWheel,
+      attribute: NSLayoutAttribute.Width,
+      relatedBy: NSLayoutRelation.Equal,
+      toItem: gavinWheel,
+      attribute: NSLayoutAttribute.Height,
+      multiplier: 1.0,
+      constant: 0.0)
+    gavinWheel.addConstraint(aspect)
+    
+    gavinWheel.setTranslatesAutoresizingMaskIntoConstraints(false)
+    
+    self.view.addConstraint(NSLayoutConstraint(item: gavinWheel,
+      attribute: NSLayoutAttribute.CenterY,
+      relatedBy: NSLayoutRelation.Equal,
+      toItem: timerLabel,
+      attribute: NSLayoutAttribute.CenterY,
+      multiplier: 1.0,
+      constant: 0.0))
+    
+    
+    self.view.addConstraint(NSLayoutConstraint(item: gavinWheel,
+      attribute: NSLayoutAttribute.CenterX,
+      relatedBy: NSLayoutRelation.Equal,
+      toItem: timerLabel,
+      attribute: NSLayoutAttribute.CenterX,
+      multiplier: 1.0,
+      constant: 0.0))
+  }
+  
+  func setupGavinWheelControlEvents(gavinWheel: WheelControl) {
+    gavinWheel.addTarget( self,
+      action: "gavinWheelChanged:",
+      forControlEvents: UIControlEvents.ValueChanged)
+    
+    gavinWheel.addTarget( self,
+      action: "gavinWheelTouchedByUser:",
+      forControlEvents: UIControlEvents.TouchDown)
+    
+    
+    let events: [UIControlEvents] = [ .TouchUpInside,
+      .TouchUpOutside,
+      .TouchDragExit,
+      .TouchDragOutside,
+      .TouchCancel ]
+    for event in events {
+      gavinWheel.addTarget( self,
+        action: "gavinWheelRotatedByUser:",
+        forControlEvents: event)
+    }
+  }
+  
+  func setupImageWheelAndAddToGavinWheel(gavinWheel: WheelControl) {
+    let images = arrayOfImages(10)
+    let imageWheel = ImageWheel(Sections: 6, AndImages: images)
+    gavinWheel.wheelView.addSubview(imageWheel)
+    
+    // Set the inital rotation
+    let startingRotation = imageWheel.wedgeFromValue(1).midRadian
+    
+    imageWheel.rotationAngle = CGFloat(startingRotation)
+    gavinWheel.rotationAngle = CGFloat(startingRotation)
+    gavinWheel.maximumRotation = imageWheel.firstImageRotation
+    gavinWheel.minimumRotation = imageWheel.lastImageRotation
+    gavinWheel.dampenCounterClockwise = true
+    
+    if SystemVersion.iOS7AndBelow() {
+      imageWheel.updateWedgeImageViewContraints( 0,
+        AndOrientation: self.interfaceOrientation,
+        AndViewControllerSize: self.view.bounds.size)
+    }
+  }
+  
+  func setupVideoBackgroundConstraints() {
+    let height = NSLayoutConstraint(item: videoView,
+      attribute: NSLayoutAttribute.Width,
+      relatedBy: NSLayoutRelation.Equal,
+      toItem: self.view,
+      attribute: NSLayoutAttribute.Height,
+      multiplier: 1.0,
+      constant: 0.0)
+    self.view.addConstraint(height)
+    
+    let aspect = NSLayoutConstraint(item: videoView,
+      attribute: NSLayoutAttribute.Width,
+      relatedBy: NSLayoutRelation.Equal,
+      toItem: videoView,
+      attribute: NSLayoutAttribute.Height,
+      multiplier: 1.0,
+      constant: 0.0)
+    videoView.addConstraint(aspect)
+  }
+  
+  func setupVideoBackgroundAsset() {
+    let filepath = NSBundle.mainBundle().pathForResource("forward", ofType: "m4v")
+    
+    assert(filepath != nil,"Background movie file does not exist in main bundle")
+    
+    if let filepath = filepath {
+      let fileURL = NSURL.fileURLWithPath(filepath)
+      
+      if let asset = AVURLAsset(URL: fileURL, options: nil) {
+        asset.loadValuesAsynchronouslyForKeys( ["tracks"],
+          completionHandler: {
+            self.setupBackgroundVideoPlayerWithAsset(asset)
+        })
+      }
+    }
+  }
+  
+  func setupBackgroundVideoPlayerWithAsset(asset: AVURLAsset) {
+    backgroundVideoTime = asset.duration
+    
+    println("duration \(backgroundVideoTime.value)")
+    
+    let playerItem = AVPlayerItem(asset: asset)
+    let player     = AVPlayer(playerItem: playerItem)
+    player.allowsExternalPlayback = false
+    let videoLayer = videoView.layer as? AVPlayerLayer
+    videoLayer?.player = player
+    player.actionAtItemEnd = .None
+    
+    backgroundPlayer = player
+  }
+
+  func setupAppearenceOfLowerThird() {
+    viewsAreSetupForBlurring = true
+    if blurLowerThird {
+      blurLowerThirdView()
+      lowerThirdView.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
+    } else {
+      lowerThirdView.image = nil
+      lowerThirdView.backgroundColor = UIColor(white: 0.0, alpha: 0.5)
+    }
   }
   
   // MARK: -
@@ -492,14 +501,7 @@ final class TimerViewController: UIViewController {
     return imageWheel
   }
   
-  // MARK: Appearance Helper
-  private func styleButton(button: UIButton)  {
-    button.layer.borderWidth = 1
-    button.layer.cornerRadius = 15
-    button.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).CGColor
-    button.titleLabel?.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-  }
-  
+  // MARK: Blurred Lower Third
   func takeSnapshotOfView(view: UIView) -> UIImage {
     let resolutionScale = CGFloat(0.25)
     
@@ -521,21 +523,7 @@ final class TimerViewController: UIViewController {
     return image
   }
 
-  func setupAppearenceOfLowerThird() {
-    viewsAreSetupForBlurring = true
-    if blurLowerThird {
-      blurLowerThirdView()
-      lowerThirdView.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
-    } else {
-      lowerThirdView.image = nil
-      lowerThirdView.backgroundColor = UIColor(white: 0.0, alpha: 0.5)
-    }
-  }
-  
-  
   func blurLowerThirdView() {
-    
-    // TODO: Track down and stop fluttering on initial view of blurred image
     var rect = lowerThirdView.frame
     rect.size.height = 88.0;
     rect.origin.y = 0
@@ -554,6 +542,14 @@ final class TimerViewController: UIViewController {
   }
 
 
+  // MARK: Appearance Helper
+  private func styleButton(button: UIButton)  {
+    button.layer.borderWidth = 1
+    button.layer.cornerRadius = 15
+    button.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).CGColor
+    button.titleLabel?.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+  }
+  
   // MARK: Time to String Helpers
   private func timeStringFromMinutes(minutes: Int,
     AndSeconds seconds: Int) -> String {
