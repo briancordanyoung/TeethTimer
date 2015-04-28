@@ -18,13 +18,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Msc-xa-DWv" userLabel="VideoView" customClass="VideoView" customModule="TeethTimer" customModuleProvider="target">
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Msc-xa-DWv" userLabel="VideoView" customClass="VideoView" customModule="TeethTimer" customModuleProvider="target">
                                 <rect key="frame" x="-173" y="0.0" width="720" height="720"/>
                                 <color key="backgroundColor" red="1" green="0.0" blue="0.0588715764" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="720" id="3ie-qt-13D"/>
-                                    <constraint firstAttribute="width" constant="720" id="LdA-eG-LJz"/>
-                                </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BC6-ez-KJa" userLabel="snapshotView" customClass="SnapshotView" customModule="TeethTimer" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="579" width="375" height="264"/>

@@ -1,5 +1,4 @@
 import AVFoundation
-import MediaPlayer
 import UIKit
 
 // MARK: -
@@ -143,12 +142,33 @@ final class TimerViewController: UIViewController {
   
   func setupBackground() {
     
+    let height = NSLayoutConstraint(item: videoView,
+      attribute: NSLayoutAttribute.Width,
+      relatedBy: NSLayoutRelation.Equal,
+      toItem: self.view,
+      attribute: NSLayoutAttribute.Height,
+      multiplier: 1.0,
+      constant: 0.0)
+    self.view.addConstraint(height)
+    
+    let aspect = NSLayoutConstraint(item: videoView,
+      attribute: NSLayoutAttribute.Width,
+      relatedBy: NSLayoutRelation.Equal,
+      toItem: videoView,
+      attribute: NSLayoutAttribute.Height,
+      multiplier: 1.0,
+      constant: 0.0)
+    videoView.addConstraint(aspect)
+
+    
+    
+    
     if let filepath = NSBundle.mainBundle().pathForResource("forward", ofType: "m4v") {
       let fileURL = NSURL.fileURLWithPath(filepath)
       
       let answer = NSFileManager.defaultManager().fileExistsAtPath(filepath)
-      if answer {
-        println("file exists")
+      if !answer {
+        println("movie file doesn't exists")
       }
       
       if let asset = AVURLAsset(URL: fileURL, options: nil) {
@@ -161,25 +181,19 @@ final class TimerViewController: UIViewController {
   }
     
   func setupPlayerWithAsset(asset: AVURLAsset) {
-    
     backgroundVideoTime = asset.duration
+    
+    println("duration \(backgroundVideoTime.value)")
     
     let playerItem = AVPlayerItem(asset: asset)
     let player     = AVPlayer(playerItem: playerItem)
     player.allowsExternalPlayback = false
-  
-    let playerLayer = AVPlayerLayer(player: player)!
-    videoView.layer.addSublayer(playerLayer)
-    playerLayer.frame = videoView.frame
-    
+    let videoLayer = videoView.layer as? AVPlayerLayer
+    videoLayer?.player = player
     player.actionAtItemEnd = .None
     
     backgroundPlayer = player
-  
-    
   }
-  
-  
 
   
   
@@ -290,7 +304,7 @@ final class TimerViewController: UIViewController {
   
   func seekToTimeByPercentage(percent: CGFloat, inPlayer player: AVPlayer) {
     var seekToTime = backgroundVideoTime
-    seekToTime.value = 499 - (Int(499 * percent)) + 50
+    seekToTime.value = 1700 - (Int(1700 * percent)) + 50
     
     let currentTime = player.currentTime()
     
@@ -299,7 +313,7 @@ final class TimerViewController: UIViewController {
       seekTolorance.value = 1
       
       player.seekToTime(seekToTime, toleranceBefore: seekTolorance, toleranceAfter: seekTolorance)
-      println("seek value \(seekToTime.value)     currentTime \(currentTime.value)")
+      println("seek value \(seekToTime.value)     currentTime \(currentTime.value)   \(videoView.frame.height)")
     }
 
   }
@@ -498,6 +512,9 @@ final class TimerViewController: UIViewController {
     rect.origin.y = 0
     
     UIGraphicsBeginImageContext(size)
+    UIColor.whiteColor().setFill()
+    let ctx = UIGraphicsGetCurrentContext()
+    CGContextFillRect(ctx, rect)
     view.drawViewHierarchyInRect(rect, afterScreenUpdates:false)
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()

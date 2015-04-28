@@ -1,8 +1,8 @@
+import AVFoundation
 
 class VideoView: UIView {
   
-  override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
-    
+//  override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
 //    if let subview: AnyObject = self.subviews.first {
 //      let castSubview = subview as! UIView
 //      
@@ -20,10 +20,12 @@ class VideoView: UIView {
 //      }
 //      
 //    }
-      println("VideoView hitTest()")
-    return super.hitTest(point, withEvent: event)
+//      println("VideoView hitTest()")
+//    return super.hitTest(point, withEvent: event)
+//  }
+  
+  override class func layerClass() -> AnyClass {
+    return AVPlayerLayer.self
   }
-  
-  
   
 }
