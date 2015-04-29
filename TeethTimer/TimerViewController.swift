@@ -21,6 +21,10 @@ final class TimerViewController: UIViewController {
   var backgroundPlayer: AVPlayer?
   var backgroundVideoTime = CMTime()
   
+  var backgroundVideoDuration: Int64 {
+    return self.backgroundVideoTime.value
+  }
+  
   var gavinWheel: WheelControl?
   
   var previousImageBeforeTouch: ImageIndex?
@@ -56,7 +60,8 @@ final class TimerViewController: UIViewController {
     setupImageWheelAndAddToGavinWheel(gavinWheel)
     self.gavinWheel = gavinWheel
     setupVideoBackgroundConstraints()
-    setupVideoBackgroundAsset()
+    setupVideoBackgroundAsset(.Clockwise)
+//    setupVideoBackgroundAsset(.CounterClockwise)
   }
   
   override func viewWillAppear(animated: Bool) {
@@ -99,62 +104,62 @@ final class TimerViewController: UIViewController {
   // MARK: View Setup
   func setupGavinWheelConstraints(gavinWheel: WheelControl) {
     let height = NSLayoutConstraint(item: gavinWheel,
-      attribute: NSLayoutAttribute.Width,
-      relatedBy: NSLayoutRelation.Equal,
-      toItem: self.view,
-      attribute: NSLayoutAttribute.Height,
-      multiplier: 2.0,
-      constant: 0.0)
+                               attribute: NSLayoutAttribute.Width,
+                               relatedBy: NSLayoutRelation.Equal,
+                                  toItem: self.view,
+                               attribute: NSLayoutAttribute.Height,
+                              multiplier: 2.0,
+                                constant: 0.0)
     self.view.addConstraint(height)
     
     let aspect = NSLayoutConstraint(item: gavinWheel,
-      attribute: NSLayoutAttribute.Width,
-      relatedBy: NSLayoutRelation.Equal,
-      toItem: gavinWheel,
-      attribute: NSLayoutAttribute.Height,
-      multiplier: 1.0,
-      constant: 0.0)
+                               attribute: NSLayoutAttribute.Width,
+                               relatedBy: NSLayoutRelation.Equal,
+                                  toItem: gavinWheel,
+                               attribute: NSLayoutAttribute.Height,
+                              multiplier: 1.0,
+                                constant: 0.0)
     gavinWheel.addConstraint(aspect)
     
     gavinWheel.setTranslatesAutoresizingMaskIntoConstraints(false)
     
     self.view.addConstraint(NSLayoutConstraint(item: gavinWheel,
-      attribute: NSLayoutAttribute.CenterY,
-      relatedBy: NSLayoutRelation.Equal,
-      toItem: timerLabel,
-      attribute: NSLayoutAttribute.CenterY,
-      multiplier: 1.0,
-      constant: 0.0))
+                                          attribute: NSLayoutAttribute.CenterY,
+                                          relatedBy: NSLayoutRelation.Equal,
+                                             toItem: timerLabel,
+                                          attribute: NSLayoutAttribute.CenterY,
+                                         multiplier: 1.0,
+                                           constant: 0.0))
     
     
     self.view.addConstraint(NSLayoutConstraint(item: gavinWheel,
-      attribute: NSLayoutAttribute.CenterX,
-      relatedBy: NSLayoutRelation.Equal,
-      toItem: timerLabel,
-      attribute: NSLayoutAttribute.CenterX,
-      multiplier: 1.0,
-      constant: 0.0))
+                                          attribute: NSLayoutAttribute.CenterX,
+                                          relatedBy: NSLayoutRelation.Equal,
+                                             toItem: timerLabel,
+                                          attribute: NSLayoutAttribute.CenterX,
+                                         multiplier: 1.0,
+                                           constant: 0.0))
   }
   
   func setupGavinWheelControlEvents(gavinWheel: WheelControl) {
     gavinWheel.addTarget( self,
-      action: "gavinWheelChanged:",
-      forControlEvents: UIControlEvents.ValueChanged)
+                  action: "gavinWheelChanged:",
+        forControlEvents: UIControlEvents.ValueChanged)
     
     gavinWheel.addTarget( self,
-      action: "gavinWheelTouchedByUser:",
-      forControlEvents: UIControlEvents.TouchDown)
+                  action: "gavinWheelTouchedByUser:",
+        forControlEvents: UIControlEvents.TouchDown)
     
     
     let events: [UIControlEvents] = [ .TouchUpInside,
-      .TouchUpOutside,
-      .TouchDragExit,
-      .TouchDragOutside,
-      .TouchCancel ]
+                                      .TouchUpOutside,
+                                      .TouchDragExit,
+                                      .TouchDragOutside,
+                                      .TouchCancel ]
     for event in events {
       gavinWheel.addTarget( self,
-        action: "gavinWheelRotatedByUser:",
-        forControlEvents: event)
+                    action: "gavinWheelRotatedByUser:",
+          forControlEvents: event)
     }
   }
   
@@ -181,26 +186,33 @@ final class TimerViewController: UIViewController {
   
   func setupVideoBackgroundConstraints() {
     let height = NSLayoutConstraint(item: videoView,
-      attribute: NSLayoutAttribute.Width,
-      relatedBy: NSLayoutRelation.Equal,
-      toItem: self.view,
-      attribute: NSLayoutAttribute.Height,
-      multiplier: 1.0,
-      constant: 0.0)
+                               attribute: NSLayoutAttribute.Width,
+                               relatedBy: NSLayoutRelation.Equal,
+                                  toItem: self.view,
+                               attribute: NSLayoutAttribute.Height,
+                              multiplier: 1.0,
+                                constant: 0.0)
     self.view.addConstraint(height)
     
     let aspect = NSLayoutConstraint(item: videoView,
-      attribute: NSLayoutAttribute.Width,
-      relatedBy: NSLayoutRelation.Equal,
-      toItem: videoView,
-      attribute: NSLayoutAttribute.Height,
-      multiplier: 1.0,
-      constant: 0.0)
+                               attribute: NSLayoutAttribute.Width,
+                               relatedBy: NSLayoutRelation.Equal,
+                                  toItem: videoView,
+                               attribute: NSLayoutAttribute.Height,
+                              multiplier: 1.0,
+                                constant: 0.0)
     videoView.addConstraint(aspect)
   }
   
-  func setupVideoBackgroundAsset() {
-    let filepath = NSBundle.mainBundle().pathForResource("forward", ofType: "m4v")
+  func setupVideoBackgroundAsset(direction: DirectionRotated) {    
+    
+    let filepath: String?
+    switch direction {
+      case .Clockwise:
+        filepath = NSBundle.mainBundle().pathForResource("forward", ofType: "m4v")
+      case .CounterClockwise:
+        filepath = NSBundle.mainBundle().pathForResource("reverse", ofType: "m4v")
+    }
     
     assert(filepath != nil,"Background movie file does not exist in main bundle")
     
@@ -210,16 +222,15 @@ final class TimerViewController: UIViewController {
       if let asset = AVURLAsset(URL: fileURL, options: nil) {
         asset.loadValuesAsynchronouslyForKeys( ["tracks"],
           completionHandler: {
-            self.setupBackgroundVideoPlayerWithAsset(asset)
+            self.setupBackgroundVideoPlayerWithAsset(asset, forDirection: direction)
         })
       }
     }
   }
   
-  func setupBackgroundVideoPlayerWithAsset(asset: AVURLAsset) {
+  func setupBackgroundVideoPlayerWithAsset(asset: AVURLAsset,
+                          forDirection direction: DirectionRotated) {
     backgroundVideoTime = asset.duration
-    
-    println("duration \(backgroundVideoTime.value)")
     
     let playerItem = AVPlayerItem(asset: asset)
     let player     = AVPlayer(playerItem: playerItem)
@@ -229,6 +240,7 @@ final class TimerViewController: UIViewController {
     player.actionAtItemEnd = .None
     
     backgroundPlayer = player
+    
   }
 
   func setupAppearenceOfLowerThird() {
@@ -312,8 +324,17 @@ final class TimerViewController: UIViewController {
   }
   
   func seekToTimeByPercentage(percent: CGFloat, inPlayer player: AVPlayer) {
-    var seekToTime = backgroundVideoTime
-    seekToTime.value = 1700 - (Int(1700 * percent)) + 50
+    var wedgeCount: Int64 = 1
+    if let imageWheelView = imageWheelView {
+      wedgeCount = Int64(imageWheelView.wedges.count)
+    }
+    
+    var seekToTime    = backgroundVideoTime
+    let totalFrames   = backgroundVideoDuration
+    let wedgeDuration = Int64(CGFloat(totalFrames) / CGFloat(wedgeCount))
+    let interactiveFrames = totalFrames - (wedgeDuration * 2)
+    let framesPast    = Int64(CGFloat(interactiveFrames) * percent)
+    seekToTime.value  = interactiveFrames - framesPast + wedgeDuration
     
     let currentTime = player.currentTime()
     

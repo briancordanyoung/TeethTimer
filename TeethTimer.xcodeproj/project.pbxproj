@@ -35,6 +35,10 @@
 		D3141ECE1AB9F38D00780B72 /* ImageWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36DB7361AB7D03800F080C8 /* ImageWheel.swift */; };
 		D31F95E11A2C5FE700219B32 /* ColorImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F95E01A2C5FE700219B32 /* ColorImage.swift */; };
 		D3207F2E1ADAC00900ABE2FC /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D3207F2D1ADAC00900ABE2FC /* UIImage+ImageEffects.m */; };
+		D328E50D1AF08DC000144E3B /* forward-lg.m4v in Resources */ = {isa = PBXBuildFile; fileRef = D328E5091AF08DC000144E3B /* forward-lg.m4v */; };
+		D328E50E1AF08DC000144E3B /* forward.m4v in Resources */ = {isa = PBXBuildFile; fileRef = D328E50A1AF08DC000144E3B /* forward.m4v */; };
+		D328E50F1AF08DC000144E3B /* reverse-lg.m4v in Resources */ = {isa = PBXBuildFile; fileRef = D328E50B1AF08DC000144E3B /* reverse-lg.m4v */; };
+		D328E5101AF08DC000144E3B /* reverse.m4v in Resources */ = {isa = PBXBuildFile; fileRef = D328E50C1AF08DC000144E3B /* reverse.m4v */; };
 		D335409C1A3764E80064C81C /* Gavin Poses-s01.png in Resources */ = {isa = PBXBuildFile; fileRef = D335407E1A3764E80064C81C /* Gavin Poses-s01.png */; };
 		D335409E1A3764E80064C81C /* Gavin Poses-s01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335407F1A3764E80064C81C /* Gavin Poses-s01@2x.png */; };
 		D33540A01A3764E80064C81C /* Gavin Poses-s01@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540801A3764E80064C81C /* Gavin Poses-s01@3x.png */; };
@@ -72,7 +76,6 @@
 		D34F10BC1AAEAE88009E2A9B /* WheelImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D34F10BA1AAEAE88009E2A9B /* WheelImage.png */; };
 		D34F10BD1AAEAE88009E2A9B /* WheelImageType.png in Resources */ = {isa = PBXBuildFile; fileRef = D34F10BB1AAEAE88009E2A9B /* WheelImageType.png */; };
 		D35ED7B31AED6012001DFF20 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35ED7B21AED6012001DFF20 /* VideoView.swift */; };
-		D35ED7E91AEDC5A3001DFF20 /* forward.m4v in Resources */ = {isa = PBXBuildFile; fileRef = D35ED7E81AEDC5A3001DFF20 /* forward.m4v */; };
 		D388C3021A9F7B50007D4F8B /* POPProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = D388C2FF1A9F7B50007D4F8B /* POPProperty.swift */; };
 		D388C3031A9F7B50007D4F8B /* POPSwiftWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D388C3011A9F7B50007D4F8B /* POPSwiftWrapper.m */; };
 		D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */; };
@@ -114,6 +117,10 @@
 		D31F95E01A2C5FE700219B32 /* ColorImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorImage.swift; path = ../ColorImage.swift; sourceTree = "<group>"; };
 		D3207F2C1ADAC00900ABE2FC /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		D3207F2D1ADAC00900ABE2FC /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		D328E5091AF08DC000144E3B /* forward-lg.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = "forward-lg.m4v"; sourceTree = "<group>"; };
+		D328E50A1AF08DC000144E3B /* forward.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = forward.m4v; sourceTree = "<group>"; };
+		D328E50B1AF08DC000144E3B /* reverse-lg.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = "reverse-lg.m4v"; sourceTree = "<group>"; };
+		D328E50C1AF08DC000144E3B /* reverse.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = reverse.m4v; sourceTree = "<group>"; };
 		D335407E1A3764E80064C81C /* Gavin Poses-s01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s01.png"; sourceTree = "<group>"; };
 		D335407F1A3764E80064C81C /* Gavin Poses-s01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s01@2x.png"; sourceTree = "<group>"; };
 		D33540801A3764E80064C81C /* Gavin Poses-s01@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s01@3x.png"; sourceTree = "<group>"; };
@@ -152,7 +159,6 @@
 		D34F10BA1AAEAE88009E2A9B /* WheelImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WheelImage.png; path = Calibration/WheelImage.png; sourceTree = "<group>"; };
 		D34F10BB1AAEAE88009E2A9B /* WheelImageType.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WheelImageType.png; path = Calibration/WheelImageType.png; sourceTree = "<group>"; };
 		D35ED7B21AED6012001DFF20 /* VideoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
-		D35ED7E81AEDC5A3001DFF20 /* forward.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = forward.m4v; sourceTree = "<group>"; };
 		D36DB7361AB7D03800F080C8 /* ImageWheel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheel.swift; sourceTree = "<group>"; };
 		D388C2E41A9EE256007D4F8B /* TeethTimer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TeethTimer-Bridging-Header.h"; sourceTree = "<group>"; };
 		D388C2FF1A9F7B50007D4F8B /* POPProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POPProperty.swift; sourceTree = "<group>"; };
@@ -317,7 +323,10 @@
 		D3B7BC6D19EA383A00F50DF7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D35ED7E81AEDC5A3001DFF20 /* forward.m4v */,
+				D328E5091AF08DC000144E3B /* forward-lg.m4v */,
+				D328E50A1AF08DC000144E3B /* forward.m4v */,
+				D328E50B1AF08DC000144E3B /* reverse-lg.m4v */,
+				D328E50C1AF08DC000144E3B /* reverse.m4v */,
 				D34F10BA1AAEAE88009E2A9B /* WheelImage.png */,
 				D34F10BB1AAEAE88009E2A9B /* WheelImageType.png */,
 				D335407D1A3764E80064C81C /* GavinPoses */,
@@ -427,7 +436,6 @@
 				D33540C01A3764E80064C81C /* Gavin Poses-s07.png in Resources */,
 				D33540C81A3764E80064C81C /* Gavin Poses-s08@2x.png in Resources */,
 				D3B7BC7A19EA383A00F50DF7 /* LaunchScreen.xib in Resources */,
-				D35ED7E91AEDC5A3001DFF20 /* forward.m4v in Resources */,
 				D33540D61A3764E80064C81C /* Gavin Poses-s10@3x.png in Resources */,
 				D33540B41A3764E80064C81C /* Gavin Poses-s05.png in Resources */,
 				D33540BE1A3764E80064C81C /* Gavin Poses-s06@3x.png in Resources */,
@@ -438,6 +446,7 @@
 				D33540A81A3764E80064C81C /* Gavin Poses-s03.png in Resources */,
 				D33540BC1A3764E80064C81C /* Gavin Poses-s06@2x.png in Resources */,
 				D33540C21A3764E80064C81C /* Gavin Poses-s07@2x.png in Resources */,
+				D328E50E1AF08DC000144E3B /* forward.m4v in Resources */,
 				D33540B61A3764E80064C81C /* Gavin Poses-s05@2x.png in Resources */,
 				D33540CC1A3764E80064C81C /* Gavin Poses-s09.png in Resources */,
 				D33540AA1A3764E80064C81C /* Gavin Poses-s03@2x.png in Resources */,
@@ -450,7 +459,9 @@
 				D30771821A869B06003BA7E1 /* num-01@2x.png in Resources */,
 				D30771831A869B06003BA7E1 /* num-02@2x.png in Resources */,
 				D30771841A869B06003BA7E1 /* num-03@2x.png in Resources */,
+				D328E50D1AF08DC000144E3B /* forward-lg.m4v in Resources */,
 				D30771851A869B06003BA7E1 /* num-04@2x.png in Resources */,
+				D328E50F1AF08DC000144E3B /* reverse-lg.m4v in Resources */,
 				D30771861A869B06003BA7E1 /* num-05@2x.png in Resources */,
 				D30771871A869B06003BA7E1 /* num-06@2x.png in Resources */,
 				D30771881A869B06003BA7E1 /* num-07@2x.png in Resources */,
@@ -458,6 +469,7 @@
 				D307718A1A869B06003BA7E1 /* num-09@2x.png in Resources */,
 				D307718B1A869B06003BA7E1 /* num-10@2x.png in Resources */,
 				D307718C1A869B06003BA7E1 /* num-11@2x.png in Resources */,
+				D328E5101AF08DC000144E3B /* reverse.m4v in Resources */,
 				D307718D1A869B06003BA7E1 /* num-12@2x.png in Resources */,
 				D307718E1A869B06003BA7E1 /* num-13@2x.png in Resources */,
 				D307718F1A869B06003BA7E1 /* num-14@2x.png in Resources */,
