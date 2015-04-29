@@ -18,12 +18,18 @@ final class TimerViewController: UIViewController {
   
   let timer = Timer()
   
-  var backgroundPlayer: AVPlayer?
+  var backgroundPlayer: AVQueuePlayer?
   var backgroundVideoTime = CMTime()
+  var backgroundAssets: (forward: AVAsset?, reverse: AVAsset?)
   
   var backgroundVideoDuration: Int64 {
     return self.backgroundVideoTime.value
   }
+  
+//  var backgroundPlayer: AVQueuePlayer? {
+//    let videoLayer = videoView.layer as? AVPlayerLayer
+//    return videoLayer?.player as? AVQueuePlayer
+//  }
   
   var gavinWheel: WheelControl?
   
@@ -61,7 +67,7 @@ final class TimerViewController: UIViewController {
     self.gavinWheel = gavinWheel
     setupVideoBackgroundConstraints()
     setupVideoBackgroundAsset(.Clockwise)
-//    setupVideoBackgroundAsset(.CounterClockwise)
+    setupVideoBackgroundAsset(.CounterClockwise)
   }
   
   override func viewWillAppear(animated: Bool) {
@@ -204,7 +210,7 @@ final class TimerViewController: UIViewController {
     videoView.addConstraint(aspect)
   }
   
-  func setupVideoBackgroundAsset(direction: DirectionRotated) {    
+  func setupVideoBackgroundAsset(direction: DirectionRotated) {
     
     let filepath: String?
     switch direction {
@@ -222,25 +228,55 @@ final class TimerViewController: UIViewController {
       if let asset = AVURLAsset(URL: fileURL, options: nil) {
         asset.loadValuesAsynchronouslyForKeys( ["tracks"],
           completionHandler: {
-            self.setupBackgroundVideoPlayerWithAsset(asset, forDirection: direction)
+            self.rememberAsset(asset, forDirection: direction)
         })
       }
     }
   }
   
-  func setupBackgroundVideoPlayerWithAsset(asset: AVURLAsset,
-                          forDirection direction: DirectionRotated) {
-    backgroundVideoTime = asset.duration
+  func rememberAsset(asset: AVURLAsset,
+    forDirection direction: DirectionRotated) {
     
-    let playerItem = AVPlayerItem(asset: asset)
-    let player     = AVPlayer(playerItem: playerItem)
+    switch direction {
+      case .Clockwise:
+        backgroundAssets.forward = asset
+      case .CounterClockwise:
+        backgroundAssets.reverse = asset
+    }
+
+     if backgroundAssets.forward != nil &&
+        backgroundAssets.reverse != nil {
+          
+        setupBackgroundVideoQueuePlayer()
+     }
+  }
+  
+  func setupBackgroundVideoQueuePlayer() {
+    let reverseDuration = backgroundAssets.reverse!.duration.value
+    let forwardDuration = backgroundAssets.forward!.duration.value
+    let message = "Both background movies must have the same number of frames."
+    assert(forwardDuration == reverseDuration, message)
+    backgroundVideoTime = backgroundAssets.forward!.duration
+
+    var playerItems: [AVPlayerItem] = []
+    for i in 1...6 {
+      if i % 2 == 0 {
+        let playerItem = AVPlayerItem(asset: backgroundAssets.reverse!)
+        playerItems.append(playerItem)
+      } else {
+        let playerItem = AVPlayerItem(asset: backgroundAssets.forward!)
+        playerItems.append(playerItem)
+      }
+    }
+    
+    let player     = AVQueuePlayer(items: playerItems)
     player.allowsExternalPlayback = false
     let videoLayer = videoView.layer as? AVPlayerLayer
     videoLayer?.player = player
     player.actionAtItemEnd = .None
     
     backgroundPlayer = player
-    
+    seekToTimeByPercentage(0.0, inPlayer: player)
   }
 
   func setupAppearenceOfLowerThird() {
@@ -323,31 +359,79 @@ final class TimerViewController: UIViewController {
     }
   }
   
-  func seekToTimeByPercentage(percent: CGFloat, inPlayer player: AVPlayer) {
-    var wedgeCount: Int64 = 1
+  func seekToTimeByPercentage(percent: CGFloat, inPlayer player: AVQueuePlayer) {
+    var wheelCount: Int64 = 1
     if let imageWheelView = imageWheelView {
-      wedgeCount = Int64(imageWheelView.wedges.count)
+      wheelCount = Int64(imageWheelView.images.count)
     }
     
     var seekToTime    = backgroundVideoTime
     let totalFrames   = backgroundVideoDuration
-    let wedgeDuration = Int64(CGFloat(totalFrames) / CGFloat(wedgeCount))
+    let wedgeDuration = Int64(CGFloat(totalFrames) / CGFloat(wheelCount))
     let interactiveFrames = totalFrames - (wedgeDuration * 2)
+    let percentReversed = (percent * -1) + 1
     let framesPast    = Int64(CGFloat(interactiveFrames) * percent)
-    seekToTime.value  = interactiveFrames - framesPast + wedgeDuration
+    let framesPastRev = Int64(CGFloat(interactiveFrames) * percentReversed)
+    let frame         = interactiveFrames - framesPast + wedgeDuration
+    let frameRev      = totalFrames - frame
     
-    let currentTime = player.currentTime()
+    let seekToFrame: Int64
     
-    if currentTime.value != seekToTime.value {
+    let currentTime = player.currentTime().value
+
+    if currentTime.value != frame {
+//      println("changing frame")
+      if frame > currentTime.value {
+        seekToFrame = frame
+
+        if let asset = backgroundAssets.reverse {
+          if currentMovieName(player) == "reverse" {
+            println("switching to forward movie")
+            player.advanceToNextItem()
+            let playerItem = AVPlayerItem(asset: backgroundAssets.reverse!)
+            player.insertItem(playerItem, afterItem: nil)
+          }
+        }
+      } else {
+        seekToFrame = frameRev
+
+        if let asset = backgroundAssets.forward {
+          if currentMovieName(player) == "forward" {
+            println("switching to reverse movie")
+            player.advanceToNextItem()
+            let playerItem = AVPlayerItem(asset: backgroundAssets.forward!)
+            player.insertItem(playerItem, afterItem: nil)
+          }
+        }
+      }
+      
+//      println("\(frame) \(frameRev) \(seekToFrame)")
+      seekToTime.value = frame
       var seekTolorance = seekToTime
       seekTolorance.value = 1
       
-      player.seekToTime(seekToTime, toleranceBefore: seekTolorance, toleranceAfter: seekTolorance)
-      println("seek value \(seekToTime.value)     currentTime \(currentTime.value)   \(videoView.frame.height)")
+      player.seekToTime(seekToTime, toleranceBefore: seekTolorance,
+                                     toleranceAfter: seekTolorance)
+      
+//      println("seek value \(seekToTime.value)     currentTime \(currentTime.value)")
     }
 
   }
   
+  
+  func currentMovieName(player: AVQueuePlayer) -> String? {
+    var name: String?
+    
+    let url: NSURL? = player.currentItem.asset.valueForKey("URL") as? NSURL
+    if let url = url {
+      if let nameWithExt: AnyObject = url.pathComponents?.last {
+        let nameString = nameWithExt as? String
+        name = nameString?.stringByDeletingPathExtension
+      }
+    }
+    
+    return name
+  }
   
   
   func gavinWheelRotatedByUser(gavinWheel: WheelControl) {
