@@ -369,52 +369,60 @@ final class TimerViewController: UIViewController {
     let totalFrames   = backgroundVideoDuration
     let wedgeDuration = Int64(CGFloat(totalFrames) / CGFloat(wheelCount))
     let interactiveFrames = totalFrames - (wedgeDuration * 2)
-    let percentReversed = (percent * -1) + 1
     let framesPast    = Int64(CGFloat(interactiveFrames) * percent)
-    let framesPastRev = Int64(CGFloat(interactiveFrames) * percentReversed)
     let frame         = interactiveFrames - framesPast + wedgeDuration
     let frameRev      = totalFrames - frame
     
-    let seekToFrame: Int64
     
-    let currentTime = player.currentTime().value
+    let currentFrame = player.currentTime().value
 
-    if currentTime.value != frame {
-//      println("changing frame")
-      if frame > currentTime.value {
-        seekToFrame = frame
-
-        if let asset = backgroundAssets.reverse {
-          if currentMovieName(player) == "reverse" {
-            println("switching to forward movie")
-            player.advanceToNextItem()
-            let playerItem = AVPlayerItem(asset: backgroundAssets.reverse!)
-            player.insertItem(playerItem, afterItem: nil)
+    var directionMsg = "    "
+    var switchMovies = false
+    var playerItem: AVPlayerItem?
+    if let movieName = currentMovieName(player) {
+      var name = movieName
+      switch name {
+        case "forward":
+          if currentFrame < frame {
+            directionMsg = "<-- "
+            switchMovies = true
+            name = "reverse"
+            playerItem = AVPlayerItem(asset: backgroundAssets.reverse!)
           }
-        }
-      } else {
-        seekToFrame = frameRev
-
-        if let asset = backgroundAssets.forward {
-          if currentMovieName(player) == "forward" {
-            println("switching to reverse movie")
-            player.advanceToNextItem()
-            let playerItem = AVPlayerItem(asset: backgroundAssets.forward!)
-            player.insertItem(playerItem, afterItem: nil)
+        case "reverse":
+          if currentFrame < frameRev {
+            directionMsg = "--> "
+            switchMovies = true
+            name = "forward"
+            playerItem = AVPlayerItem(asset: backgroundAssets.forward!)
           }
-        }
+        default:
+          assertionFailure("Background Movie direction is undetermianed")
       }
       
-//      println("\(frame) \(frameRev) \(seekToFrame)")
-      seekToTime.value = frame
-      var seekTolorance = seekToTime
-      seekTolorance.value = 1
+      let seekToFrame: Int64
+      if name == "forward" {
+        seekToFrame = frame
+      } else {
+        seekToFrame = frameRev
+      }
       
-      player.seekToTime(seekToTime, toleranceBefore: seekTolorance,
-                                     toleranceAfter: seekTolorance)
-      
-//      println("seek value \(seekToTime.value)     currentTime \(currentTime.value)")
+      if currentFrame != seekToFrame {
+        println("\(directionMsg) \(currentFrame) \(seekToFrame)")
+        seekToTime.value = seekToFrame
+        var seekTolorance = seekToTime
+        seekTolorance.value = 1
+
+        if switchMovies { player.advanceToNextItem() }
+        player.seekToTime(seekToTime, toleranceBefore: seekTolorance,
+                                       toleranceAfter: seekTolorance)
+        if let playerItem = playerItem {
+          player.insertItem(playerItem, afterItem: nil)
+        }
+      }
     }
+    
+    
 
   }
   
