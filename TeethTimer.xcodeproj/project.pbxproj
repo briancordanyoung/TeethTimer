@@ -83,6 +83,8 @@
 		D3B7BC7519EA383A00F50DF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3B7BC7319EA383A00F50DF7 /* Main.storyboard */; };
 		D3B7BC7A19EA383A00F50DF7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3B7BC7819EA383A00F50DF7 /* LaunchScreen.xib */; };
 		D3B95AD41ADB3CA300883051 /* SnapshotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B95AD31ADB3CA300883051 /* SnapshotView.swift */; };
+		D3CDA2D01AF32E6300243AFF /* PieSliceLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */; };
+		D3CDA2D21AF32EBD00243AFF /* PieImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */; };
 		D3DC4C481A95877400984A24 /* ImageWheelVisualState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */; };
 /* End PBXBuildFile section */
 
@@ -173,6 +175,9 @@
 		D3B7BC8419EA383A00F50DF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3B7BC8519EA383A00F50DF7 /* TeethTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeethTimerTests.swift; sourceTree = "<group>"; };
 		D3B95AD31ADB3CA300883051 /* SnapshotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotView.swift; sourceTree = "<group>"; };
+		D3CDA2CE1AF32E6300243AFF /* PieSliceLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieSliceLayer.h; sourceTree = "<group>"; };
+		D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieSliceLayer.m; sourceTree = "<group>"; };
+		D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieImageView.swift; sourceTree = "<group>"; };
 		D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheelVisualState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -309,6 +314,7 @@
 				D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */,
 				D3B95AD31ADB3CA300883051 /* SnapshotView.swift */,
 				D35ED7B21AED6012001DFF20 /* VideoView.swift */,
+				D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */,
 				D3485C8319ECE77200C6E495 /* MyPlayground.playground */,
 				D34DC0551A0FF26000AA7420 /* Settings.bundle */,
 				D3B7BC6D19EA383A00F50DF7 /* Supporting Files */,
@@ -316,6 +322,8 @@
 				D388C2E41A9EE256007D4F8B /* TeethTimer-Bridging-Header.h */,
 				D3207F2C1ADAC00900ABE2FC /* UIImage+ImageEffects.h */,
 				D3207F2D1ADAC00900ABE2FC /* UIImage+ImageEffects.m */,
+				D3CDA2CE1AF32E6300243AFF /* PieSliceLayer.h */,
+				D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */,
 			);
 			path = TeethTimer;
 			sourceTree = "<group>";
@@ -531,12 +539,14 @@
 				D3B95AD41ADB3CA300883051 /* SnapshotView.swift in Sources */,
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
 				D34F10B91AAEA1D0009E2A9B /* WheelControl.swift in Sources */,
+				D3CDA2D01AF32E6300243AFF /* PieSliceLayer.m in Sources */,
 				D341D23F1AC1FB24007D0593 /* Developement.swift in Sources */,
 				D35ED7B31AED6012001DFF20 /* VideoView.swift in Sources */,
 				D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
 				D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */,
 				D388C3031A9F7B50007D4F8B /* POPSwiftWrapper.m in Sources */,
 				D3141ECE1AB9F38D00780B72 /* ImageWheel.swift in Sources */,
+				D3CDA2D21AF32EBD00243AFF /* PieImageView.swift in Sources */,
 				D3DC4C481A95877400984A24 /* ImageWheelVisualState.swift in Sources */,
 				D30EDFA61AD2F8C100E76327 /* SystemVersion.swift in Sources */,
 				D3485C8519ECEEB900C6E495 /* Timer.swift in Sources */,

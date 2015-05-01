@@ -4,5 +4,6 @@
 
 #import "POPSwiftWrapper.h"
 #import "UIImage+ImageEffects.h"
+#import "PieSliceLayer.h"
 
 #endif
