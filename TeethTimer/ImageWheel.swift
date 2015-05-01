@@ -137,11 +137,11 @@ final class ImageWheel: UIView {
       
       let wedgeAngle = (CGFloat(wedgeWidthAngle) * CGFloat(i)) - wedgeStartingAngle
       
-//      var imageView = UIImageView(image: imageOfNumber(i))
       var imageView = WedgeImageView(image: imageOfNumber(i))
-      let layer = imageView.layer as! PieSliceLayer
+      
+      let layer = imageView.pieSliceLayer
       imageView.percentCoverage = 1.0
-//      layer.angleWidth = wedgeWidthAngle
+      layer.angleWidth = wedgeWidthAngle
       
 //      let slice = pieSliceLayer(width: wedgeWidthAngle)
 //      let wedgeFrame = imageView.bounds
@@ -521,7 +521,7 @@ final class ImageWheel: UIView {
     return image
   }
   
-  func imageViewForRotation(rotation: CGFloat) -> UIImageView? {
+  func imageViewForRotation(rotation: CGFloat) -> WedgeImageView? {
     let wedge     = wedgeForRotation(rotation)
     let imageView = imageViewFromValue(wedge.value)
     

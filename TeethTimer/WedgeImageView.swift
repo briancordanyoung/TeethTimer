@@ -1,7 +1,7 @@
 
 import UIKit
 
-class WedgeImageView: UIImageView {
+class WedgeImageView: PieImageView {
   
   var percentCoverage: CGFloat {
     get {
@@ -23,45 +23,24 @@ class WedgeImageView: UIImageView {
     }
   }
   
-  override var image: UIImage? {
-    didSet {
-      setLayerImage(image)
-    }
+  override init(frame: CGRect) {
+    super.init(frame: frame)
   }
   
-  var pieSliceLayer: PieSliceLayer {
-    get {
-      return self.layer as! PieSliceLayer
-    }
-  }
-  
-  override init(image: UIImage!) {
-    super.init(image: image)
-    setLayerImage(image)
+  convenience init(image: UIImage) {
+    self.init(frame:CGRectZero)
+    self.image = image
     setLayerProperties()
   }
 
   required init(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    setLayerImage(image)
     setLayerProperties()
   }
   
   
-  override class func layerClass() -> AnyClass {
-    return PieSliceLayer.self
-  }
-  
-  func setLayerImage(image: UIImage?) {
-    if let image = self.image {
-      pieSliceLayer.image = image.CGImage
-    } else {
-      pieSliceLayer.image = nil
-    }
-  }
-  
   func setLayerProperties() {
-    pieSliceLayer.usePercentage = true;
-    pieSliceLayer.percentCoverage = 1.0;
+    pieSliceLayer.usePercentage = false;
+    pieSliceLayer.angleWidth    = Circle.full / 6;
   }
 }

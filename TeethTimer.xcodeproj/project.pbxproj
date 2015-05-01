@@ -74,6 +74,7 @@
 		D388C3021A9F7B50007D4F8B /* POPProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = D388C2FF1A9F7B50007D4F8B /* POPProperty.swift */; };
 		D388C3031A9F7B50007D4F8B /* POPSwiftWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D388C3011A9F7B50007D4F8B /* POPSwiftWrapper.m */; };
 		D3A638521AD4E9A300D54C16 /* PieSliceLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3A638511AD4E9A300D54C16 /* PieSliceLayer.m */; };
+		D3B64B4A1AF2F560006D450E /* PieImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B64B491AF2F560006D450E /* PieImageView.swift */; };
 		D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */; };
 		D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */; };
 		D3B7BC7519EA383A00F50DF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3B7BC7319EA383A00F50DF7 /* Main.storyboard */; };
@@ -155,6 +156,7 @@
 		D388C3011A9F7B50007D4F8B /* POPSwiftWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POPSwiftWrapper.m; sourceTree = "<group>"; };
 		D3A638501AD4E9A300D54C16 /* PieSliceLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieSliceLayer.h; sourceTree = "<group>"; };
 		D3A638511AD4E9A300D54C16 /* PieSliceLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieSliceLayer.m; sourceTree = "<group>"; };
+		D3B64B491AF2F560006D450E /* PieImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieImageView.swift; sourceTree = "<group>"; };
 		D3B7BC6A19EA383A00F50DF7 /* TeethTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeethTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B7BC6E19EA383A00F50DF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 				D341D23E1AC1FB24007D0593 /* Developement.swift */,
 				D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */,
 				D366D1851AD6301D008247F4 /* WedgeImageView.swift */,
+				D3B64B491AF2F560006D450E /* PieImageView.swift */,
 				D31F95E01A2C5FE700219B32 /* ColorImage.swift */,
 				D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */,
 				D3485C8319ECE77200C6E495 /* MyPlayground.playground */,
@@ -510,6 +513,7 @@
 				D388C3021A9F7B50007D4F8B /* POPProperty.swift in Sources */,
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
 				D34F10B91AAEA1D0009E2A9B /* WheelControl.swift in Sources */,
+				D3B64B4A1AF2F560006D450E /* PieImageView.swift in Sources */,
 				D341D23F1AC1FB24007D0593 /* Developement.swift in Sources */,
 				D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
 				D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */,

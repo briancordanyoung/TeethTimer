@@ -19,7 +19,7 @@ final class ImageWheelVisualState {
   }
   
   func setOpacityOfWedgeImageViews(views: [WedgeImageView]) {
-    assert(wedgeOpacityList.count == views.count, "setOpacityOfWedgeImageViews requires both the wedgeOpacityList and views arrays to each have the same number of elements.")
+//    assert(wedgeOpacityList.count == views.count, "setOpacityOfWedgeImageViews requires both the wedgeOpacityList and views arrays to each have the same number of elements.")
     for view in views {
       if let opacityValue = wedgeOpacityList[view.tag] {
         if opacityValue == 0.0 {
