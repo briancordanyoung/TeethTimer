@@ -132,14 +132,15 @@ final class ImageWheel: UIView {
     let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(count)
 
     let wedgeStartingAngle = (Circle.half * 3) + (wedgeWidthAngle / 2)
-    // Build UIViews for each pie piece
+    // Build WedgeImageView for each pie piece
     for i in 1...count {
       
       let wedgeAngle = (CGFloat(wedgeWidthAngle) * CGFloat(i)) - wedgeStartingAngle
       
-      var imageView = UIImageView(image: imageOfNumber(i))
+      var imageView = WedgeImageView(image: imageOfNumber(i))
       imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
       imageView.transform = CGAffineTransformMakeRotation(wedgeAngle)
+      imageView.angleWidth = wedgeAngle
       imageView.tag = i
       
       self.addSubview(imageView)
@@ -444,13 +445,13 @@ final class ImageWheel: UIView {
   
   // MARK: -
   // MARK: Image Computed Properties
-  var allWedgeImageViews: [UIImageView] {
+  var allWedgeImageViews: [WedgeImageView] {
     let views = self.subviews
     
-    var wedgeImageViews: [UIImageView] = []
+    var wedgeImageViews: [WedgeImageView] = []
     for image in views {
-      if image.isKindOfClass(UIImageView.self) {
-        let imageView = image as! UIImageView
+      if image.isKindOfClass(WedgeImageView.self) {
+        let imageView = image as! WedgeImageView
         if imageView.tag != 0 {
           wedgeImageViews.append(imageView)
         }
@@ -492,7 +493,7 @@ final class ImageWheel: UIView {
     return image
   }
   
-  func imageViewForRotation(rotation: CGFloat) -> UIImageView? {
+  func imageViewForRotation(rotation: CGFloat) -> WedgeImageView? {
     let wedge     = wedgeForRotation(rotation)
     let imageView = imageViewFromValue(wedge.value)
     
@@ -660,12 +661,12 @@ final class ImageWheel: UIView {
   }
 
   // MARK: image and imageView helpers
-  func imageViewFromValue(value: Int) -> UIImageView? {
+  func imageViewFromValue(value: Int) -> WedgeImageView? {
     
-    var wedgeView: UIImageView?
+    var wedgeView: WedgeImageView?
     
     for image in allWedgeImageViews {
-      let imageView = image as UIImageView
+      let imageView = image as WedgeImageView
       if imageView.tag == value {
         wedgeView = imageView
       }
