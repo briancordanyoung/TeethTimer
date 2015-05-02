@@ -37,6 +37,7 @@ CGImageRef flip (CGImageRef im) {
     CGImageRetain(alteredImage);
   }
   _CGImage = alteredImage;
+  [self setNeedsDisplay];
 }
 
 
@@ -58,7 +59,6 @@ CGImageRef flip (CGImageRef im) {
       self.fillColor     = [UIColor redColor];
       self.strokeColor   = [UIColor clearColor];
       
-      [self setNeedsDisplay];
     }
 	
     return self;
@@ -93,7 +93,8 @@ CGImageRef flip (CGImageRef im) {
 
 + (BOOL)needsDisplayForKey:(NSString *)key {
   if ([key isEqualToString:@"angleWidth"] ||
-      [key isEqualToString:@"percentCoverage"]) {
+      [key isEqualToString:@"percentCoverage"] ||
+      [key isEqualToString:@"CGImage"]) {
 		return YES;
 	}
 	

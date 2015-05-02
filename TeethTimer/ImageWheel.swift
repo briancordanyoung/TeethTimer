@@ -140,7 +140,7 @@ final class ImageWheel: UIView {
       var imageView = WedgeImageView(image: imageOfNumber(i))
       imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
       imageView.transform = CGAffineTransformMakeRotation(wedgeAngle)
-      imageView.angleWidth = wedgeAngle
+      imageView.angleWidth = wedgeWidthAngle
       imageView.tag = i
       
       self.addSubview(imageView)
@@ -378,13 +378,46 @@ final class ImageWheel: UIView {
   // MARK: -
   // MARK: Visual representation of the wheel
   func updateAppearanceForRotation(rotation: CGFloat) {
-    setImagesForCurrentRotation(rotation)
+    setImagesForRotation(rotation)
 
     let angle = wedgeWheelAngle(rotation)
-    setImageOpacityForCurrentAngle(angle)
+//    setImageOpacityForAngle(angle)
+    setImageWedgeAngleForAngle(angle)
   }
 
-  func setImagesForCurrentRotation(rotation: CGFloat) {
+  func setImageWedgeAngleForAngle(var angle: CGFloat) {
+    
+    visualState.initAngleListWithWedges(wedges)
+
+    angle = angle + (wedgeWidthAngle / 2)
+    angle = wedgeWheelAngle(angle)
+    
+    for wedge in wedges {
+      
+      if angle >= wedge.minRadian &&
+        angle <=  wedge.maxRadian    {
+          
+          let percent = percentValue( angle,
+                        isBetweenLow: wedge.minRadian,
+                             AndHigh: wedge.maxRadian)
+          
+          let wedgeAngle = wedgeWidthAngle * percent
+          
+          visualState.wedgeAngleList[wedge.value]    = wedgeAngle
+          
+          
+          let neighbor = neighboringWedge(wedge)
+          let wedgeAngleInverted = wedgeWidthAngle - wedgeAngle
+          
+          visualState.wedgeAngleList[neighbor.value] = wedgeAngleInverted
+          
+      }
+    }
+    
+    visualState.setAnglesOfWedgeImageViews(allWedgeImageViews)
+  }
+  
+  func setImagesForRotation(rotation: CGFloat) {
     // get the rotation of the wedge at the bottom of the wheel.
     // if the
     let wedgeCountBack: Int
@@ -410,7 +443,7 @@ final class ImageWheel: UIView {
   }
     
   
-  func setImageOpacityForCurrentAngle(var angle: CGFloat) {
+  func setImageOpacityForAngle(var angle: CGFloat) {
     
     visualState.initOpacityListWithWedges(wedges)
     

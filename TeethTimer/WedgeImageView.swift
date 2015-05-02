@@ -9,7 +9,7 @@ class WedgeImageView: PieImageView {
     }
     set(newPercentCoverage) {
       pieSliceLayer.percentCoverage = newPercentCoverage
-      pieSliceLayer.usePercentage = true;
+      pieSliceLayer.usePercentage = true
     }
   }
   
@@ -19,7 +19,7 @@ class WedgeImageView: PieImageView {
     }
     set(newAngleWidth) {
       pieSliceLayer.angleWidth = newAngleWidth
-      pieSliceLayer.usePercentage = false;
+      pieSliceLayer.usePercentage = false
     }
   }
   
@@ -30,17 +30,18 @@ class WedgeImageView: PieImageView {
   convenience init(image: UIImage) {
     self.init(frame:CGRectZero)
     self.image = image
-    setLayerProperties()
+    initProperties()
   }
   
   required init(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    setLayerProperties()
+    initProperties()
   }
   
   
-  func setLayerProperties() {
-    pieSliceLayer.usePercentage = false;
-    pieSliceLayer.angleWidth    = Circle.full / 6;
+  func initProperties() {
+    opaque = false
+    pieSliceLayer.usePercentage = false
+    pieSliceLayer.angleWidth    = Circle.full
   }
 }

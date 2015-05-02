@@ -76,8 +76,57 @@
 		D34F10BC1AAEAE88009E2A9B /* WheelImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D34F10BA1AAEAE88009E2A9B /* WheelImage.png */; };
 		D34F10BD1AAEAE88009E2A9B /* WheelImageType.png in Resources */ = {isa = PBXBuildFile; fileRef = D34F10BB1AAEAE88009E2A9B /* WheelImageType.png */; };
 		D35ED7B31AED6012001DFF20 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35ED7B21AED6012001DFF20 /* VideoView.swift */; };
+		D37FBC771AF3308500381C7F /* WedgeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37FBC761AF3308500381C7F /* WedgeImageView.swift */; };
+		D37FBC811AF34DE100381C7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37FBC801AF34DE100381C7F /* AppDelegate.swift */; };
+		D37FBC831AF34DE100381C7F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37FBC821AF34DE100381C7F /* ViewController.swift */; };
+		D37FBC861AF34DE100381C7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D37FBC841AF34DE100381C7F /* Main.storyboard */; };
+		D37FBC881AF34DE100381C7F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D37FBC871AF34DE100381C7F /* Images.xcassets */; };
+		D37FBC8B1AF34DE100381C7F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D37FBC891AF34DE100381C7F /* LaunchScreen.xib */; };
+		D37FBCA51AF34E5200381C7F /* Gavin Poses-s01.png in Resources */ = {isa = PBXBuildFile; fileRef = D335407E1A3764E80064C81C /* Gavin Poses-s01.png */; };
+		D37FBCA61AF34E5200381C7F /* Gavin Poses-s01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335407F1A3764E80064C81C /* Gavin Poses-s01@2x.png */; };
+		D37FBCA71AF34E5200381C7F /* Gavin Poses-s01@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540801A3764E80064C81C /* Gavin Poses-s01@3x.png */; };
+		D37FBCA81AF34E5200381C7F /* Gavin Poses-s02.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540811A3764E80064C81C /* Gavin Poses-s02.png */; };
+		D37FBCA91AF34E5200381C7F /* Gavin Poses-s02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540821A3764E80064C81C /* Gavin Poses-s02@2x.png */; };
+		D37FBCAA1AF34E5200381C7F /* Gavin Poses-s02@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540831A3764E80064C81C /* Gavin Poses-s02@3x.png */; };
+		D37FBCAB1AF34E5200381C7F /* Gavin Poses-s03.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540841A3764E80064C81C /* Gavin Poses-s03.png */; };
+		D37FBCAC1AF34E5200381C7F /* Gavin Poses-s03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540851A3764E80064C81C /* Gavin Poses-s03@2x.png */; };
+		D37FBCAD1AF34E5200381C7F /* Gavin Poses-s03@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540861A3764E80064C81C /* Gavin Poses-s03@3x.png */; };
+		D37FBCAE1AF34E5200381C7F /* Gavin Poses-s04.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540871A3764E80064C81C /* Gavin Poses-s04.png */; };
+		D37FBCAF1AF34E5200381C7F /* Gavin Poses-s04@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540881A3764E80064C81C /* Gavin Poses-s04@2x.png */; };
+		D37FBCB01AF34E5200381C7F /* Gavin Poses-s04@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540891A3764E80064C81C /* Gavin Poses-s04@3x.png */; };
+		D37FBCB11AF34E5200381C7F /* Gavin Poses-s05.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408A1A3764E80064C81C /* Gavin Poses-s05.png */; };
+		D37FBCB21AF34E5200381C7F /* Gavin Poses-s05@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408B1A3764E80064C81C /* Gavin Poses-s05@2x.png */; };
+		D37FBCB31AF34E5200381C7F /* Gavin Poses-s05@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408C1A3764E80064C81C /* Gavin Poses-s05@3x.png */; };
+		D37FBCB41AF34E5200381C7F /* Gavin Poses-s06.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408D1A3764E80064C81C /* Gavin Poses-s06.png */; };
+		D37FBCB51AF34E5200381C7F /* Gavin Poses-s06@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408E1A3764E80064C81C /* Gavin Poses-s06@2x.png */; };
+		D37FBCB61AF34E5200381C7F /* Gavin Poses-s06@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335408F1A3764E80064C81C /* Gavin Poses-s06@3x.png */; };
+		D37FBCB71AF34E5200381C7F /* Gavin Poses-s07.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540901A3764E80064C81C /* Gavin Poses-s07.png */; };
+		D37FBCB81AF34E5200381C7F /* Gavin Poses-s07@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540911A3764E80064C81C /* Gavin Poses-s07@2x.png */; };
+		D37FBCB91AF34E5200381C7F /* Gavin Poses-s07@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540921A3764E80064C81C /* Gavin Poses-s07@3x.png */; };
+		D37FBCBA1AF34E5200381C7F /* Gavin Poses-s08.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540931A3764E80064C81C /* Gavin Poses-s08.png */; };
+		D37FBCBB1AF34E5200381C7F /* Gavin Poses-s08@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540941A3764E80064C81C /* Gavin Poses-s08@2x.png */; };
+		D37FBCBC1AF34E5200381C7F /* Gavin Poses-s08@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540951A3764E80064C81C /* Gavin Poses-s08@3x.png */; };
+		D37FBCBD1AF34E5200381C7F /* Gavin Poses-s09.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540961A3764E80064C81C /* Gavin Poses-s09.png */; };
+		D37FBCBE1AF34E5200381C7F /* Gavin Poses-s09@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540971A3764E80064C81C /* Gavin Poses-s09@2x.png */; };
+		D37FBCBF1AF34E5200381C7F /* Gavin Poses-s09@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540981A3764E80064C81C /* Gavin Poses-s09@3x.png */; };
+		D37FBCC01AF34E5200381C7F /* Gavin Poses-s10.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540991A3764E80064C81C /* Gavin Poses-s10.png */; };
+		D37FBCC11AF34E5200381C7F /* Gavin Poses-s10@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335409A1A3764E80064C81C /* Gavin Poses-s10@2x.png */; };
+		D37FBCC21AF34E5200381C7F /* Gavin Poses-s10@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335409B1A3764E80064C81C /* Gavin Poses-s10@3x.png */; };
+		D37FBCC81AF34E9300381C7F /* Developement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341D23E1AC1FB24007D0593 /* Developement.swift */; };
+		D37FBCC91AF34E9300381C7F /* ImageWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36DB7361AB7D03800F080C8 /* ImageWheel.swift */; };
+		D37FBCCA1AF34E9300381C7F /* ImageWheelVisualState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */; };
+		D37FBCCB1AF34E9300381C7F /* BCYStandardLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */; };
+		D37FBCCC1AF34E9300381C7F /* WedgeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37FBC761AF3308500381C7F /* WedgeImageView.swift */; };
+		D37FBCCD1AF34E9300381C7F /* PieImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */; };
+		D37FBCCE1AF34E9300381C7F /* TeethTimer-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = D388C2E41A9EE256007D4F8B /* TeethTimer-Bridging-Header.h */; };
+		D37FBCCF1AF34E9300381C7F /* UIImage+ImageEffects.h in Sources */ = {isa = PBXBuildFile; fileRef = D3207F2C1ADAC00900ABE2FC /* UIImage+ImageEffects.h */; };
+		D37FBCD01AF34E9300381C7F /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D3207F2D1ADAC00900ABE2FC /* UIImage+ImageEffects.m */; };
+		D37FBCD11AF34E9300381C7F /* PieSliceLayer.h in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2CE1AF32E6300243AFF /* PieSliceLayer.h */; };
+		D37FBCD21AF34E9300381C7F /* PieSliceLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */; };
+		D37FBCD31AF3518A00381C7F /* SystemVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30EDFA51AD2F8C100E76327 /* SystemVersion.swift */; };
 		D388C3021A9F7B50007D4F8B /* POPProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = D388C2FF1A9F7B50007D4F8B /* POPProperty.swift */; };
 		D388C3031A9F7B50007D4F8B /* POPSwiftWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D388C3011A9F7B50007D4F8B /* POPSwiftWrapper.m */; };
+		D3B29F801AF5264200C2C067 /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B29F7F1AF5264200C2C067 /* ContainerView.swift */; };
 		D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */; };
 		D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */; };
 		D3B7BC7519EA383A00F50DF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3B7BC7319EA383A00F50DF7 /* Main.storyboard */; };
@@ -162,10 +211,20 @@
 		D34F10BB1AAEAE88009E2A9B /* WheelImageType.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WheelImageType.png; path = Calibration/WheelImageType.png; sourceTree = "<group>"; };
 		D35ED7B21AED6012001DFF20 /* VideoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 		D36DB7361AB7D03800F080C8 /* ImageWheel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheel.swift; sourceTree = "<group>"; };
+		D37FBC761AF3308500381C7F /* WedgeImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WedgeImageView.swift; sourceTree = "<group>"; };
+		D37FBC7C1AF34DE100381C7F /* ImageWheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageWheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D37FBC7F1AF34DE100381C7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D37FBC801AF34DE100381C7F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D37FBC821AF34DE100381C7F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D37FBC851AF34DE100381C7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D37FBC871AF34DE100381C7F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		D37FBC8A1AF34DE100381C7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		D37FBCD41AF3522700381C7F /* ImageWheel-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ImageWheel-Bridging-Header.h"; sourceTree = "<group>"; };
 		D388C2E41A9EE256007D4F8B /* TeethTimer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TeethTimer-Bridging-Header.h"; sourceTree = "<group>"; };
 		D388C2FF1A9F7B50007D4F8B /* POPProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POPProperty.swift; sourceTree = "<group>"; };
 		D388C3001A9F7B50007D4F8B /* POPSwiftWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POPSwiftWrapper.h; sourceTree = "<group>"; };
 		D388C3011A9F7B50007D4F8B /* POPSwiftWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POPSwiftWrapper.m; sourceTree = "<group>"; };
+		D3B29F7F1AF5264200C2C067 /* ContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		D3B7BC6A19EA383A00F50DF7 /* TeethTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeethTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B7BC6E19EA383A00F50DF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -182,6 +241,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		D37FBC791AF34DE100381C7F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D3B7BC6719EA383A00F50DF7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -268,6 +334,29 @@
 			path = GavinPoses;
 			sourceTree = "<group>";
 		};
+		D37FBC7D1AF34DE100381C7F /* ImageWheel */ = {
+			isa = PBXGroup;
+			children = (
+				D3B29F7F1AF5264200C2C067 /* ContainerView.swift */,
+				D37FBCD41AF3522700381C7F /* ImageWheel-Bridging-Header.h */,
+				D37FBC801AF34DE100381C7F /* AppDelegate.swift */,
+				D37FBC821AF34DE100381C7F /* ViewController.swift */,
+				D37FBC841AF34DE100381C7F /* Main.storyboard */,
+				D37FBC871AF34DE100381C7F /* Images.xcassets */,
+				D37FBC891AF34DE100381C7F /* LaunchScreen.xib */,
+				D37FBC7E1AF34DE100381C7F /* Supporting Files */,
+			);
+			path = ImageWheel;
+			sourceTree = "<group>";
+		};
+		D37FBC7E1AF34DE100381C7F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D37FBC7F1AF34DE100381C7F /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		D388C3041A9F7B5D007D4F8B /* POP-Wrapper */ = {
 			isa = PBXGroup;
 			children = (
@@ -283,6 +372,7 @@
 			children = (
 				D3B7BC6C19EA383A00F50DF7 /* TeethTimer */,
 				D3B7BC8219EA383A00F50DF7 /* TeethTimerTests */,
+				D37FBC7D1AF34DE100381C7F /* ImageWheel */,
 				D3B7BC6B19EA383A00F50DF7 /* Products */,
 				D7D25F379C44550B89AD1B67 /* Pods */,
 				0588C91E349A150BB0A9B1EB /* Frameworks */,
@@ -293,6 +383,7 @@
 			isa = PBXGroup;
 			children = (
 				D3B7BC6A19EA383A00F50DF7 /* TeethTimer.app */,
+				D37FBC7C1AF34DE100381C7F /* ImageWheel.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -305,15 +396,16 @@
 				D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */,
 				D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */,
 				D3485C8419ECEEB900C6E495 /* Timer.swift */,
-				D36DB7361AB7D03800F080C8 /* ImageWheel.swift */,
 				D30EDFA51AD2F8C100E76327 /* SystemVersion.swift */,
 				D34F10B81AAEA1D0009E2A9B /* WheelControl.swift */,
 				D341D23E1AC1FB24007D0593 /* Developement.swift */,
+				D36DB7361AB7D03800F080C8 /* ImageWheel.swift */,
 				D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */,
 				D31F95E01A2C5FE700219B32 /* ColorImage.swift */,
 				D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */,
 				D3B95AD31ADB3CA300883051 /* SnapshotView.swift */,
 				D35ED7B21AED6012001DFF20 /* VideoView.swift */,
+				D37FBC761AF3308500381C7F /* WedgeImageView.swift */,
 				D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */,
 				D3485C8319ECE77200C6E495 /* MyPlayground.playground */,
 				D34DC0551A0FF26000AA7420 /* Settings.bundle */,
@@ -373,6 +465,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		D37FBC7B1AF34DE100381C7F /* ImageWheel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D37FBC981AF34DE100381C7F /* Build configuration list for PBXNativeTarget "ImageWheel" */;
+			buildPhases = (
+				D37FBC781AF34DE100381C7F /* Sources */,
+				D37FBC791AF34DE100381C7F /* Frameworks */,
+				D37FBC7A1AF34DE100381C7F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ImageWheel;
+			productName = ImageWheel;
+			productReference = D37FBC7C1AF34DE100381C7F /* ImageWheel.app */;
+			productType = "com.apple.product-type.application";
+		};
 		D3B7BC6919EA383A00F50DF7 /* TeethTimer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D3B7BC8919EA383A00F50DF7 /* Build configuration list for PBXNativeTarget "TeethTimer" */;
@@ -401,6 +510,10 @@
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "Brian Young";
 				TargetAttributes = {
+					D37FBC7B1AF34DE100381C7F = {
+						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = YJ4PN236TF;
+					};
 					D3B7BC6919EA383A00F50DF7 = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = YJ4PN236TF;
@@ -421,11 +534,52 @@
 			projectRoot = "";
 			targets = (
 				D3B7BC6919EA383A00F50DF7 /* TeethTimer */,
+				D37FBC7B1AF34DE100381C7F /* ImageWheel */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		D37FBC7A1AF34DE100381C7F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D37FBCA51AF34E5200381C7F /* Gavin Poses-s01.png in Resources */,
+				D37FBCA61AF34E5200381C7F /* Gavin Poses-s01@2x.png in Resources */,
+				D37FBCA71AF34E5200381C7F /* Gavin Poses-s01@3x.png in Resources */,
+				D37FBCA81AF34E5200381C7F /* Gavin Poses-s02.png in Resources */,
+				D37FBCA91AF34E5200381C7F /* Gavin Poses-s02@2x.png in Resources */,
+				D37FBCAA1AF34E5200381C7F /* Gavin Poses-s02@3x.png in Resources */,
+				D37FBCAB1AF34E5200381C7F /* Gavin Poses-s03.png in Resources */,
+				D37FBCAC1AF34E5200381C7F /* Gavin Poses-s03@2x.png in Resources */,
+				D37FBCAD1AF34E5200381C7F /* Gavin Poses-s03@3x.png in Resources */,
+				D37FBCAE1AF34E5200381C7F /* Gavin Poses-s04.png in Resources */,
+				D37FBCAF1AF34E5200381C7F /* Gavin Poses-s04@2x.png in Resources */,
+				D37FBCB01AF34E5200381C7F /* Gavin Poses-s04@3x.png in Resources */,
+				D37FBCB11AF34E5200381C7F /* Gavin Poses-s05.png in Resources */,
+				D37FBCB21AF34E5200381C7F /* Gavin Poses-s05@2x.png in Resources */,
+				D37FBCB31AF34E5200381C7F /* Gavin Poses-s05@3x.png in Resources */,
+				D37FBCB41AF34E5200381C7F /* Gavin Poses-s06.png in Resources */,
+				D37FBCB51AF34E5200381C7F /* Gavin Poses-s06@2x.png in Resources */,
+				D37FBCB61AF34E5200381C7F /* Gavin Poses-s06@3x.png in Resources */,
+				D37FBCB71AF34E5200381C7F /* Gavin Poses-s07.png in Resources */,
+				D37FBCB81AF34E5200381C7F /* Gavin Poses-s07@2x.png in Resources */,
+				D37FBCB91AF34E5200381C7F /* Gavin Poses-s07@3x.png in Resources */,
+				D37FBCBA1AF34E5200381C7F /* Gavin Poses-s08.png in Resources */,
+				D37FBCBB1AF34E5200381C7F /* Gavin Poses-s08@2x.png in Resources */,
+				D37FBCBC1AF34E5200381C7F /* Gavin Poses-s08@3x.png in Resources */,
+				D37FBCBD1AF34E5200381C7F /* Gavin Poses-s09.png in Resources */,
+				D37FBCBE1AF34E5200381C7F /* Gavin Poses-s09@2x.png in Resources */,
+				D37FBCBF1AF34E5200381C7F /* Gavin Poses-s09@3x.png in Resources */,
+				D37FBCC01AF34E5200381C7F /* Gavin Poses-s10.png in Resources */,
+				D37FBCC11AF34E5200381C7F /* Gavin Poses-s10@2x.png in Resources */,
+				D37FBCC21AF34E5200381C7F /* Gavin Poses-s10@3x.png in Resources */,
+				D37FBC861AF34DE100381C7F /* Main.storyboard in Resources */,
+				D37FBC8B1AF34DE100381C7F /* LaunchScreen.xib in Resources */,
+				D37FBC881AF34DE100381C7F /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D3B7BC6819EA383A00F50DF7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -530,6 +684,28 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		D37FBC781AF34DE100381C7F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D37FBCD31AF3518A00381C7F /* SystemVersion.swift in Sources */,
+				D3B29F801AF5264200C2C067 /* ContainerView.swift in Sources */,
+				D37FBCC81AF34E9300381C7F /* Developement.swift in Sources */,
+				D37FBCC91AF34E9300381C7F /* ImageWheel.swift in Sources */,
+				D37FBCCA1AF34E9300381C7F /* ImageWheelVisualState.swift in Sources */,
+				D37FBCCB1AF34E9300381C7F /* BCYStandardLibrary.swift in Sources */,
+				D37FBCCC1AF34E9300381C7F /* WedgeImageView.swift in Sources */,
+				D37FBCCD1AF34E9300381C7F /* PieImageView.swift in Sources */,
+				D37FBCCE1AF34E9300381C7F /* TeethTimer-Bridging-Header.h in Sources */,
+				D37FBCCF1AF34E9300381C7F /* UIImage+ImageEffects.h in Sources */,
+				D37FBCD01AF34E9300381C7F /* UIImage+ImageEffects.m in Sources */,
+				D37FBCD11AF34E9300381C7F /* PieSliceLayer.h in Sources */,
+				D37FBCD21AF34E9300381C7F /* PieSliceLayer.m in Sources */,
+				D37FBC831AF34DE100381C7F /* ViewController.swift in Sources */,
+				D37FBC811AF34DE100381C7F /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D3B7BC6619EA383A00F50DF7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -537,6 +713,7 @@
 				D388C3021A9F7B50007D4F8B /* POPProperty.swift in Sources */,
 				D3207F2E1ADAC00900ABE2FC /* UIImage+ImageEffects.m in Sources */,
 				D3B95AD41ADB3CA300883051 /* SnapshotView.swift in Sources */,
+				D37FBC771AF3308500381C7F /* WedgeImageView.swift in Sources */,
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
 				D34F10B91AAEA1D0009E2A9B /* WheelControl.swift in Sources */,
 				D3CDA2D01AF32E6300243AFF /* PieSliceLayer.m in Sources */,
@@ -557,6 +734,22 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		D37FBC841AF34DE100381C7F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D37FBC851AF34DE100381C7F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		D37FBC891AF34DE100381C7F /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D37FBC8A1AF34DE100381C7F /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
 		D3B7BC7319EA383A00F50DF7 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -576,6 +769,41 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		D37FBC991AF34DE100381C7F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ImageWheel/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ImageWheel/ImageWheel-Bridging-Header.h";
+			};
+			name = Debug;
+		};
+		D37FBC9A1AF34DE100381C7F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = ImageWheel/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ImageWheel/ImageWheel-Bridging-Header.h";
+			};
+			name = Release;
+		};
 		D3B7BC8719EA383A00F50DF7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -702,6 +930,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		D37FBC981AF34DE100381C7F /* Build configuration list for PBXNativeTarget "ImageWheel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D37FBC991AF34DE100381C7F /* Debug */,
+				D37FBC9A1AF34DE100381C7F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D3B7BC6519EA383A00F50DF7 /* Build configuration list for PBXProject "TeethTimer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

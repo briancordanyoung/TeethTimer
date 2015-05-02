@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>ImageWheel.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
 		<key>TeethTimer.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -17,6 +22,16 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>D37FBC7B1AF34DE100381C7F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D37FBC8F1AF34DE100381C7F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>D3B7BC6919EA383A00F50DF7</key>
 		<dict>
 			<key>primary</key>
