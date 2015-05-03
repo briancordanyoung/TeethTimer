@@ -380,7 +380,7 @@ final class ImageWheel: UIView {
   // MARK: -
   // MARK: Visual representation of the wheel
   func updateAppearanceForRotation(rotation: CGFloat) {
-//    setImagesForRotation(rotation)
+    setImagesForRotation(rotation)
 
     let angle = wedgeWheelAngle(rotation)
 //    setImageOpacityForAngle(angle)
@@ -394,6 +394,8 @@ final class ImageWheel: UIView {
     angle = angle + (wedgeWidthAngle / 2)
     angle = wedgeWheelAngle(angle)
     
+    let twoWedgeWidthAngles = wedgeWidthAngle * 2
+    
     for wedge in wedges {
       
       if angle >= wedge.minRadian &&
@@ -403,14 +405,12 @@ final class ImageWheel: UIView {
                         isBetweenLow: wedge.minRadian,
                              AndHigh: wedge.maxRadian)
           
-          let wedgeAngle = wedgeWidthAngle * 2 * percent
-          
-          visualState.wedgeAngleList[wedge.value]    = wedgeAngle
+          let wedgeAngle = twoWedgeWidthAngles * percent
+          let wedgeAngleInverted = twoWedgeWidthAngles - wedgeAngle
           
           let neighbor = neighboringWedge(wedge)
-          let base = wedgeWidthAngle * 2
-          let wedgeAngleInverted = base - wedgeAngle
-          
+
+          visualState.wedgeAngleList[wedge.value]    = wedgeAngle
           visualState.wedgeAngleList[neighbor.value] = wedgeAngleInverted
       }
     }
