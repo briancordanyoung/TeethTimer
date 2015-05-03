@@ -73,6 +73,8 @@ final class ImageWheel: UIView {
   }
   
   // Internal properties
+  let dev = Developement()
+  
   // Image and Wedge Properties
   let wedgeImageHeight: CGFloat  = 800 * 0.9
   let wedgeImageWidth:  CGFloat  = 734 * 0.9
@@ -378,7 +380,7 @@ final class ImageWheel: UIView {
   // MARK: -
   // MARK: Visual representation of the wheel
   func updateAppearanceForRotation(rotation: CGFloat) {
-    setImagesForRotation(rotation)
+//    setImagesForRotation(rotation)
 
     let angle = wedgeWheelAngle(rotation)
 //    setImageOpacityForAngle(angle)
@@ -401,22 +403,21 @@ final class ImageWheel: UIView {
                         isBetweenLow: wedge.minRadian,
                              AndHigh: wedge.maxRadian)
           
-          let wedgeAngle = wedgeWidthAngle * percent
+          let wedgeAngle = wedgeWidthAngle * 2 * percent
           
           visualState.wedgeAngleList[wedge.value]    = wedgeAngle
           
-          
           let neighbor = neighboringWedge(wedge)
-          let wedgeAngleInverted = wedgeWidthAngle - wedgeAngle
+          let base = wedgeWidthAngle * 2
+          let wedgeAngleInverted = base - wedgeAngle
           
           visualState.wedgeAngleList[neighbor.value] = wedgeAngleInverted
-          
       }
     }
     
     visualState.setAnglesOfWedgeImageViews(allWedgeImageViews)
   }
-  
+
   func setImagesForRotation(rotation: CGFloat) {
     // get the rotation of the wedge at the bottom of the wheel.
     // if the
@@ -632,7 +633,6 @@ final class ImageWheel: UIView {
     let otherWedge = wedgeFromValue(wedgeValue)
     return otherWedge
   }
-  
   
   // MARK: -
   // MARK: Angle Helpers

@@ -134,8 +134,9 @@ CGImageRef flip (CGImageRef im) {
 
   
 	// Create the path
-  CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
-//  CGPoint center = self.anchorPoint;
+  CGPoint center = CGPointMake(self.bounds.size.width  * self.anchorPoint.x,
+                               self.bounds.size.height * self.anchorPoint.y);
+  
 	CGFloat radius;
   if (clipToCircle) {
     radius = MIN(center.x, center.y);

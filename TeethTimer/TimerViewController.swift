@@ -171,7 +171,7 @@ final class TimerViewController: UIViewController {
   
   func setupImageWheelAndAddToGavinWheel(gavinWheel: WheelControl) {
     let images = arrayOfImages(10)
-    let imageWheel = ImageWheel(Sections: 6, AndImages: images)
+    let imageWheel = ImageWheel(Sections: 4, AndImages: images)
     gavinWheel.wheelView.addSubview(imageWheel)
     
     // Set the inital rotation

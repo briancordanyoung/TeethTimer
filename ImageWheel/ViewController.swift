@@ -18,7 +18,8 @@ class ViewController: UIViewController {
 
   
   @IBAction func sliderChanged(sender: UISlider) {
-    containerView.imageWheel?.rotationAngle = CGFloat(sender.value)
+    let width = containerView.imageWheel!.wedgeWidthAngle
+    containerView.imageWheel?.rotationAngle = Circle().DegreesToRadians(CGFloat(sender.value)) + (width / 2)
   }
   
 
