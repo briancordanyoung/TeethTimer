@@ -18,10 +18,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rjc-Bp-ZxT" userLabel="Container" customClass="ContainerView" customModule="ImageWheel" customModuleProvider="target">
+                            <view opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rjc-Bp-ZxT" userLabel="Container" customClass="ContainerView" customModule="ImageWheel" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="375"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Rjc-Bp-ZxT" secondAttribute="height" multiplier="1:1" id="OAp-0H-SzQ"/>
+                                    <constraint firstAttribute="width" constant="2000" id="xj5-lu-WJp"/>
                                 </constraints>
                             </view>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="720" translatesAutoresizingMaskIntoConstraints="NO" id="qpj-NO-cxI">
@@ -30,14 +31,30 @@
                                     <action selector="sliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="YtY-AI-5VM"/>
                                 </connections>
                             </slider>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TM2-hu-jvc">
+                                <rect key="frame" x="142" y="517" width="90" height="30"/>
+                                <state key="normal" title="Save Frames">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="saveFramesButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZA4-IV-zm0"/>
+                                </connections>
+                            </button>
+                            <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IQd-9c-aBs">
+                                <rect key="frame" x="16" y="555" width="343" height="2"/>
+                            </progressView>
                         </subviews>
                         <color key="backgroundColor" red="0.88867583279999995" green="0.89611879650000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Rjc-Bp-ZxT" secondAttribute="trailing" id="1yA-zU-Yb4"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="qpj-NO-cxI" secondAttribute="bottom" constant="42" id="CmR-TY-I1e"/>
-                            <constraint firstItem="Rjc-Bp-ZxT" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" priority="250" id="PKX-s9-T9h"/>
+                            <constraint firstAttribute="centerX" secondItem="TM2-hu-jvc" secondAttribute="centerX" id="E36-2y-9y8"/>
+                            <constraint firstItem="IQd-9c-aBs" firstAttribute="top" secondItem="TM2-hu-jvc" secondAttribute="bottom" constant="8" id="Lrp-N9-odS"/>
+                            <constraint firstAttribute="centerX" secondItem="Rjc-Bp-ZxT" secondAttribute="centerX" id="MY0-2k-hYT"/>
+                            <constraint firstItem="qpj-NO-cxI" firstAttribute="top" secondItem="IQd-9c-aBs" secondAttribute="bottom" constant="38" id="Nuf-Y0-ZJr"/>
+                            <constraint firstAttribute="centerY" secondItem="Rjc-Bp-ZxT" secondAttribute="centerY" id="aOo-mW-YDZ"/>
+                            <constraint firstAttribute="trailing" secondItem="IQd-9c-aBs" secondAttribute="trailing" constant="16" id="jdC-Zb-uqw"/>
                             <constraint firstItem="qpj-NO-cxI" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="sUP-gn-BPw"/>
-                            <constraint firstItem="Rjc-Bp-ZxT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="vUg-RB-W6F"/>
+                            <constraint firstItem="IQd-9c-aBs" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="vwW-Gv-e6Z"/>
                             <constraint firstAttribute="trailing" secondItem="qpj-NO-cxI" secondAttribute="trailing" constant="16" id="ycj-tA-jbh"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Rjc-Bp-ZxT" secondAttribute="bottom" priority="1" id="ys1-IH-pNN"/>
                         </constraints>
@@ -45,6 +62,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="containerView" destination="Rjc-Bp-ZxT" id="QZB-Lg-G4L"/>
+                        <outlet property="progressBar" destination="IQd-9c-aBs" id="wIt-la-9st"/>
                         <outlet property="slider" destination="qpj-NO-cxI" id="RqL-v6-xcL"/>
                     </connections>
                 </viewController>
