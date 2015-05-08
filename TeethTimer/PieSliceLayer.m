@@ -103,18 +103,20 @@ CGImageRef flip (CGImageRef im) {
 
 
 -(void)drawInContext:(CGContextRef)ctx {
-    CGContextClipToMask(ctx, self.bounds, self.maskImage);
-  
-    if (self.CGImage == nil) {
-      CGContextSetFillColorWithColor(ctx, self.fillColor.CGColor);
-      CGContextFillRect(ctx, self.bounds);
-    } else {
-      if (self.CGImage != nil) {
-        CGContextDrawImage(ctx, self.bounds, self.CGImage);
-      }
+  CGImageRef mask = [self createMaskImage];
+  CGContextClipToMask(ctx, self.bounds, mask);
+  CGImageRelease(mask);
+
+  if (self.CGImage == nil) {
+    CGContextSetFillColorWithColor(ctx, self.fillColor.CGColor);
+    CGContextFillRect(ctx, self.bounds);
+  } else {
+    if (self.CGImage != nil) {
+      CGContextDrawImage(ctx, self.bounds, self.CGImage);
     }
-    
   }
+  
+}
 
 
 -(void)drawMaskInContext:(CGContextRef)ctx {
@@ -166,7 +168,7 @@ CGImageRef flip (CGImageRef im) {
 
 
 
--(CGImageRef)maskImage {
+-(CGImageRef)createMaskImage {
   CGFloat width = self.bounds.size.width;
   CGFloat height = self.bounds.size.height;
   
