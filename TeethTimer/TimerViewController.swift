@@ -644,12 +644,13 @@ final class TimerViewController: UIViewController {
     let lowerThirdImage = takeSnapshotOfView( snapshotView )
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-      let lowerThirdBlurredImage = lowerThirdImage.applyBlurWithRadius( 4.0,
+      [weak lowerThirdImage] in
+      let lowerThirdBlurredImage = lowerThirdImage?.applyBlurWithRadius( 4.0,
         tintColor: UIColor(white:0.0, alpha: 0.5),
         saturationDeltaFactor: 2.0,
         maskImage: nil)
-      dispatch_sync(dispatch_get_main_queue(), {
-        self.lowerThirdView.image = lowerThirdBlurredImage
+      dispatch_sync(dispatch_get_main_queue(), { [weak lowerThirdBlurredImage] in
+        self.lowerThirdView?.image = lowerThirdBlurredImage
       })
     })
   }
@@ -692,6 +693,6 @@ final class TimerViewController: UIViewController {
     AndHigh       high: CGFloat ) -> CGFloat {
       return (value - low) / (high - low)
   }
-
+  
 }
 
