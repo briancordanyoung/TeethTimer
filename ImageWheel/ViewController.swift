@@ -45,16 +45,9 @@ class ViewController: UIViewController {
     let totalFrames    = 720 * 2
     let anglePerFrame  = totalRotation / CGFloat(totalFrames)
     
-//    for frame in 0..<totalFrames {
-//      let currentRotation = anglePerFrame * CGFloat(frame)
-//      wheel.rotationAngle = currentRotation
-//      self.snapshotCurrentFrame(frame)
-//      percentDone(CGFloat(frame/totalFrames))
-//    }
-    
 //    Apply.background(totalFrames) { frame in
 //      let currentRotation = anglePerFrame * CGFloat(frame)
-//      let delay = Double(frame) * 2.0
+//      let delay = Double(frame) * 1.0
 //      Async.main(after: delay) {
 //        wheel.rotationAngle = currentRotation
 //        self.snapshotCurrentFrame(frame)
@@ -90,7 +83,7 @@ class ViewController: UIViewController {
       let path = path.URLByAppendingPathComponent("gavinWheel-\(frameString).png")
       println(frameString)
       
-      var image = self.takeSnapshotOfView(self.containerView)
+      var image = takeSnapshotOfView(containerView)
       let png   = UIImagePNGRepresentation(image)
       if png != nil {
         png.writeToURL(path, atomically: true)

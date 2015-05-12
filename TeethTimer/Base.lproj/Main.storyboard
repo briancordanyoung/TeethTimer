@@ -76,6 +76,15 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BBT-zu-vyW">
+                                <rect key="frame" x="146" y="629" width="83" height="30"/>
+                                <state key="normal" title="save frames">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="saveFrames:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QCR-UE-WYl"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -85,9 +94,11 @@
                             <constraint firstItem="BC6-ez-KJa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Lau-v4-LzM"/>
                             <constraint firstItem="Msc-xa-DWv" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="P54-LR-VBc"/>
                             <constraint firstAttribute="centerX" secondItem="OUX-Ix-O1U" secondAttribute="centerX" id="PRd-Ye-Pwg"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="BBT-zu-vyW" secondAttribute="bottom" constant="8" id="Pje-3V-az5"/>
                             <constraint firstAttribute="centerX" secondItem="Msc-xa-DWv" secondAttribute="centerX" id="QfM-3l-RNW"/>
                             <constraint firstAttribute="trailing" secondItem="2WA-zu-ahV" secondAttribute="trailing" id="RXv-d8-s1V"/>
                             <constraint firstItem="Vn1-Zx-sgu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="30" id="SU3-o2-ShK"/>
+                            <constraint firstAttribute="centerX" secondItem="BBT-zu-vyW" secondAttribute="centerX" id="StI-XK-nS5"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="OUX-Ix-O1U" secondAttribute="bottom" constant="35" id="agX-fw-RkF"/>
                             <constraint firstItem="2WA-zu-ahV" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="fKa-X0-oBi"/>
                             <constraint firstAttribute="trailing" secondItem="BC6-ez-KJa" secondAttribute="trailing" id="iQz-o7-33F"/>
@@ -101,6 +112,7 @@
                         <outlet property="controlView" destination="MOq-R8-IVu" id="UKu-kb-7Zt"/>
                         <outlet property="lowerThirdView" destination="2WA-zu-ahV" id="sUs-RW-P2G"/>
                         <outlet property="resetButton" destination="z2l-dT-yk7" id="vuu-wS-veL"/>
+                        <outlet property="saveFrameButton" destination="BBT-zu-vyW" id="DeM-4a-bBJ"/>
                         <outlet property="snapshotView" destination="BC6-ez-KJa" id="tKe-H0-5NK"/>
                         <outlet property="startPauseButton" destination="Vn1-Zx-sgu" id="59w-Mo-ILk"/>
                         <outlet property="timerLabel" destination="OUX-Ix-O1U" id="6fW-xf-yBv"/>

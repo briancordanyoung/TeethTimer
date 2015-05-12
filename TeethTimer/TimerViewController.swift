@@ -1,6 +1,8 @@
 import AVFoundation
 import UIKit
 
+
+
 // MARK: -
 // MARK: TimerViewController class
 final class TimerViewController: UIViewController {
@@ -8,6 +10,7 @@ final class TimerViewController: UIViewController {
   // MARK: Properties
   @IBOutlet weak var startPauseButton: UIButton!
   @IBOutlet weak var resetButton:      UIButton!
+  @IBOutlet weak var saveFrameButton:  UIButton!
   @IBOutlet weak var timerLabel:       UILabel!
   @IBOutlet weak var fullScreenImage:  UIImageView!
   @IBOutlet weak var controlView:      UIView!
@@ -308,6 +311,11 @@ final class TimerViewController: UIViewController {
     timer.reset()
   }
   
+  @IBAction func saveFrames(sender: UIButton) {
+    saveFrames()
+  }
+  
+  
   // MARK: -
   // MARK: ImageWheelControl Target/Action Callbacks
   func gavinWheelTouchedByUser(gavinWheel: WheelControl) {
@@ -408,21 +416,17 @@ final class TimerViewController: UIViewController {
       }
       
       if currentFrame != seekToFrame {
-        println("\(directionMsg) \(currentFrame) \(seekToFrame)")
+//        println("\(directionMsg) \(currentFrame) \(seekToFrame)")
         seekToTime.value = seekToFrame
-        var seekTolorance = seekToTime
-        seekTolorance.value = 1
 
         if switchMovies { player.advanceToNextItem() }
-        player.seekToTime(seekToTime, toleranceBefore: seekTolorance,
-                                       toleranceAfter: seekTolorance)
+        player.seekToTime(seekToTime, toleranceBefore: kCMTimeZero,
+                                       toleranceAfter: kCMTimeZero)
         if let playerItem = playerItem {
           player.insertItem(playerItem, afterItem: nil)
         }
       }
     }
-    
-    
 
   }
   
@@ -615,8 +619,27 @@ final class TimerViewController: UIViewController {
   }
   
   // MARK: Blurred Lower Third
-  func takeSnapshotOfView(view: UIView) -> UIImage {
-    let resolutionScale = CGFloat(0.25)
+  func blurLowerThirdView() {
+    var rect = lowerThirdView.frame
+    rect.size.height = 88.0;
+    rect.origin.y = 0
+    
+    let lowerThirdImage = takeSnapshotOfView( snapshotView,
+                         WithResolutionScale: CGFloat(0.25) )
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+      let lowerThirdBlurredImage = lowerThirdImage.applyBlurWithRadius( 4.0,
+                                      tintColor: UIColor(white:0.0, alpha: 0.5),
+                          saturationDeltaFactor: 2.0,
+                                      maskImage: nil)
+      dispatch_sync(dispatch_get_main_queue(), {
+        self.lowerThirdView?.image = lowerThirdBlurredImage
+        })
+      })
+  }
+
+  func takeSnapshotOfView(view: UIView,
+                     WithResolutionScale resolutionScale: CGFloat) -> UIImage {
     
     var size = view.frame.size
     var rect = view.frame
@@ -635,27 +658,134 @@ final class TimerViewController: UIViewController {
     UIGraphicsEndImageContext()
     return image
   }
-
-  func blurLowerThirdView() {
-    var rect = lowerThirdView.frame
-    rect.size.height = 88.0;
-    rect.origin.y = 0
+  
+  // MARK:
+  // MARK: Save frames to make movie
+  
+  struct SaveState: Printable {
+    var frame: Int = 0
+    var total: Int = 0
+    var saveFrameState: SaveFrameState = .idle
+    var anglePerFrame = CGFloat(0)
+    var imageCount: Int = 0
+    var completed: () -> () = {}
+    var timer: NSTimer?
     
-    let lowerThirdImage = takeSnapshotOfView( snapshotView )
+    var description: String {
+      return ""
+    }
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-      [weak lowerThirdImage] in
-      let lowerThirdBlurredImage = lowerThirdImage?.applyBlurWithRadius( 4.0,
-        tintColor: UIColor(white:0.0, alpha: 0.5),
-        saturationDeltaFactor: 2.0,
-        maskImage: nil)
-      dispatch_sync(dispatch_get_main_queue(), { [weak lowerThirdBlurredImage] in
-        self.lowerThirdView?.image = lowerThirdBlurredImage
-      })
-    })
+    var isComplete: Bool {
+      return frame >= total
+    }
   }
 
+  enum SaveFrameState {
+    case saving
+    case idle
+  }
+  
+  var saveState = SaveState()
+  
+  func saveFrames() {
+    if saveState.isComplete {
+      startPauseButton.hidden = true
+      resetButton.hidden      = true
+      timerLabel.hidden       = true
+      saveFrameButton.hidden  = true
+      
+      saveState.completed = { [weak self] in
+        self?.startPauseButton.hidden = false
+        self?.resetButton.hidden      = false
+        self?.timerLabel.hidden       = false
+        self?.saveFrameButton.hidden  = false
+        self?.saveState.completed     = {}
+      }
+      
+      saveState.total   = 720 * 2
+      
+      if let gavinWheel = gavinWheel {
+        let min = gavinWheel.minimumRotation!
+        let max = gavinWheel.maximumRotation!
+        let totalRotation = max - min
+        
+        saveState.anglePerFrame  = totalRotation / CGFloat(saveState.total)
+        
+        saveState.timer = NSTimer.scheduledTimerWithTimeInterval( 0.01,
+          target: self,
+          selector: Selector("snapshotCurrentFrameIfIdle"),
+          userInfo: nil,
+          repeats: true)
+      }
+    }
+  }
+  
+  lazy var padNumber: NSNumberFormatter = {
+    let numberFormater = NSNumberFormatter()
+    numberFormater.minimumIntegerDigits  = 4
+    numberFormater.maximumIntegerDigits  = 4
+    numberFormater.minimumFractionDigits = 0
+    numberFormater.maximumFractionDigits = 0
+    numberFormater.positivePrefix = ""
+    return numberFormater
+    }()
+  
+  func snapshotCurrentFrameIfIdle() {
+    if saveState.isComplete {
+      saveState.timer?.invalidate()
+      saveState.timer = nil
+      saveState.completed()
+      saveState = SaveState()
+    } else if saveState.saveFrameState == .idle {
+      snapshotCurrentFrame()
+    }
+  }
+  
+  func snapshotCurrentFrame() {
+    saveState.saveFrameState = .saving
+    let frameNumber = saveState.frame
 
+    func pad(number: Int) -> String {
+      var paddedNumber = " 1.000"
+      if let numberString = padNumber.stringFromNumber(number) {
+        paddedNumber = numberString
+      }
+      return paddedNumber
+    }
+    
+    let paths = NSFileManager.defaultManager()
+                .URLsForDirectory( .DocumentDirectory,
+                        inDomains: .UserDomainMask)
+    let path = paths.last as? NSURL
+    
+    if let path = path {
+      
+      if (frameNumber == 0) { println(path) }
+      let frameString = pad(frameNumber)
+      let path = path.URLByAppendingPathComponent("gavinWheel-\(frameString).png")
+      println(frameString)
+      
+      var image = takeSnapshotOfView(self.view, WithResolutionScale: CGFloat(2.0))
+      let png   = UIImagePNGRepresentation(image)
+      if png != nil {
+        png.writeToURL(path, atomically: true)
+      }
+    }
+    
+    saveState.frame += 1
+    let currentRotation = saveState.anglePerFrame * CGFloat(saveState.frame)
+    
+    if let gavinWheel = gavinWheel {
+      var max = CGFloat(0)
+      if let maximumRotation = gavinWheel.maximumRotation {
+        max = maximumRotation
+      }
+      gavinWheel.rotationAngle = max - currentRotation
+    }
+    saveState.saveFrameState = .idle
+  }
+  
+  // MARK:
   // MARK: Appearance Helper
   private func styleButton(button: UIButton)  {
     button.layer.borderWidth = 1

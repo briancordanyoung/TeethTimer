@@ -124,6 +124,7 @@
 		D37FBCD11AF34E9300381C7F /* PieSliceLayer.h in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2CE1AF32E6300243AFF /* PieSliceLayer.h */; };
 		D37FBCD21AF34E9300381C7F /* PieSliceLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */; };
 		D37FBCD31AF3518A00381C7F /* SystemVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30EDFA51AD2F8C100E76327 /* SystemVersion.swift */; };
+		D3864F591AF69FBE00B787B4 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3864F581AF69FBE00B787B4 /* Async.swift */; };
 		D388C3021A9F7B50007D4F8B /* POPProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = D388C2FF1A9F7B50007D4F8B /* POPProperty.swift */; };
 		D388C3031A9F7B50007D4F8B /* POPSwiftWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D388C3011A9F7B50007D4F8B /* POPSwiftWrapper.m */; };
 		D3B29F801AF5264200C2C067 /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B29F7F1AF5264200C2C067 /* ContainerView.swift */; };
@@ -220,10 +221,13 @@
 		D37FBC871AF34DE100381C7F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D37FBC8A1AF34DE100381C7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		D37FBCD41AF3522700381C7F /* ImageWheel-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ImageWheel-Bridging-Header.h"; sourceTree = "<group>"; };
+		D3864F581AF69FBE00B787B4 /* Async.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Async.swift; path = ../../../GITHub/Async/Async.swift; sourceTree = "<group>"; };
 		D388C2E41A9EE256007D4F8B /* TeethTimer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TeethTimer-Bridging-Header.h"; sourceTree = "<group>"; };
 		D388C2FF1A9F7B50007D4F8B /* POPProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POPProperty.swift; sourceTree = "<group>"; };
 		D388C3001A9F7B50007D4F8B /* POPSwiftWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POPSwiftWrapper.h; sourceTree = "<group>"; };
 		D388C3011A9F7B50007D4F8B /* POPSwiftWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POPSwiftWrapper.m; sourceTree = "<group>"; };
+		D3A4341F1B015BA8001DD6A2 /* FramesToMovie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FramesToMovie.m; sourceTree = "<group>"; };
+		D3A434241B015CA0001DD6A2 /* FramesToMovie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FramesToMovie.h; sourceTree = "<group>"; };
 		D3B29F7F1AF5264200C2C067 /* ContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		D3B7BC6A19EA383A00F50DF7 /* TeethTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeethTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B7BC6E19EA383A00F50DF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -341,6 +345,7 @@
 				D37FBCD41AF3522700381C7F /* ImageWheel-Bridging-Header.h */,
 				D37FBC801AF34DE100381C7F /* AppDelegate.swift */,
 				D37FBC821AF34DE100381C7F /* ViewController.swift */,
+				D3864F581AF69FBE00B787B4 /* Async.swift */,
 				D37FBC841AF34DE100381C7F /* Main.storyboard */,
 				D37FBC871AF34DE100381C7F /* Images.xcassets */,
 				D37FBC891AF34DE100381C7F /* LaunchScreen.xib */,
@@ -416,6 +421,8 @@
 				D3207F2D1ADAC00900ABE2FC /* UIImage+ImageEffects.m */,
 				D3CDA2CE1AF32E6300243AFF /* PieSliceLayer.h */,
 				D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */,
+				D3A434241B015CA0001DD6A2 /* FramesToMovie.h */,
+				D3A4341F1B015BA8001DD6A2 /* FramesToMovie.m */,
 			);
 			path = TeethTimer;
 			sourceTree = "<group>";
@@ -692,6 +699,7 @@
 				D3B29F801AF5264200C2C067 /* ContainerView.swift in Sources */,
 				D37FBCC81AF34E9300381C7F /* Developement.swift in Sources */,
 				D37FBCC91AF34E9300381C7F /* ImageWheel.swift in Sources */,
+				D3864F591AF69FBE00B787B4 /* Async.swift in Sources */,
 				D37FBCCA1AF34E9300381C7F /* ImageWheelVisualState.swift in Sources */,
 				D37FBCCB1AF34E9300381C7F /* BCYStandardLibrary.swift in Sources */,
 				D37FBCCC1AF34E9300381C7F /* WedgeImageView.swift in Sources */,

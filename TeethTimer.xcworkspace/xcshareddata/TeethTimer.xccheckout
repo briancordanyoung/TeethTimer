@@ -10,6 +10,8 @@
 	<string>TeethTimer</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>8CCFBC236B2D99F3320873838535AF1EA5422AB1</key>
+		<string>https://github.com/duemunk/Async.git</string>
 		<key>D6ACCE078B4BD7A3C9EFAB02F18A1FE4AE987281</key>
 		<string>https://github.com/briancordanyoung/TeethTimer.git</string>
 	</dict>
@@ -17,6 +19,8 @@
 	<string>TeethTimer.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>8CCFBC236B2D99F3320873838535AF1EA5422AB1</key>
+		<string>../../GITHub/Async</string>
 		<key>D6ACCE078B4BD7A3C9EFAB02F18A1FE4AE987281</key>
 		<string>..</string>
 	</dict>
@@ -28,6 +32,14 @@
 	<string>D6ACCE078B4BD7A3C9EFAB02F18A1FE4AE987281</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>8CCFBC236B2D99F3320873838535AF1EA5422AB1</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Async</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
