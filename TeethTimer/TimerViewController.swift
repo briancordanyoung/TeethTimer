@@ -356,12 +356,16 @@ final class TimerViewController: UIViewController {
   
   func updateBackgroundForPercentDone(percent: CGFloat) {
     if let backgroundPlayer = backgroundPlayer {
+      
       switch backgroundPlayer.status {
       case .ReadyToPlay:
+        println("status \(backgroundPlayer.status.rawValue)")
         seekToTimeByPercentage(percent, inPlayer: backgroundPlayer)
       case .Unknown:
+        println("status \(backgroundPlayer.status.rawValue)")
         println("unknown status")
       case .Failed:
+        println("status \(backgroundPlayer.status.rawValue)")
         println("failed to play")
       }
     }
@@ -663,20 +667,37 @@ final class TimerViewController: UIViewController {
   // MARK: Save frames to make movie
   
   struct SaveState: Printable {
-    var frame: Int = 0
-    var total: Int = 0
     var saveFrameState: SaveFrameState = .idle
-    var anglePerFrame = CGFloat(0)
-    var imageCount: Int = 0
+    var currentFrame: Int = 0
+    var totalFrames:  Int = 0
+    var startingRotation: CGFloat = 0
+    var endingRotation:   CGFloat = 0
+    var currentRotation:  CGFloat {
+      let acculmulatedAngle = anglePerFrame * CGFloat(currentFrame)
+      let currentRotation: CGFloat
+      if startingRotation > endingRotation {
+        currentRotation = startingRotation - acculmulatedAngle
+      } else {
+        currentRotation = startingRotation + acculmulatedAngle
+      }
+      return currentRotation
+    }
+    
+    var anglePerFrame: CGFloat {
+      let totalRotation = abs(startingRotation - endingRotation)
+      return totalRotation / CGFloat(totalFrames)
+    }
+    
     var completed: () -> () = {}
     var timer: NSTimer?
     
     var description: String {
+      // TODO: add description
       return ""
     }
     
     var isComplete: Bool {
-      return frame >= total
+      return currentFrame >= totalFrames
     }
   }
 
@@ -688,6 +709,20 @@ final class TimerViewController: UIViewController {
   var saveState = SaveState()
   
   func saveFrames() {
+    
+    func expandRange(var range: (start: CGFloat,end: CGFloat),ByAmount amount: CGFloat)
+      -> (start: CGFloat,end: CGFloat) {
+        
+        if range.start > range.end {
+          range.start += amount
+          range.end   -= amount
+        } else {
+          range.start -= amount
+          range.end   += amount
+        }
+        return range
+    }
+    
     if saveState.isComplete {
       startPauseButton.hidden = true
       resetButton.hidden      = true
@@ -702,14 +737,15 @@ final class TimerViewController: UIViewController {
         self?.saveState.completed     = {}
       }
       
-      saveState.total   = 720 * 2
-      
-      if let gavinWheel = gavinWheel {
-        let min = gavinWheel.minimumRotation!
-        let max = gavinWheel.maximumRotation!
-        let totalRotation = max - min
-        
-        saveState.anglePerFrame  = totalRotation / CGFloat(saveState.total)
+      if let gavinWheel = gavinWheel, imageWheelView = imageWheelView {
+        let wedgeDegrees = Circle().radian2Degree(imageWheelView.wedgeWidthAngle)
+        let halfWedgeDegrees = wedgeDegrees / 2
+        let workingRange = (start: gavinWheel.maximumRotation!,
+                              end: gavinWheel.minimumRotation!)
+        let range = expandRange(workingRange, ByAmount: halfWedgeDegrees)
+        saveState.totalFrames      = (720 * 2) + Int(wedgeDegrees)
+        saveState.startingRotation = range.start
+        saveState.endingRotation   = range.end
         
         saveState.timer = NSTimer.scheduledTimerWithTimeInterval( 0.01,
           target: self,
@@ -743,7 +779,7 @@ final class TimerViewController: UIViewController {
   
   func snapshotCurrentFrame() {
     saveState.saveFrameState = .saving
-    let frameNumber = saveState.frame
+    let frameNumber = saveState.currentFrame
 
     func pad(number: Int) -> String {
       var paddedNumber = " 1.000"
@@ -761,7 +797,7 @@ final class TimerViewController: UIViewController {
     if let path = path {
       
       if (frameNumber == 0) { println(path) }
-      let frameString = pad(frameNumber)
+      let frameString = pad(frameNumber + 1)
       let path = path.URLByAppendingPathComponent("gavinWheel-\(frameString).png")
       println(frameString)
       
@@ -772,16 +808,8 @@ final class TimerViewController: UIViewController {
       }
     }
     
-    saveState.frame += 1
-    let currentRotation = saveState.anglePerFrame * CGFloat(saveState.frame)
-    
-    if let gavinWheel = gavinWheel {
-      var max = CGFloat(0)
-      if let maximumRotation = gavinWheel.maximumRotation {
-        max = maximumRotation
-      }
-      gavinWheel.rotationAngle = max - currentRotation
-    }
+    saveState.currentFrame += 1
+    gavinWheel?.rotationAngle = saveState.currentRotation
     saveState.saveFrameState = .idle
   }
   

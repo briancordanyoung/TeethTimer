@@ -7,11 +7,11 @@ struct Circle {
   static let quarter      =  CGFloat(M_PI) / 2
   static let threeQuarter = (CGFloat(M_PI) / 2) + CGFloat(M_PI)
   
-  func Radian2Degree(radian:CGFloat) -> CGFloat {
+  func radian2Degree(radian:CGFloat) -> CGFloat {
     return radian * 180.0 / CGFloat(M_PI)
   }
 
-  func DegreesToRadians (value:CGFloat) -> CGFloat {
+  func degreesToRadians (value:CGFloat) -> CGFloat {
     return value * CGFloat(M_PI) / 180.0
   }
 }

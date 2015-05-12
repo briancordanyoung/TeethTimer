@@ -188,12 +188,12 @@ struct Circle {
   static let full         =  CGFloat(M_PI) * 2
   static let quarter      =  CGFloat(M_PI) / 2
   static let threeQuarter = (CGFloat(M_PI) / 2) + CGFloat(M_PI)
-
-  func Radian2Degree(radian:CGFloat) -> CGFloat {
+  
+  func radian2Degree(radian:CGFloat) -> CGFloat {
     return radian * 180.0 / CGFloat(M_PI)
   }
   
-  func DegreesToRadians (value:CGFloat) -> CGFloat {
+  func degreesToRadians (value:CGFloat) -> CGFloat {
     return value * CGFloat(M_PI) / 180.0
   }
 }
@@ -217,14 +217,14 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
     set(newRotationAngle) {
 
-      if let minRotation = minRotation {
-        let msg = "rotationAngle must be greater than or equal to minRotation."
-        assert(newRotationAngle >= minRotation, msg)
-      }
-      if let maxRotation = maxRotation {
-        let msg = "rotationAngle must be less than or equal to maxRotation."
-        assert(maxRotation >= newRotationAngle, msg)
-      }
+//      if let minRotation = minRotation {
+//        let msg = "rotationAngle must be greater than or equal to minRotation."
+//        assert(newRotationAngle >= minRotation, msg)
+//      }
+//      if let maxRotation = maxRotation {
+//        let msg = "rotationAngle must be less than or equal to maxRotation."
+//        assert(maxRotation >= newRotationAngle, msg)
+//      }
       
       let adjustRotationAngle = newRotationAngle + internalRotationOffset
       
