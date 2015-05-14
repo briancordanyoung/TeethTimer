@@ -359,13 +359,10 @@ final class TimerViewController: UIViewController {
       
       switch backgroundPlayer.status {
       case .ReadyToPlay:
-        println("status \(backgroundPlayer.status.rawValue)")
         seekToTimeByPercentage(percent, inPlayer: backgroundPlayer)
       case .Unknown:
-        println("status \(backgroundPlayer.status.rawValue)")
         println("unknown status")
       case .Failed:
-        println("status \(backgroundPlayer.status.rawValue)")
         println("failed to play")
       }
     }
@@ -673,6 +670,7 @@ final class TimerViewController: UIViewController {
     var startingRotation: CGFloat = 0
     var endingRotation:   CGFloat = 0
     var currentRotation:  CGFloat {
+      let anglePerFrame = self.anglePerFrame
       let acculmulatedAngle = anglePerFrame * CGFloat(currentFrame)
       let currentRotation: CGFloat
       if startingRotation > endingRotation {
@@ -680,6 +678,9 @@ final class TimerViewController: UIViewController {
       } else {
         currentRotation = startingRotation + acculmulatedAngle
       }
+      
+      
+      
       return currentRotation
     }
     
@@ -710,17 +711,19 @@ final class TimerViewController: UIViewController {
   
   func saveFrames() {
     
-    func expandRange(var range: (start: CGFloat,end: CGFloat),ByAmount amount: CGFloat)
+    func expandRange(range: (start: CGFloat,end: CGFloat),ByAmount amount: CGFloat)
       -> (start: CGFloat,end: CGFloat) {
         
+        var resultingRange = range
         if range.start > range.end {
-          range.start += amount
-          range.end   -= amount
+          resultingRange.start += amount
+          resultingRange.end   -= amount
         } else {
-          range.start -= amount
-          range.end   += amount
+          resultingRange.start -= amount
+          resultingRange.end   += amount
         }
-        return range
+        
+        return resultingRange
     }
     
     if saveState.isComplete {
@@ -738,14 +741,19 @@ final class TimerViewController: UIViewController {
       }
       
       if let gavinWheel = gavinWheel, imageWheelView = imageWheelView {
-        let wedgeDegrees = Circle().radian2Degree(imageWheelView.wedgeWidthAngle)
+        let wedgeWidthAngle  = imageWheelView.wedgeWidthAngle
+        let halfWedgeWidthAngle = wedgeWidthAngle / 2
+        let wedgeDegrees     = Circle().radian2Degree(wedgeWidthAngle)
         let halfWedgeDegrees = wedgeDegrees / 2
-        let workingRange = (start: gavinWheel.maximumRotation!,
-                              end: gavinWheel.minimumRotation!)
-        let range = expandRange(workingRange, ByAmount: halfWedgeDegrees)
+        let workingRange     = (start: gavinWheel.maximumRotation!,
+                                  end: gavinWheel.minimumRotation!)
+        let range = expandRange(workingRange, ByAmount: halfWedgeWidthAngle)
         saveState.totalFrames      = (720 * 2) + Int(wedgeDegrees)
+//        saveState.totalFrames      = saveState.totalFrames / 8
         saveState.startingRotation = range.start
         saveState.endingRotation   = range.end
+        
+        gavinWheel.rotationAngle = saveState.currentRotation
         
         saveState.timer = NSTimer.scheduledTimerWithTimeInterval( 0.01,
           target: self,
@@ -795,7 +803,7 @@ final class TimerViewController: UIViewController {
     let path = paths.last as? NSURL
     
     if let path = path {
-      
+
       if (frameNumber == 0) { println(path) }
       let frameString = pad(frameNumber + 1)
       let path = path.URLByAppendingPathComponent("gavinWheel-\(frameString).png")
@@ -807,6 +815,9 @@ final class TimerViewController: UIViewController {
         png.writeToURL(path, atomically: true)
       }
     }
+    
+//    let d = Developement()
+//    println("frame: \(pad(frameNumber))  rotation: \(d.pad(saveState.currentRotation))")
     
     saveState.currentFrame += 1
     gavinWheel?.rotationAngle = saveState.currentRotation

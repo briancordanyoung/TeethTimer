@@ -384,7 +384,7 @@ final class ImageWheel: UIView {
 
     let angle = wedgeWheelAngle(rotation)
 //    setImageOpacityForAngle(angle)
-    setImageWedgeAngleForAngle(angle)
+//    setImageWedgeAngleForAngle(angle)
   }
 
   func setImageWedgeAngleForAngle(var angle: CGFloat) {
@@ -417,32 +417,87 @@ final class ImageWheel: UIView {
     
     visualState.setAnglesOfWedgeImageViews(allWedgeImageViews)
   }
+  
+  lazy var padNumber: NSNumberFormatter = {
+    let numberFormater = NSNumberFormatter()
+    numberFormater.minimumIntegerDigits  = 2
+    numberFormater.maximumIntegerDigits  = 2
+    numberFormater.minimumFractionDigits = 0
+    numberFormater.maximumFractionDigits = 0
+    numberFormater.positivePrefix = ""
+    return numberFormater
+    }()
 
-  func setImagesForRotation(rotation: CGFloat) {
-    // get the rotation of the wedge at the bottom of the wheel.
-    // if the
-    let wedgeCountBack: Int
-    if wedgeCountParity == .Even {
-      wedgeCountBack =  wedges.count / 2
-    } else {
-      wedgeCountBack = (wedges.count / 2) + 1
+  
+  func nextIndexFrom( currentIndex: Int,  forSteps stepCount: Int) -> Int {
+    var nextIndex = currentIndex + 1
+    if nextIndex > stepCount {
+      nextIndex = 1
     }
-    let rotationBack = CGFloat(wedgeCountBack) * wedgeWidthAngle
-    let startingRotation = rotation - rotationBack
-
-    for i in 1...wedges.count {
-      let rotationForward = (wedgeWidthAngle * CGFloat(i))
-      let rotationToCheck = startingRotation + rotationForward
-
-      if let imageView  = imageViewForRotation(rotationToCheck),
-                  image = imageForRotation(rotationToCheck) {
-        if imageView.image !== image {
-          imageView.image = image
-        }
-      }
-    }
+    return nextIndex
   }
+  
+  func add(steps: Int, fromIndex currentIndex: Int,
+                           forSteps stepCount: Int) -> Int {
+    var nextIndex = currentIndex
+    for i in 1..<steps {
+      nextIndex = nextIndexFrom(nextIndex, forSteps: stepCount)
+    }
+    return nextIndex
+  }
+  
+  func previousIndexFrom( currentIndex: Int,  forSteps stepCount: Int) -> Int {
+    var previousIndex = currentIndex - 1
+    if previousIndex < 1 {
+      previousIndex = stepCount
+    }
+    return previousIndex
+  }
+  
+  func subtract(steps: Int, fromIndex currentIndex: Int,
+                                forSteps stepCount: Int) -> Int {
+    var previousIndex = currentIndex
+    for i in 1..<steps {
+      previousIndex = previousIndexFrom(previousIndex, forSteps: stepCount)
+    }
+    return previousIndex
+  }
+  
+  func setImagesForRotation(rotation: CGFloat) {
     
+
+    func halfAnInt(number: Int) -> Int {
+      return Int(ceil(Float(number) / 2))
+    }
+    
+    let halfTheWedges  = halfAnInt(wedges.count)
+    
+    let currentWedge   = wedgeForRotation(rotation).value
+    let startWedge     = subtract( halfTheWedges,
+                        fromIndex: currentWedge,
+                         forSteps: wedges.count)
+    var wedge          = startWedge
+    
+    let currentImage   = imageIndexForRotation(rotation)
+    let startImage     = subtract( halfTheWedges,
+                        fromIndex: currentImage,
+                         forSteps: images.count)
+    
+    var image          = startImage
+    
+    for i in 1..<wedges.count {
+      if let imageView = imageViewFromValue(wedge) {
+        imageView.image = imageOfNumber(image)
+      }
+
+      wedge = nextIndexFrom(wedge, forSteps: wedges.count)
+      image = nextIndexFrom(image, forSteps: images.count)
+    }
+    
+    
+  }
+  
+  
   
   func setImageOpacityForAngle(var angle: CGFloat) {
     
@@ -536,8 +591,8 @@ final class ImageWheel: UIView {
   
   func imageIndexForRotation(rotation: CGFloat) -> ImageIndex {
     let startingRotationDifference = -firstImageRotation
-    let rotationStartingAtZero = rotation + startingRotationDifference
-    let wedgesFromStart = rotationStartingAtZero / wedgeWidthAngle
+    let rotationStartingAtZero     = rotation + startingRotationDifference
+    let wedgesFromStart            = rotationStartingAtZero / wedgeWidthAngle
     // assumes: images increase as rotation decreases
     var currentImage = ImageIndex(round(-wedgesFromStart)) + 1
     
