@@ -384,7 +384,7 @@ final class ImageWheel: UIView {
 
     let angle = wedgeWheelAngle(rotation)
 //    setImageOpacityForAngle(angle)
-//    setImageWedgeAngleForAngle(angle)
+    setImageWedgeAngleForAngle(angle)
   }
 
   func setImageWedgeAngleForAngle(var angle: CGFloat) {
@@ -487,7 +487,13 @@ final class ImageWheel: UIView {
     
     for i in 1..<wedges.count {
       if let imageView = imageViewFromValue(wedge) {
-        imageView.image = imageOfNumber(image)
+        
+        let image = imageOfNumber(image)
+        if imageView.image !== image {
+          imageView.image = image
+        }
+        
+        
       }
 
       wedge = nextIndexFrom(wedge, forSteps: wedges.count)

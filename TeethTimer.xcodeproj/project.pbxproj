@@ -133,6 +133,7 @@
 		D3B7BC7519EA383A00F50DF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3B7BC7319EA383A00F50DF7 /* Main.storyboard */; };
 		D3B7BC7A19EA383A00F50DF7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3B7BC7819EA383A00F50DF7 /* LaunchScreen.xib */; };
 		D3B95AD41ADB3CA300883051 /* SnapshotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B95AD31ADB3CA300883051 /* SnapshotView.swift */; };
+		D3BF13FC1B05675100D0C3E1 /* TimerViewController+Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF13FB1B05675100D0C3E1 /* TimerViewController+Cache.swift */; };
 		D3CDA2D01AF32E6300243AFF /* PieSliceLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */; };
 		D3CDA2D21AF32EBD00243AFF /* PieImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */; };
 		D3DC4C481A95877400984A24 /* ImageWheelVisualState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */; };
@@ -238,6 +239,7 @@
 		D3B7BC8419EA383A00F50DF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3B7BC8519EA383A00F50DF7 /* TeethTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeethTimerTests.swift; sourceTree = "<group>"; };
 		D3B95AD31ADB3CA300883051 /* SnapshotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotView.swift; sourceTree = "<group>"; };
+		D3BF13FB1B05675100D0C3E1 /* TimerViewController+Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimerViewController+Cache.swift"; sourceTree = "<group>"; };
 		D3CDA2CE1AF32E6300243AFF /* PieSliceLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieSliceLayer.h; sourceTree = "<group>"; };
 		D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieSliceLayer.m; sourceTree = "<group>"; };
 		D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieImageView.swift; sourceTree = "<group>"; };
@@ -400,6 +402,7 @@
 				D3B7BC7819EA383A00F50DF7 /* LaunchScreen.xib */,
 				D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */,
 				D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */,
+				D3BF13FB1B05675100D0C3E1 /* TimerViewController+Cache.swift */,
 				D3485C8419ECEEB900C6E495 /* Timer.swift */,
 				D30EDFA51AD2F8C100E76327 /* SystemVersion.swift */,
 				D34F10B81AAEA1D0009E2A9B /* WheelControl.swift */,
@@ -720,6 +723,7 @@
 			files = (
 				D388C3021A9F7B50007D4F8B /* POPProperty.swift in Sources */,
 				D3207F2E1ADAC00900ABE2FC /* UIImage+ImageEffects.m in Sources */,
+				D3BF13FC1B05675100D0C3E1 /* TimerViewController+Cache.swift in Sources */,
 				D3B95AD41ADB3CA300883051 /* SnapshotView.swift in Sources */,
 				D37FBC771AF3308500381C7F /* WedgeImageView.swift in Sources */,
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
