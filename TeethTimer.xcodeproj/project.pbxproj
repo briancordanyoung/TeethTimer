@@ -143,6 +143,8 @@
 		494890643301A07092EB8CC0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A8D8BE3E5746E8CC9B850697 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B1113560EAB34F926CF979D1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D301E9451B059C630021550B /* CEMovieMaker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CEMovieMaker.h; sourceTree = "<group>"; };
+		D301E9461B059C630021550B /* CEMovieMaker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CEMovieMaker.m; sourceTree = "<group>"; };
 		D307716C1A869B06003BA7E1 /* num-01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-01@2x.png"; path = "TeethTimer/Numbers/num-01@2x.png"; sourceTree = "<group>"; };
 		D307716D1A869B06003BA7E1 /* num-02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-02@2x.png"; path = "TeethTimer/Numbers/num-02@2x.png"; sourceTree = "<group>"; };
 		D307716E1A869B06003BA7E1 /* num-03@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-03@2x.png"; path = "TeethTimer/Numbers/num-03@2x.png"; sourceTree = "<group>"; };
@@ -426,6 +428,8 @@
 				D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */,
 				D3A434241B015CA0001DD6A2 /* FramesToMovie.h */,
 				D3A4341F1B015BA8001DD6A2 /* FramesToMovie.m */,
+				D301E9451B059C630021550B /* CEMovieMaker.h */,
+				D301E9461B059C630021550B /* CEMovieMaker.m */,
 			);
 			path = TeethTimer;
 			sourceTree = "<group>";

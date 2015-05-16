@@ -2,15 +2,22 @@ import AVFoundation
 import UIKit
 
 
-struct SaveState: Printable {
-  var saveFrameState: SaveFrameState = .idle
+enum FrameState {
+  case rendering
+  case rendered(UIImage)
+  case compressing
+  case idle
+}
+
+struct SaveState {
+  var frameState: FrameState = .idle
   var currentFrame: Int = 0
   var totalFrames:  Int = 0
   var startingRotation: CGFloat = 0
   var endingRotation:   CGFloat = 0
   var currentRotation:  CGFloat {
     let anglePerFrame = self.anglePerFrame
-    let acculmulatedAngle = anglePerFrame * CGFloat(currentFrame)
+    let acculmulatedAngle = anglePerFrame * CGFloat(currentFrame - 1)
     let currentRotation: CGFloat
     if startingRotation > endingRotation {
       currentRotation = startingRotation - acculmulatedAngle
@@ -25,141 +32,198 @@ struct SaveState: Printable {
     return totalRotation / CGFloat(totalFrames)
   }
   
-  var completed: () -> () = {}
+  var completionHandler: () -> () = {}
   var timer: NSTimer?
   
-  var description: String {
-    // TODO: add description
-    return ""
+  let padFormater: NSNumberFormatter = {
+    let numberFormater = NSNumberFormatter()
+    numberFormater.minimumIntegerDigits  = 4
+    numberFormater.maximumIntegerDigits  = 4
+    numberFormater.minimumFractionDigits = 0
+    numberFormater.maximumFractionDigits = 0
+    numberFormater.positivePrefix = ""
+    return numberFormater
+    }()
+  
+  func pad(number: Int) -> String {
+    var paddedNumber = "0000"
+    if let numberString = padFormater.stringFromNumber(number) {
+      paddedNumber = numberString
+    }
+    return paddedNumber
+  }
+
+  var isComplete: Bool {
+    return currentFrame > totalFrames
   }
   
-  var isComplete: Bool {
-    return currentFrame >= totalFrames
+  var hasNotBegun: Bool {
+    return totalFrames == 0
   }
+
+  var assetWriter:   AVAssetWriter?
+  var writerInput:   AVAssetWriterInput?
+  var bufferAdapter: AVAssetWriterInputPixelBufferAdaptor?
+  var videoSettings: [String:AnyObject]?
+  var frameTime:     CMTime?
+  
 }
 
-enum SaveFrameState {
-  case saving
-  case idle
-}
 
 
 extension TimerViewController {
   
+  func setupViewsBeforeRendering() {
+    startPauseButton.hidden = true
+    resetButton.hidden      = true
+    timerLabel.hidden       = true
+    saveFrameButton.hidden  = true
+  }
   
+  func resetViewsAfterRendering() {
+    self.startPauseButton.hidden     = false
+    self.resetButton.hidden          = false
+    self.timerLabel.hidden           = false
+    self.saveFrameButton.hidden      = false
+    self.saveState.completionHandler = {}
+  }
   
+  // Method used to start the process of rendering and saving the UI
   func saveFrames() {
-    
-    func expandRange(range: (start: CGFloat,end: CGFloat),ByAmount amount: CGFloat)
-      -> (start: CGFloat,end: CGFloat) {
-        
-        var resultingRange = range
-        if range.start > range.end {
-          resultingRange.start += amount
-          resultingRange.end   -= amount
-        } else {
-          resultingRange.start -= amount
-          resultingRange.end   += amount
-        }
-        
-        return resultingRange
-    }
-    
-    if saveState.isComplete {
-      startPauseButton.hidden = true
-      resetButton.hidden      = true
-      timerLabel.hidden       = true
-      saveFrameButton.hidden  = true
-      
-      saveState.completed = { [weak self] in
-        self?.startPauseButton.hidden = false
-        self?.resetButton.hidden      = false
-        self?.timerLabel.hidden       = false
-        self?.saveFrameButton.hidden  = false
-        self?.saveState.completed     = {}
-      }
-      
+    if saveState.hasNotBegun {
       if let gavinWheel = gavinWheel, imageWheelView = imageWheelView {
-        let wedgeWidthAngle  = imageWheelView.wedgeWidthAngle
-        let halfWedgeWidthAngle = wedgeWidthAngle / 2
-        let wedgeDegrees     = Circle().radian2Degree(wedgeWidthAngle)
-        let halfWedgeDegrees = wedgeDegrees / 2
-        let workingRange     = (start: gavinWheel.maximumRotation!,
-          end: gavinWheel.minimumRotation!)
-        let range = expandRange(workingRange, ByAmount: halfWedgeWidthAngle)
-        saveState.totalFrames      = (720 * 2) + Int(wedgeDegrees)
-        //        saveState.totalFrames      = saveState.totalFrames / 8
-        saveState.startingRotation = range.start
-        saveState.endingRotation   = range.end
-        
-        gavinWheel.rotationAngle = saveState.currentRotation
-        
-        saveState.timer = NSTimer.scheduledTimerWithTimeInterval( 0.01,
-          target: self,
-          selector: Selector("snapshotCurrentFrameIfIdle"),
-          userInfo: nil,
-          repeats: true)
+        setupViewsBeforeRendering()
+        setupSaveStateWith(gavinWheel, AndImageWheel: imageWheelView)
+      } else {
+        // Can't find the views needed to render!
       }
     }
   }
   
-  func snapshotCurrentFrameIfIdle() {
-    if saveState.isComplete {
-      saveState.timer?.invalidate()
-      saveState.timer = nil
-      saveState.completed()
-      saveState = SaveState()
-    } else if saveState.saveFrameState == .idle {
-      snapshotCurrentFrame()
-    }
-  }
-  
-  func snapshotCurrentFrame() {
-    saveState.saveFrameState = .saving
-    let frameNumber = saveState.currentFrame
+  func setupSaveStateWith(wheelControl: WheelControl,
+              AndImageWheel imageWheel: ImageWheel) {
+    
+    saveState.completionHandler = resetViewsAfterRendering
 
-    var padNumber: NSNumberFormatter = {
-      let numberFormater = NSNumberFormatter()
-      numberFormater.minimumIntegerDigits  = 4
-      numberFormater.maximumIntegerDigits  = 4
-      numberFormater.minimumFractionDigits = 0
-      numberFormater.maximumFractionDigits = 0
-      numberFormater.positivePrefix = ""
-      return numberFormater
-      }()
+    let wedgeWidthAngle     = imageWheel.wedgeWidthAngle
+    let halfWedgeWidthAngle = wedgeWidthAngle / 2
+    let workingRange        = (start: wheelControl.maximumRotation!,
+                                 end: wheelControl.minimumRotation!)
+                
+    // The complete range (in radians) from the furthers point in each direction
+    // the wheelControl may rotate.  Including the half a wedge width past
+    // the minimum and maximum rotation points when dampening completely stops
+    // the rotation.
+    let range = expandRange(workingRange, ByAmount: halfWedgeWidthAngle)
+    let radiansInRange  = abs(range.start - range.end)
+    let degreesInRange  = Circle().radian2Degree(radiansInRange)
+    let framesPerDegree = CGFloat(2)
     
-    func pad(number: Int) -> String {
-      var paddedNumber = " 1.000"
-      if let numberString = padNumber.stringFromNumber(number) {
-        paddedNumber = numberString
-      }
-      return paddedNumber
+    saveState.startingRotation = range.start
+    saveState.endingRotation   = range.end
+    saveState.totalFrames      = Int(degreesInRange * framesPerDegree)
+    saveState.currentFrame     = 1
+    
+    wheelControl.rotationAngle = saveState.currentRotation
+    
+    saveState.timer = NSTimer.scheduledTimerWithTimeInterval( 0.01,
+                                      target: self,
+                                    selector: Selector("checkStateAndContinue"),
+                                    userInfo: nil,
+                                     repeats: true)
+  }
+  
+  
+  func checkStateAndContinue() {
+    if saveState.isComplete {
+      tearDownAndResetSaveState()
+    } else {
+      checkForNextStage()
     }
-    
-    let paths = NSFileManager.defaultManager()
-      .URLsForDirectory( .DocumentDirectory,
-        inDomains: .UserDomainMask)
-    let path = paths.last as? NSURL
-    
-    if let path = path {
+  }
+  
+  func checkForNextStage() {
+    switch saveState.frameState {
       
-      if (frameNumber == 0) { println(path) }
-      let frameString = pad(frameNumber + 1)
-      let path = path.URLByAppendingPathComponent("gavinWheel-\(frameString).png")
-      println(frameString)
+      case .idle:
+        renderViews()
       
-      var image = takeSnapshotOfView(self.view, WithResolutionScale: CGFloat(2.0))
-      let png   = UIImagePNGRepresentation(image)
+      case .rendering:
+        break // Do nothing.  We are waiting for an image to be rendered.
+      
+      case .rendered(let image):
+        writeFrame(image)
+      
+      case .compressing:
+        break // Do nothing. We are waiting until compressing is done and 
+              // ready for another image.
+    }
+  }
+  
+  func renderViews() {
+    saveState.frameState = .rendering
+    var image = takeSnapshotOfView(self.view, WithResolutionScale: CGFloat(2.0))
+    saveState.frameState = .rendered(image)
+  }
+  
+  
+  func writeFrame(image: UIImage) {
+    // TODO: Save on background thread
+    saveState.frameState = .compressing
+    
+    if let path = urlForFrame() {
+      let png = UIImagePNGRepresentation(image)
       if png != nil {
         png.writeToURL(path, atomically: true)
       }
+    } else {
+      println("Error: Could not generate file path for frame")
     }
-    
-    //    let d = Developement()
-    //    println("frame: \(pad(frameNumber))  rotation: \(d.pad(saveState.currentRotation))")
     
     saveState.currentFrame += 1
     gavinWheel?.rotationAngle = saveState.currentRotation
-    saveState.saveFrameState = .idle
+    saveState.frameState = .idle
   }
+  
+  func tearDownAndResetSaveState() {
+    saveState.timer?.invalidate()
+    saveState.completionHandler()
+    saveState = SaveState()
+  }
+
+  // Helpers
+  func urlForFrame() -> NSURL? {
+    var url: NSURL?
+    
+    let frameNumber = saveState.currentFrame
+    
+    let paths = NSFileManager.defaultManager()
+      .URLsForDirectory( .DocumentDirectory, inDomains: .UserDomainMask)
+    let path = paths.last as? NSURL
+    
+    if let path = path {
+      if (frameNumber == 1) { println(path) }
+      let frameString = saveState.pad(frameNumber)
+      let frameName   = "gavinWheel-\(frameString).png"
+      url = path.URLByAppendingPathComponent(frameName)
+      println(frameString)
+    }
+    
+    return url
+  }
+
+  private func expandRange(range: (start: CGFloat,end: CGFloat),
+    ByAmount amount: CGFloat) -> (start: CGFloat,end: CGFloat) {
+      
+      var resultingRange = range
+      if range.start > range.end {
+        resultingRange.start += amount
+        resultingRange.end   -= amount
+      } else {
+        resultingRange.start -= amount
+        resultingRange.end   += amount
+      }
+      return resultingRange
+  }
+
 }

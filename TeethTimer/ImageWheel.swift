@@ -492,8 +492,6 @@ final class ImageWheel: UIView {
         if imageView.image !== image {
           imageView.image = image
         }
-        
-        
       }
 
       wedge = nextIndexFrom(wedge, forSteps: wedges.count)
