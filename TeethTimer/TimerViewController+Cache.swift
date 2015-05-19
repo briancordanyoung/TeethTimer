@@ -69,7 +69,6 @@ class MovieMaker {
 
   var frameTime = CMTimeMake(1, 60)
   let videoSettings: [NSObject:AnyObject]
-  let completionHandler: CompletionHandler
   
   lazy var assetWriter:   AVAssetWriter = {
     var error: NSError?
@@ -127,60 +126,13 @@ class MovieMaker {
   }()
   
   
-  init( settings: [NSObject : AnyObject], completetionHandler: CompletionHandler ) {
+  init( settings: [NSObject : AnyObject]) {
     videoSettings = settings
-    self.completionHandler = completetionHandler
     
     let sideEffectsAreBadBufferAdapter = bufferAdapter
     
     assetWriter.startWriting()
     assetWriter.startSessionAtSourceTime(kCMTimeZero)
-  }
-  
-  
-  // MARK: Helper method could not be implimented in swift.  Use obj-c
-  //       helper class BDYVideoHelper with the same named class method.
-  func newPixelBufferFromCGImage(image: CGImageRef) -> CVPixelBufferRef! {
-    let trueObject: NSNumber = true
-    let options: [NSObject: AnyObject] =
-                            [kCVPixelBufferCGImageCompatibilityKey:trueObject,
-                     kCVPixelBufferCGBitmapContextCompatibilityKey:trueObject]
-    
-    var buffer: Unmanaged<CVPixelBuffer>? = nil
-    let frameWidth  = self.videoSettings[AVVideoWidthKey]  as! CGFloat
-    let frameHeight = self.videoSettings[AVVideoHeightKey] as! CGFloat
-    
-    
-//    let status = CVPixelBufferCreate( kCFAllocatorDefault,
-//                                      UInt(frameWidth),
-//                                      UInt(frameHeight),
-//                                      OSType(kCVPixelFormatType_32ARGB),
-//                                      options,
-//                                      &buffer)
-    
-//    CVPixelBufferLockBaseAddress(buffer, 0)
-//    pxdata = CVPixelBufferGetBaseAddress(buffer)
-//    
-//    rgbColorSpace = CGColorSpaceCreateDeviceRGB()
-//    context = CGBitmapContextCreate(pxdata,
-//                                    frameWidth,
-//                                    frameHeight,
-//                                    8,
-//                                    4 * frameWidth,
-//                                    rgbColorSpace,
-//                                    kCGImageAlphaNoneSkipFirst as! CGBitmapInfo)
-//    
-//    CGContextConcatCTM(context, CGAffineTransformIdentity)
-//    CGContextDrawImage(context, CGRectMake(0,
-//      0,
-//      CGImageGetWidth(image),
-//      CGImageGetHeight(image)),
-//      image)
-//    CGColorSpaceRelease(rgbColorSpace)
-//    CGContextRelease(context)
-//    CVPixelBufferUnlockBaseAddress(buffer, 0)
-    
-    return buffer?.takeUnretainedValue()
   }
 }
 
@@ -238,7 +190,6 @@ extension TimerViewController {
     saveState.startingRotation = range.start
     saveState.endingRotation   = range.end
     saveState.totalFrames      = Int(degreesInRange * framesPerDegree)
-saveState.totalFrames      = 10 // TODO: Remove
     saveState.currentFrame     = 1
     
     wheelControl.rotationAngle = saveState.currentRotation
@@ -252,11 +203,23 @@ saveState.totalFrames      = 10 // TODO: Remove
   
   
   func checkStateAndContinue() {
-    if saveState.isComplete {
-      tearDownAndResetSaveState()
+    if (saveState.isComplete && assetWriterIsNotProcessing()) {
+      finishWritingMovie()
     } else {
       checkForNextStage()
     }
+  }
+  
+  func assetWriterIsNotProcessing() -> Bool {
+    var writerReady = true
+    if let writerInput = saveState.movieMaker?.writerInput {
+      if writerInput.readyForMoreMediaData {
+        writerReady = true
+      } else {
+        writerReady = false
+      }
+    }
+    return writerReady
   }
   
   func checkForNextStage() {
@@ -273,12 +236,13 @@ saveState.totalFrames      = 10 // TODO: Remove
         self.writeFrameToMovie(image)
         // }
 
-    case .writing:
+      case .writing:
         // Do nothing. We are waiting until writing is done and
         // ready for another image.
         break
     }
   }
+  
   
   func renderViews() {
     var image = takeSnapshotOfView(self.view, WithResolutionScale: CGFloat(2.0))
@@ -290,49 +254,46 @@ saveState.totalFrames      = 10 // TODO: Remove
     let settings = BDYVideoHelper.videoSettingsWithCodec( AVVideoCodecH264,
                                             withWidth: self.view.frame.width,
                                             andHeight: self.view.frame.height)
-    saveState.movieMaker = MovieMaker(settings: settings,
-                           completetionHandler: saveState.completionHandler)
+    saveState.movieMaker = MovieMaker(settings: settings)
   }
   
+  
   func writeFrameToMovie(image: UIImage) {
-    
     
     if doesNotHaveValue(saveState.movieMaker) {
       setupMovieMaker()
     }
     
-    let movieMaker = saveState.movieMaker
-
-    
-    if let movieMaker = movieMaker {
-      let writerInput = movieMaker.writerInput
-      
-      if writerInput.readyForMoreMediaData {
+    if let movieMaker = saveState.movieMaker {
+      if movieMaker.writerInput.readyForMoreMediaData {
         saveState.frameState = .writing
-        let i = saveState.currentFrame - 1
         
         let sampleBuffer = BDYVideoHelper.newPixelBufferFromImage(image)
         
         if sampleBuffer != nil {
           let sampleBufferRef = sampleBuffer.takeUnretainedValue()
           
-          let presentTime: CMTime
-          if (i == 0) {
-            presentTime  = kCMTimeZero
-          }else{
-            let lastTime = CMTimeMake(Int64(i), movieMaker.frameTime.timescale)
-            presentTime  = CMTimeAdd(lastTime, movieMaker.frameTime)
-          }
-          movieMaker.bufferAdapter.appendPixelBuffer(sampleBufferRef,
-                                              withPresentationTime: presentTime)
-          
-          // CFRelease(sampleBuffer) // Core Foundation objects are automatically
-          //                         // automatically memory managed
+          let time = currentFrameCMTime(movieMaker)
+          movieMaker.bufferAdapter.appendPixelBuffer( sampleBufferRef,
+                                withPresentationTime: time)
           finishedWritingFrame()
         }
-        
       }
     }
+  }
+  
+  
+  func currentFrameCMTime(movieMaker: MovieMaker) -> CMTime {
+    let i = saveState.currentFrame - 1
+    
+    let presentTime: CMTime
+    if (i == 0) {
+      presentTime  = kCMTimeZero
+    } else {
+      let lastTime = CMTimeMake(Int64(i), movieMaker.frameTime.timescale)
+      presentTime  = CMTimeAdd(lastTime, movieMaker.frameTime)
+    }
+    return presentTime
   }
   
   func writeFrame(image: UIImage) {
@@ -356,16 +317,19 @@ saveState.totalFrames      = 10 // TODO: Remove
     saveState.frameState = .idle
   }
   
-  func tearDownAndResetSaveState() {
-    saveState.movieMaker?.assetWriter.finishWritingWithCompletionHandler() {
-      println("Movie is ready.")
-    }
+  func finishWritingMovie() {
     saveState.movieMaker?.writerInput.markAsFinished()
+    saveState.movieMaker?.assetWriter.finishWritingWithCompletionHandler() {
+      self.tearDownAndResetSaveState()
+    }
+  }
+  
+  func tearDownAndResetSaveState() {
     saveState.timer?.invalidate()
     saveState.completionHandler()
     saveState = SaveState()
   }
-
+  
   // Helpers
   func urlForFrame() -> NSURL? {
     var url: NSURL?
