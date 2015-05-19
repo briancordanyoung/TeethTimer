@@ -1,12 +1,12 @@
 import AVFoundation
 import UIKit
 
+typealias CompletionHandler = () -> ()
 
 enum FrameState {
-  case rendering
-  case rendered(UIImage)
-  case compressing
   case idle
+  case rendered(UIImage)
+  case writing
 }
 
 struct SaveState {
@@ -35,6 +35,8 @@ struct SaveState {
   var completionHandler: () -> () = {}
   var timer: NSTimer?
   
+  var movieMaker: MovieMaker?
+  
   let padFormater: NSNumberFormatter = {
     let numberFormater = NSNumberFormatter()
     numberFormater.minimumIntegerDigits  = 4
@@ -61,14 +63,126 @@ struct SaveState {
     return totalFrames == 0
   }
 
-  var assetWriter:   AVAssetWriter?
-  var writerInput:   AVAssetWriterInput?
-  var bufferAdapter: AVAssetWriterInputPixelBufferAdaptor?
-  var videoSettings: [String:AnyObject]?
-  var frameTime:     CMTime?
-  
 }
 
+class MovieMaker {
+
+  var frameTime = CMTimeMake(1, 60)
+  let videoSettings: [NSObject:AnyObject]
+  let completionHandler: CompletionHandler
+  
+  lazy var assetWriter:   AVAssetWriter = {
+    var error: NSError?
+  
+    let assetWriter = AVAssetWriter(URL: self.movieURL,
+                               fileType: AVFileTypeQuickTimeMovie,
+                                  error: &error)
+    if let error = error {
+       NSLog("Error: \(error.debugDescription)")
+    }
+    
+    assert(assetWriter.canAddInput(self.writerInput),
+                                    "AssetWriter could not assept input")
+    assetWriter.addInput(self.writerInput)
+    
+    return assetWriter
+  }()
+  
+  lazy var movieURL: NSURL = {
+    var url: NSURL?
+    let paths = NSFileManager.defaultManager()
+      .URLsForDirectory( .DocumentDirectory, inDomains: .UserDomainMask)
+    let path = paths.last as? NSURL
+    
+    if let path = path {
+      let movieName   = "TeethTimer.mp4"
+      url = path.URLByAppendingPathComponent(movieName)
+    }
+    
+    assert(url != nil, "Could not create output movie path.")
+    
+    println(url!)
+    
+    return url!
+  }()
+  
+  lazy var writerInput:   AVAssetWriterInput = {
+    var writerInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo,
+                                    outputSettings: self.videoSettings)
+    
+    writerInput.expectsMediaDataInRealTime = false
+    return writerInput
+  }()
+
+  
+  lazy var bufferAdapter: AVAssetWriterInputPixelBufferAdaptor = {
+    let pixelFormatType: NSNumber = kCVPixelFormatType_32ARGB
+    let bufferAttributes: [NSObject: AnyObject] =
+                            [kCVPixelBufferPixelFormatTypeKey: pixelFormatType]
+    
+    let bufferAdapter = AVAssetWriterInputPixelBufferAdaptor(
+                                            assetWriterInput: self.writerInput,
+                                 sourcePixelBufferAttributes: bufferAttributes)
+    return bufferAdapter
+  }()
+  
+  
+  init( settings: [NSObject : AnyObject], completetionHandler: CompletionHandler ) {
+    videoSettings = settings
+    self.completionHandler = completetionHandler
+    
+    let sideEffectsAreBadBufferAdapter = bufferAdapter
+    
+    assetWriter.startWriting()
+    assetWriter.startSessionAtSourceTime(kCMTimeZero)
+  }
+  
+  
+  // MARK: Helper method could not be implimented in swift.  Use obj-c
+  //       helper class BDYVideoHelper with the same named class method.
+  func newPixelBufferFromCGImage(image: CGImageRef) -> CVPixelBufferRef! {
+    let trueObject: NSNumber = true
+    let options: [NSObject: AnyObject] =
+                            [kCVPixelBufferCGImageCompatibilityKey:trueObject,
+                     kCVPixelBufferCGBitmapContextCompatibilityKey:trueObject]
+    
+    var buffer: Unmanaged<CVPixelBuffer>? = nil
+    let frameWidth  = self.videoSettings[AVVideoWidthKey]  as! CGFloat
+    let frameHeight = self.videoSettings[AVVideoHeightKey] as! CGFloat
+    
+    
+//    let status = CVPixelBufferCreate( kCFAllocatorDefault,
+//                                      UInt(frameWidth),
+//                                      UInt(frameHeight),
+//                                      OSType(kCVPixelFormatType_32ARGB),
+//                                      options,
+//                                      &buffer)
+    
+//    CVPixelBufferLockBaseAddress(buffer, 0)
+//    pxdata = CVPixelBufferGetBaseAddress(buffer)
+//    
+//    rgbColorSpace = CGColorSpaceCreateDeviceRGB()
+//    context = CGBitmapContextCreate(pxdata,
+//                                    frameWidth,
+//                                    frameHeight,
+//                                    8,
+//                                    4 * frameWidth,
+//                                    rgbColorSpace,
+//                                    kCGImageAlphaNoneSkipFirst as! CGBitmapInfo)
+//    
+//    CGContextConcatCTM(context, CGAffineTransformIdentity)
+//    CGContextDrawImage(context, CGRectMake(0,
+//      0,
+//      CGImageGetWidth(image),
+//      CGImageGetHeight(image)),
+//      image)
+//    CGColorSpaceRelease(rgbColorSpace)
+//    CGContextRelease(context)
+//    CVPixelBufferUnlockBaseAddress(buffer, 0)
+    
+    return buffer?.takeUnretainedValue()
+  }
+}
 
 
 extension TimerViewController {
@@ -87,6 +201,8 @@ extension TimerViewController {
     self.saveFrameButton.hidden      = false
     self.saveState.completionHandler = {}
   }
+  
+
   
   // Method used to start the process of rendering and saving the UI
   func saveFrames() {
@@ -122,11 +238,12 @@ extension TimerViewController {
     saveState.startingRotation = range.start
     saveState.endingRotation   = range.end
     saveState.totalFrames      = Int(degreesInRange * framesPerDegree)
+saveState.totalFrames      = 10 // TODO: Remove
     saveState.currentFrame     = 1
     
     wheelControl.rotationAngle = saveState.currentRotation
     
-    saveState.timer = NSTimer.scheduledTimerWithTimeInterval( 0.01,
+    saveState.timer = NSTimer.scheduledTimerWithTimeInterval( 0.1,
                                       target: self,
                                     selector: Selector("checkStateAndContinue"),
                                     userInfo: nil,
@@ -143,33 +260,84 @@ extension TimerViewController {
   }
   
   func checkForNextStage() {
+    
     switch saveState.frameState {
       
       case .idle:
         renderViews()
       
-      case .rendering:
-        break // Do nothing.  We are waiting for an image to be rendered.
-      
       case .rendered(let image):
-        writeFrame(image)
-      
-      case .compressing:
-        break // Do nothing. We are waiting until compressing is done and 
-              // ready for another image.
+        // TODO: put on background thread
+        // Async.main() {
+        // self.writeFrame(image)
+        self.writeFrameToMovie(image)
+        // }
+
+    case .writing:
+        // Do nothing. We are waiting until writing is done and
+        // ready for another image.
+        break
     }
   }
   
   func renderViews() {
-    saveState.frameState = .rendering
     var image = takeSnapshotOfView(self.view, WithResolutionScale: CGFloat(2.0))
     saveState.frameState = .rendered(image)
   }
   
   
+  func setupMovieMaker() {
+    let settings = BDYVideoHelper.videoSettingsWithCodec( AVVideoCodecH264,
+                                            withWidth: self.view.frame.width,
+                                            andHeight: self.view.frame.height)
+    saveState.movieMaker = MovieMaker(settings: settings,
+                           completetionHandler: saveState.completionHandler)
+  }
+  
+  func writeFrameToMovie(image: UIImage) {
+    
+    
+    if doesNotHaveValue(saveState.movieMaker) {
+      setupMovieMaker()
+    }
+    
+    let movieMaker = saveState.movieMaker
+
+    
+    if let movieMaker = movieMaker {
+      let writerInput = movieMaker.writerInput
+      
+      if writerInput.readyForMoreMediaData {
+        saveState.frameState = .writing
+        let i = saveState.currentFrame - 1
+        
+        let sampleBuffer = BDYVideoHelper.newPixelBufferFromImage(image)
+        
+        if sampleBuffer != nil {
+          let sampleBufferRef = sampleBuffer.takeUnretainedValue()
+          
+          let presentTime: CMTime
+          if (i == 0) {
+            presentTime  = kCMTimeZero
+          }else{
+            let lastTime = CMTimeMake(Int64(i), movieMaker.frameTime.timescale)
+            presentTime  = CMTimeAdd(lastTime, movieMaker.frameTime)
+          }
+          movieMaker.bufferAdapter.appendPixelBuffer(sampleBufferRef,
+                                              withPresentationTime: presentTime)
+          
+          // CFRelease(sampleBuffer) // Core Foundation objects are automatically
+          //                         // automatically memory managed
+          finishedWritingFrame()
+        }
+        
+      }
+    }
+  }
+  
   func writeFrame(image: UIImage) {
     // TODO: Save on background thread
-    saveState.frameState = .compressing
+    saveState.frameState = .writing
     
     if let path = urlForFrame() {
       let png = UIImagePNGRepresentation(image)
@@ -179,13 +347,20 @@ extension TimerViewController {
     } else {
       println("Error: Could not generate file path for frame")
     }
-    
+    finishedWritingFrame()
+  }
+  
+  func finishedWritingFrame() {
     saveState.currentFrame += 1
     gavinWheel?.rotationAngle = saveState.currentRotation
     saveState.frameState = .idle
   }
   
   func tearDownAndResetSaveState() {
+    saveState.movieMaker?.assetWriter.finishWritingWithCompletionHandler() {
+      println("Movie is ready.")
+    }
+    saveState.movieMaker?.writerInput.markAsFinished()
     saveState.timer?.invalidate()
     saveState.completionHandler()
     saveState = SaveState()
