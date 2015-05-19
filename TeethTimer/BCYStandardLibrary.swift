@@ -14,6 +14,6 @@ func hasValue<T>(value: T?) -> Bool {
 }
 
 func doesNotHaveValue<T>(value: T?) -> Bool {
-  let result = hasValue(T)
+  let result = hasValue(value)
   return !result
 }
