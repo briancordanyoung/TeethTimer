@@ -516,6 +516,9 @@ final class WheelControl: UIControl, AnimationDelegate  {
     
   }
   
+//  override func cancelTrackingWithEvent(event: UIEvent?) {
+//    
+//  }
 
   // MARK: -
   // MARK: Animation

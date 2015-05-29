@@ -57,6 +57,7 @@ struct SaveState {
 
   var isComplete: Bool {
     return currentFrame > totalFrames
+//    return currentFrame > 100
   }
   
   var hasNotBegun: Bool {
@@ -190,6 +191,7 @@ extension TimerViewController {
     saveState.startingRotation = range.start
     saveState.endingRotation   = range.end
     saveState.totalFrames      = Int(degreesInRange * framesPerDegree)
+    saveState.totalFrames      = 100
     saveState.currentFrame     = 1
     
     wheelControl.rotationAngle = saveState.currentRotation
@@ -276,6 +278,9 @@ extension TimerViewController {
           let time = currentFrameCMTime(movieMaker)
           movieMaker.bufferAdapter.appendPixelBuffer( sampleBufferRef,
                                 withPresentationTime: time)
+          
+          // TODO: How do I release/dealloc sampleBufferRef
+          
           finishedWritingFrame()
         }
       }
