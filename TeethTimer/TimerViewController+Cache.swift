@@ -57,7 +57,6 @@ struct SaveState {
 
   var isComplete: Bool {
     return currentFrame > totalFrames
-//    return currentFrame > 100
   }
   
   var hasNotBegun: Bool {
@@ -179,19 +178,19 @@ extension TimerViewController {
     let workingRange        = (start: wheelControl.maximumRotation!,
                                  end: wheelControl.minimumRotation!)
                 
-    // The complete range (in radians) from the furthers point in each direction
+    // The complete range (in radians) from the farthest point in each direction
     // the wheelControl may rotate.  Including the half a wedge width past
     // the minimum and maximum rotation points when dampening completely stops
     // the rotation.
     let range = expandRange(workingRange, ByAmount: halfWedgeWidthAngle)
     let radiansInRange  = abs(range.start - range.end)
     let degreesInRange  = Circle().radian2Degree(radiansInRange)
-    let framesPerDegree = CGFloat(2)
+//  let framesPerDegree = CGFloat(0.25)
+    let framesPerDegree = CGFloat(4)
     
     saveState.startingRotation = range.start
     saveState.endingRotation   = range.end
     saveState.totalFrames      = Int(degreesInRange * framesPerDegree)
-    saveState.totalFrames      = 100
     saveState.currentFrame     = 1
     
     wheelControl.rotationAngle = saveState.currentRotation
@@ -254,8 +253,8 @@ extension TimerViewController {
   
   func setupMovieMaker() {
     let settings = BDYVideoHelper.videoSettingsWithCodec( AVVideoCodecH264,
-                                            withWidth: self.view.frame.width,
-                                            andHeight: self.view.frame.height)
+                                            withWidth: self.view.frame.width * 2,
+                                            andHeight: self.view.frame.height * 2)
     saveState.movieMaker = MovieMaker(settings: settings)
   }
   
@@ -271,15 +270,13 @@ extension TimerViewController {
         saveState.frameState = .writing
         
         let sampleBuffer = BDYVideoHelper.newPixelBufferFromImage(image)
-        
+
         if sampleBuffer != nil {
-          let sampleBufferRef = sampleBuffer.takeUnretainedValue()
-          
+          let sampleBufferRef = sampleBuffer.takeRetainedValue()
+
           let time = currentFrameCMTime(movieMaker)
           movieMaker.bufferAdapter.appendPixelBuffer( sampleBufferRef,
                                 withPresentationTime: time)
-          
-          // TODO: How do I release/dealloc sampleBufferRef
           
           finishedWritingFrame()
         }
@@ -296,7 +293,7 @@ extension TimerViewController {
       presentTime  = kCMTimeZero
     } else {
       let lastTime = CMTimeMake(Int64(i), movieMaker.frameTime.timescale)
-      presentTime  = CMTimeAdd(lastTime, movieMaker.frameTime)
+      presentTime  = CMTimeAdd( lastTime, movieMaker.frameTime)
     }
     return presentTime
   }

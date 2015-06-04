@@ -463,8 +463,9 @@ final class ImageWheel: UIView {
     return previousIndex
   }
   
-  func setImagesForRotation(rotation: CGFloat) {
+  func setImagesForRotation(var rotation: CGFloat) {
     
+    rotation -= 0.001 // fudge factor that fixes odd jumps on exact rotations
 
     func halfAnInt(number: Int) -> Int {
       return Int(ceil(Float(number) / 2))
@@ -483,22 +484,32 @@ final class ImageWheel: UIView {
                         fromIndex: currentImage,
                          forSteps: images.count)
     
-    var image          = startImage
+    var imageNumber    = startImage
     
-    for i in 1..<wedges.count {
+    var wedgeImages: [Int:Int] = [:]
+    
+    for i in 1...wedges.count {
       if let imageView = imageViewFromValue(wedge) {
         
-        let image = imageOfNumber(image)
+        let image = imageOfNumber(imageNumber)
         if imageView.image !== image {
           imageView.image = image
         }
       }
+      wedgeImages[wedge] = imageNumber
 
-      wedge = nextIndexFrom(wedge, forSteps: wedges.count)
-      image = nextIndexFrom(image, forSteps: images.count)
+      wedge       = nextIndexFrom(wedge,       forSteps: wedges.count)
+      imageNumber = nextIndexFrom(imageNumber, forSteps: images.count)
     }
     
-    
+//    var message = ""
+//    for i in 1...wedges.count {
+//      if let w = wedgeImages[i] {
+//        message = message + "\(i)-\(w)  "
+//      }
+//    }
+//    
+//    println("\(message)")
   }
   
   

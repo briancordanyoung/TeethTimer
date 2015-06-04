@@ -1,4 +1,5 @@
 import UIKit
+import AVFoundation
 
 typealias ImageIndex = Int
 
@@ -40,7 +41,22 @@ typealias ImageIndex = Int
 //rots
 
 
-for i in -3...4 {
-  println(i)
+//for i in -3...4 {
+//  println(i)
+//}
+
+let assistant = AVOutputSettingsAssistant(preset: "AVOutputSettingsPreset1280x720")
+
+for (key,value) in assistant.videoSettings {
+  if (key == "AVVideoCompressionPropertiesKey") {
+    let dict = value as! NSDictionary
+    let it = dict["AverageBitRate"]!
+    println("\(AVVideoCodecH264)")
+  }
+  println("\(key) \(value)")
 }
+
+
+
+
 

@@ -64,17 +64,31 @@
   return pxbuffer;
 }
 
-+ (NSDictionary *)videoSettingsWithCodec:(NSString *)codec withWidth:(CGFloat)width andHeight:(CGFloat)height
++ (NSDictionary *)videoSettingsWithCodec:(NSString *)codec
+                               withWidth:(CGFloat)width
+                               andHeight:(CGFloat)height
 {
     
-    if ((int)width % 16 != 0 ) {
-        NSLog(@"Warning: video settings width must be divisible by 16.");
-    }
-    
-    NSDictionary *videoSettings = @{AVVideoCodecKey : AVVideoCodecH264,
-                                    AVVideoWidthKey : [NSNumber numberWithInt:(int)width],
-                                    AVVideoHeightKey : [NSNumber numberWithInt:(int)height]};
-    
+  if ((int)width % 16 != 0 ) {
+    NSLog(@"Warning: video settings width must be divisible by 16.");
+  }
+  
+  if ((int)height % 16 != 0 ) {
+    NSLog(@"Warning: video settings width must be divisible by 16.");
+  }
+  
+  NSDictionary *AVVideoCompressionProperties =
+            @{AVVideoAverageBitRateKey : [NSNumber numberWithInt:(10500000 * 15)],
+     AVVideoExpectedSourceFrameRateKey : [NSNumber numberWithInt:60],
+                AVVideoProfileLevelKey :  AVVideoProfileLevelH264MainAutoLevel,
+         AVVideoMaxKeyFrameIntervalKey : [NSNumber numberWithInt:3]};
+  
+    NSDictionary *videoSettings =
+                       @{AVVideoCodecKey : codec,
+                         AVVideoWidthKey : [NSNumber numberWithInt:(int)width],
+                        AVVideoHeightKey : [NSNumber numberWithInt:(int)height],
+         AVVideoCompressionPropertiesKey : AVVideoCompressionProperties};
+  
     return videoSettings;
 }
 
