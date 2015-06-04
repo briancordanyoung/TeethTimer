@@ -31,12 +31,16 @@
 		D30771961A869B06003BA7E1 /* num-21@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771801A869B06003BA7E1 /* num-21@2x.png */; };
 		D30771971A869B06003BA7E1 /* num-22@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771811A869B06003BA7E1 /* num-22@2x.png */; };
 		D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */; };
+		D30E03581B20F24D0019914B /* MovieMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30E03571B20F24D0019914B /* MovieMaker.swift */; };
+		D30E03591B20F24D0019914B /* MovieMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30E03571B20F24D0019914B /* MovieMaker.swift */; };
+		D30E035B1B20F2ED0019914B /* CacheWheelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30E035A1B20F2ED0019914B /* CacheWheelState.swift */; };
+		D30E035C1B20F2ED0019914B /* CacheWheelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30E035A1B20F2ED0019914B /* CacheWheelState.swift */; };
 		D30EDFA61AD2F8C100E76327 /* SystemVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30EDFA51AD2F8C100E76327 /* SystemVersion.swift */; };
 		D3141ECE1AB9F38D00780B72 /* ImageWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36DB7361AB7D03800F080C8 /* ImageWheel.swift */; };
 		D31F95E11A2C5FE700219B32 /* ColorImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F95E01A2C5FE700219B32 /* ColorImage.swift */; };
 		D3207F2E1ADAC00900ABE2FC /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D3207F2D1ADAC00900ABE2FC /* UIImage+ImageEffects.m */; };
-		D32519341B0AA5B9007965DD /* BDYVideoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D32519331B0AA5B9007965DD /* BDYVideoHelper.m */; };
-		D32519351B0AA5B9007965DD /* BDYVideoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D32519331B0AA5B9007965DD /* BDYVideoHelper.m */; };
+		D32519341B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D32519331B0AA5B9007965DD /* BDYMovieMakerHelper.m */; };
+		D32519351B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D32519331B0AA5B9007965DD /* BDYMovieMakerHelper.m */; };
 		D32519361B0AB048007965DD /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3864F581AF69FBE00B787B4 /* Async.swift */; };
 		D328E50D1AF08DC000144E3B /* forward-lg.m4v in Resources */ = {isa = PBXBuildFile; fileRef = D328E5091AF08DC000144E3B /* forward-lg.m4v */; };
 		D328E50E1AF08DC000144E3B /* forward.m4v in Resources */ = {isa = PBXBuildFile; fileRef = D328E50A1AF08DC000144E3B /* forward.m4v */; };
@@ -169,12 +173,14 @@
 		D30771801A869B06003BA7E1 /* num-21@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-21@2x.png"; path = "TeethTimer/Numbers/num-21@2x.png"; sourceTree = "<group>"; };
 		D30771811A869B06003BA7E1 /* num-22@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-22@2x.png"; path = "TeethTimer/Numbers/num-22@2x.png"; sourceTree = "<group>"; };
 		D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BCYStandardLibrary.swift; sourceTree = "<group>"; };
+		D30E03571B20F24D0019914B /* MovieMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieMaker.swift; sourceTree = "<group>"; };
+		D30E035A1B20F2ED0019914B /* CacheWheelState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheWheelState.swift; sourceTree = "<group>"; };
 		D30EDFA51AD2F8C100E76327 /* SystemVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemVersion.swift; sourceTree = "<group>"; };
 		D31F95E01A2C5FE700219B32 /* ColorImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorImage.swift; path = ../ColorImage.swift; sourceTree = "<group>"; };
 		D3207F2C1ADAC00900ABE2FC /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		D3207F2D1ADAC00900ABE2FC /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
-		D32519321B0AA5B9007965DD /* BDYVideoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDYVideoHelper.h; sourceTree = "<group>"; };
-		D32519331B0AA5B9007965DD /* BDYVideoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDYVideoHelper.m; sourceTree = "<group>"; };
+		D32519321B0AA5B9007965DD /* BDYMovieMakerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDYMovieMakerHelper.h; sourceTree = "<group>"; };
+		D32519331B0AA5B9007965DD /* BDYMovieMakerHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDYMovieMakerHelper.m; sourceTree = "<group>"; };
 		D328E5091AF08DC000144E3B /* forward-lg.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = "forward-lg.m4v"; sourceTree = "<group>"; };
 		D328E50A1AF08DC000144E3B /* forward.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = forward.m4v; sourceTree = "<group>"; };
 		D328E50B1AF08DC000144E3B /* reverse-lg.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = "reverse-lg.m4v"; sourceTree = "<group>"; };
@@ -308,6 +314,18 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		D30E035D1B20F7630019914B /* CachingUI */ = {
+			isa = PBXGroup;
+			children = (
+				D3BF13FB1B05675100D0C3E1 /* TimerViewController+Cache.swift */,
+				D30E03571B20F24D0019914B /* MovieMaker.swift */,
+				D30E035A1B20F2ED0019914B /* CacheWheelState.swift */,
+				D32519321B0AA5B9007965DD /* BDYMovieMakerHelper.h */,
+				D32519331B0AA5B9007965DD /* BDYMovieMakerHelper.m */,
+			);
+			name = CachingUI;
+			sourceTree = "<group>";
+		};
 		D335407D1A3764E80064C81C /* GavinPoses */ = {
 			isa = PBXGroup;
 			children = (
@@ -406,7 +424,7 @@
 				D3B7BC7819EA383A00F50DF7 /* LaunchScreen.xib */,
 				D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */,
 				D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */,
-				D3BF13FB1B05675100D0C3E1 /* TimerViewController+Cache.swift */,
+				D30E035D1B20F7630019914B /* CachingUI */,
 				D3485C8419ECEEB900C6E495 /* Timer.swift */,
 				D30EDFA51AD2F8C100E76327 /* SystemVersion.swift */,
 				D34F10B81AAEA1D0009E2A9B /* WheelControl.swift */,
@@ -431,8 +449,6 @@
 				D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */,
 				D3A434241B015CA0001DD6A2 /* FramesToMovie.h */,
 				D3A4341F1B015BA8001DD6A2 /* FramesToMovie.m */,
-				D32519321B0AA5B9007965DD /* BDYVideoHelper.h */,
-				D32519331B0AA5B9007965DD /* BDYVideoHelper.m */,
 			);
 			path = TeethTimer;
 			sourceTree = "<group>";
@@ -707,7 +723,8 @@
 			files = (
 				D37FBCD31AF3518A00381C7F /* SystemVersion.swift in Sources */,
 				D3B29F801AF5264200C2C067 /* ContainerView.swift in Sources */,
-				D32519351B0AA5B9007965DD /* BDYVideoHelper.m in Sources */,
+				D32519351B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */,
+				D30E03591B20F24D0019914B /* MovieMaker.swift in Sources */,
 				D37FBCC81AF34E9300381C7F /* Developement.swift in Sources */,
 				D37FBCC91AF34E9300381C7F /* ImageWheel.swift in Sources */,
 				D3864F591AF69FBE00B787B4 /* Async.swift in Sources */,
@@ -720,6 +737,7 @@
 				D37FBCD01AF34E9300381C7F /* UIImage+ImageEffects.m in Sources */,
 				D37FBCD11AF34E9300381C7F /* PieSliceLayer.h in Sources */,
 				D37FBCD21AF34E9300381C7F /* PieSliceLayer.m in Sources */,
+				D30E035C1B20F2ED0019914B /* CacheWheelState.swift in Sources */,
 				D37FBC831AF34DE100381C7F /* ViewController.swift in Sources */,
 				D37FBC811AF34DE100381C7F /* AppDelegate.swift in Sources */,
 			);
@@ -732,13 +750,14 @@
 				D388C3021A9F7B50007D4F8B /* POPProperty.swift in Sources */,
 				D3207F2E1ADAC00900ABE2FC /* UIImage+ImageEffects.m in Sources */,
 				D3BF13FC1B05675100D0C3E1 /* TimerViewController+Cache.swift in Sources */,
+				D30E035B1B20F2ED0019914B /* CacheWheelState.swift in Sources */,
 				D3B95AD41ADB3CA300883051 /* SnapshotView.swift in Sources */,
 				D37FBC771AF3308500381C7F /* WedgeImageView.swift in Sources */,
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
 				D34F10B91AAEA1D0009E2A9B /* WheelControl.swift in Sources */,
 				D3CDA2D01AF32E6300243AFF /* PieSliceLayer.m in Sources */,
 				D341D23F1AC1FB24007D0593 /* Developement.swift in Sources */,
-				D32519341B0AA5B9007965DD /* BDYVideoHelper.m in Sources */,
+				D32519341B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */,
 				D32519361B0AB048007965DD /* Async.swift in Sources */,
 				D35ED7B31AED6012001DFF20 /* VideoView.swift in Sources */,
 				D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
@@ -748,6 +767,7 @@
 				D3CDA2D21AF32EBD00243AFF /* PieImageView.swift in Sources */,
 				D3DC4C481A95877400984A24 /* ImageWheelVisualState.swift in Sources */,
 				D30EDFA61AD2F8C100E76327 /* SystemVersion.swift in Sources */,
+				D30E03581B20F24D0019914B /* MovieMaker.swift in Sources */,
 				D3485C8519ECEEB900C6E495 /* Timer.swift in Sources */,
 				D31F95E11A2C5FE700219B32 /* ColorImage.swift in Sources */,
 			);

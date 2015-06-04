@@ -5,6 +5,6 @@
 #import "POPSwiftWrapper.h"
 #import "UIImage+ImageEffects.h"
 #import "PieSliceLayer.h"
-#import "BDYVideoHelper.h"
+#import "BDYMovieMakerHelper.h"
 
 #endif

@@ -10,7 +10,7 @@ final class TimerViewController: UIViewController {
   // MARK: Properties
   @IBOutlet weak var startPauseButton: UIButton!
   @IBOutlet weak var resetButton:      UIButton!
-  @IBOutlet weak var saveFrameButton:  UIButton!
+  @IBOutlet weak var cacheUIButton:  UIButton!
   @IBOutlet weak var timerLabel:       UILabel!
   @IBOutlet weak var fullScreenImage:  UIImageView!
   @IBOutlet weak var controlView:      UIView!
@@ -36,7 +36,7 @@ final class TimerViewController: UIViewController {
   
   var gavinWheel: WheelControl?
   
-  var saveState = SaveState()
+  var cacheState = CacheWheelState()
   
   var previousImageBeforeTouch: ImageIndex?
   var timerStateBeforeTouch: TimerStatus = .Paused
@@ -98,8 +98,9 @@ final class TimerViewController: UIViewController {
     withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
   }
   
-  override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation,
-    duration: NSTimeInterval) {
+  override func willRotateToInterfaceOrientation(
+                                 toInterfaceOrientation: UIInterfaceOrientation,
+                                               duration: NSTimeInterval) {
       // pre iOS 8 only
     if SystemVersion.iOS7AndBelow() {
         imageWheelView?.updateWedgeImageViewContraints( duration,
@@ -108,7 +109,8 @@ final class TimerViewController: UIViewController {
     }
   }
   
-  override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+  override func didRotateFromInterfaceOrientation(
+                             fromInterfaceOrientation: UIInterfaceOrientation) {
   }
   
   // MARK: -
@@ -313,8 +315,8 @@ final class TimerViewController: UIViewController {
     timer.reset()
   }
   
-  @IBAction func saveFrames(sender: UIButton) {
-    saveFrames()
+  @IBAction func cacheUI(sender: UIButton) {
+    cacheUI()
   }
   
   
