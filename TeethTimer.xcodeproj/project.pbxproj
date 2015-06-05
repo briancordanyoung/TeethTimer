@@ -78,6 +78,7 @@
 		D33540D61A3764E80064C81C /* Gavin Poses-s10@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335409B1A3764E80064C81C /* Gavin Poses-s10@3x.png */; };
 		D341D23F1AC1FB24007D0593 /* Developement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341D23E1AC1FB24007D0593 /* Developement.swift */; };
 		D3485C8519ECEEB900C6E495 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3485C8419ECEEB900C6E495 /* Timer.swift */; };
+		D34ABBF11B212167002DAC51 /* TimerViewController+Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34ABBF01B212167002DAC51 /* TimerViewController+Background.swift */; };
 		D34DC0561A0FF26000AA7420 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D34DC0551A0FF26000AA7420 /* Settings.bundle */; };
 		D34F10B91AAEA1D0009E2A9B /* WheelControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34F10B81AAEA1D0009E2A9B /* WheelControl.swift */; };
 		D34F10BC1AAEAE88009E2A9B /* WheelImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D34F10BA1AAEAE88009E2A9B /* WheelImage.png */; };
@@ -218,6 +219,7 @@
 		D341D23E1AC1FB24007D0593 /* Developement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Developement.swift; sourceTree = "<group>"; };
 		D3485C8319ECE77200C6E495 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		D3485C8419ECEEB900C6E495 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
+		D34ABBF01B212167002DAC51 /* TimerViewController+Background.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "TimerViewController+Background.swift"; path = "../TimerViewController+Background.swift"; sourceTree = "<group>"; };
 		D34DC0551A0FF26000AA7420 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		D34F10B81AAEA1D0009E2A9B /* WheelControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WheelControl.swift; sourceTree = "<group>"; };
 		D34F10BA1AAEAE88009E2A9B /* WheelImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WheelImage.png; path = Calibration/WheelImage.png; sourceTree = "<group>"; };
@@ -424,6 +426,7 @@
 				D3B7BC7819EA383A00F50DF7 /* LaunchScreen.xib */,
 				D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */,
 				D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */,
+				D34ABBF01B212167002DAC51 /* TimerViewController+Background.swift */,
 				D30E035D1B20F7630019914B /* CachingUI */,
 				D3485C8419ECEEB900C6E495 /* Timer.swift */,
 				D30EDFA51AD2F8C100E76327 /* SystemVersion.swift */,
@@ -757,6 +760,7 @@
 				D34F10B91AAEA1D0009E2A9B /* WheelControl.swift in Sources */,
 				D3CDA2D01AF32E6300243AFF /* PieSliceLayer.m in Sources */,
 				D341D23F1AC1FB24007D0593 /* Developement.swift in Sources */,
+				D34ABBF11B212167002DAC51 /* TimerViewController+Background.swift in Sources */,
 				D32519341B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */,
 				D32519361B0AB048007965DD /* Async.swift in Sources */,
 				D35ED7B31AED6012001DFF20 /* VideoView.swift in Sources */,
