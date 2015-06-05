@@ -58,9 +58,8 @@ final class TimerViewController: UIViewController {
     setupGavinWheelControlEvents(gavinWheel)
     setupImageWheelAndAddToGavinWheel(gavinWheel)
     self.gavinWheel = gavinWheel
-    setupVideoBackgroundConstraints()
-    setupVideoBackgroundAsset(.Clockwise)
-    setupVideoBackgroundAsset(.CounterClockwise)
+    
+    setupBackground()
   }
   
   override func viewWillAppear(animated: Bool) {

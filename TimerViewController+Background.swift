@@ -14,6 +14,12 @@ struct BackgroundVideoProperties {
 
 extension TimerViewController {
 
+  func setupBackground() {
+    setupVideoBackgroundConstraints()
+    setupVideoBackgroundAsset(.Clockwise)
+    setupVideoBackgroundAsset(.CounterClockwise)
+  }
+  
   func setupVideoBackgroundAsset(direction: DirectionRotated) {
     
     let filepath: String?
