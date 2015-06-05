@@ -20,6 +20,8 @@ extension TimerViewController {
     setupVideoBackgroundAsset(.CounterClockwise)
   }
   
+  
+  
   func setupVideoBackgroundAsset(direction: DirectionRotated) {
     
     let filepath: String?
@@ -44,6 +46,8 @@ extension TimerViewController {
     }
   }
   
+  
+  
   func rememberAsset(asset: AVURLAsset,
     forDirection direction: DirectionRotated) {
       
@@ -56,10 +60,11 @@ extension TimerViewController {
       
       if backgroundVideo.assets.forward != nil &&
         backgroundVideo.assets.reverse != nil {
-          
           setupBackgroundVideoQueuePlayer()
       }
   }
+  
+  
   
   func setupBackgroundVideoQueuePlayer() {
     let reverseDuration = backgroundVideo.assets.reverse!.duration.value
@@ -89,6 +94,8 @@ extension TimerViewController {
     seekToTimeByPercentage(0.0, inPlayer: player)
   }
 
+  
+  
   func updateBackgroundForPercentDone(percent: CGFloat) {
     if let backgroundPlayer = backgroundVideo.player {
       
@@ -103,6 +110,8 @@ extension TimerViewController {
     }
   }
 
+  
+  
   func seekToTimeByPercentage(percent: CGFloat, inPlayer player: AVQueuePlayer) {
     var wheelCount: Int64 = 1
     if let imageWheelView = imageWheelView {
@@ -163,8 +172,9 @@ extension TimerViewController {
         }
       }
     }
-
   }
+  
+  
   
   func currentMovieName(player: AVQueuePlayer) -> String? {
     var name: String?
@@ -180,4 +190,6 @@ extension TimerViewController {
     return name
   }
 
+  
+  
 }
