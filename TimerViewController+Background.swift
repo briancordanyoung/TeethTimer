@@ -18,10 +18,10 @@ extension TimerViewController {
     
     let filepath: String?
     switch direction {
-    case .Clockwise:
-      filepath = NSBundle.mainBundle().pathForResource("forward", ofType: "m4v")
-    case .CounterClockwise:
-      filepath = NSBundle.mainBundle().pathForResource("reverse", ofType: "m4v")
+      case .Clockwise:
+        filepath = NSBundle.mainBundle().pathForResource("forward", ofType: "m4v")
+      case .CounterClockwise:
+        filepath = NSBundle.mainBundle().pathForResource("reverse", ofType: "m4v")
     }
     
     assert(filepath != nil,"Background movie file does not exist in main bundle")
@@ -42,10 +42,10 @@ extension TimerViewController {
     forDirection direction: DirectionRotated) {
       
       switch direction {
-      case .Clockwise:
-        backgroundVideo.assets.forward = asset
-      case .CounterClockwise:
-        backgroundVideo.assets.reverse = asset
+        case .Clockwise:
+          backgroundVideo.assets.forward = asset
+        case .CounterClockwise:
+          backgroundVideo.assets.reverse = asset
       }
       
       if backgroundVideo.assets.forward != nil &&
