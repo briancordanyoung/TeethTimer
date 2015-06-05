@@ -20,20 +20,12 @@ final class TimerViewController: UIViewController {
   @IBOutlet weak var videoView:        VideoView!
   
   let timer = Timer()
-  
-  var backgroundPlayer: AVQueuePlayer?
-  var backgroundVideoTime = CMTime()
-  var backgroundAssets: (forward: AVAsset?, reverse: AVAsset?)
-  
-  var backgroundVideoDuration: Int64 {
-    return self.backgroundVideoTime.value
-  }
-  var backgroundVideo = BackgroundVideoProperties()
-  
-  var gavinWheel: WheelControl?
-  
+
+  // Properties used by extention methods
   var cacheState = CacheWheelState()
-  
+  var backgroundVideo = BackgroundVideoProperties()
+
+  var gavinWheel: WheelControl?
   var previousImageBeforeTouch: ImageIndex?
   var timerStateBeforeTouch: TimerStatus = .Paused
   

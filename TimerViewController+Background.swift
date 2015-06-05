@@ -6,7 +6,7 @@ struct BackgroundVideoProperties {
   var videoTime = CMTime()
   var assets: (forward: AVAsset?, reverse: AVAsset?)
 
-  var videoDuration: Int64 {
+  var duration: Int64 {
     return self.videoTime.value
   }
 }
@@ -43,32 +43,32 @@ extension TimerViewController {
       
       switch direction {
       case .Clockwise:
-        backgroundAssets.forward = asset
+        backgroundVideo.assets.forward = asset
       case .CounterClockwise:
-        backgroundAssets.reverse = asset
+        backgroundVideo.assets.reverse = asset
       }
       
-      if backgroundAssets.forward != nil &&
-        backgroundAssets.reverse != nil {
+      if backgroundVideo.assets.forward != nil &&
+        backgroundVideo.assets.reverse != nil {
           
           setupBackgroundVideoQueuePlayer()
       }
   }
   
   func setupBackgroundVideoQueuePlayer() {
-    let reverseDuration = backgroundAssets.reverse!.duration.value
-    let forwardDuration = backgroundAssets.forward!.duration.value
+    let reverseDuration = backgroundVideo.assets.reverse!.duration.value
+    let forwardDuration = backgroundVideo.assets.forward!.duration.value
     let message = "Both background movies must have the same number of frames."
     assert(forwardDuration == reverseDuration, message)
-    backgroundVideoTime = backgroundAssets.forward!.duration
+    backgroundVideo.videoTime = backgroundVideo.assets.forward!.duration
     
     var playerItems: [AVPlayerItem] = []
     for i in 1...6 {
       if i % 2 == 0 {
-        let playerItem = AVPlayerItem(asset: backgroundAssets.reverse!)
+        let playerItem = AVPlayerItem(asset: backgroundVideo.assets.reverse!)
         playerItems.append(playerItem)
       } else {
-        let playerItem = AVPlayerItem(asset: backgroundAssets.forward!)
+        let playerItem = AVPlayerItem(asset: backgroundVideo.assets.forward!)
         playerItems.append(playerItem)
       }
     }
@@ -79,12 +79,12 @@ extension TimerViewController {
     videoLayer?.player = player
     player.actionAtItemEnd = .None
     
-    backgroundPlayer = player
+    backgroundVideo.player = player
     seekToTimeByPercentage(0.0, inPlayer: player)
   }
 
   func updateBackgroundForPercentDone(percent: CGFloat) {
-    if let backgroundPlayer = backgroundPlayer {
+    if let backgroundPlayer = backgroundVideo.player {
       
       switch backgroundPlayer.status {
       case .ReadyToPlay:
@@ -103,8 +103,8 @@ extension TimerViewController {
       wheelCount = Int64(imageWheelView.images.count)
     }
     
-    var seekToTime    = backgroundVideoTime
-    let totalFrames   = backgroundVideoDuration
+    var seekToTime    = backgroundVideo.videoTime
+    let totalFrames   = backgroundVideo.duration
     let wedgeDuration = Int64(CGFloat(totalFrames) / CGFloat(wheelCount))
     let interactiveFrames = totalFrames - (wedgeDuration * 2)
     let framesPast    = Int64(CGFloat(interactiveFrames) * percent)
@@ -125,14 +125,14 @@ extension TimerViewController {
             directionMsg = "<-- "
             switchMovies = true
             name = "reverse"
-            playerItem = AVPlayerItem(asset: backgroundAssets.reverse!)
+            playerItem = AVPlayerItem(asset: backgroundVideo.assets.reverse!)
           }
         case "reverse":
           if currentFrame < frameRev {
             directionMsg = "--> "
             switchMovies = true
             name = "forward"
-            playerItem = AVPlayerItem(asset: backgroundAssets.forward!)
+            playerItem = AVPlayerItem(asset: backgroundVideo.assets.forward!)
           }
         default:
           assertionFailure("Background Movie direction is undetermianed")
