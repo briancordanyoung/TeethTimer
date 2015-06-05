@@ -28,6 +28,7 @@ final class TimerViewController: UIViewController {
   var backgroundVideoDuration: Int64 {
     return self.backgroundVideoTime.value
   }
+  var backgroundVideo = BackgroundVideoProperties()
   
   var gavinWheel: WheelControl?
   

@@ -1,6 +1,17 @@
 import AVFoundation
 import UIKit
 
+struct BackgroundVideoProperties {
+  var player: AVQueuePlayer?
+  var videoTime = CMTime()
+  var assets: (forward: AVAsset?, reverse: AVAsset?)
+
+  var videoDuration: Int64 {
+    return self.videoTime.value
+  }
+}
+
+
 extension TimerViewController {
 
   func setupVideoBackgroundAsset(direction: DirectionRotated) {
