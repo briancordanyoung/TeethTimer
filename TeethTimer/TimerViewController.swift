@@ -2,7 +2,6 @@ import AVFoundation
 import UIKit
 
 
-
 // MARK: -
 // MARK: TimerViewController class
 final class TimerViewController: UIViewController {
@@ -19,11 +18,10 @@ final class TimerViewController: UIViewController {
   @IBOutlet weak var testImageView:    UIImageView!
   @IBOutlet weak var videoView:        VideoView!
   
+  @IBOutlet weak var debug: UILabel!
+  
   let timer = Timer()
 
-  // Properties used by extention methods
-  var cacheState = CacheWheelState()
-  var backgroundVideo = BackgroundVideoProperties()
 
   var gavinWheel: WheelControl?
   var previousImageBeforeTouch: ImageIndex?
@@ -42,6 +40,14 @@ final class TimerViewController: UIViewController {
     }
     return imageWheel
   }
+
+  // Properties used by extention methods
+  lazy var cacheState: CacheWheelState = {
+    return CacheWheelState()
+  }()
+  lazy var backgroundVideo: BackgroundVideoProperties = {
+    return BackgroundVideoProperties()
+  }()
 
   // MARK: -
   // MARK: View Controller Methods
@@ -204,6 +210,7 @@ final class TimerViewController: UIViewController {
     videoView.addConstraint(aspect)
   }
   
+  
   func setupAppearenceOfLowerThird() {
     viewsAreSetupForBlurring = true
     if blurLowerThird {
@@ -214,6 +221,7 @@ final class TimerViewController: UIViewController {
       lowerThirdView.backgroundColor = UIColor(white: 0.0, alpha: 0.5)
     }
   }
+  
   
   // MARK: -
   // MARK: Button Actions
@@ -268,7 +276,6 @@ final class TimerViewController: UIViewController {
                                      AndHigh: max)
         updateBackgroundForPercentDone(percentageBetween)
       }
-      
     }
 
     if blurLowerThird && viewsAreSetupForBlurring {

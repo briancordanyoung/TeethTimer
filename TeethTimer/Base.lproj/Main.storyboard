@@ -89,6 +89,16 @@
                                     <action selector="cacheUI:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CTb-OE-xXn"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cxW-IU-geL">
+                                <rect key="frame" x="0.0" y="20" width="375" height="20"/>
+                                <color key="backgroundColor" red="1" green="0.92388039609010131" blue="0.95613000940346771" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="vPH-mD-Yes"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -97,6 +107,7 @@
                             <constraint firstAttribute="bottom" secondItem="BC6-ez-KJa" secondAttribute="bottom" constant="-176" id="Clr-1g-UWg"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="z2l-dT-yk7" secondAttribute="bottom" constant="30" id="INN-c3-b26"/>
                             <constraint firstItem="BC6-ez-KJa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Lau-v4-LzM"/>
+                            <constraint firstAttribute="trailing" secondItem="cxW-IU-geL" secondAttribute="trailing" id="Lh0-cK-DJb"/>
                             <constraint firstAttribute="centerX" secondItem="OUX-Ix-O1U" secondAttribute="centerX" id="PRd-Ye-Pwg"/>
                             <constraint firstAttribute="centerX" secondItem="Msc-xa-DWv" secondAttribute="centerX" id="QfM-3l-RNW"/>
                             <constraint firstAttribute="trailing" secondItem="2WA-zu-ahV" secondAttribute="trailing" id="RXv-d8-s1V"/>
@@ -106,6 +117,8 @@
                             <constraint firstItem="2WA-zu-ahV" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="fKa-X0-oBi"/>
                             <constraint firstItem="IsK-Pa-dKm" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="fbH-1p-og8"/>
                             <constraint firstAttribute="trailing" secondItem="BC6-ez-KJa" secondAttribute="trailing" id="iQz-o7-33F"/>
+                            <constraint firstItem="cxW-IU-geL" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="kdc-OY-Ksl"/>
+                            <constraint firstItem="cxW-IU-geL" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="kpZ-ap-XVA"/>
                             <constraint firstAttribute="trailing" secondItem="z2l-dT-yk7" secondAttribute="trailing" constant="30" id="nvY-oc-b87"/>
                             <constraint firstAttribute="bottom" secondItem="2WA-zu-ahV" secondAttribute="bottom" constant="-176" id="pvZ-jd-em8"/>
                             <constraint firstItem="Vn1-Zx-sgu" firstAttribute="top" secondItem="z2l-dT-yk7" secondAttribute="top" id="w9a-Gb-UUo"/>
@@ -115,6 +128,7 @@
                     <connections>
                         <outlet property="cacheUIButton" destination="IsK-Pa-dKm" id="ynd-MK-Azg"/>
                         <outlet property="controlView" destination="MOq-R8-IVu" id="UKu-kb-7Zt"/>
+                        <outlet property="debug" destination="cxW-IU-geL" id="5WI-cc-5Sh"/>
                         <outlet property="lowerThirdView" destination="2WA-zu-ahV" id="sUs-RW-P2G"/>
                         <outlet property="resetButton" destination="z2l-dT-yk7" id="vuu-wS-veL"/>
                         <outlet property="snapshotView" destination="BC6-ez-KJa" id="tKe-H0-5NK"/>

@@ -501,15 +501,6 @@ final class ImageWheel: UIView {
       wedge       = nextIndexFrom(wedge,       forSteps: wedges.count)
       imageNumber = nextIndexFrom(imageNumber, forSteps: images.count)
     }
-    
-//    var message = ""
-//    for i in 1...wedges.count {
-//      if let w = wedgeImages[i] {
-//        message = message + "\(i)-\(w)  "
-//      }
-//    }
-//    
-//    println("\(message)")
   }
   
   
@@ -780,6 +771,16 @@ final class ImageWheel: UIView {
   
   func imageOfNumber(i: Int) -> UIImage {
     return images[i - 1]
+  }
+
+  func imageNumberFromImage(image: UIImage) -> Int? {
+    var imageNumber: Int?
+    for i in 1...images.count {
+      if images[i - 1] === image {
+        imageNumber = i
+      }
+    }
+    return imageNumber
   }
 
   

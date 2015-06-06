@@ -70,9 +70,37 @@ extension TimerViewController {
     if (cacheState.isComplete && assetWriterIsNotProcessing()) {
       finishWritingMovie()
     } else {
+      if let imageWheel = imageWheelView {
+        updateDebugLabel(debug, WithImageWheel: imageWheel)
+      }
       checkForNextStage()
     }
   }
+
+  func updateDebugLabel(label: UILabel, WithImageWheel imageWheel: ImageWheel) {
+    var wedgeImages: [Int:Int] = [:]
+    
+    for i in 1...imageWheel.wedges.count {
+      if let image = imageWheel.imageViewFromValue(i)?.image {
+        if let imageNumber = imageWheel.imageNumberFromImage(image){
+          wedgeImages[i] = imageNumber
+        }
+      }
+    }
+    
+    var message = ""
+    for i in 1...imageWheel.wedges.count {
+      if let imageIndex = wedgeImages[i] {
+        message = message + "\(i)-\(imageIndex)  "
+      }
+    }
+    
+    let dev = Developement()
+    let rotationAngleString = dev.pad(imageWheel.rotationAngle)
+    label.text = "\(rotationAngleString) \(message)"
+  }
+  
+  
   
   func assetWriterIsNotProcessing() -> Bool {
     var writerReady = true
