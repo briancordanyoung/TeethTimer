@@ -30,6 +30,11 @@ final class TimerViewController: UIViewController {
   var blurLowerThird: Bool  {
     return NSUserDefaults.standardUserDefaults().boolForKey("blurLowerThird")
   }
+  
+  var isCashedUI: Bool {
+    return NSUserDefaults.standardUserDefaults().boolForKey("useCachedUI")
+  }
+  
   var viewsAreSetupForBlurring = false
   
   // A computed property to make it easy to access the ImageWheel inside gavinWheel
@@ -76,6 +81,7 @@ final class TimerViewController: UIViewController {
     timer.statusChangedHandler = updateButtonTitleWithText
     timer.timerUpdatedHandler  = updateTimerDisplay
     timer.reset()
+    setupAppearence()
   }
   
   override func viewDidAppear(animated: Bool) {
@@ -211,6 +217,32 @@ final class TimerViewController: UIViewController {
   }
   
   
+  func setupAppearence() {
+    
+    if isCashedUI {
+      showCachedUI()
+    } else {
+      showLiveUI()
+      setupAppearenceOfLowerThird()
+    }
+    
+    setupVideoBackgroundAsset()
+  }
+  
+  func showCachedUI() {
+    cacheUIButton.hidden   = true
+    imageWheelView?.hidden = true
+    lowerThirdView.hidden  = true
+    snapshotView.hidden    = true
+  }
+  
+  func showLiveUI() {
+    cacheUIButton.hidden   = false
+    imageWheelView?.hidden = false
+    lowerThirdView.hidden  = false
+    snapshotView.hidden    = false
+  }
+  
   func setupAppearenceOfLowerThird() {
     viewsAreSetupForBlurring = true
     if blurLowerThird {
@@ -260,6 +292,7 @@ final class TimerViewController: UIViewController {
     }
   }
   
+  
   func gavinWheelChanged(gavinWheel: WheelControl) {
     // Update the state of the ImageWheel to the WheelControl state
     if let imageWheelView = imageWheelView {
@@ -276,6 +309,8 @@ final class TimerViewController: UIViewController {
                                      AndHigh: max)
         updateBackgroundForPercentDone(percentageBetween)
       }
+      
+      updateDebugCacheIULabel(debug, WithImageWheel: imageWheelView)
     }
 
     if blurLowerThird && viewsAreSetupForBlurring {
@@ -283,6 +318,11 @@ final class TimerViewController: UIViewController {
     }
   }
   
+  func updateDebugCacheIULabel(label: UILabel, WithImageWheel imageWheel: ImageWheel) {
+    let dev = Developement()
+    let rotationAngleString = dev.pad(imageWheel.rotationAngle)
+    label.text = "\(rotationAngleString)"
+  }
 
   func gavinWheelRotatedByUser(gavinWheel: WheelControl) {
     if let previousImageBeforeTouch = previousImageBeforeTouch,

@@ -4,7 +4,7 @@ import UIKit
 struct BackgroundVideoProperties {
   var player: AVPlayer?
   var videoTime = CMTime()
-  var asset: AVAsset?
+  var asset: AVURLAsset?
 
   var duration: Int64 {
     return self.videoTime.value
@@ -19,41 +19,104 @@ extension TimerViewController {
     setupVideoBackgroundAsset()
   }
   
+  func currentAssetURL() -> NSURL? {
+    var currentURL: NSURL?
+    if let asset = backgroundVideo.asset {
+      if asset.URL != nil {
+        currentURL = asset.URL
+      }
+    }
+    return currentURL
+  }
   
-  func setupVideoBackgroundAsset() {
+
+  
+  func urlIfItExists(url: NSURL?) -> NSURL? {
+    var existingURL: NSURL?
     
+    if let url = url {
+      if url.checkResourceIsReachableAndReturnError(nil) {
+        existingURL = url
+      }
+    }
+    return existingURL
+  }
+  
+  
+  func urlForBackground() -> NSURL? {
+    let paths = NSFileManager.defaultManager()
+      .URLsForDirectory( .DocumentDirectory, inDomains: .UserDomainMask)
+    let path = paths.last as? NSURL
+    return urlIfItExists(path?.URLByAppendingPathComponent("TeethTimer.mp4"))
+  }
+  
+  
+  func urlForCashedUI() -> NSURL? {
+    var url: NSURL?
     var filepath = NSBundle.mainBundle().pathForResource("forward", ofType: "m4v")
     assert(filepath != nil,"Background movie file does not exist in main bundle")
-    
     if let filepath = filepath {
-      let fileURL = NSURL.fileURLWithPath(filepath)
-      
-      if let asset = AVURLAsset(URL: fileURL, options: nil) {
-        asset.loadValuesAsynchronouslyForKeys( ["tracks"],
-          completionHandler: {
-            self.backgroundVideo.asset = asset
-            self.setupBackgroundVideoQueuePlayer()
-        })
+      url = NSURL.fileURLWithPath(filepath)
+    }
+    return urlIfItExists(url)
+  }
+  
+  
+
+  func newURL() -> NSURL? {
+    var newURL: NSURL?
+    
+    if isCashedUI {
+      newURL = urlForBackground()
+    } else {
+      newURL = urlForCashedUI()
+    }
+    
+    return newURL
+  }
+  
+  
+  func setupVideoBackgroundAsset() {
+    if let fileURL = newURL() {
+      if let currentURL = currentAssetURL() {
+        if !fileURL.isEqual(currentURL) {
+          setupVideoBackgroundAsset(fileURL)
+        }
+      } else {
+        setupVideoBackgroundAsset(fileURL)
       }
     }
   }
   
   
-  func setupBackgroundVideoQueuePlayer() {
-    let forwardDuration = backgroundVideo.asset!.duration.value
-    backgroundVideo.videoTime = backgroundVideo.asset!.duration
-    
-    let playerItem = AVPlayerItem(asset: backgroundVideo.asset)
+  func setupVideoBackgroundAsset(fileURL: NSURL) {
+    if let asset = AVURLAsset(URL: fileURL, options: nil) {
+      asset.loadValuesAsynchronouslyForKeys( ["tracks"],
+        completionHandler: {
+          self.setupBackgroundVideoPlayer(asset)
+      })
+    }
+  }
+  
+  func setupBackgroundVideoPlayer(asset: AVURLAsset) {
+    let playerItem = AVPlayerItem(asset: asset)
     let player     = AVPlayer(playerItem: playerItem)
     player.allowsExternalPlayback = false
-    let videoLayer = videoView.layer as? AVPlayerLayer
-    videoLayer?.player = player
-    player.actionAtItemEnd = .None
-    
-    backgroundVideo.player = player
-    seekToTimeByPercentage(0.0, inPlayer: player)
-  }
+    if let videoLayer = videoView.layer as? AVPlayerLayer {
+      
+      backgroundVideo.asset = asset
+      backgroundVideo.videoTime = backgroundVideo.asset!.duration
+      backgroundVideo.player = player
 
+      if let gavinWheel = gavinWheel {
+        gavinWheelChanged(gavinWheel)
+      }
+      
+      // TODO: Swap background without flashing
+      videoLayer.player = player
+      player.actionAtItemEnd = .None
+    }
+  }
   
   
   func updateBackgroundForPercentDone(percent: CGFloat) {
