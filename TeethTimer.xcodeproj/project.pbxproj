@@ -135,6 +135,7 @@
 		D3864F591AF69FBE00B787B4 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3864F581AF69FBE00B787B4 /* Async.swift */; };
 		D388C3021A9F7B50007D4F8B /* POPProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = D388C2FF1A9F7B50007D4F8B /* POPProperty.swift */; };
 		D388C3031A9F7B50007D4F8B /* POPSwiftWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D388C3011A9F7B50007D4F8B /* POPSwiftWrapper.m */; };
+		D38CA8351B2386680029A212 /* TeethTimer.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D38CA8341B2386680029A212 /* TeethTimer.mp4 */; };
 		D3B29F801AF5264200C2C067 /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B29F7F1AF5264200C2C067 /* ContainerView.swift */; };
 		D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */; };
 		D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */; };
@@ -240,6 +241,7 @@
 		D388C2FF1A9F7B50007D4F8B /* POPProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POPProperty.swift; sourceTree = "<group>"; };
 		D388C3001A9F7B50007D4F8B /* POPSwiftWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POPSwiftWrapper.h; sourceTree = "<group>"; };
 		D388C3011A9F7B50007D4F8B /* POPSwiftWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POPSwiftWrapper.m; sourceTree = "<group>"; };
+		D38CA8341B2386680029A212 /* TeethTimer.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = TeethTimer.mp4; path = cachedUI/TeethTimer.mp4; sourceTree = "<group>"; };
 		D3A4341F1B015BA8001DD6A2 /* FramesToMovie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FramesToMovie.m; sourceTree = "<group>"; };
 		D3A434241B015CA0001DD6A2 /* FramesToMovie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FramesToMovie.h; sourceTree = "<group>"; };
 		D3B29F7F1AF5264200C2C067 /* ContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
@@ -459,6 +461,7 @@
 		D3B7BC6D19EA383A00F50DF7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D38CA8341B2386680029A212 /* TeethTimer.mp4 */,
 				D328E5091AF08DC000144E3B /* forward-lg.m4v */,
 				D328E50A1AF08DC000144E3B /* forward.m4v */,
 				D328E50B1AF08DC000144E3B /* reverse-lg.m4v */,
@@ -668,6 +671,7 @@
 				D307718B1A869B06003BA7E1 /* num-10@2x.png in Resources */,
 				D307718C1A869B06003BA7E1 /* num-11@2x.png in Resources */,
 				D328E5101AF08DC000144E3B /* reverse.m4v in Resources */,
+				D38CA8351B2386680029A212 /* TeethTimer.mp4 in Resources */,
 				D307718D1A869B06003BA7E1 /* num-12@2x.png in Resources */,
 				D307718E1A869B06003BA7E1 /* num-13@2x.png in Resources */,
 				D307718F1A869B06003BA7E1 /* num-14@2x.png in Resources */,

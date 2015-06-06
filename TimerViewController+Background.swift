@@ -42,23 +42,36 @@ extension TimerViewController {
     return existingURL
   }
   
-  
-  func urlForBackground() -> NSURL? {
+  func urlForDocumentAsset(name: String) -> NSURL? {
     let paths = NSFileManager.defaultManager()
       .URLsForDirectory( .DocumentDirectory, inDomains: .UserDomainMask)
     let path = paths.last as? NSURL
-    return urlIfItExists(path?.URLByAppendingPathComponent("TeethTimer.mp4"))
+    return urlIfItExists(path?.URLByAppendingPathComponent(name))
   }
   
   
   func urlForCashedUI() -> NSURL? {
     var url: NSURL?
-    var filepath = NSBundle.mainBundle().pathForResource("forward", ofType: "m4v")
-    assert(filepath != nil,"Background movie file does not exist in main bundle")
+    
+    url = urlForAppBundleAsset("TeethTimer", ofType: "mp4")
+    if doesNotHaveValue(url) {
+      url = urlForDocumentAsset("TeethTimer.mp4")
+    }
+    return url
+  }
+  
+  func urlForAppBundleAsset(name: String, ofType type: String) -> NSURL? {
+    var url: NSURL?
+    var filepath = NSBundle.mainBundle().pathForResource(name, ofType: type)
     if let filepath = filepath {
       url = NSURL.fileURLWithPath(filepath)
     }
     return urlIfItExists(url)
+  }
+
+  
+  func urlForBackground() -> NSURL? {
+    return urlForAppBundleAsset("forward", ofType: "m4v")
   }
   
   
@@ -67,9 +80,9 @@ extension TimerViewController {
     var newURL: NSURL?
     
     if isCashedUI {
-      newURL = urlForBackground()
-    } else {
       newURL = urlForCashedUI()
+    } else {
+      newURL = urlForBackground()
     }
     
     return newURL

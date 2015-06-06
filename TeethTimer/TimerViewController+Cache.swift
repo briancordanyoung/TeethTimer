@@ -70,14 +70,19 @@ extension TimerViewController {
     if (cacheState.isComplete && assetWriterIsNotProcessing()) {
       finishWritingMovie()
     } else {
-      if let imageWheel = imageWheelView {
-        updateDebugLabel(debug, WithImageWheel: imageWheel)
+      if let imageWheel = imageWheelView, gavinWheel = gavinWheel {
+        //        updateDebugLabel(debug, WithImageWheel: imageWheel)
+        if let percentageLeft = gavinWheel.percentageLeft {
+          updateDebugCacheIULabel(debug, WithImageWheel: imageWheel,
+                                          andPercentage: percentageLeft)
+        }
       }
       checkForNextStage()
     }
   }
 
-  func updateDebugLabel(label: UILabel, WithImageWheel imageWheel: ImageWheel) {
+  func updateDebugLabel(label: UILabel,
+    WithImageWheel imageWheel: ImageWheel) {
     var wedgeImages: [Int:Int] = [:]
     
     for i in 1...imageWheel.wedges.count {
@@ -148,7 +153,7 @@ extension TimerViewController {
                AVVideoAverageBitRateKey : Int(10500000 * 15),
       AVVideoExpectedSourceFrameRateKey : Int(60),
                  AVVideoProfileLevelKey : AVVideoProfileLevelH264MainAutoLevel,
-          AVVideoMaxKeyFrameIntervalKey : Int(3),
+          AVVideoMaxKeyFrameIntervalKey : Int(1),
     ]
     
     let videoSettings: [NSObject : AnyObject] = [

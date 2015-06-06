@@ -233,6 +233,25 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
   }
   
+  var percentageLeft: CGFloat? {
+    get {
+      var percentageLeft: CGFloat?
+      if let min = minimumRotation, max = maximumRotation {
+        let current = rotationAngle
+        percentageLeft = percentValue( current,
+                         isBetweenLow: min,
+                              AndHigh: max)
+      }
+      return percentageLeft
+    }
+  }
+  
+  func percentValue(value: CGFloat,
+        isBetweenLow  low: CGFloat,
+        AndHigh      high: CGFloat ) -> CGFloat {
+      return (value - low) / (high - low)
+  }
+  
   var targetRotationAngle: CGFloat {  // in module, make public //
       var targetRotationAngle = rotationAngle
       if let target = wheelState.targetRotation {

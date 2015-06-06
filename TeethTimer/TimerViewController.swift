@@ -17,6 +17,7 @@ final class TimerViewController: UIViewController {
   @IBOutlet weak var snapshotView:     UIView!
   @IBOutlet weak var testImageView:    UIImageView!
   @IBOutlet weak var videoView:        VideoView!
+  @IBOutlet weak var debugPosition: NSLayoutConstraint!
   
   @IBOutlet weak var debug: UILabel!
   
@@ -234,6 +235,7 @@ final class TimerViewController: UIViewController {
     imageWheelView?.hidden = true
     lowerThirdView.hidden  = true
     snapshotView.hidden    = true
+    debugPosition.constant = 20
   }
   
   func showLiveUI() {
@@ -241,6 +243,7 @@ final class TimerViewController: UIViewController {
     imageWheelView?.hidden = false
     lowerThirdView.hidden  = false
     snapshotView.hidden    = false
+    debugPosition.constant = 0
   }
   
   func setupAppearenceOfLowerThird() {
@@ -299,18 +302,11 @@ final class TimerViewController: UIViewController {
       imageWheelView.rotationAngle = gavinWheel.rotationAngle
       gavinWheel.snapToRotation    = imageWheelView.centerRotationForSection
       
-      let min = gavinWheel.minimumRotation
-      let max = gavinWheel.maximumRotation
-      
-      if let min = min, max = max {
-        let current = gavinWheel.currentRotation
-        let percentageBetween = percentValue( current,
-                                isBetweenLow: min,
-                                     AndHigh: max)
-        updateBackgroundForPercentDone(percentageBetween)
+      if let percentageLeft = gavinWheel.percentageLeft {
+        updateBackgroundForPercentDone(percentageLeft)
+        updateDebugCacheIULabel(debug, WithImageWheel: imageWheelView,
+                                        andPercentage: percentageLeft)
       }
-      
-      updateDebugCacheIULabel(debug, WithImageWheel: imageWheelView)
     }
 
     if blurLowerThird && viewsAreSetupForBlurring {
@@ -318,10 +314,13 @@ final class TimerViewController: UIViewController {
     }
   }
   
-  func updateDebugCacheIULabel(label: UILabel, WithImageWheel imageWheel: ImageWheel) {
+  
+  func updateDebugCacheIULabel(label: UILabel,
+           WithImageWheel imageWheel: ImageWheel,
+               andPercentage percent: CGFloat) {
     let dev = Developement()
     let rotationAngleString = dev.pad(imageWheel.rotationAngle)
-    label.text = "\(rotationAngleString)"
+    label.text = "\(rotationAngleString) \(dev.pad(percent))%"
   }
 
   func gavinWheelRotatedByUser(gavinWheel: WheelControl) {
@@ -567,11 +566,5 @@ final class TimerViewController: UIViewController {
       return (elapsedMins, elapsedSecs)
   }
 
-  func percentValue(value: CGFloat,
-    isBetweenLow   low: CGFloat,
-    AndHigh       high: CGFloat ) -> CGFloat {
-      return (value - low) / (high - low)
-  }
-  
 }
 

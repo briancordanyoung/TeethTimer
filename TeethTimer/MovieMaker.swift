@@ -43,7 +43,7 @@ class MovieMaker {
   
   lazy var writerInput:   AVAssetWriterInput = {
     var writerInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo,
-      outputSettings: self.videoSettings)
+                                    outputSettings: self.videoSettings)
     
     writerInput.expectsMediaDataInRealTime = false
     return writerInput

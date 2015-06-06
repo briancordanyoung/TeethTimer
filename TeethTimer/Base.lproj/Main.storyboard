@@ -96,7 +96,7 @@
                                     <constraint firstAttribute="height" constant="20" id="vPH-mD-Yes"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -129,6 +129,7 @@
                         <outlet property="cacheUIButton" destination="IsK-Pa-dKm" id="ynd-MK-Azg"/>
                         <outlet property="controlView" destination="MOq-R8-IVu" id="UKu-kb-7Zt"/>
                         <outlet property="debug" destination="cxW-IU-geL" id="5WI-cc-5Sh"/>
+                        <outlet property="debugPosition" destination="kpZ-ap-XVA" id="yx0-Ih-7CT"/>
                         <outlet property="lowerThirdView" destination="2WA-zu-ahV" id="sUs-RW-P2G"/>
                         <outlet property="resetButton" destination="z2l-dT-yk7" id="vuu-wS-veL"/>
                         <outlet property="snapshotView" destination="BC6-ez-KJa" id="tKe-H0-5NK"/>
