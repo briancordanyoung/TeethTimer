@@ -75,6 +75,10 @@ final class ImageWheel: UIView {
   // Internal properties
   let dev = Developement()
   
+  var isCashedUI: Bool {
+    return NSUserDefaults.standardUserDefaults().boolForKey(kAppUseCachedUIKey)
+  }
+
   // Image and Wedge Properties
   let wedgeImageHeight: CGFloat  = 800 * 0.9
   let wedgeImageWidth:  CGFloat  = 734 * 0.9
@@ -151,6 +155,7 @@ final class ImageWheel: UIView {
     
     self.userInteractionEnabled = false
     
+    // TODO: extend (if needed) Int to add Parity property
     if wedgeCountParityForCount(count) == .Even {
       createWedgeRegionsEven(count)
     } else {
@@ -380,15 +385,17 @@ final class ImageWheel: UIView {
   // MARK: -
   // MARK: Visual representation of the wheel
   func updateAppearanceForRotation(rotation: CGFloat) {
-    setImagesForRotation(rotation)
+    if !isCashedUI {
 
-    let angle = wedgeWheelAngle(rotation)
-//    setImageOpacityForAngle(angle)
-    setImageWedgeAngleForAngle(angle)
+      setImagesForRotation(rotation)
+
+      let angle = wedgeWheelAngle(rotation)
+   // setImageOpacityForAngle(angle)
+      setImageWedgeAngleForAngle(angle)
+    }
   }
 
   func setImageWedgeAngleForAngle(var angle: CGFloat) {
-    
     visualState.initAngleListWithWedges(wedges)
 
     angle = angle + (wedgeWidthAngle / 2)

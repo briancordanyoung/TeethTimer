@@ -2,6 +2,8 @@ import AVFoundation
 import UIKit
 
 
+let kAppUseCachedUIKey = "useCachedUI"
+
 // MARK: -
 // MARK: TimerViewController class
 final class TimerViewController: UIViewController {
@@ -33,7 +35,7 @@ final class TimerViewController: UIViewController {
   }
   
   var isCashedUI: Bool {
-    return NSUserDefaults.standardUserDefaults().boolForKey("useCachedUI")
+    return NSUserDefaults.standardUserDefaults().boolForKey(kAppUseCachedUIKey)
   }
   
   var viewsAreSetupForBlurring = false
