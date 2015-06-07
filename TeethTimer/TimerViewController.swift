@@ -35,7 +35,13 @@ final class TimerViewController: UIViewController {
   }
   
   var isCashedUI: Bool {
-    return NSUserDefaults.standardUserDefaults().boolForKey(kAppUseCachedUIKey)
+    get {
+      return NSUserDefaults.standardUserDefaults().boolForKey(kAppUseCachedUIKey)
+    }
+    set(isCachedUI) {
+        NSUserDefaults.standardUserDefaults().setBool( isCachedUI,
+                                               forKey: kAppUseCachedUIKey)
+    }
   }
   
   var viewsAreSetupForBlurring = false

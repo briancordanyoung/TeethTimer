@@ -7,15 +7,17 @@ extension TimerViewController {
     startPauseButton.hidden = true
     resetButton.hidden      = true
     timerLabel.hidden       = true
-    cacheUIButton.hidden  = true
+    cacheUIButton.hidden    = true
   }
   
   func resetViewsAfterRendering() {
-    self.startPauseButton.hidden     = false
-    self.resetButton.hidden          = false
-    self.timerLabel.hidden           = false
-    self.cacheUIButton.hidden      = false
+    self.startPauseButton.hidden      = false
+    self.resetButton.hidden           = false
+    self.timerLabel.hidden            = false
+    self.cacheUIButton.hidden         = false
     self.cacheState.completionHandler = {}
+    isCashedUI = true
+    setupAppearence()
   }
   
 

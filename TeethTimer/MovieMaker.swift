@@ -1,6 +1,8 @@
 import AVFoundation
 import UIKit
 
+let kAppCacheUIMovieBaseNameKey = "TeethTimer"
+
 class MovieMaker {
   
   var frameTime = CMTimeMake(1, 60)
@@ -30,7 +32,7 @@ class MovieMaker {
     let path = paths.last as? NSURL
     
     if let path = path {
-      let movieName   = "TeethTimer.mp4"
+      let movieName   = kAppCacheUIMovieBaseNameKey + "mp4"
       url = path.URLByAppendingPathComponent(movieName)
     }
     

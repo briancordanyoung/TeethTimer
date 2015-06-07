@@ -53,9 +53,9 @@ extension TimerViewController {
   func urlForCashedUI() -> NSURL? {
     var url: NSURL?
     
-    url = urlForAppBundleAsset("TeethTimer", ofType: "mp4")
+    url = urlForAppBundleAsset(kAppCacheUIMovieBaseNameKey, ofType: "mp4")
     if doesNotHaveValue(url) {
-      url = urlForDocumentAsset("TeethTimer.mp4")
+      url = urlForDocumentAsset(kAppCacheUIMovieBaseNameKey + "mp4")
     }
     return url
   }
@@ -149,28 +149,37 @@ extension TimerViewController {
   
   
   func seekToTimeByPercentage(percent: CGFloat, inPlayer player: AVPlayer) {
-    var wheelCount: Int64 = 1
+    var wedgeImageCount: Int64 = 1
     if let imageWheelView = imageWheelView {
-      wheelCount = Int64(imageWheelView.images.count)
+      wedgeImageCount = Int64(imageWheelView.images.count)
     }
     
-    var seekToTime    = backgroundVideo.videoTime
-    let totalFrames   = backgroundVideo.duration
-    let wedgeDuration = Int64(CGFloat(totalFrames) / CGFloat(wheelCount))
-    let interactiveFrames = totalFrames - (wedgeDuration * 2)
-    let framesPast    = Int64(CGFloat(interactiveFrames) * percent)
-    let frame         = interactiveFrames - framesPast + wedgeDuration
+    let totalFrames       = backgroundVideo.duration
     
+    let framesPerWedge    = Int64(CGFloat(totalFrames) / CGFloat(wedgeImageCount))
+    let interactiveFrames = totalFrames - framesPerWedge
+    let framesPast        = Int64(CGFloat(interactiveFrames) * percent)
+    let frame             = interactiveFrames - framesPast + (framesPerWedge / 2)
+    
+    seekToFrame(frame, inPlayer: player)
+  }
+
+  func seekToFrame(frame: Int64, inPlayer player: AVPlayer) {
     let currentFrame = player.currentTime().value
+    let currentTime  = backgroundVideo.videoTime
+    let seekToFrame  = frame
     
-    let seekToFrame = frame
-  
-    if currentFrame != seekToFrame {
-      
-      seekToTime.value = seekToFrame
-      player.seekToTime(seekToTime, toleranceBefore: kCMTimeZero,
-                                     toleranceAfter: kCMTimeZero)
+    if currentFrame != frame {
+      var nextTime   = currentTime
+      nextTime.value = seekToFrame
+      seekToTime(nextTime, inPlayer: player)
     }
+  }
+  
+  func seekToTime(time: CMTime, inPlayer player: AVPlayer) {
+    player.seekToTime(time, toleranceBefore: kCMTimeZero,
+                             toleranceAfter: kCMTimeZero)
+    
   }
   
 }
