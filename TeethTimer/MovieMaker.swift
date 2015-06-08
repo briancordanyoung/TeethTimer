@@ -55,7 +55,7 @@ class MovieMaker {
   lazy var bufferAdapter: AVAssetWriterInputPixelBufferAdaptor = {
     let pixelFormatType: NSNumber = kCVPixelFormatType_32ARGB
     let bufferAttributes: [NSObject: AnyObject] =
-    [kCVPixelBufferPixelFormatTypeKey: pixelFormatType]
+                             [kCVPixelBufferPixelFormatTypeKey: pixelFormatType]
     
     let bufferAdapter = AVAssetWriterInputPixelBufferAdaptor(
       assetWriterInput: self.writerInput,
@@ -79,8 +79,10 @@ class MovieMaker {
   func CMTimeFromSettings(settings: [NSObject : AnyObject]) -> CMTime? {
     var time: CMTime?
     
-    if let compressionProperties = settings[AVVideoCompressionPropertiesKey] as? [NSObject : AnyObject] {
-      if let frameRate = compressionProperties[AVVideoExpectedSourceFrameRateKey] as? Int {
+    if let compressionProperties =
+          settings[AVVideoCompressionPropertiesKey] as? [NSObject : AnyObject] {
+      if let frameRate =
+              compressionProperties[AVVideoExpectedSourceFrameRateKey] as? Int {
         time =  CMTimeMake(1, Int32(frameRate))
       }
     }

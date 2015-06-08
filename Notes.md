@@ -11,6 +11,9 @@ TODO:
 	- fix internalRotationOffset
 	- Figure out spring animation for WheelControl
 
+- Background playback
+	- stop AVfoundation from overtaking background audio playback
+
 - Features
 	- Settings
 		- Turn on Multiple Users
@@ -36,6 +39,11 @@ TODO:
 		- Drop Shadow
 		- Clean up images
 		- Draw Icon
+		
+-refactor code
+	New type: Cicle (radial?)
+		replace all radian & degree code with circle type
+	switch All movie Caching to the same extension "mp4"
 
 Design:
 ---------------------------------------
