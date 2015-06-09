@@ -39,8 +39,9 @@ final class TimerViewController: UIViewController {
       return NSUserDefaults.standardUserDefaults().boolForKey(kAppUseCachedUIKey)
     }
     set(isCachedUI) {
-        NSUserDefaults.standardUserDefaults().setBool( isCachedUI,
+      NSUserDefaults.standardUserDefaults().setBool( isCachedUI,
                                                forKey: kAppUseCachedUIKey)
+      NSUserDefaults.standardUserDefaults().synchronize()
     }
   }
   

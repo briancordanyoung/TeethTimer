@@ -42,10 +42,8 @@
 		D32519341B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D32519331B0AA5B9007965DD /* BDYMovieMakerHelper.m */; };
 		D32519351B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D32519331B0AA5B9007965DD /* BDYMovieMakerHelper.m */; };
 		D32519361B0AB048007965DD /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3864F581AF69FBE00B787B4 /* Async.swift */; };
-		D328E50D1AF08DC000144E3B /* forward-lg.m4v in Resources */ = {isa = PBXBuildFile; fileRef = D328E5091AF08DC000144E3B /* forward-lg.m4v */; };
-		D328E50E1AF08DC000144E3B /* forward.m4v in Resources */ = {isa = PBXBuildFile; fileRef = D328E50A1AF08DC000144E3B /* forward.m4v */; };
-		D328E50F1AF08DC000144E3B /* reverse-lg.m4v in Resources */ = {isa = PBXBuildFile; fileRef = D328E50B1AF08DC000144E3B /* reverse-lg.m4v */; };
-		D328E5101AF08DC000144E3B /* reverse.m4v in Resources */ = {isa = PBXBuildFile; fileRef = D328E50C1AF08DC000144E3B /* reverse.m4v */; };
+		D328E50D1AF08DC000144E3B /* forward-lg.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D328E5091AF08DC000144E3B /* forward-lg.mp4 */; };
+		D328E50E1AF08DC000144E3B /* forward.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D328E50A1AF08DC000144E3B /* forward.mp4 */; };
 		D335409C1A3764E80064C81C /* Gavin Poses-s01.png in Resources */ = {isa = PBXBuildFile; fileRef = D335407E1A3764E80064C81C /* Gavin Poses-s01.png */; };
 		D335409E1A3764E80064C81C /* Gavin Poses-s01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335407F1A3764E80064C81C /* Gavin Poses-s01@2x.png */; };
 		D33540A01A3764E80064C81C /* Gavin Poses-s01@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540801A3764E80064C81C /* Gavin Poses-s01@3x.png */; };
@@ -183,10 +181,8 @@
 		D3207F2D1ADAC00900ABE2FC /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		D32519321B0AA5B9007965DD /* BDYMovieMakerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDYMovieMakerHelper.h; sourceTree = "<group>"; };
 		D32519331B0AA5B9007965DD /* BDYMovieMakerHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDYMovieMakerHelper.m; sourceTree = "<group>"; };
-		D328E5091AF08DC000144E3B /* forward-lg.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = "forward-lg.m4v"; sourceTree = "<group>"; };
-		D328E50A1AF08DC000144E3B /* forward.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = forward.m4v; sourceTree = "<group>"; };
-		D328E50B1AF08DC000144E3B /* reverse-lg.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = "reverse-lg.m4v"; sourceTree = "<group>"; };
-		D328E50C1AF08DC000144E3B /* reverse.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = reverse.m4v; sourceTree = "<group>"; };
+		D328E5091AF08DC000144E3B /* forward-lg.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "forward-lg.mp4"; sourceTree = "<group>"; };
+		D328E50A1AF08DC000144E3B /* forward.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = forward.mp4; sourceTree = "<group>"; };
 		D335407E1A3764E80064C81C /* Gavin Poses-s01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s01.png"; sourceTree = "<group>"; };
 		D335407F1A3764E80064C81C /* Gavin Poses-s01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s01@2x.png"; sourceTree = "<group>"; };
 		D33540801A3764E80064C81C /* Gavin Poses-s01@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s01@3x.png"; sourceTree = "<group>"; };
@@ -462,10 +458,8 @@
 			isa = PBXGroup;
 			children = (
 				D38CA8341B2386680029A212 /* TeethTimer.mp4 */,
-				D328E5091AF08DC000144E3B /* forward-lg.m4v */,
-				D328E50A1AF08DC000144E3B /* forward.m4v */,
-				D328E50B1AF08DC000144E3B /* reverse-lg.m4v */,
-				D328E50C1AF08DC000144E3B /* reverse.m4v */,
+				D328E5091AF08DC000144E3B /* forward-lg.mp4 */,
+				D328E50A1AF08DC000144E3B /* forward.mp4 */,
 				D34F10BA1AAEAE88009E2A9B /* WheelImage.png */,
 				D34F10BB1AAEAE88009E2A9B /* WheelImageType.png */,
 				D335407D1A3764E80064C81C /* GavinPoses */,
@@ -647,7 +641,7 @@
 				D33540A81A3764E80064C81C /* Gavin Poses-s03.png in Resources */,
 				D33540BC1A3764E80064C81C /* Gavin Poses-s06@2x.png in Resources */,
 				D33540C21A3764E80064C81C /* Gavin Poses-s07@2x.png in Resources */,
-				D328E50E1AF08DC000144E3B /* forward.m4v in Resources */,
+				D328E50E1AF08DC000144E3B /* forward.mp4 in Resources */,
 				D33540B61A3764E80064C81C /* Gavin Poses-s05@2x.png in Resources */,
 				D33540CC1A3764E80064C81C /* Gavin Poses-s09.png in Resources */,
 				D33540AA1A3764E80064C81C /* Gavin Poses-s03@2x.png in Resources */,
@@ -660,9 +654,8 @@
 				D30771821A869B06003BA7E1 /* num-01@2x.png in Resources */,
 				D30771831A869B06003BA7E1 /* num-02@2x.png in Resources */,
 				D30771841A869B06003BA7E1 /* num-03@2x.png in Resources */,
-				D328E50D1AF08DC000144E3B /* forward-lg.m4v in Resources */,
+				D328E50D1AF08DC000144E3B /* forward-lg.mp4 in Resources */,
 				D30771851A869B06003BA7E1 /* num-04@2x.png in Resources */,
-				D328E50F1AF08DC000144E3B /* reverse-lg.m4v in Resources */,
 				D30771861A869B06003BA7E1 /* num-05@2x.png in Resources */,
 				D30771871A869B06003BA7E1 /* num-06@2x.png in Resources */,
 				D30771881A869B06003BA7E1 /* num-07@2x.png in Resources */,
@@ -670,7 +663,6 @@
 				D307718A1A869B06003BA7E1 /* num-09@2x.png in Resources */,
 				D307718B1A869B06003BA7E1 /* num-10@2x.png in Resources */,
 				D307718C1A869B06003BA7E1 /* num-11@2x.png in Resources */,
-				D328E5101AF08DC000144E3B /* reverse.m4v in Resources */,
 				D38CA8351B2386680029A212 /* TeethTimer.mp4 in Resources */,
 				D307718D1A869B06003BA7E1 /* num-12@2x.png in Resources */,
 				D307718E1A869B06003BA7E1 /* num-13@2x.png in Resources */,
