@@ -1,5 +1,13 @@
 import Foundation
 
+enum RevolutionPreset {
+  case full
+  case half
+  case quarter
+  case threeQuarter
+}
+
+
 // A number that represents the degrees or radians around a circle.
 class Revolution: NSObject {
   

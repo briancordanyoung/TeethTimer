@@ -200,12 +200,6 @@ struct Circle {
 }
 
 
-enum RevolutionPreset {
-  case full
-  case half         
-  case quarter      
-  case threeQuarter
-}
 
 
 
