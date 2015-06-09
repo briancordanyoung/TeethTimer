@@ -217,15 +217,6 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
     set(newRotationAngle) {
 
-//      if let minRotation = minRotation {
-//        let msg = "rotationAngle must be greater than or equal to minRotation."
-//        assert(newRotationAngle >= minRotation, msg)
-//      }
-//      if let maxRotation = maxRotation {
-//        let msg = "rotationAngle must be less than or equal to maxRotation."
-//        assert(maxRotation >= newRotationAngle, msg)
-//      }
-      
       let adjustRotationAngle = newRotationAngle + internalRotationOffset
       
       currentAngle = angleFromRotation(adjustRotationAngle)
@@ -391,7 +382,6 @@ final class WheelControl: UIControl, AnimationDelegate  {
     super.init(frame: frame)
     setupViews()
     resetRotationAngle()
-//    self.backgroundColor = UIColor.blueColor()
   }
   
   required init(coder aDecoder: NSCoder) {
@@ -402,7 +392,6 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   func setupViews() {
     wheelView.userInteractionEnabled = false
-//    wheelView.backgroundColor = UIColor.greenColor()
     self.addSubview(wheelView)
     
     self.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -534,7 +523,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
     userState = WheelInteractionState()
     
   }
-  
+  // TODO: Does cancelTrackingWithEvent need to be implimented?
 //  override func cancelTrackingWithEvent(event: UIEvent?) {
 //    
 //  }

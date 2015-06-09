@@ -53,9 +53,9 @@ extension TimerViewController {
   func urlForCashedUI() -> NSURL? {
     var url: NSURL?
     
-    url = urlForAppBundleAsset(kAppCacheUIMovieBaseNameKey, ofType: "mp4")
+    url = urlForDocumentAsset(kAppCacheUIMovieBaseNameKey + "mp4")
     if doesNotHaveValue(url) {
-      url = urlForDocumentAsset(kAppCacheUIMovieBaseNameKey + "mp4")
+      url = urlForAppBundleAsset(kAppCacheUIMovieBaseNameKey, ofType: "mp4")
     }
     return url
   }
@@ -71,7 +71,7 @@ extension TimerViewController {
 
   
   func urlForBackground() -> NSURL? {
-    return urlForAppBundleAsset("forward", ofType: "m4v")
+    return urlForAppBundleAsset("forward-lg", ofType: "mp4")
   }
   
   
