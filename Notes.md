@@ -41,7 +41,7 @@ TODO:
 		- Draw Icon
 		
 -refactor code
-	New type: Cicle (radial?)
+	New type: Cicle (radial?) Revolution
 		replace all radian & degree code with circle type
 	switch All movie Caching to the same extension "mp4"
 
