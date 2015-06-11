@@ -568,7 +568,7 @@ final class TimerViewController: UIViewController {
   private func timeStringFromDuration(duration: NSTimeInterval) -> String {
     let durationParts = timeAsParts(duration)
     return timeStringFromMinutes( durationParts.minutes,
-      AndSeconds: durationParts.seconds)
+                      AndSeconds: durationParts.seconds)
   }
 
   private func timeAsParts(elapsedTimeInterval: NSTimeInterval)

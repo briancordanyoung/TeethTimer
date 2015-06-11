@@ -768,10 +768,10 @@ final class WheelControl: UIControl, AnimationDelegate  {
         // and continue on with the previously saved state
         if tries.count > tooManyTries {
           rotation = wheelState.currentRotation
-//          NSLog("Error: WheelControl could not calculate total rotation when passing over the discontinuity. Tried \(tries.count) times.")
-//          for try in tries {
-//            NSLog(try)
-//          }
+          //NSLog("Error: WheelControl could not calculate total rotation when passing over the discontinuity. Tried \(tries.count) times.")
+          //for try in tries {
+          //  NSLog(try)
+          //}
           break // break out of the while loop
         }
       }
