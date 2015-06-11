@@ -22,11 +22,11 @@ class ViewController: UIViewController {
 
   
   @IBAction func sliderChanged(sender: UISlider) {
-    let width = Revolution(containerView.imageWheel!.wedgeWidthAngle)
+    let width = containerView.imageWheel!.wedgeWidthAngle
     let halfWidth = width / 2
-    let sliderValue = Revolution(degrees:CGFloat(sender.value))
+    let sliderValue = Angle(degrees:CGFloat(sender.value))
     let rotationAngle = sliderValue + halfWidth
-    containerView.imageWheel?.rotationAngle = rotationAngle.radians
+    containerView.imageWheel?.rotationAngle = rotationAngle
   }
   
   @IBAction func saveFramesButton(sender: UIButton) {
@@ -45,10 +45,10 @@ class ViewController: UIViewController {
     let wheel         = containerView.imageWheel!
     let anglePerImage = wheel.wedgeWidthAngle
     let imageCount    = wheel.images.count
-    let totalRotation = anglePerImage * CGFloat(imageCount)
+    let totalRotation = anglePerImage * Angle(imageCount)
     
     let totalFrames    = 720 * 2
-    let anglePerFrame  = totalRotation / CGFloat(totalFrames)
+    let anglePerFrame  = totalRotation / Angle(totalFrames)
     
 //    Apply.background(totalFrames) { frame in
 //      let currentRotation = anglePerFrame * CGFloat(frame)
@@ -62,7 +62,7 @@ class ViewController: UIViewController {
 
     for frame in 0..<totalFrames {
       autoreleasepool {
-        let currentRotation = anglePerFrame * CGFloat(frame)
+        let currentRotation = anglePerFrame * Angle(frame)
         let delay = Double(frame) * 2.0
         wheel.rotationAngle = currentRotation
         self.snapshotCurrentFrame(frame)
