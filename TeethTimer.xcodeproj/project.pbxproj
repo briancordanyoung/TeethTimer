@@ -144,6 +144,8 @@
 		D3BF13FC1B05675100D0C3E1 /* TimerViewController+Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF13FB1B05675100D0C3E1 /* TimerViewController+Cache.swift */; };
 		D3CDA2D01AF32E6300243AFF /* PieSliceLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */; };
 		D3CDA2D21AF32EBD00243AFF /* PieImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */; };
+		D3CEFEE81B2A302400AE6A6D /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CEFEE71B2A302400AE6A6D /* Angle.swift */; };
+		D3CEFEE91B2A302400AE6A6D /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CEFEE71B2A302400AE6A6D /* Angle.swift */; };
 		D3DC4C481A95877400984A24 /* ImageWheelVisualState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */; };
 		D3F8609C1B293F5200C68C08 /* Revolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32625901B2799D9002379C1 /* Revolution.swift */; };
 		D3F8609E1B294C0300C68C08 /* NumericType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8609D1B294C0300C68C08 /* NumericType.swift */; };
@@ -259,6 +261,7 @@
 		D3CDA2CE1AF32E6300243AFF /* PieSliceLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieSliceLayer.h; sourceTree = "<group>"; };
 		D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieSliceLayer.m; sourceTree = "<group>"; };
 		D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieImageView.swift; sourceTree = "<group>"; };
+		D3CEFEE71B2A302400AE6A6D /* Angle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
 		D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheelVisualState.swift; sourceTree = "<group>"; };
 		D3F8609D1B294C0300C68C08 /* NumericType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NumericType.swift; path = TeethTimer/NumericType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -437,6 +440,7 @@
 				D30EDFA51AD2F8C100E76327 /* SystemVersion.swift */,
 				D34F10B81AAEA1D0009E2A9B /* WheelControl.swift */,
 				D32625901B2799D9002379C1 /* Revolution.swift */,
+				D3CEFEE71B2A302400AE6A6D /* Angle.swift */,
 				D341D23E1AC1FB24007D0593 /* Developement.swift */,
 				D36DB7361AB7D03800F080C8 /* ImageWheel.swift */,
 				D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */,
@@ -745,6 +749,7 @@
 				D37FBCCF1AF34E9300381C7F /* UIImage+ImageEffects.h in Sources */,
 				D37FBCD01AF34E9300381C7F /* UIImage+ImageEffects.m in Sources */,
 				D37FBCD11AF34E9300381C7F /* PieSliceLayer.h in Sources */,
+				D3CEFEE91B2A302400AE6A6D /* Angle.swift in Sources */,
 				D37FBCD21AF34E9300381C7F /* PieSliceLayer.m in Sources */,
 				D30E035C1B20F2ED0019914B /* CacheWheelState.swift in Sources */,
 				D37FBC831AF34DE100381C7F /* ViewController.swift in Sources */,
@@ -760,6 +765,7 @@
 				D3207F2E1ADAC00900ABE2FC /* UIImage+ImageEffects.m in Sources */,
 				D3BF13FC1B05675100D0C3E1 /* TimerViewController+Cache.swift in Sources */,
 				D30E035B1B20F2ED0019914B /* CacheWheelState.swift in Sources */,
+				D3CEFEE81B2A302400AE6A6D /* Angle.swift in Sources */,
 				D3B95AD41ADB3CA300883051 /* SnapshotView.swift in Sources */,
 				D37FBC771AF3308500381C7F /* WedgeImageView.swift in Sources */,
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
@@ -956,7 +962,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -977,7 +983,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

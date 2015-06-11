@@ -49,12 +49,12 @@ extension TimerViewController {
     // the minimum and maximum rotation points when dampening completely stops
     // the rotation.
     let range = expandRange(workingRange, ByAmount: halfWedgeWidthAngle)
-    let rotation  = Revolution(abs(range.start - range.end))
-    let framesPerDegree = CGFloat(4)
+    let rotation  = abs(range.start - range.end)
+    let framesPerDegree = Double(4)
     
     cacheState.startingRotation = range.start
     cacheState.endingRotation   = range.end
-    cacheState.totalFrames      = Int(rotation.degrees * framesPerDegree)
+    cacheState.totalFrames      = Int(rotation.value * framesPerDegree)
     cacheState.currentFrame     = 1
     
     wheelControl.rotationAngle = cacheState.currentRotation
@@ -102,7 +102,7 @@ extension TimerViewController {
     }
     
     let dev = Developement()
-    let rotationAngleString = dev.pad(imageWheel.rotationAngle)
+    let rotationAngleString = dev.pad(imageWheel.rotationAngle.cgRadians)
     label.text = "\(rotationAngleString) \(message)"
   }
   
@@ -262,8 +262,8 @@ extension TimerViewController {
     return url
   }
 
-  private func expandRange(range: (start: CGFloat,end: CGFloat),
-    ByAmount amount: CGFloat) -> (start: CGFloat,end: CGFloat) {
+  private func expandRange(range: (start: Angle,end: Angle),
+    ByAmount amount: Angle) -> (start: Angle,end: Angle) {
       
       var resultingRange = range
       if range.start > range.end {

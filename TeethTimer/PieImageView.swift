@@ -16,12 +16,12 @@ class PieImageView: UIView {
     }
   }
   
-  var width: CGFloat {
+  var width: Angle {
     get {
-      return pieSliceLayer.angleWidth
+      return Angle(pieSliceLayer.angleWidth)
     }
     set(newWidth) {
-      pieSliceLayer.angleWidth = newWidth
+      pieSliceLayer.angleWidth = newWidth.cgRadians
     }
   }
   

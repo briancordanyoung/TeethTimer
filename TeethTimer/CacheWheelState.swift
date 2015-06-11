@@ -13,13 +13,13 @@ struct CacheWheelState {
   var frameState: FrameState = .idle
   var currentFrame: Int = 0
   var totalFrames:  Int = 0
-  var startingRotation: CGFloat = 0
-  var endingRotation:   CGFloat = 0
+  var startingRotation: Angle = 0
+  var endingRotation:   Angle = 0
   
-  var currentRotation:  CGFloat {
+  var currentRotation:  Angle {
     let anglePerFrame = self.anglePerFrame
-    let acculmulatedAngle = anglePerFrame * CGFloat(currentFrame - 1)
-    let currentRotation: CGFloat
+    let acculmulatedAngle = anglePerFrame * Angle(currentFrame - 1)
+    let currentRotation: Angle
     if startingRotation > endingRotation {
       currentRotation = startingRotation - acculmulatedAngle
     } else {
@@ -28,9 +28,9 @@ struct CacheWheelState {
     return currentRotation
   }
   
-  var anglePerFrame: CGFloat {
+  var anglePerFrame: Angle {
     let totalRotation = abs(startingRotation - endingRotation)
-    return totalRotation / CGFloat(totalFrames)
+    return totalRotation / Angle(totalFrames)
   }
   
   var completionHandler: () -> () = {}

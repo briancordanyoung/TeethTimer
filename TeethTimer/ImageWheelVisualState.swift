@@ -2,7 +2,7 @@ import UIKit
 
 final class ImageWheelVisualState {
   var wedgeOpacityList = Dictionary<Int, CGFloat>()
-  var wedgeAngleList = Dictionary<Int, CGFloat>()
+  var wedgeAngleList = Dictionary<Int, Angle>()
 
   init() {
     clearWedgeOpacityList()
@@ -14,7 +14,7 @@ final class ImageWheelVisualState {
   }
   
   func clearWedgeAngleList() {
-    wedgeAngleList = Dictionary<Int, CGFloat>()
+    wedgeAngleList = Dictionary<Int, Angle>()
   }
   
   func initOpacityListWithWedges( wedges: [WedgeRegion]) {
@@ -25,7 +25,7 @@ final class ImageWheelVisualState {
   
   func initAngleListWithWedges( wedges: [WedgeRegion]) {
     for wedge in wedges {
-      wedgeAngleList[wedge.value] = CGFloat(0)
+      wedgeAngleList[wedge.value] = Angle(0.0)
     }
   }
   

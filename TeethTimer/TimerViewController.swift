@@ -13,7 +13,7 @@ final class TimerViewController: UIViewController {
   // MARK: Properties
   @IBOutlet weak var startPauseButton: UIButton!
   @IBOutlet weak var resetButton:      UIButton!
-  @IBOutlet weak var cacheUIButton:  UIButton!
+  @IBOutlet weak var cacheUIButton:    UIButton!
   @IBOutlet weak var timerLabel:       UILabel!
   @IBOutlet weak var fullScreenImage:  UIImageView!
   @IBOutlet weak var controlView:      UIView!
@@ -199,8 +199,8 @@ final class TimerViewController: UIViewController {
     // Set the inital rotation
     let startingRotation = imageWheel.wedgeFromValue(1).midRadian
     
-    imageWheel.rotationAngle = CGFloat(startingRotation)
-    gavinWheel.rotationAngle = CGFloat(startingRotation)
+    imageWheel.rotationAngle = startingRotation
+    gavinWheel.rotationAngle = startingRotation
     gavinWheel.maximumRotation = imageWheel.firstImageRotation
     gavinWheel.minimumRotation = imageWheel.lastImageRotation
     gavinWheel.dampenCounterClockwise = true
@@ -336,7 +336,7 @@ final class TimerViewController: UIViewController {
            WithImageWheel imageWheel: ImageWheel,
                andPercentage percent: CGFloat) {
     let dev = Developement()
-    let rotationAngleString = dev.pad(imageWheel.rotationAngle)
+    let rotationAngleString = dev.pad(imageWheel.rotationAngle.cgRadians)
     label.text = "\(rotationAngleString) \(dev.pad(percent))%"
   }
 
