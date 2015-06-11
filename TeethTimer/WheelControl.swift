@@ -183,21 +183,21 @@ struct DampenDirection: Printable {
 }
 
 
-struct Circle {
-  static let half         =  CGFloat(M_PI)
-  static let full         =  CGFloat(M_PI) * 2
-  static let quarter      =  CGFloat(M_PI) / 2
-  static let threeQuarter = (CGFloat(M_PI) / 2) + CGFloat(M_PI)
-  
-  
-  func radian2Degree(radian:CGFloat) -> CGFloat {
-    return radian * 180.0 / CGFloat(M_PI)
-  }
-  
-  func degreesToRadians (value:CGFloat) -> CGFloat {
-    return value * CGFloat(M_PI) / 180.0
-  }
-}
+//struct Circle {
+//  static let half         =  CGFloat(M_PI)
+//  static let full         =  CGFloat(M_PI) * 2
+//  static let quarter      =  CGFloat(M_PI) / 2
+//  static let threeQuarter = (CGFloat(M_PI) / 2) + CGFloat(M_PI)
+//  
+//  
+//  func radian2Degree(radian:CGFloat) -> CGFloat {
+//    return radian * 180.0 / CGFloat(M_PI)
+//  }
+//  
+//  func degreesToRadians (value:CGFloat) -> CGFloat {
+//    return value * CGFloat(M_PI) / 180.0
+//  }
+//}
 
 
 
@@ -732,7 +732,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
       // (or more precicly, the wheelState property holding backing struct)
       // overriding the accumulated changes made throughout the animation
                       
-      let rotationCountFromZero = Int(abs(angle / Circle.full))
+      let rotationCountFromZero = Int(abs(angle / Revolution.full))
       let tooManyTries          = rotationCountFromZero + 2
       
       var rotation = angle
@@ -749,15 +749,15 @@ final class WheelControl: UIControl, AnimationDelegate  {
       // TODO: Test how close to a full circle the difference can be compared to.
       //       the closer to 2 * M_PI we get, the less room for problems during
       //       fast rotations.
-      while difference > Circle.threeQuarter {
+      while difference > Revolution.threeQuarter {
         if difference >= previousDifference {
           addOrSubtract = !addOrSubtract
         }
         if addOrSubtract {
-          rotation -= Circle.full
+          rotation -= Revolution.full
           tries.append("Rotation After Adding:      \(rotation) d:\(difference)")
         } else {
-          rotation += Circle.full
+          rotation += Revolution.full
           tries.append("Rotation After Subtracting: \(rotation) d:\(difference)")
         }
         previousDifference = difference
@@ -896,7 +896,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
     // snaps back. dampening infinately rotations would require tracking 
     // previous angle.
     while angle <= 0 {
-      angle += Circle.full
+      angle += Revolution.full
     }
 
     angle  = (log((angle * rotationDampeningFactor) + 1) / rotationDampeningFactor)
@@ -934,8 +934,8 @@ final class WheelControl: UIControl, AnimationDelegate  {
     // Somewhere in the rotation of the wheelView will be a discontinuity
     // where the angle flips from -3.14 to 3.14 or  back.  This adgustment
     // places that point in negitive Y.
-    if angle >= Circle.quarter {
-      angle = angle - Circle.full
+    if angle >= Revolution.quarter {
+      angle = angle - Revolution.full
     }
     return angle
   }
@@ -982,18 +982,18 @@ final class WheelControl: UIControl, AnimationDelegate  {
   func angleFromRotation(rotation: CGFloat) -> CGFloat {
     var angle = rotation
     
-    if angle >  Circle.half {
-      angle += Circle.half
-      let totalRotations = floor(angle / Circle.full)
-      angle  = angle - (Circle.full * totalRotations)
-      angle -= Circle.half
+    if angle >  Revolution.half {
+      angle += Revolution.half
+      let totalRotations = floor(angle / Revolution.full)
+      angle  = angle - (Revolution.full * totalRotations)
+      angle -= Revolution.half
     }
     
-    if angle < -Circle.half {
-      angle -= Circle.half
-      let totalRotations = floor(abs(angle) / Circle.full)
-      angle  = angle + (Circle.full * totalRotations)
-      angle += Circle.half
+    if angle < -Revolution.half {
+      angle -= Revolution.half
+      let totalRotations = floor(abs(angle) / Revolution.full)
+      angle  = angle + (Revolution.full * totalRotations)
+      angle += Revolution.half
     }
     
     return angle
@@ -1001,15 +1001,15 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   
   func normalizAngle(var angle: CGFloat) -> CGFloat {
-    let positiveHalfCircle =  Circle.half
-    let negitiveHalfCircle = -Circle.half
+    let positiveHalfCircle =  Revolution.half
+    let negitiveHalfCircle = -Revolution.half
     
     while angle > positiveHalfCircle || angle < negitiveHalfCircle {
       if angle > positiveHalfCircle {
-        angle -= Circle.full
+        angle -= Revolution.full
       }
       if angle < negitiveHalfCircle {
-        angle += Circle.full
+        angle += Revolution.full
       }
     }
     return angle

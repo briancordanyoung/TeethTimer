@@ -145,6 +145,9 @@
 		D3CDA2D01AF32E6300243AFF /* PieSliceLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */; };
 		D3CDA2D21AF32EBD00243AFF /* PieImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */; };
 		D3DC4C481A95877400984A24 /* ImageWheelVisualState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */; };
+		D3F8609C1B293F5200C68C08 /* Revolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32625901B2799D9002379C1 /* Revolution.swift */; };
+		D3F8609E1B294C0300C68C08 /* NumericType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8609D1B294C0300C68C08 /* NumericType.swift */; };
+		D3F8609F1B294C0300C68C08 /* NumericType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8609D1B294C0300C68C08 /* NumericType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -257,6 +260,7 @@
 		D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieSliceLayer.m; sourceTree = "<group>"; };
 		D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieImageView.swift; sourceTree = "<group>"; };
 		D3DC4C471A95877400984A24 /* ImageWheelVisualState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheelVisualState.swift; sourceTree = "<group>"; };
+		D3F8609D1B294C0300C68C08 /* NumericType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NumericType.swift; path = TeethTimer/NumericType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -401,6 +405,7 @@
 		D3B7BC6119EA383A00F50DF7 = {
 			isa = PBXGroup;
 			children = (
+				D3F8609D1B294C0300C68C08 /* NumericType.swift */,
 				D3B7BC6C19EA383A00F50DF7 /* TeethTimer */,
 				D3B7BC8219EA383A00F50DF7 /* TeethTimerTests */,
 				D37FBC7D1AF34DE100381C7F /* ImageWheel */,
@@ -725,6 +730,7 @@
 			files = (
 				D37FBCD31AF3518A00381C7F /* SystemVersion.swift in Sources */,
 				D3B29F801AF5264200C2C067 /* ContainerView.swift in Sources */,
+				D3F8609C1B293F5200C68C08 /* Revolution.swift in Sources */,
 				D32519351B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */,
 				D30E03591B20F24D0019914B /* MovieMaker.swift in Sources */,
 				D37FBCC81AF34E9300381C7F /* Developement.swift in Sources */,
@@ -735,6 +741,7 @@
 				D37FBCCC1AF34E9300381C7F /* WedgeImageView.swift in Sources */,
 				D37FBCCD1AF34E9300381C7F /* PieImageView.swift in Sources */,
 				D37FBCCE1AF34E9300381C7F /* TeethTimer-Bridging-Header.h in Sources */,
+				D3F8609F1B294C0300C68C08 /* NumericType.swift in Sources */,
 				D37FBCCF1AF34E9300381C7F /* UIImage+ImageEffects.h in Sources */,
 				D37FBCD01AF34E9300381C7F /* UIImage+ImageEffects.m in Sources */,
 				D37FBCD11AF34E9300381C7F /* PieSliceLayer.h in Sources */,
@@ -766,6 +773,7 @@
 				D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
 				D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */,
 				D388C3031A9F7B50007D4F8B /* POPSwiftWrapper.m in Sources */,
+				D3F8609E1B294C0300C68C08 /* NumericType.swift in Sources */,
 				D3141ECE1AB9F38D00780B72 /* ImageWheel.swift in Sources */,
 				D3CDA2D21AF32EBD00243AFF /* PieImageView.swift in Sources */,
 				D3DC4C481A95877400984A24 /* ImageWheelVisualState.swift in Sources */,

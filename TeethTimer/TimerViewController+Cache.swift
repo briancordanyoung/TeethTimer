@@ -49,13 +49,12 @@ extension TimerViewController {
     // the minimum and maximum rotation points when dampening completely stops
     // the rotation.
     let range = expandRange(workingRange, ByAmount: halfWedgeWidthAngle)
-    let radiansInRange  = abs(range.start - range.end)
-    let degreesInRange  = Circle().radian2Degree(radiansInRange)
+    let rotation  = Revolution(abs(range.start - range.end))
     let framesPerDegree = CGFloat(4)
     
     cacheState.startingRotation = range.start
     cacheState.endingRotation   = range.end
-    cacheState.totalFrames      = Int(degreesInRange * framesPerDegree)
+    cacheState.totalFrames      = Int(rotation.degrees * framesPerDegree)
     cacheState.currentFrame     = 1
     
     wheelControl.rotationAngle = cacheState.currentRotation

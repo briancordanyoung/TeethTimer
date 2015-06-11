@@ -3,6 +3,8 @@ import UIKit
 
 
 let kAppUseCachedUIKey = "useCachedUI"
+let kAppBlurLowerThirdKey = "blurLowerThird"
+let kAppShowTimeLabelKey = "showTimeLabel"
 
 // MARK: -
 // MARK: TimerViewController class
@@ -31,7 +33,11 @@ final class TimerViewController: UIViewController {
   var timerStateBeforeTouch: TimerStatus = .Paused
   
   var blurLowerThird: Bool  {
-    return NSUserDefaults.standardUserDefaults().boolForKey("blurLowerThird")
+    return NSUserDefaults.standardUserDefaults().boolForKey(kAppBlurLowerThirdKey)
+  }
+  
+  var showTimeLabel: Bool  {
+    return NSUserDefaults.standardUserDefaults().boolForKey(kAppShowTimeLabelKey)
   }
   
   var isCashedUI: Bool {
@@ -235,6 +241,8 @@ final class TimerViewController: UIViewController {
       showLiveUI()
       setupAppearenceOfLowerThird()
     }
+    
+    timerLabel.hidden = !showTimeLabel
     
     setupVideoBackgroundAsset()
   }

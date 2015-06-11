@@ -1,6 +1,8 @@
 
 import UIKit
 
+let kAppUseCachedUIKey = "useCachedUI"
+
 class ViewController: UIViewController {
 
   @IBOutlet weak var containerView: ContainerView!
@@ -20,8 +22,11 @@ class ViewController: UIViewController {
 
   
   @IBAction func sliderChanged(sender: UISlider) {
-    let width = containerView.imageWheel!.wedgeWidthAngle
-    containerView.imageWheel?.rotationAngle = Circle().DegreesToRadians(CGFloat(sender.value)) + (width / 2)
+    let width = Revolution(containerView.imageWheel!.wedgeWidthAngle)
+    let halfWidth = width / 2
+    let sliderValue = Revolution(degrees:CGFloat(sender.value))
+    let rotationAngle = sliderValue + halfWidth
+    containerView.imageWheel?.rotationAngle = rotationAngle.radians
   }
   
   @IBAction func saveFramesButton(sender: UIButton) {

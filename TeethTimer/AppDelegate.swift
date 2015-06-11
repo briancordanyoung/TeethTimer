@@ -41,6 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   
   func applicationWillEnterForeground(application: UIApplication) {
+    timerViewController.setupAppearence()
   }
   
   func applicationDidBecomeActive(application: UIApplication) {

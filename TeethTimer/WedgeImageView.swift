@@ -42,6 +42,6 @@ class WedgeImageView: PieImageView {
   func initProperties() {
     opaque = false
     pieSliceLayer.usePercentage = false
-    pieSliceLayer.angleWidth    = Circle.full
+    pieSliceLayer.angleWidth    = Revolution.full
   }
 }

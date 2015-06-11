@@ -32,7 +32,7 @@ class MovieMaker {
     let path = paths.last as? NSURL
     
     if let path = path {
-      let movieName   = kAppCacheUIMovieBaseNameKey + "mp4"
+      let movieName   = kAppCacheUIMovieBaseNameKey + ".mp4"
       url = path.URLByAppendingPathComponent(movieName)
     }
     

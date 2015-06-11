@@ -9,48 +9,103 @@ enum RevolutionPreset {
 
 
 // A number that represents the degrees or radians around a circle.
-class Revolution: NSObject {
+final class Revolution: NumericType {
   
-  let revolution: CGFloat
-  
-  init(radians: CGFloat) {
-    revolution = radians
-    super.init()
+  var value: Double
+
+  var revolution: Double {
+    return value
   }
-  
-  convenience init(preset: RevolutionPreset) {
+
+  class func preset(preset: RevolutionPreset) -> CGFloat {
     switch preset {
     case .full:
-      self.init(radians: CGFloat(M_PI) * CGFloat(2.00))
+      return CGFloat(M_PI) * CGFloat(2.00)
     case .half:
-      self.init(radians: CGFloat(M_PI))
+      return CGFloat(M_PI)
     case .quarter:
-      self.init(radians: CGFloat(M_PI) * CGFloat(0.50))
+      return CGFloat(M_PI) * CGFloat(0.50)
     case .threeQuarter:
-      self.init(radians: CGFloat(M_PI) * CGFloat(1.50))
+      return CGFloat(M_PI) * CGFloat(1.50)
     }
   }
   
+  class var full: CGFloat {
+    return Revolution.preset(.full)
+  }
+
+  class var half: CGFloat {
+    return Revolution.preset(.half)
+  }
+ 
+  class var quarter: CGFloat {
+    return Revolution.preset(.quarter)
+  }
+
+  class var threeQuarter: CGFloat {
+    return Revolution.preset(.threeQuarter)
+  }
+
+
+  init(_ value: Double) {
+    self.value = value
+  }
+  
+  init(_ value: CGFloat) {
+    self.value = Double(value)
+  }
+  
+
+  convenience init(radians: Double) {
+    self.init(radians)
+  }
+  
+  convenience init(radians: CGFloat) {
+    self.init(Double(radians))
+  }
+  
+  convenience init(preset: RevolutionPreset) {
+    let radians = Double(Revolution.preset(preset))
+    self.init(radians: radians)
+  }
+  
+  convenience init(degrees: Double) {
+    self.init(radians: degrees * Double(M_PI) / 180.0)
+  }
+  
   convenience init(degrees: CGFloat) {
-    self.init(radians: degrees * CGFloat(M_PI) / 180.0)
+    self.init(degrees: Double(degrees))
   }
   
-  func toRadians() -> CGFloat {
-    return revolution
+  var radians: CGFloat  {
+    return CGFloat(revolution)
   }
   
-  func toDegrees() -> CGFloat {
-    return radian2Degree(revolution)
+  var degrees: CGFloat {
+    return CGFloat(radian2Degree(revolution))
+  }
+
+
+  private func radian2Degree(radian:Double) -> Double {
+    return radian * 180.0 / Double(M_PI)
   }
   
-  private func radian2Degree(radian:CGFloat) -> CGFloat {
-    return radian * 180.0 / CGFloat(M_PI)
-  }
-  
-  private func degreesToRadians (value:CGFloat) -> CGFloat {
-    return value * CGFloat(M_PI) / 180.0
+  private func degreesToRadians (value:Double) -> Double {
+    return value * Double(M_PI) / 180.0
   }
   
 }
 
+
+extension Revolution: IntegerLiteralConvertible {
+  convenience init(integerLiteral: IntegerLiteralType) {
+    self.init(Double(integerLiteral))
+  }
+}
+
+extension Revolution: FloatLiteralConvertible {
+  convenience init(floatLiteral: FloatLiteralType) {
+    self.init(Double(floatLiteral))
+  }
+}
 

@@ -62,9 +62,9 @@ final class ImageWheel: UIView {
     var difference = angle - midAngle
     while abs(difference) > wedgeWidthAngle {
       if difference > 0 {
-        angle -= Circle.full
+        angle -= Revolution.full
       } else {
-        angle += Circle.full
+        angle += Revolution.full
       }
       difference = angle - midAngle
     }
@@ -99,11 +99,11 @@ final class ImageWheel: UIView {
   }
   
   var wedgeWidthAngle: CGFloat {
-    return Circle.full / CGFloat(wedges.count)
+    return Revolution.full / CGFloat(wedges.count)
   }
 
   func wedgeWidthAngleForWedgeCount(wedgeCount: Int) -> CGFloat {
-    return Circle.full / CGFloat(wedgeCount)
+    return Revolution.full / CGFloat(wedgeCount)
   }
 
   var wedgeCountParity: Parity {
@@ -137,7 +137,7 @@ final class ImageWheel: UIView {
   func createWedges(count: Int) {
     let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(count)
 
-    let wedgeStartingAngle = (Circle.half * 3) + (wedgeWidthAngle / 2)
+    let wedgeStartingAngle = (Revolution.half * 3) + (wedgeWidthAngle / 2)
     // Build WedgeImageView for each pie piece
     for i in 1...count {
       
@@ -178,9 +178,9 @@ final class ImageWheel: UIView {
   func createWedgeRegionsEven(count: Int) {
     let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(count)
 
-    var mid = Circle.half - (wedgeWidthAngle / 2)
-    var max = Circle.half
-    var min = Circle.half - wedgeWidthAngle
+    var mid = Revolution.half - (wedgeWidthAngle / 2)
+    var max = Revolution.half
+    var min = Revolution.half - wedgeWidthAngle
     
     for i in 1...count {
       max = mid + (wedgeWidthAngle / 2)
@@ -201,9 +201,9 @@ final class ImageWheel: UIView {
   func createWedgeRegionsOdd(count: Int) {
     let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(count)
 
-    var mid = Circle.half - (wedgeWidthAngle / 2)
-    var max = Circle.half
-    var min = Circle.half -  wedgeWidthAngle
+    var mid = Revolution.half - (wedgeWidthAngle / 2)
+    var max = Revolution.half
+    var min = Revolution.half -  wedgeWidthAngle
     
     for i in 1...count {
       max = mid + (wedgeWidthAngle / 2)
@@ -216,7 +216,7 @@ final class ImageWheel: UIView {
       
       mid -= wedgeWidthAngle
       
-      if (wedge.maxRadian < -Circle.half) {
+      if (wedge.maxRadian < -Revolution.half) {
         mid = (mid * -1)
         mid -= wedgeWidthAngle
       }
@@ -709,24 +709,24 @@ final class ImageWheel: UIView {
   // on to the wedge wheel from approximately (-M_PI) thru (M_PI)
   // This is approximate due to floating point rounding errors.
   // first and last wedges are used to define min and max instead of
-  // Circle.half & -Circle.half for this reason.
+  // Revolution.half & -Revolution.half for this reason.
   func wedgeWheelAngle(rotation: CGFloat) -> CGFloat {
     let max = wedges.first!.maxRadian
     let min = wedges.last!.minRadian
     var angle = rotation
     
     if angle >  max {
-      angle += Circle.half
-      let totalRotations = floor(angle / Circle.full)
-      angle  = angle - (Circle.full * totalRotations)
-      angle -= Circle.half
+      angle += Revolution.half
+      let totalRotations = floor(angle / Revolution.full)
+      angle  = angle - (Revolution.full * totalRotations)
+      angle -= Revolution.half
     }
     
     if angle < min {
-      angle -= Circle.half
-      let totalRotations = floor(abs(angle) / Circle.full)
-      angle  = angle + (Circle.full * totalRotations)
-      angle += Circle.half
+      angle -= Revolution.half
+      let totalRotations = floor(abs(angle) / Revolution.full)
+      angle  = angle + (Revolution.full * totalRotations)
+      angle += Revolution.half
     }
     
     return angle
@@ -736,17 +736,17 @@ final class ImageWheel: UIView {
   // on to the wedge wheel from approximately (-M_PI) thru (M_PI)
   // This is approximate due to floating point rounding errors.
   // first and last wedges are used to define min and max instead of
-  // Circle.half & -Circle.half for this reason.
+  // Revolution.half & -Revolution.half for this reason.
 //  func wedgeWheelAngle(var angle: CGFloat) -> CGFloat {
 //    let max = wedges.first!.maxRadian
 //    let min = wedges.last!.minRadian
 //    
 //    while angle > max || angle < min {
 //      if angle > max {
-//        angle -= Circle.full
+//        angle -= Revolution.full
 //      }
 //      if angle < min {
-//        angle += Circle.full
+//        angle += Revolution.full
 //      }
 //    }
 //    return angle
