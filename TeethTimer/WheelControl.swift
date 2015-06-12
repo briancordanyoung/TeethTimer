@@ -124,7 +124,6 @@ struct WheelState: Printable {
     currentRotation   =  0.0
     previousRotation  = -WheelState.initialVelocity
     previousDirection = .Clockwise
-    
   }
   
   init( currentRotation: Angle,
@@ -181,27 +180,6 @@ struct DampenDirection: Printable {
     return msg
   }
 }
-
-
-//struct Circle {
-//  static let half         =  Angle(M_PI)
-//  static let full         =  Angle(M_PI) * 2
-//  static let quarter      =  Angle(M_PI) / 2
-//  static let threeQuarter = (Angle(M_PI) / 2) + Angle(M_PI)
-//  
-//  
-//  func radian2Degree(radian:Angle) -> Angle {
-//    return radian * 180.0 / Angle(M_PI)
-//  }
-//  
-//  func degreesToRadians (value:Angle) -> Angle {
-//    return value * Angle(M_PI) / 180.0
-//  }
-//}
-
-
-
-
 
 // MARK: -
 // MARK: - WheelControl Class

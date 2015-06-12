@@ -50,11 +50,11 @@ extension TimerViewController {
     // the rotation.
     let range = expandRange(workingRange, ByAmount: halfWedgeWidthAngle)
     let rotation  = abs(range.start - range.end)
-    let framesPerDegree = Double(4)
-    
+    let framesPerDegree = Double(3)
+        
     cacheState.startingRotation = range.start
     cacheState.endingRotation   = range.end
-    cacheState.totalFrames      = Int(rotation.value * framesPerDegree)
+    cacheState.totalFrames      = Int(rotation.degrees * framesPerDegree)
     cacheState.currentFrame     = 1
     
     wheelControl.rotationAngle = cacheState.currentRotation

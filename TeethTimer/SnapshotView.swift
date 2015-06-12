@@ -26,7 +26,4 @@ class SnapshotView: UIView {
     
     return super.hitTest(point, withEvent: event)
   }
-  
-  
-
 }
