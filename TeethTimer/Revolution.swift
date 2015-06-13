@@ -32,14 +32,14 @@ final class Revolution: NumericType {
     self.init(radians)
   }
   
-  convenience init(preset: RevolutionPreset) {
+  convenience init(preset: Preset) {
     let radians = Revolution.preset(preset)
     self.init(radians: radians)
   }
 }
 
 extension Revolution {
-  enum RevolutionPreset {
+  enum Preset {
     case full
     case half
     case quarter
@@ -49,7 +49,7 @@ extension Revolution {
 
 // MARK: Class Methods
 extension Revolution {
-  class func preset(preset: RevolutionPreset) -> Angle {
+  class func preset(preset: Preset) -> Angle {
     switch preset {
     case .full:
       return Angle(M_PI) * Angle(2.00)
