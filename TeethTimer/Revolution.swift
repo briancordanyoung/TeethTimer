@@ -38,14 +38,16 @@ final class Revolution: NumericType {
   }
 }
 
-// MARK: Class Methods
-enum RevolutionPreset {
-  case full
-  case half
-  case quarter
-  case threeQuarter
+extension Revolution {
+  enum RevolutionPreset {
+    case full
+    case half
+    case quarter
+    case threeQuarter
+  }
 }
 
+// MARK: Class Methods
 extension Revolution {
   class func preset(preset: RevolutionPreset) -> Angle {
     switch preset {
