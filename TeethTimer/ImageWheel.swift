@@ -6,15 +6,6 @@ import UIKit
 typealias ImageIndex = Int
 typealias WedgeValue = Int
 
-// MARK: - Enums
-enum Parity: String, Printable  {
-  case Even = "Even"
-  case Odd  = "Odd"
-
-  var description: String {
-    return self.rawValue
-  }
-}
 
 
 
@@ -44,6 +35,7 @@ struct WedgeRegion: Printable {
 // MARK: -
 // MARK: - ImageWheel Class
 final class ImageWheel: UIView {
+
 
   // public properties
 
@@ -90,7 +82,7 @@ final class ImageWheel: UIView {
 
   // Image and Wedge Properties
   var wedges: [WedgeRegion] = []
-  var visualState = ImageWheelVisualState()
+  var visualState = ImageWheel.VisualState()
   
 
   // Computed properties
