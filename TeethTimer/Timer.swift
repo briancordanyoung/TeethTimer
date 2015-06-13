@@ -1,23 +1,22 @@
 import Foundation
 import CoreGraphics
 
-// MARK: -
-// MARK: - Enums
-enum TimerStatus: String, Printable {
-  case Ready      = "Ready"
-  case Counting   = "Counting"
-  case Paused     = "Paused"
-  case Completed  = "Completed"
-  
-  var description: String {
-    return self.rawValue
-  }
-}
-
 
 // MARK: -
 // MARK: Timer class
 final class Timer: NSObject {
+
+  // MARK: - Enums
+  enum TimerStatus: String, Printable {
+    case Ready      = "Ready"
+    case Counting   = "Counting"
+    case Paused     = "Paused"
+    case Completed  = "Completed"
+    
+    var description: String {
+      return self.rawValue
+    }
+  }
   
   // MARK: Properties
   var originalStartTime:       NSTimeInterval?
