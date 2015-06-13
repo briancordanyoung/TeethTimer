@@ -7,7 +7,7 @@ import CoreGraphics
 final class Timer: NSObject {
 
   // MARK: - Enums
-  enum TimerStatus: String, Printable {
+  enum Status: String, Printable {
     case Ready      = "Ready"
     case Counting   = "Counting"
     case Paused     = "Paused"
@@ -35,12 +35,12 @@ final class Timer: NSObject {
   // Callback Handler Properties (block based API)
   // These should be used as call backs alerting a view controller
   // that one of these events occurred.
-  var statusChangedHandler: (TimerStatus) -> ()
+  var statusChangedHandler: (Status) -> ()
   var timerUpdatedHandler:  (Timer?) -> ()
 
   
   // MARK: Computed Properties
-  var status: TimerStatus {
+  var status: Status {
     get {
       return _status
     }
@@ -77,7 +77,7 @@ final class Timer: NSObject {
   }
   
   // MARK: Internal Properties
-  var _status: TimerStatus = .Ready {
+  var _status: Status = .Ready {
     didSet {
       onNextRunloopNotifyStatusUpdated()
     }
@@ -94,7 +94,7 @@ final class Timer: NSObject {
     // replaced in the timer class instance by the callbacks that
     // update any controls like a UIButton or UILabel in the UIViewController.
     
-    func printStatus(status: TimerStatus) {
+    func printStatus(status: Status) {
       #if DEBUG
         println("Change Timer Control Text to: \(printStatus)")
       #endif
@@ -112,7 +112,7 @@ final class Timer: NSObject {
                 AndTimerUpdatedHandler: printSecondsRemaining)
   }
 
-  init( WithStatusChangedHandler statusChangedHandlerFunc: (TimerStatus) -> (),
+  init( WithStatusChangedHandler statusChangedHandlerFunc: (Status) -> (),
         AndTimerUpdatedHandler   timerUpdatedHandlerFunc:  (Timer?) -> ()    ) {
       statusChangedHandler  = statusChangedHandlerFunc
       timerUpdatedHandler   = timerUpdatedHandlerFunc
@@ -126,7 +126,7 @@ final class Timer: NSObject {
   
   // MARK: -
   // MARK: Timer Actions
-  func changeStatus(status: TimerStatus) {
+  func changeStatus(status: Status) {
     switch status {
     case .Ready:
       reset()

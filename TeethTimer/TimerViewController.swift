@@ -30,7 +30,7 @@ final class TimerViewController: UIViewController {
 
   var gavinWheel: WheelControl?
   var previousImageBeforeTouch: ImageIndex?
-  var timerStateBeforeTouch: TimerStatus = .Paused
+  var timerStateBeforeTouch: Timer.Status = .Paused
   
   var blurLowerThird: Bool  {
     return NSUserDefaults.standardUserDefaults().boolForKey(kAppBlurLowerThirdKey)
@@ -368,7 +368,7 @@ final class TimerViewController: UIViewController {
   
   // MARK: -
   // MARK: Callbacks to pass to the Timer class
-  func updateButtonTitleWithText(status: TimerStatus) {
+  func updateButtonTitleWithText(status: Timer.Status) {
     var buttonText: String
     
     switch status {
