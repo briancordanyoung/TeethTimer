@@ -1,6 +1,3 @@
-// MARK: - ImageWheel Summery
-
-
 import UIKit
 
 typealias ImageIndex = Int
