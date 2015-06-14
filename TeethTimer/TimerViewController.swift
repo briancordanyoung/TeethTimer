@@ -244,6 +244,9 @@ final class TimerViewController: UIViewController {
     
     timerLabel.hidden = !showTimeLabel
     
+    if let gavinWheel = gavinWheel {
+      gavinWheelChanged(gavinWheel)
+    }
     setupVideoBackgroundAsset()
   }
   
