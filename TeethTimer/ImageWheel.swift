@@ -103,7 +103,7 @@ final class ImageWheel: UIView {
     self.images = images
     super.init(frame: CGRect())
     
-
+    self.userInteractionEnabled = false
     createWedges(sectionsCount)
     updateAppearanceForRotation(currentRotation)
   }
@@ -120,8 +120,13 @@ final class ImageWheel: UIView {
   
   // MARK: Setup Methods
   func createWedges(count: Int) {
-    let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(count)
+    createWedgeViews(count)
+    createWedgeRegions(count)
+  }
 
+  func createWedgeViews(count: Int) {
+    let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(count)
+    
     let wedgeStartingAngle = (Revolution.half * 3) + (wedgeWidthAngle / 2)
     // Build WedgeImageView for each pie piece
     for i in 1...count {
@@ -136,44 +141,11 @@ final class ImageWheel: UIView {
       
       self.addSubview(imageView)
     }
-    
-    
-    self.userInteractionEnabled = false
-    
-    switch count.parity {
-    case .Even:
-      createWedgeRegionsEven(count)
-    case .Odd:
-      createWedgeRegionsOdd(count)
-    }
   }
   
-  func createWedgeRegionsEven(count: Int) {
+  func createWedgeRegions(count: Int) {
     let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(count)
-
-    var mid = Revolution.half - (wedgeWidthAngle / 2)
-    var max = Revolution.half
-    var min = Revolution.half - wedgeWidthAngle
     
-    for i in 1...count {
-      max = mid + (wedgeWidthAngle / 2)
-      min = mid - (wedgeWidthAngle / 2)
-      
-      var wedge = WedgeRegion(WithMin: min,
-                               AndMax: max,
-                               AndMid: mid,
-                             AndValue: i)
-      
-      mid -= wedgeWidthAngle
-      
-      wedges.append(wedge)
-    }
-  }
-  
-  
-  func createWedgeRegionsOdd(count: Int) {
-    let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(count)
-
     var mid = Revolution.half - (wedgeWidthAngle / 2)
     var max = Revolution.half
     var min = Revolution.half -  wedgeWidthAngle
@@ -189,7 +161,7 @@ final class ImageWheel: UIView {
       
       mid -= wedgeWidthAngle
       
-      if (wedge.maxRadian < -Revolution.half) {
+      if count.parity == .Odd && (wedge.maxRadian < -Revolution.half) {
         mid = (mid * -1)
         mid -= wedgeWidthAngle
       }
@@ -197,7 +169,6 @@ final class ImageWheel: UIView {
       wedges.append(wedge)
     }
   }
-  
   
   override func didMoveToSuperview() {
     addSelfContraints()
