@@ -12,12 +12,10 @@ extension Int {
   }
 
   var parity: Parity {
-    var result: Parity
     if self % 2 == 0 {
-      result = .Even
+      return .Even
     } else {
-      result = .Odd
+      return .Odd
     }
-    return result
   }
 }
