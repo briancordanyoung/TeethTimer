@@ -146,7 +146,6 @@ final class ImageWheel: UIView {
     case .Odd:
       createWedgeRegionsOdd(count)
     }
-
   }
   
   func createWedgeRegionsEven(count: Int) {
