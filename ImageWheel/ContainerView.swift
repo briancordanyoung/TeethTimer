@@ -24,7 +24,7 @@ class ContainerView: UIView {
     self.addSubview(imageWheel)
     
 //     Set the inital rotation
-//    let startingRotation = imageWheel.wedgeFromValue(1).midRadian
+//    let startingRotation = imageWheel.wedgeFromValue(1).midAngle
 //    imageWheel.rotationAngle = CGFloat(startingRotation)
     
     self.imageWheel = imageWheel

@@ -197,7 +197,7 @@ final class TimerViewController: UIViewController {
     gavinWheel.wheelView.addSubview(imageWheel)
     
     // Set the inital rotation
-    let startingRotation = imageWheel.wedgeFromValue(1).midRadian
+    let startingRotation = imageWheel.wedgeFromValue(1).midAngle
     
     imageWheel.rotationAngle = startingRotation
     gavinWheel.rotationAngle = startingRotation

@@ -8,23 +8,23 @@ typealias WedgeValue = Int
 
 // MARK: - Structs
 struct WedgeRegion: Printable {
-  var minRadian: Angle
-  var maxRadian: Angle
-  var midRadian: Angle
+  var minAngle: Angle
+  var maxAngle: Angle
+  var midAngle: Angle
   var value: WedgeValue
   
   init(WithMin min: Angle,
         AndMax max: Angle,
         AndMid mid: Angle,
   AndValue valueIn: Int) {
-      minRadian = min
-      maxRadian = max
-      midRadian = mid
+      minAngle = min
+      maxAngle = max
+      midAngle = mid
       value = valueIn
   }
   
   var description: String {
-    return "Wedge Region: \(value) | Angles: min \(minRadian) mid \(midRadian) max \(maxRadian)"
+    return "Wedge Region: \(value) | Angles: min \(minAngle) mid \(midAngle) max \(maxAngle)"
   }
 }
 
@@ -46,7 +46,7 @@ final class ImageWheel: UIView {
   
   var centerRotationForSection: Angle {
     var angle      = wedgeWheelAngle(currentRotation)
-    let midAngle   = currentWedge.midRadian
+    let midAngle   = currentWedge.midAngle
 
     var difference = angle - midAngle
     while abs(difference) > wedgeWidthAngle {
@@ -161,7 +161,7 @@ final class ImageWheel: UIView {
       
       mid -= wedgeWidthAngle
       
-      if count.parity == .Odd && (wedge.maxRadian < -Revolution.half) {
+      if count.parity == .Odd && (wedge.maxAngle < -Revolution.half) {
         mid = (mid * -1)
         mid -= wedgeWidthAngle
       }
@@ -349,12 +349,12 @@ final class ImageWheel: UIView {
     
     for wedge in wedges {
       
-      if angle >= wedge.minRadian &&
-        angle <=  wedge.maxRadian    {
+      if angle >= wedge.minAngle &&
+        angle <=  wedge.maxAngle    {
           
           let percent = percentValue( angle,
-                        isBetweenLow: wedge.minRadian,
-                             AndHigh: wedge.maxRadian)
+                        isBetweenLow: wedge.minAngle,
+                             AndHigh: wedge.maxAngle)
           
           let wedgeAngle = twoWedgeWidthAngles * Angle(percent)
           let wedgeAngleInverted = twoWedgeWidthAngles - wedgeAngle
@@ -467,12 +467,12 @@ final class ImageWheel: UIView {
     
     for wedge in wedges {
       
-      if angle >= wedge.minRadian &&
-        angle <=  wedge.maxRadian    {
+      if angle >= wedge.minAngle &&
+        angle <=  wedge.maxAngle    {
           
           let percent = percentValue( angle,
-                        isBetweenLow: wedge.minRadian,
-                             AndHigh: wedge.maxRadian)
+                        isBetweenLow: wedge.minAngle,
+                             AndHigh: wedge.maxAngle)
           
           visualState.wedgeOpacityList[wedge.value]    = CGFloat(percent)
           
@@ -518,7 +518,7 @@ final class ImageWheel: UIView {
   
   // assumes: images increase as rotation decreases
   var firstImageRotation: Angle {
-    return wedgeFromValue(1).midRadian
+    return wedgeFromValue(1).midAngle
   }
   
   var lastImageRotation: Angle {
@@ -565,7 +565,7 @@ final class ImageWheel: UIView {
   }
   
   func rotationForImage(image: ImageIndex) -> Angle {
-    let startingRotation = wedgeFromValue(1).midRadian
+    let startingRotation = wedgeFromValue(1).midAngle
     let stepsFromStart   = image - 1
     let rotationToImage  = Angle(stepsFromStart) * wedgeWidthAngle
     
@@ -600,11 +600,11 @@ final class ImageWheel: UIView {
 
   
   func thisAngle(angle: Angle,
-    isWithinWedge wedge: WedgeRegion) -> Bool {
+   isWithinWedge wedge: WedgeRegion) -> Bool {
       var angleIsWithinWedge = false
       
-      if (angle >= wedge.minRadian &&
-        angle <= wedge.maxRadian   ) {
+      if (angle >= wedge.minAngle &&
+        angle <= wedge.maxAngle   ) {
           
           angleIsWithinWedge = true
       }
@@ -655,8 +655,8 @@ final class ImageWheel: UIView {
   // first and last wedges are used to define min and max instead of
   // Revolution.half & -Revolution.half for this reason.
   func wedgeWheelAngle(rotation: Angle) -> Angle {
-    let max = wedges.first!.maxRadian
-    let min = wedges.last!.minRadian
+    let max = wedges.first!.maxAngle
+    let min = wedges.last!.minAngle
     var angle = rotation
         
     if angle >  max {
@@ -682,8 +682,8 @@ final class ImageWheel: UIView {
   // first and last wedges are used to define min and max instead of
   // Revolution.half & -Revolution.half for this reason.
 //  func wedgeWheelAngle(var angle: Angle) -> Angle {
-//    let max = wedges.first!.maxRadian
-//    let min = wedges.last!.minRadian
+//    let max = wedges.first!.maxAngle
+//    let min = wedges.last!.minAngle
 //    
 //    while angle > max || angle < min {
 //      if angle > max {
