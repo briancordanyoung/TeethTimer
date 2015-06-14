@@ -28,7 +28,6 @@ extension TimerViewController {
     }
     return currentURL
   }
-  
 
   
   func urlIfItExists(url: NSURL?) -> NSURL? {

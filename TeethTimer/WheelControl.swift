@@ -176,7 +176,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
   // class will add/subtract this offset when set/get.
   
   // TODO: This is currently not working.  Must debug
-  //  let internalRotationOffset = Angle(Circle.full * 3)
+  //  let internalRotationOffset = Angle(Rotation.full * 3)
   let internalRotationOffset = Angle(0)
 
   var outsideCircle: CGFloat {

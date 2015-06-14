@@ -14,9 +14,9 @@ struct WedgeRegion: Printable {
   var value: WedgeValue
   
   init(WithMin min: Angle,
-    AndMax max: Angle,
-    AndMid mid: Angle,
-    AndValue valueIn: Int) {
+        AndMax max: Angle,
+        AndMid mid: Angle,
+  AndValue valueIn: Int) {
       minRadian = min
       maxRadian = max
       midRadian = mid
@@ -95,10 +95,6 @@ final class ImageWheel: UIView {
     return Revolution.full / Angle(wedgeCount)
   }
 
-  var wedgeCountParity: Parity {
-    return wedgeCountParityForCount(wedges.count)
-  }
-  
   // MARK: -
   // MARK: Initialization
   init(Sections sectionsCount: Int,
@@ -144,25 +140,14 @@ final class ImageWheel: UIView {
     
     self.userInteractionEnabled = false
     
-    // TODO: extend (if needed) Int to add Parity property
-    if wedgeCountParityForCount(count) == .Even {
+    switch count.parity {
+    case .Even:
       createWedgeRegionsEven(count)
-    } else {
+    case .Odd:
       createWedgeRegionsOdd(count)
     }
-}
-  
-  
-  func wedgeCountParityForCount(count: Int) -> Parity {
-    var result: Parity
-    if count % 2 == 0 {
-      result = .Even
-    } else {
-      result = .Odd
-    }
-    return result
+
   }
-  
   
   func createWedgeRegionsEven(count: Int) {
     let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(count)

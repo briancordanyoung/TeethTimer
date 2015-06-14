@@ -49,15 +49,4 @@ extension ImageWheel {
     }
 
   }
-  
-  // MARK: - Enums
-  enum Parity: String, Printable  {
-    case Even = "Even"
-    case Odd  = "Odd"
-    
-    var description: String {
-      return self.rawValue
-    }
-  }
-
 }
