@@ -3,6 +3,13 @@ import UIKit
 typealias ImageIndex = Int
 typealias WedgeValue = Int
 
+// TODO: Refactor WedgeRegions and WedgeImageViews in to one Wedge Class
+//       Both Previous Classes would still remain, assigned to properties
+//       of Wedge Class
+//       Wedge Class would have methods to create/delete WedgeImageViews &
+//       their contraints.
+//       url to image would also be a properties of the Wedge Class, allowing
+//       the recreatation of the WedgeImageViews on demand
 
 
 
@@ -12,6 +19,8 @@ struct WedgeRegion: Printable {
   var maxAngle: Angle
   var midAngle: Angle
   var value: WedgeValue
+  
+  // TODO: Add wedgeWidth computed property that can be get & set
   
   init(WithMin min: Angle,
         AndMax max: Angle,
