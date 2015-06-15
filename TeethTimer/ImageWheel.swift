@@ -425,7 +425,8 @@ final class ImageWheel: UIView {
   
   func setImagesForRotation(var rotation: Angle) {
     
-    rotation -= 0.001 // fudge factor that fixes odd jumps on exact rotations
+    rotation -= 0.001 // yucky fudge factor that fixes
+                      // odd jumps on exact rotations
 
     func halfAnInt(number: Int) -> Int {
       return Int(ceil(Float(number) / 2))
