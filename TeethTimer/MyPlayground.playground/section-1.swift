@@ -45,18 +45,38 @@ typealias ImageIndex = Int
 //  println(i)
 //}
 
-let assistant = AVOutputSettingsAssistant(preset: "AVOutputSettingsPreset1280x720")
+//let assistant = AVOutputSettingsAssistant(preset: "AVOutputSettingsPreset1280x720")
+//
+//for (key,value) in assistant.videoSettings {
+//  if (key == "AVVideoCompressionPropertiesKey") {
+//    let dict = value as! NSDictionary
+//    let it = dict["AverageBitRate"]!
+//    println("\(AVVideoCodecH264)")
+//  }
+//  println("\(key) \(value)")
+//}
+//
 
-for (key,value) in assistant.videoSettings {
-  if (key == "AVVideoCompressionPropertiesKey") {
-    let dict = value as! NSDictionary
-    let it = dict["AverageBitRate"]!
-    println("\(AVVideoCodecH264)")
+func limit(var angle:Double) -> Double {
+  let pi  = M_PI
+  let tau = pi * 2
+  
+  if angle >  pi {
+    angle += pi
+    let totalRotations = floor(angle / tau)
+    angle  = angle - (tau * totalRotations)
+    angle -= pi
   }
-  println("\(key) \(value)")
+  
+  if angle < -pi {
+    angle -= pi
+    let totalRotations = floor(abs(angle) / tau)
+    angle  = angle + (tau * totalRotations)
+    angle += pi
+  }
+  
+  return angle
 }
 
 
-
-
-
+limit(53.4042)

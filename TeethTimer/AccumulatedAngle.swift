@@ -1,7 +1,8 @@
 import Foundation
 
 
-// MARK: Angle - A number that represents an angle in both degrees or radians.
+// MARK: AccumulatedAngle - A number that represents an angle in both 
+//                          degrees or radians.
 struct AccumulatedAngle: NumericType {
   
   var value: Double
@@ -10,14 +11,15 @@ struct AccumulatedAngle: NumericType {
     self.value = value
   }
   
+  
+  // All other initilizers call the above init()
   init(_ value: CGFloat) {
-    self.value = Double(value)
+    self.init(Double(value))
   }
   
   init(_ value: Int) {
-    self.value = Double(value)
+    self.init(Double(value))
   }
-  
   
   init(radians: Double) {
     self.init(radians)
@@ -33,7 +35,7 @@ struct AccumulatedAngle: NumericType {
   
   
   init(degrees: Double) {
-    self.init(radians: degrees * Double(M_PI) / 180.0)
+    self.init(radians: Angle.degrees2radians(degrees))
   }
   
   init(degrees: CGFloat) {
@@ -44,7 +46,6 @@ struct AccumulatedAngle: NumericType {
     self.init(degrees: Double(degrees))
   }
   
-  
   var radians: Double  {
     return value
   }
@@ -52,7 +53,6 @@ struct AccumulatedAngle: NumericType {
   var degrees: Double {
     return Angle.radians2Degrees(value)
   }
-  
 }
 
 // Convenience Computed Properties to convert to CGFloat
@@ -64,7 +64,6 @@ extension AccumulatedAngle  {
   var cgDegrees: CGFloat {
     return CGFloat(degrees)
   }
-  
 }
 
 
@@ -82,10 +81,10 @@ extension AccumulatedAngle: FloatLiteralConvertible {
 }
 
 
-// MARK: Extend Int to initialize with an AccumulatedAngle instance
+// MARK: Extend Int to initialize with an AccumulatedAngle
 extension Int {
   init(_ accumulatedAngle: AccumulatedAngle) {
-    self = Int(accumulatedAngle.value)
+    self = Int(accumulatedAngle.radians)
   }
 }
 

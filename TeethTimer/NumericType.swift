@@ -45,13 +45,6 @@ public func * <T :NumericType> (lhs: T, rhs: T) -> T {
   return T(lhs.value * rhs.value)
 }
 
-//public func floor <T :NumericType> (number: T) -> T {
-//  return floor(Double(number))
-//}
-
-//func floor(x: T) -> T
-
-
 func floor<T:NumericType>(x: T) -> T {
   return T(floor(x.value))
 }

@@ -415,6 +415,17 @@
 			name = "POP-Wrapper";
 			sourceTree = "<group>";
 		};
+		D39BDB5F1B2E677100B0E709 /* NumericTypes */ = {
+			isa = PBXGroup;
+			children = (
+				D32625901B2799D9002379C1 /* Revolution.swift */,
+				D3CEFEE71B2A302400AE6A6D /* Angle.swift */,
+				D39BDB5C1B2E5D4E00B0E709 /* AccumulatedAngle.swift */,
+				D3F8609D1B294C0300C68C08 /* NumericType.swift */,
+			);
+			name = NumericTypes;
+			sourceTree = "<group>";
+		};
 		D3B7BC6119EA383A00F50DF7 = {
 			isa = PBXGroup;
 			children = (
@@ -499,9 +510,6 @@
 				D3485C8419ECEEB900C6E495 /* Timer.swift */,
 				D34F10B81AAEA1D0009E2A9B /* WheelControl.swift */,
 				D3F72EA71B2BEA21005C6F94 /* WheelControl+Types.swift */,
-				D32625901B2799D9002379C1 /* Revolution.swift */,
-				D3CEFEE71B2A302400AE6A6D /* Angle.swift */,
-				D39BDB5C1B2E5D4E00B0E709 /* AccumulatedAngle.swift */,
 				D36DB7361AB7D03800F080C8 /* ImageWheel.swift */,
 				D3DC4C471A95877400984A24 /* ImageWheel+Types.swift */,
 				D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */,
@@ -509,7 +517,7 @@
 				D31F389B1B2DF8CF0009E0B8 /* Int+Parity.swift */,
 				D3CDA2CE1AF32E6300243AFF /* PieSliceLayer.h */,
 				D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */,
-				D3F8609D1B294C0300C68C08 /* NumericType.swift */,
+				D39BDB5F1B2E677100B0E709 /* NumericTypes */,
 			);
 			name = "Shared Classes";
 			sourceTree = "<group>";

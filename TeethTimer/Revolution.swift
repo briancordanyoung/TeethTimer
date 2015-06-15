@@ -44,6 +44,8 @@ extension Revolution {
     case half
     case quarter
     case threeQuarter
+    case tau
+    case pi
   }
 }
 
@@ -51,14 +53,16 @@ extension Revolution {
 extension Revolution {
   class func preset(preset: Preset) -> Angle {
     switch preset {
-    case .full:
-      return Angle(M_PI) * Angle(2.00)
-    case .half:
+    case .full,
+         .tau:
+      return Angle(M_PI * 2)
+    case .half,
+         .pi:
       return Angle(M_PI)
     case .quarter:
-      return Angle(M_PI) * Angle(0.50)
+      return Angle(M_PI * 0.50)
     case .threeQuarter:
-      return Angle(M_PI) * Angle(1.50)
+      return Angle(M_PI * 1.50)
     }
   }
   
