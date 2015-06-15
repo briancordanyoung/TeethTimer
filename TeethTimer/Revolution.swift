@@ -66,6 +66,14 @@ extension Revolution {
     }
   }
   
+  class var pi: Angle {
+    return Revolution.preset(.pi)
+  }
+  
+  class var tau: Angle {
+    return Revolution.preset(.tau)
+  }
+  
   class var full: Angle {
     return Revolution.preset(.full)
   }

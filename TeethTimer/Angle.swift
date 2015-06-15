@@ -7,7 +7,11 @@ import Foundation
 //       a single circle from -PI to PI
 struct Angle: NumericType {
   
-  var value: Double
+  var value: Double {
+    didSet(oldValue) {
+      value = Angle.limit(value)
+    }
+  }
   
   init(_ value: Double) {
     self.value = Angle.limit(value)
@@ -15,6 +19,10 @@ struct Angle: NumericType {
   
   
   // All other initilizers call the above init()
+  init(_ angle: AccumulatedAngle) {
+    self.init(angle.value)
+  }
+
   init(_ value: CGFloat) {
     self.init(Double(value))
   }
@@ -57,6 +65,18 @@ struct Angle: NumericType {
   var degrees: Double {
     return Angle.radians2Degrees(value)
   }
+  
+  var accumulatedAngle: AccumulatedAngle {
+    return AccumulatedAngle(radians)
+  }
+
+  var rotation: AccumulatedAngle {
+    return AccumulatedAngle(radians)
+  }
+
+  var description: String {
+    return "\(value)"
+  }
 }
 
 // Angle conversions:
@@ -71,27 +91,26 @@ extension Angle {
   }
 
   static func limit(var angle:Double) -> Double {
-//    let pi  = M_PI
-//    let tau = pi * 2
-//    
-//    if angle >  pi {
-//      angle += pi
-//      let totalRotations = floor(angle / tau)
-//      angle  = angle - (tau * totalRotations)
-//      angle -= pi
-//    }
-//    
-//    if angle < -pi {
-//      angle -= pi
-//      let totalRotations = floor(abs(angle) / tau)
-//      angle  = angle + (tau * totalRotations)
-//      angle += pi
-//    }
+    let pi  = M_PI
+    let tau = M_PI * 2
+    
+    if angle >  pi {
+      angle += pi
+      let totalRotations = floor(angle / tau)
+      angle  = angle - (tau * totalRotations)
+      angle -= pi
+    }
+    
+    if angle < -pi {
+      angle -= pi
+      let totalRotations = floor(abs(angle) / tau)
+      angle  = angle + (tau * totalRotations)
+      angle += pi
+    }
     
     return angle
   }
 }
-
 
 // Convenience Computed Properties to convert to CGFloat
 extension Angle {
@@ -126,3 +145,33 @@ extension Int {
   }
 }
 
+
+
+
+func isWithinAngleLimits(value: Double) -> Bool {
+  var isWithinLimits = true
+  
+  if value > M_PI {
+    isWithinLimits = false
+  }
+  
+  if value < -M_PI {
+    isWithinLimits = false
+  }
+  
+  return isWithinLimits
+}
+
+func isWithinAngleLimits(value: CGFloat) -> Bool {
+  var isWithinLimits = true
+  
+  if value > CGFloat(M_PI) {
+    isWithinLimits = false
+  }
+  
+  if value < CGFloat(-M_PI) {
+    isWithinLimits = false
+  }
+  
+  return isWithinLimits
+}

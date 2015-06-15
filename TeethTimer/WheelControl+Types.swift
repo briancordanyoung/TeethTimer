@@ -22,12 +22,12 @@ extension WheelControl {
   // (more than a single full rotation, which is all that the
   //  AffineTransform of the UIView can represent)
   struct RotationState: Printable {
-    static let initialVelocity: Angle = 0.0000001
+    static let initialVelocity: Rotation = 0.0000001
     
-    var current:   Angle
-    var previous:  Angle
+    var current:   Rotation
+    var previous:  Rotation
     var direction: Direction
-    var target:    Angle?
+    var target:    Rotation?
     
     init() {
       current   =  0.0
@@ -35,15 +35,15 @@ extension WheelControl {
       direction = .Clockwise
     }
     
-    init( current: Angle,
-         previous: Angle,
+    init( current: Rotation,
+         previous: Rotation,
         direction: Direction) {
         self.current   = current
         self.previous  = previous
         self.direction = direction
     }
     
-    init(angle: Angle) {
+    init(angle: Rotation) {
       self.init(current: angle,
                previous: angle - RotationState.initialVelocity,
               direction: .Clockwise)
@@ -88,9 +88,9 @@ extension WheelControl {
     
     var initialTransform:  CGAffineTransform
     var initialTouchAngle: Angle
-    var initialRotation:   Angle
-    var maxDampenAngle:    Angle
-    var minDampenAngle:    Angle
+    var initialRotation:   Rotation
+    var maxDampenAngle:    Rotation
+    var minDampenAngle:    Rotation
     
     var currently: UserInteraction
     var snapTo:    SnapTo
@@ -101,8 +101,8 @@ extension WheelControl {
       initialRotation    = 0.0
       currently          = .NotInteracting
       snapTo             = .CurrentRotation
-      maxDampenAngle     =  Angle(DBL_MAX)
-      minDampenAngle     = -Angle(DBL_MAX)
+      maxDampenAngle     =  Rotation(DBL_MAX)
+      minDampenAngle     = -Rotation(DBL_MAX)
     }
   }
 
@@ -114,14 +114,14 @@ extension WheelControl {
   // where the user cann't spin it further
   enum DampenAngle: Printable {
     case no
-    case atAngle(Angle)
+    case atRotation(Rotation)
     
     var description: String {
       switch self {
       case no:
         return "<none>"
-      case atAngle(let angle):
-        return "\(angle)"
+      case atRotation(let rotation):
+        return "\(rotation)"
       }
     }
   }

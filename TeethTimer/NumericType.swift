@@ -45,14 +45,14 @@ public func * <T :NumericType> (lhs: T, rhs: T) -> T {
   return T(lhs.value * rhs.value)
 }
 
-func floor<T:NumericType>(x: T) -> T {
+public func floor<T:NumericType>(x: T) -> T {
   return T(floor(x.value))
 }
 
-func log<T:NumericType>(x: T) -> T {
+public func log<T:NumericType>(x: T) -> T {
   return T(log(x.value))
 }
 
-func abs<T:NumericType>(x: T) -> T {
+public func abs<T:NumericType>(x: T) -> T {
   return T(abs(x.value))
 }

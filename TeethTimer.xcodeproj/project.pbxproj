@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		B2B31E5C4E30211FC85A4DB9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1113560EAB34F926CF979D1 /* libPods.a */; };
+		D30245051B2F63840054AAEC /* WheelControl+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30245041B2F63840054AAEC /* WheelControl+Animation.swift */; };
+		D30245061B2F63840054AAEC /* WheelControl+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30245041B2F63840054AAEC /* WheelControl+Animation.swift */; };
+		D30245081B2F71F80054AAEC /* WheelControl+Unused.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30245071B2F71F80054AAEC /* WheelControl+Unused.swift */; };
+		D30245091B2F71F80054AAEC /* WheelControl+Unused.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30245071B2F71F80054AAEC /* WheelControl+Unused.swift */; };
 		D30771821A869B06003BA7E1 /* num-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716C1A869B06003BA7E1 /* num-01@2x.png */; };
 		D30771831A869B06003BA7E1 /* num-02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716D1A869B06003BA7E1 /* num-02@2x.png */; };
 		D30771841A869B06003BA7E1 /* num-03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716E1A869B06003BA7E1 /* num-03@2x.png */; };
@@ -161,6 +165,8 @@
 		494890643301A07092EB8CC0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A8D8BE3E5746E8CC9B850697 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B1113560EAB34F926CF979D1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D30245041B2F63840054AAEC /* WheelControl+Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WheelControl+Animation.swift"; sourceTree = "<group>"; };
+		D30245071B2F71F80054AAEC /* WheelControl+Unused.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WheelControl+Unused.swift"; sourceTree = "<group>"; };
 		D307716C1A869B06003BA7E1 /* num-01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-01@2x.png"; path = "TeethTimer/Numbers/num-01@2x.png"; sourceTree = "<group>"; };
 		D307716D1A869B06003BA7E1 /* num-02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-02@2x.png"; path = "TeethTimer/Numbers/num-02@2x.png"; sourceTree = "<group>"; };
 		D307716E1A869B06003BA7E1 /* num-03@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-03@2x.png"; path = "TeethTimer/Numbers/num-03@2x.png"; sourceTree = "<group>"; };
@@ -187,6 +193,8 @@
 		D30E03571B20F24D0019914B /* MovieMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieMaker.swift; sourceTree = "<group>"; };
 		D30E035A1B20F2ED0019914B /* CacheWheelState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheWheelState.swift; sourceTree = "<group>"; };
 		D30EDFA51AD2F8C100E76327 /* SystemVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemVersion.swift; sourceTree = "<group>"; };
+		D31CD1DF1B2F47FD008B4177 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D31CD1E01B2F47FD008B4177 /* TeethTimer_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeethTimer_Tests.swift; sourceTree = "<group>"; };
 		D31F389B1B2DF8CF0009E0B8 /* Int+Parity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Parity.swift"; sourceTree = "<group>"; };
 		D31F95E01A2C5FE700219B32 /* ColorImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorImage.swift; path = ../ColorImage.swift; sourceTree = "<group>"; };
 		D3207F2C1ADAC00900ABE2FC /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
@@ -345,6 +353,23 @@
 			name = CachingUI;
 			sourceTree = "<group>";
 		};
+		D31CD1DD1B2F47FD008B4177 /* TeethTimer Tests */ = {
+			isa = PBXGroup;
+			children = (
+				D31CD1E01B2F47FD008B4177 /* TeethTimer_Tests.swift */,
+				D31CD1DE1B2F47FD008B4177 /* Supporting Files */,
+			);
+			path = "TeethTimer Tests";
+			sourceTree = "<group>";
+		};
+		D31CD1DE1B2F47FD008B4177 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D31CD1DF1B2F47FD008B4177 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		D335407D1A3764E80064C81C /* GavinPoses */ = {
 			isa = PBXGroup;
 			children = (
@@ -432,6 +457,7 @@
 				D3B7BC6C19EA383A00F50DF7 /* TeethTimer */,
 				D3B7BC8219EA383A00F50DF7 /* TeethTimerTests */,
 				D37FBC7D1AF34DE100381C7F /* ImageWheel */,
+				D31CD1DD1B2F47FD008B4177 /* TeethTimer Tests */,
 				D3B7BC6B19EA383A00F50DF7 /* Products */,
 				D7D25F379C44550B89AD1B67 /* Pods */,
 				0588C91E349A150BB0A9B1EB /* Frameworks */,
@@ -509,6 +535,8 @@
 			children = (
 				D3485C8419ECEEB900C6E495 /* Timer.swift */,
 				D34F10B81AAEA1D0009E2A9B /* WheelControl.swift */,
+				D30245041B2F63840054AAEC /* WheelControl+Animation.swift */,
+				D30245071B2F71F80054AAEC /* WheelControl+Unused.swift */,
 				D3F72EA71B2BEA21005C6F94 /* WheelControl+Types.swift */,
 				D36DB7361AB7D03800F080C8 /* ImageWheel.swift */,
 				D3DC4C471A95877400984A24 /* ImageWheel+Types.swift */,
@@ -769,6 +797,7 @@
 			files = (
 				D37FBCD31AF3518A00381C7F /* SystemVersion.swift in Sources */,
 				D3B29F801AF5264200C2C067 /* ContainerView.swift in Sources */,
+				D30245061B2F63840054AAEC /* WheelControl+Animation.swift in Sources */,
 				D3F8609C1B293F5200C68C08 /* Revolution.swift in Sources */,
 				D32519351B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */,
 				D30E03591B20F24D0019914B /* MovieMaker.swift in Sources */,
@@ -789,6 +818,7 @@
 				D3CEFEE91B2A302400AE6A6D /* Angle.swift in Sources */,
 				D37FBCD21AF34E9300381C7F /* PieSliceLayer.m in Sources */,
 				D30E035C1B20F2ED0019914B /* CacheWheelState.swift in Sources */,
+				D30245091B2F71F80054AAEC /* WheelControl+Unused.swift in Sources */,
 				D37FBC831AF34DE100381C7F /* ViewController.swift in Sources */,
 				D37FBC811AF34DE100381C7F /* AppDelegate.swift in Sources */,
 			);
@@ -807,6 +837,7 @@
 				D37FBC771AF3308500381C7F /* WedgeImageView.swift in Sources */,
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
 				D34F10B91AAEA1D0009E2A9B /* WheelControl.swift in Sources */,
+				D30245081B2F71F80054AAEC /* WheelControl+Unused.swift in Sources */,
 				D3CDA2D01AF32E6300243AFF /* PieSliceLayer.m in Sources */,
 				D341D23F1AC1FB24007D0593 /* Developement.swift in Sources */,
 				D32519341B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */,
@@ -817,6 +848,7 @@
 				D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
 				D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */,
 				D388C3031A9F7B50007D4F8B /* POPSwiftWrapper.m in Sources */,
+				D30245051B2F63840054AAEC /* WheelControl+Animation.swift in Sources */,
 				D347A2391B2C7D3100E5256C /* TimerViewController+Background.swift in Sources */,
 				D3F8609E1B294C0300C68C08 /* NumericType.swift in Sources */,
 				D3141ECE1AB9F38D00780B72 /* ImageWheel.swift in Sources */,

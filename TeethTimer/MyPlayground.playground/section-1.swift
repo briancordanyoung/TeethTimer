@@ -1,82 +1,24 @@
 import UIKit
-import AVFoundation
-
-typealias ImageIndex = Int
-
-//firstImageRotation 2.35619
-//wedgeWidthAngle 1.5708
-//images.count 10
-
-//var firstImageRotation = CGFloat(2.35619)
-//var wedgeWidthAngle    = CGFloat(1.5708)
-//var images             = [1,2,3,4,5,6,7,8,9,10]
-//
-//func imageIndexForRotation(rotation: CGFloat) -> ImageIndex {
-//  let startingRotationDifference = -firstImageRotation
-//  let rotationStartingAtZero = rotation + startingRotationDifference
-//  let wedgesFromStart = rotationStartingAtZero / wedgeWidthAngle
-//  // assumes: images increase as rotation decreases
-//  var currentImage = ImageIndex(round(-wedgesFromStart)) + 1
-//  
-//  while currentImage > images.count || currentImage < 1 {
-//    if currentImage < 1 {
-//      currentImage += images.count
-//    }
-//    if currentImage > images.count {
-//      currentImage -= images.count
-//    }
-//  }
-//  return currentImage
-//}
-//
-//let checkRot = CGFloat(01.581)
-//let startRot = checkRot - (wedgeWidthAngle * 2)
-//var rots: [Int] = []
-//
-//for i in 1...4 {
-//  let rot = (CGFloat(i) * wedgeWidthAngle) + startRot
-//  rots.append(imageIndexForRotation(rot))
-//}
-//
-//rots
 
 
-//for i in -3...4 {
-//  println(i)
-//}
 
-//let assistant = AVOutputSettingsAssistant(preset: "AVOutputSettingsPreset1280x720")
-//
-//for (key,value) in assistant.videoSettings {
-//  if (key == "AVVideoCompressionPropertiesKey") {
-//    let dict = value as! NSDictionary
-//    let it = dict["AverageBitRate"]!
-//    println("\(AVVideoCodecH264)")
-//  }
-//  println("\(key) \(value)")
-//}
-//
 
-func limit(var angle:Double) -> Double {
-  let pi  = M_PI
-  let tau = pi * 2
-  
-  if angle >  pi {
-    angle += pi
-    let totalRotations = floor(angle / tau)
-    angle  = angle - (tau * totalRotations)
-    angle -= pi
+struct Tester {
+  var prop: Double {
+    didSet {
+      prop = prop + 100
+    }
   }
-  
-  if angle < -pi {
-    angle -= pi
-    let totalRotations = floor(abs(angle) / tau)
-    angle  = angle + (tau * totalRotations)
-    angle += pi
-  }
-  
-  return angle
 }
 
 
-limit(53.4042)
+let test = Tester(prop: 10)
+test.prop = 10
+
+test.prop
+
+
+
+
+
+

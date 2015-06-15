@@ -42,6 +42,6 @@ class WedgeImageView: PieImageView {
   func initProperties() {
     opaque = false
     pieSliceLayer.usePercentage = false
-    pieSliceLayer.angleWidth    = Revolution.full.cgRadians
+    pieSliceLayer.angleWidth    = CGFloat(M_PI * 2)
   }
 }

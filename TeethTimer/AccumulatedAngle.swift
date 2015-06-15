@@ -1,9 +1,9 @@
 import Foundation
 
-
+typealias Rotation = AccumulatedAngle
 // MARK: AccumulatedAngle - A number that represents an angle in both 
 //                          degrees or radians.
-struct AccumulatedAngle: NumericType {
+struct AccumulatedAngle: NumericType, Printable {
   
   var value: Double
   
@@ -13,6 +13,10 @@ struct AccumulatedAngle: NumericType {
   
   
   // All other initilizers call the above init()
+  init(_ angle: Angle) {
+    self.init(Double(angle.value))
+  }
+
   init(_ value: CGFloat) {
     self.init(Double(value))
   }
@@ -53,6 +57,15 @@ struct AccumulatedAngle: NumericType {
   var degrees: Double {
     return Angle.radians2Degrees(value)
   }
+  
+  var angle: Angle {
+    return Angle(radians)
+  }
+  
+  var description: String {
+    return "\(value)"
+  }
+  
 }
 
 // Convenience Computed Properties to convert to CGFloat
@@ -85,6 +98,39 @@ extension AccumulatedAngle: FloatLiteralConvertible {
 extension Int {
   init(_ accumulatedAngle: AccumulatedAngle) {
     self = Int(accumulatedAngle.radians)
+  }
+}
+
+
+extension AccumulatedAngle {
+  static var pi: AccumulatedAngle {
+//    return AccumulatedAngle(Revolution.preset(.pi))
+    return AccumulatedAngle(M_PI)
+  }
+
+  static var tau: AccumulatedAngle {
+//    return AccumulatedAngle(Revolution.preset(.tau))
+    return AccumulatedAngle(M_PI * 2)
+  }
+
+  static var full: AccumulatedAngle {
+//    return AccumulatedAngle(Revolution.preset(.full))
+    return AccumulatedAngle(M_PI * 2)
+  }
+
+  static var half: AccumulatedAngle {
+//    return AccumulatedAngle(Revolution.preset(.half))
+    return AccumulatedAngle(M_PI)
+  }
+
+  static var quarter: AccumulatedAngle {
+//    return AccumulatedAngle(Revolution.preset(.quarter))
+    return AccumulatedAngle(M_PI * 0.50)
+  }
+
+  static var threeQuarter: AccumulatedAngle {
+//    return AccumulatedAngle(Revolution.preset(.threeQuarter))
+    return AccumulatedAngle(M_PI * 1.50)
   }
 }
 

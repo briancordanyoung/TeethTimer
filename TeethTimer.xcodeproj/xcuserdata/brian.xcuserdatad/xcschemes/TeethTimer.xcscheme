@@ -34,6 +34,20 @@
                ReferencedContainer = "container:TeethTimer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D31CD1DB1B2F47FD008B4177"
+               BuildableName = "TeethTimer Tests.xctest"
+               BlueprintName = "TeethTimer Tests"
+               ReferencedContainer = "container:TeethTimer.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -49,6 +63,16 @@
                BlueprintIdentifier = "D3B7BC7E19EA383A00F50DF7"
                BuildableName = "TeethTimerTests.xctest"
                BlueprintName = "TeethTimerTests"
+               ReferencedContainer = "container:TeethTimer.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D31CD1DB1B2F47FD008B4177"
+               BuildableName = "TeethTimer Tests.xctest"
+               BlueprintName = "TeethTimer Tests"
                ReferencedContainer = "container:TeethTimer.xcodeproj">
             </BuildableReference>
          </TestableReference>

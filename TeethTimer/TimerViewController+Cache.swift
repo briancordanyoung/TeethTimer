@@ -262,8 +262,8 @@ extension TimerViewController {
     return url
   }
 
-  private func expandRange(range: (start: Angle,end: Angle),
-    ByAmount amount: Angle) -> (start: Angle,end: Angle) {
+  private func expandRange(range: (start: Rotation,end: Rotation),
+    ByAmount amount: Rotation) -> (start: Rotation,end: Rotation) {
       
       var resultingRange = range
       if range.start > range.end {
