@@ -1,13 +1,12 @@
-import Foundation
+import UIKit
 
-typealias Rotation = AccumulatedAngle
 // MARK: AccumulatedAngle - A number that represents an angle in both 
 //                          degrees or radians.
-struct AccumulatedAngle: AngularType, Printable {
+public struct AccumulatedAngle: AngularType, Printable {
   
-  var value: Double
+  public var value: Double
   
-  init(_ value: Double) {
+  public  init(_ value: Double) {
     self.value = value
   }
   
@@ -62,7 +61,7 @@ struct AccumulatedAngle: AngularType, Printable {
     return Angle(radians)
   }
   
-  var description: String {
+  public var description: String {
     return "\(value)"
   }
   
@@ -82,13 +81,13 @@ extension AccumulatedAngle  {
 
 // MARK: Protocol Conformance
 extension AccumulatedAngle: IntegerLiteralConvertible {
-  init(integerLiteral: IntegerLiteralType) {
+  public init(integerLiteral: IntegerLiteralType) {
     self.init(Double(integerLiteral))
   }
 }
 
 extension AccumulatedAngle: FloatLiteralConvertible {
-  init(floatLiteral: FloatLiteralType) {
+  public init(floatLiteral: FloatLiteralType) {
     self.init(Double(floatLiteral))
   }
 }
@@ -139,60 +138,60 @@ extension AccumulatedAngle {
 
 // MARK: AccumulatedAngle & Angle specific overloads
 
-func % (lhs: AccumulatedAngle, rhs: Angle) -> AccumulatedAngle {
+public func % (lhs: AccumulatedAngle, rhs: Angle) -> AccumulatedAngle {
   return AccumulatedAngle(lhs.value % rhs.value)
 }
 
 
-func + (lhs: Angle, rhs: AccumulatedAngle) -> AccumulatedAngle {
+public func + (lhs: Angle, rhs: AccumulatedAngle) -> AccumulatedAngle {
   return AccumulatedAngle(lhs.value + rhs.value)
 }
 
-func - (lhs: Angle, rhs: AccumulatedAngle) -> AccumulatedAngle {
+public func - (lhs: Angle, rhs: AccumulatedAngle) -> AccumulatedAngle {
   return AccumulatedAngle(lhs.value - rhs.value)
 }
 
-func + (lhs: AccumulatedAngle, rhs: Angle) -> AccumulatedAngle {
+public func + (lhs: AccumulatedAngle, rhs: Angle) -> AccumulatedAngle {
   return AccumulatedAngle(lhs.value + rhs.value)
 }
 
-func - (lhs: AccumulatedAngle, rhs: Angle) -> AccumulatedAngle {
+public func - (lhs: AccumulatedAngle, rhs: Angle) -> AccumulatedAngle {
   return AccumulatedAngle(lhs.value - rhs.value)
 }
 
 
 
-func < (lhs: Angle, rhs: AccumulatedAngle) -> Bool {
+public func < (lhs: Angle, rhs: AccumulatedAngle) -> Bool {
   return lhs.value < rhs.value
 }
 
-func == (lhs: Angle, rhs: AccumulatedAngle) -> Bool {
+public func == (lhs: Angle, rhs: AccumulatedAngle) -> Bool {
   return lhs.value == rhs.value
 }
 
-func < (lhs: AccumulatedAngle, rhs: Angle) -> Bool {
+public func < (lhs: AccumulatedAngle, rhs: Angle) -> Bool {
   return lhs.value < rhs.value
 }
 
-func == (lhs: AccumulatedAngle, rhs: Angle) -> Bool {
+public func == (lhs: AccumulatedAngle, rhs: Angle) -> Bool {
   return lhs.value == rhs.value
 }
 
 
 
-func += (inout lhs: AccumulatedAngle, rhs: Angle) {
+public func += (inout lhs: AccumulatedAngle, rhs: Angle) {
   lhs.value = lhs.value + rhs.value
 }
 
-func -= (inout lhs: AccumulatedAngle, rhs: Angle) {
+public func -= (inout lhs: AccumulatedAngle, rhs: Angle) {
   lhs.value = lhs.value - rhs.value
 }
 
-func / (lhs: AccumulatedAngle, rhs: Angle) -> AccumulatedAngle {
+public func / (lhs: AccumulatedAngle, rhs: Angle) -> AccumulatedAngle {
   return AccumulatedAngle(lhs.value / rhs.value)
 }
 
-func * (lhs: AccumulatedAngle, rhs: Angle) -> AccumulatedAngle {
+public func * (lhs: AccumulatedAngle, rhs: Angle) -> AccumulatedAngle {
   return AccumulatedAngle(lhs.value * rhs.value)
 }
 
@@ -201,60 +200,60 @@ func * (lhs: AccumulatedAngle, rhs: Angle) -> AccumulatedAngle {
 
 // MARK: AccumulatedAngle & Int specific overloads
 
-func % (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
+public func % (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
   return AccumulatedAngle(lhs.value % Double(rhs))
 }
 
 
-func + (lhs: Int, rhs: AccumulatedAngle) -> AccumulatedAngle {
+public func + (lhs: Int, rhs: AccumulatedAngle) -> AccumulatedAngle {
   return AccumulatedAngle(Double(lhs) + rhs.value)
 }
 
-func - (lhs: Int, rhs: AccumulatedAngle) -> AccumulatedAngle {
-  return AccumulatedAngle(Double(lhs) - Double(rhs.value))
+public func - (lhs: Angle, rhs: Int) -> AccumulatedAngle {
+  return AccumulatedAngle(lhs.value - Double(rhs))
 }
 
-func + (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
+public func + (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
   return AccumulatedAngle(lhs.value + Double(rhs))
 }
 
-func - (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
+public func - (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
   return AccumulatedAngle(lhs.value - Double(rhs))
 }
 
 
 
-func < (lhs: Int, rhs: AccumulatedAngle) -> Bool {
+public func < (lhs: Int, rhs: AccumulatedAngle) -> Bool {
   return Double(lhs) < rhs.value
 }
 
-func == (lhs: Int, rhs: AccumulatedAngle) -> Bool {
+public func == (lhs: Int, rhs: AccumulatedAngle) -> Bool {
   return Double(lhs) == rhs.value
 }
 
-func < (lhs: AccumulatedAngle, rhs: Int) -> Bool {
+public func < (lhs: AccumulatedAngle, rhs: Int) -> Bool {
   return lhs.value < Double(rhs)
 }
 
-func == (lhs: AccumulatedAngle, rhs: Int) -> Bool {
+public func == (lhs: AccumulatedAngle, rhs: Int) -> Bool {
   return lhs.value == Double(rhs)
 }
 
 
 
-func += (inout lhs: AccumulatedAngle, rhs: Int) {
+public func += (inout lhs: AccumulatedAngle, rhs: Int) {
   lhs.value = lhs.value + Double(rhs)
 }
 
-func -= (inout lhs: AccumulatedAngle, rhs: Int) {
+public func -= (inout lhs: AccumulatedAngle, rhs: Int) {
   lhs.value = lhs.value - Double(rhs)
 }
 
-func / (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
+public func / (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
   return AccumulatedAngle(lhs.value / Double(rhs))
 }
 
-func * (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
+public func * (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
   return AccumulatedAngle(lhs.value * Double(rhs))
 }
 

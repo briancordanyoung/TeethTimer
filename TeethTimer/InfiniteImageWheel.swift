@@ -3,280 +3,272 @@ import UIKit
 typealias WedgeIndex = Int
 
 
+
 final class InfiniteImageWheel: UIView {
 
-  
+  // Primary Properties
+  let wedgeSeries:   WedgeSeries
+  var rotationState: RotationState
   
   var rotation = Rotation(0.0) {
     didSet {
-//      updateAppearanceForRotation(rotation)
+      rotationState = RotationState( rotation: rotation,
+                                  wedgeSeries: wedgeSeries)
+    transformWedgesWithRotationState(rotationState)
     }
   }
   
-  var layoutDirection: Direction = .Clockwise
+  // Computed Properties
+  var wedgeCenter: Rotation {
+    return rotationState.wedgeCenter
+  }
   
-}
-
-
-
-
-// MARK: - Various enums and structs used throughout the InfiniteImageWheel Class
-extension InfiniteImageWheel {
   
-  struct Wedge: Printable {
-  
-    let center:   Rotation
-    let width:    Angle
-    let view:     WedgeImageView
-    let imageURL: NSURL
+  // MARK: Initialization
+  init(imageNames: [String], seperatedByAngle wedgeSeperation: Angle ) {
+    // Gavin Poses-s01
+    let wedges = imageNames.map({Wedge(imageName: $0)})
+    let tao = M_PI * 2
+    wedgeSeries = WedgeSeries(wedges: wedges,
+                           direction: .Clockwise,
+                     wedgeSeperation: wedgeSeperation,
+                        visibleAngle: Angle(degrees: 90))
+    rotationState = RotationState( rotation: 0.0,
+                      wedgeSeries: wedgeSeries)
     
+    super.init(frame: CGRect())
     
-    var description: String {
-      return "TODO: impliment me"
-    }
+    assert(wedgeSeries.seriesWidth >= Rotation(degrees: 360),"InfiniteImageWheel requires enough images and seperation betwen the wedges to at least make a complete circle.")
+    self.userInteractionEnabled = false
+    rotation = Rotation(0.0)
+  }
+  
+  required init(coder: NSCoder) {
+    // TODO: impliment coder and decoder
+    wedgeSeries = WedgeSeries(wedges: [],
+                           direction: .Clockwise,
+                     wedgeSeperation: Angle(0),
+                        visibleAngle: Angle(degrees: 180))
+    
+    rotationState = RotationState( rotation: 0.0,
+                      wedgeSeries: wedgeSeries)
+    
+    super.init(coder: coder)
+    transformWedgesWithRotationState(rotationState)
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+
+  // MARK: UIView Methods
+  override func didMoveToSuperview() {
+    addSelfContraints()
+    createWedgeImageViews()
+    transformWedgesWithRotationState(rotationState)
   }
 
-  struct ImageWedgeSeries: Printable {
-    let wedges:      [Wedge]
-    let direction:   Direction
-    let seriesWidth: Rotation
-    
-    var wedgeSeperation: Angle {
-      let wedgeWidth = seriesWidth.cgRadians / CGFloat(wedges.count)
-      return Angle(wedgeWidth)
-    }
-    
-    var seriesStartRotation: Rotation {
-      let offset = Rotation(wedgeSeperation) / 2
-      let result: Rotation
-      switch direction {
-        case .Clockwise:
-          result = -offset
-        case .CounterClockwise:
-          result =  offset
-      }
-      return result
-    }
-    
-    var seriesEndRotation: Rotation {
-      let result: Rotation
-      switch direction {
-      case .Clockwise:
-        result = seriesStartRotation + seriesWidth
-      case .CounterClockwise:
-        result = seriesStartRotation - seriesWidth
-      }
-      return result
-    }
-    
-    func centerOfWedge(index: WedgeIndex,
-            usingWedgeSeperation wedgeSeperation: Angle,
-                        andDirection direction: Direction) -> Rotation {
+  // MARK: Contraints
+  func addSelfContraints() {
+    self.setTranslatesAutoresizingMaskIntoConstraints(false)
+    if let superview = self.superview {
+      let viewsDictionary = ["wheel":self]
       
-      let stepsToWedge = index - 1
-      let distanceFromFirstWedge = Rotation(wedgeSeperation) * stepsToWedge
-                          
-      let result: Rotation
+      let height:[AnyObject] =
+      NSLayoutConstraint.constraintsWithVisualFormat( "V:|[wheel]|",
+                                             options: NSLayoutFormatOptions(0),
+                                             metrics: nil,
+                                               views: viewsDictionary)
+      
+      let width:[AnyObject] =
+      NSLayoutConstraint.constraintsWithVisualFormat( "H:|[wheel]|",
+                                             options: NSLayoutFormatOptions(0),
+                                             metrics: nil,
+                                               views: viewsDictionary)
+      
+      superview.addConstraints(height)
+      superview.addConstraints(width)
+    }
+  }
+  
+  func createWedgeImageViews() {
+    if let superview = superview {
+      for wedge in wedgeSeries.wedges {
+        wedge.createWedgeImageViewWithSuperview(superview)
+      }
+    }
+  }
+
+  func removeWedgeImageViews() {
+    for wedge in wedgeSeries.wedges {
+      wedge.removeWedgeImageView()
+    }
+  }
+
+  
+  
+  
+  
+  
+  
+  func transformWedgesWithRotationState(rotationState: RotationState) {
+    let state = RotationState(state: rotationState)
+    for (index, wedge) in enumerate(wedgeSeries.wedges) {
+      if wedge.viewExists {
+        transformWedge(wedge, atIndex: index, withRotationState: state)
+      }
+    }
+  }
+  
+  
+  func transformWedge(wedge: Wedge, atIndex index: WedgeIndex,
+                          withRotationState state: RotationState) {
+    
+    let steps = countFromIndex( index, toIndex: state.wedgeIndex,
+                                   withinSteps: state.wedgeCount)
+    let distanceOnCenter: Rotation
+    let direction: Direction
+                            
+    if steps.clockwise < steps.counterClockwise {
+      direction = .Clockwise
+      distanceOnCenter = Rotation(state.wedgeSeperation) * steps.clockwise
+    } else {
+      direction = .CounterClockwise
+      distanceOnCenter = Rotation(state.wedgeSeperation) * steps.counterClockwise
+    }
+                            
+    let distance: Rotation
+    let angle:    Angle
+    let width:    Angle// = Angle(degrees: 90)
+
+    let msg: String
+    switch direction {
+    case .Clockwise:
+      let offcenter = angleOffCenterFromDirection( direction,
+                                 forRotationState: state)
+      distance = distanceOnCenter + offcenter
+      angle = Angle(state.wedgeCenter - distanceOnCenter)
+      
+      let percent = 1 - percentOfWidth(Angle(distance), forState: state)
+      width = (state.wedgeSeperation * 2) * Angle(percent)
+    case .CounterClockwise:
+      let offcenter = angleOffCenterFromDirection( direction,
+                                 forRotationState: state)
+      distance = distanceOnCenter + offcenter
+      angle = Angle(state.wedgeCenter + distanceOnCenter)
+
+      
+      let percent = 1 - percentOfWidth(Angle(distance), forState: state)
+      width = (state.wedgeSeperation * 2) * Angle(percent)
+    }
+                            
+    if distance < wedgeSeries.halfVisibleAngle {
+      wedge.transform(angle)
+      wedge.width = width
+    } else {
+      wedge.hide()
+    }
+  }
+
+  
+  func angleOffCenterFromDirection(direction: Direction,
+                    forRotationState state: RotationState) -> Angle {
+                      
+      let angleOffCenter = state.rotation - state.wedgeCenter
+    
       switch direction {
       case .Clockwise:
-        result =  distanceFromFirstWedge
+          return Angle(angleOffCenter)
       case .CounterClockwise:
-        result = -distanceFromFirstWedge
+        return Angle(angleOffCenter * -1)
+    }
+  }
+  
+  
+  func countFromIndex( start: WedgeIndex, toIndex end: WedgeIndex,
+                                    withinSteps steps: WedgeIndex)
+                       -> (clockwise: WedgeIndex, counterClockwise: WedgeIndex) {
+      
+    let clockwise = countFromIndex( start, toIndex: end,
+                                       withinSteps: steps,
+                                       inDirection: .Clockwise)
+                              
+    let counterClockwise = countFromIndex( start, toIndex: end,
+                                              withinSteps: steps,
+                                              inDirection: .CounterClockwise)
+      
+    return (clockwise: clockwise, counterClockwise: counterClockwise)
+  }
+  
+  
+  func countFromIndex( start: WedgeIndex, toIndex end: WedgeIndex,
+                                    withinSteps steps: WedgeIndex,
+                                inDirection direction: Direction) -> WedgeIndex {
+      var increment: (int: Int) -> Int
+      var compare:   (lhs: Int, rhs: Int)  -> Bool
+      var wrapTo:     WedgeIndex
+      var wrapAt:     WedgeIndex
+
+      switch direction {
+      case .Clockwise:
+        increment = add
+        compare   = more
+        wrapTo    = 1
+        wrapAt    = steps
+      case .CounterClockwise:
+        increment = subtract
+        compare   = less
+        wrapTo    = steps
+        wrapAt    = 1
       }
-      return result
-    }
-    
-    
-    func minOfWedge(index: WedgeIndex,
-      usingWedgeSeperation wedgeSeperation: Angle,
-                    andDirection direction: Direction) -> Rotation {
-        
-        let center = centerOfWedge( index,
-              usingWedgeSeperation: wedgeSeperation,
-                      andDirection: direction)
-        
-        let offset = wedgeSeperation / 2
-        return center - offset
-    }
 
-    
-    
-    func maxOfWedge(index: WedgeIndex,
-      usingWedgeSeperation wedgeSeperation: Angle,
-                    andDirection direction: Direction) -> Rotation {
-        
-        let center = centerOfWedge( index,
-              usingWedgeSeperation: wedgeSeperation,
-                      andDirection: direction)
-        
-        let offset = wedgeSeperation / 2
-        return center + offset
-    }
-
-    func wedgeIndexForRotation(rotation: Rotation,
-           usingSeriesWidth seriesWidth: Rotation,
-                        wedgeSeperation: Angle,
-                 andDirection direction: Direction) -> WedgeIndex {
-        
-        let steps = WedgeIndex((seriesWidth / wedgeSeperation).value)
-        
-        let remainingRotation: Rotation
-        switch direction {
-        case .Clockwise:
-          let offsetRotation    = rotation + wedgeSeperation
-          remainingRotation = offsetRotation % seriesWidth
-          
-        case .CounterClockwise:
-          let offsetRotation    = rotation - wedgeSeperation
-          remainingRotation = offsetRotation % seriesWidth
+      var count = 0
+      var next  = start
+      while next != end {
+        count = count + 1
+        next  = increment(int: next)
+        if compare(lhs: next, rhs: wrapAt)  {
+          next = wrapTo
         }
-        
-        let result: WedgeIndex
-        
-        if remainingRotation >= 0 {
-          let wedgesInRemainder = remainingRotation / wedgeSeperation
-          result = WedgeIndex(wedgesInRemainder.value) + 1
-        } else {
-          let wedgesInRemainder = remainingRotation / wedgeSeperation
-          result =  steps + WedgeIndex(wedgesInRemainder.value)
-        }
-        
-        return result
-    }
-    
+      }
+      return count
+  }
 
-    
-    
-    
+
+  func add(int: Int) -> Int {
+    return int + 1
+  }
+  func subtract(int: Int) -> Int {
+    return int - 1
+  }
+  func less(lhs: Int, rhs: Int) -> Bool {
+    return lhs < rhs
+  }
+  func more(lhs: Int, rhs: Int) -> Bool {
+    return lhs > rhs
+  }
+  
+  func percentOfWidth(value: Angle, forState state: RotationState) -> Double {
+    let absoluteValue = Angle(abs(value.value))
+    return percentValue(value, isBetweenLow: Angle(0),
+                                    AndHigh: state.wedgeSeperation)
+  }
+  
+  func percentValue<T:AngularType>(value: T,
+                      isBetweenLow   low: T,
+                      AndHigh       high: T ) -> Double {
+      return (value.value - low.value) / (high.value - low.value)
+  }
+
+}
+
+// Direction Enum
+// MARK: Direction Enum
+extension InfiniteImageWheel {
+  enum Direction: String, Printable {
+    case Clockwise        = "Clockwise"
+    case CounterClockwise = "CounterClockwise"
     
     var description: String {
-      return ""
+      return self.rawValue
     }
   }
-}
-
-
-
-enum Direction: String, Printable {
-  case Clockwise        = "Clockwise"
-  case CounterClockwise = "CounterClockwise"
-  
-  var description: String {
-    return self.rawValue
-  }
-}
-
-struct InfiniteImageWheelShape: Printable {
-  let wedgeCount:      Int
-  let wedgeSeperation: Angle
-  let direction:       Direction
-  
-  var seriesWidth: Rotation {
-    return Rotation(wedgeSeperation) * wedgeCount
-  }
-  
-  var description: String {
-    return "TODO: impliment me"
-  }
-
-}
-
-class RotationState: NSObject, Printable {
-  
-  let rotation:        Rotation
-  let wheelShape:      InfiniteImageWheelShape
-  
-  init(      rotation: Rotation,
-           wheelShape: InfiniteImageWheelShape) {
-      self.rotation   = rotation
-      self.wheelShape = wheelShape
-  }
-  
-  // Computed Properties to access wheelShape properties easily.
-  var wedgeCount: Int {
-    return wheelShape.wedgeCount
-  }
-
-  var seriesWidth: Rotation {
-    return wheelShape.seriesWidth
-  }
-  
-  var wedgeSeperation: Angle {
-    return wheelShape.wedgeSeperation
-  }
-  
-  var direction: Direction {
-    return wheelShape.direction
-  }
-  
-//  override var description: String {
-//    return "TODO: impliment me"
-//  }
-  
-  // Computed Properties to compute once and store each aspect
-  private lazy var offsetRotation: Rotation = {
-    switch self.direction {
-    case .Clockwise:
-      return self.rotation + (self.wedgeSeperation / 2)
-    case .CounterClockwise:
-      return self.rotation - (self.wedgeSeperation / 2)
-    }
-  }()
-  
-  
-  lazy var rotationCount: Int = {
-      let reciprocity: Int
-      switch self.direction {
-      case .Clockwise:
-        reciprocity = 1
-      case .CounterClockwise:
-        reciprocity = -1
-      }
-    
-      let positiveRotationCount = Int((self.offsetRotation / self.seriesWidth).value)
-      if self.remainingRotation >= 0 {
-        return  positiveRotationCount      * reciprocity
-      } else {
-        return (positiveRotationCount - 1) * reciprocity
-      }
-  }()
-  
-  
-  lazy var remainingRotation: Rotation = {
-      return self.offsetRotation % self.seriesWidth
-  }()
-  
-  lazy var wedgesInRemainder: Rotation = {
-    return self.remainingRotation / self.wedgeSeperation
-  }()
-  
-  lazy var wedgeIndexClockwise: WedgeIndex = {
-    let countOfWedgesInRemainder = WedgeIndex(self.wedgesInRemainder.value)
-    if self.remainingRotation >= 0 {
-      return countOfWedgesInRemainder + 1
-    } else {
-      return self.wedgeCount + countOfWedgesInRemainder
-    }
-  }()
-  
-  lazy var wedgeIndexCounterClockwise: WedgeIndex = {
-    return self.wedgeCount + 1 - self.wedgeIndexClockwise
-  }()
-  
-  lazy var wedgeIndex: WedgeIndex = {
-    switch self.direction {
-    case .Clockwise:
-      return self.wedgeIndexClockwise
-    case .CounterClockwise:
-      return self.wedgeIndexCounterClockwise
-    }
-  }()
-  
-  lazy var wedgeCenter: Rotation = {
-    return (self.seriesWidth * self.rotationCount)  +
-      (Rotation(self.wedgeSeperation.value) * self.wedgeIndex)
-   }()
-
-
-
 }

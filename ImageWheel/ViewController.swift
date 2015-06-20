@@ -5,11 +5,22 @@ let kAppUseCachedUIKey = "useCachedUI"
 
 class ViewController: UIViewController {
 
-  @IBOutlet weak var containerView: ContainerView!
+  @IBOutlet weak var containerView: InfinateContainerView!
+//  @IBOutlet weak var containerView: ContainerView!
   
   @IBOutlet weak var slider: UISlider!
   
   @IBOutlet weak var progressBar: UIProgressView!
+  @IBOutlet weak var infoLabel: UILabel!
+  
+  @IBAction func show(sender: UIButton) {
+    containerView.imageWheel?.createWedgeImageViews()
+    let sliderValue = Rotation(degrees: CGFloat(slider.value))
+    containerView.imageWheel?.rotation = sliderValue
+  }
+  @IBAction func hide(sender: UIButton) {
+    containerView.imageWheel?.removeWedgeImageViews()
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -17,16 +28,18 @@ class ViewController: UIViewController {
 
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
   }
 
   
   @IBAction func sliderChanged(sender: UISlider) {
-    let width = containerView.imageWheel!.wedgeWidthAngle
-    let halfWidth = width / 2
-    let sliderValue = Angle(degrees: CGFloat(sender.value))
-    let rotationAngle = sliderValue + halfWidth
-    containerView.imageWheel?.rotationAngle = rotationAngle
+//    let width = containerView.imageWheel!.wedgeWidthAngle
+    let width = containerView.imageWheel!.wedgeSeries.wedgeSeperation
+    let halfWidth = Rotation(width / 2)
+    let sliderValue = Rotation(degrees: CGFloat(sender.value))
+    let rotationAngle = sliderValue //+ halfWidth
+    containerView.imageWheel?.rotation = rotationAngle
+    
+    infoLabel.text = labelNumber.stringFromNumber(rotationAngle.degrees)
   }
   
   @IBAction func saveFramesButton(sender: UIButton) {
@@ -35,36 +48,37 @@ class ViewController: UIViewController {
         percentDone in
         self.progressBar.progress = Float(percentDone)
       }
-//    progressBar.hidden = true
   }
   
 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
   
   func saveImageWheelFramesWithProgress(percentDone: (CGFloat) -> ()) {
     let wheel         = containerView.imageWheel!
-    let anglePerImage = wheel.wedgeWidthAngle
-    let imageCount    = wheel.images.count
+//    let anglePerImage = wheel.wedgeWidthAngle
+//    let imageCount    = wheel.images.count
+    let anglePerImage = wheel.wedgeSeries.wedgeSeperation
+    let imageCount    = wheel.wedgeSeries.wedgeCount
     let totalRotation = anglePerImage * Angle(imageCount)
     
     let totalFrames    = 720 * 2
     let anglePerFrame  = totalRotation / Angle(totalFrames)
     
-//    Apply.background(totalFrames) { frame in
-//      let currentRotation = anglePerFrame * CGFloat(frame)
-//      let delay = Double(frame) * 1.0
-//      Async.main(after: delay) {
-//        wheel.rotationAngle = currentRotation
-//        self.snapshotCurrentFrame(frame)
-//        percentDone(CGFloat(frame)/CGFloat(totalFrames))
-//      }
-//    }
-
     for frame in 0..<totalFrames {
       autoreleasepool {
-        let currentRotation = anglePerFrame * Angle(frame)
+        let currentRotation = Rotation(anglePerFrame) * Rotation(frame)
         let delay = Double(frame) * 2.0
-        wheel.rotationAngle = currentRotation
+        wheel.rotation = currentRotation
         self.snapshotCurrentFrame(frame)
         percentDone(CGFloat(frame)/CGFloat(totalFrames))
       }
@@ -122,6 +136,17 @@ class ViewController: UIViewController {
     numberFormater.minimumFractionDigits = 0
     numberFormater.maximumFractionDigits = 0
     numberFormater.positivePrefix = ""
+    return numberFormater
+    }()
+  
+  lazy var labelNumber: NSNumberFormatter = {
+    let numberFormater = NSNumberFormatter()
+    numberFormater.minimumIntegerDigits  = 3
+    numberFormater.maximumIntegerDigits  = 3
+    numberFormater.minimumFractionDigits = 3
+    numberFormater.maximumFractionDigits = 3
+    numberFormater.positivePrefix = " "
+    numberFormater.negativeFormat = "-"
     return numberFormater
     }()
   

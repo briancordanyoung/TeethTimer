@@ -1,19 +1,19 @@
-import Foundation
+import UIKit
 
 
 // MARK: Angle - A number that represents an angle in both
 //               degrees or radians.
 //       Unlike AccumulatedAngle, Angle is limited to representing
 //       a single circle from -PI to PI
-struct Angle: AngularType {
+public struct Angle: AngularType {
   
-  var value: Double {
+  public var value: Double {
     didSet(oldValue) {
       value = Angle.limit(value)
     }
   }
   
-  init(_ value: Double) {
+  public init(_ value: Double) {
     self.value = Angle.limit(value)
   }
   
@@ -126,13 +126,13 @@ extension Angle {
 
 // MARK: Protocol Conformance
 extension Angle: IntegerLiteralConvertible {
-  init(integerLiteral: IntegerLiteralType) {
+  public init(integerLiteral: IntegerLiteralType) {
     self.init(Double(integerLiteral))
   }
 }
 
 extension Angle: FloatLiteralConvertible {
-  init(floatLiteral: FloatLiteralType) {
+  public init(floatLiteral: FloatLiteralType) {
     self.init(Double(floatLiteral))
   }
 }
@@ -174,66 +174,4 @@ func isWithinAngleLimits(value: CGFloat) -> Bool {
   }
   
   return isWithinLimits
-}
-
-
-
-// MARK: Angle & Int specific overloads
-
-func % (lhs: Angle, rhs: Int) -> Angle {
-  return Angle(lhs.value % Double(rhs))
-}
-
-
-func + (lhs: Int, rhs: Angle) -> Angle {
-  return Angle(Double(lhs) + rhs.value)
-}
-
-func - (lhs: Int, rhs: Angle) -> Angle {
-  return Angle(Double(lhs) - rhs.value)
-}
-
-func + (lhs: Angle, rhs: Int) -> Angle {
-  return Angle(lhs.value + Double(rhs))
-}
-
-func - (lhs: Angle, rhs: Int) -> Angle {
-  return Angle(lhs.value - Double(rhs))
-}
-
-
-
-
-func < (lhs: Int, rhs: Angle) -> Bool {
-  return Double(lhs) < rhs.value
-}
-
-func == (lhs: Int, rhs: Angle) -> Bool {
-  return Double(lhs) == rhs.value
-}
-
-func < (lhs: Angle, rhs: Int) -> Bool {
-  return lhs.value < Double(rhs)
-}
-
-func == (lhs: Angle, rhs: Int) -> Bool {
-  return lhs.value == Double(rhs)
-}
-
-
-
-func += (inout lhs: Angle, rhs: Int) {
-  lhs.value = lhs.value + Double(rhs)
-}
-
-func -= (inout lhs: Angle, rhs: Int) {
-  lhs.value = lhs.value - Double(rhs)
-}
-
-func / (lhs: Angle, rhs: Int) -> Angle {
-  return Angle(lhs.value / Double(rhs))
-}
-
-func * (lhs: Angle, rhs: Int) -> Angle {
-  return Angle(lhs.value * Double(rhs))
 }

@@ -199,8 +199,8 @@ final class TimerViewController: UIViewController {
     // Set the inital rotation
     let startingRotation = imageWheel.wedgeFromValue(1).midAngle
     
-    imageWheel.rotationAngle = startingRotation
-    gavinWheel.rotationAngle = startingRotation
+    imageWheel.rotation        = Rotation(startingRotation)
+    gavinWheel.rotationAngle   = Rotation(startingRotation)
     gavinWheel.maximumRotation = imageWheel.firstImageRotation
     gavinWheel.minimumRotation = imageWheel.lastImageRotation
     gavinWheel.dampenCounterClockwise = true
@@ -319,8 +319,8 @@ final class TimerViewController: UIViewController {
   func gavinWheelChanged(gavinWheel: WheelControl) {
     // Update the state of the ImageWheel to the WheelControl state
     if let imageWheelView = imageWheelView {
-      imageWheelView.rotationAngle = gavinWheel.rotationAngle
-      gavinWheel.snapToRotation    = imageWheelView.centerRotationForSection
+      imageWheelView.rotation   = gavinWheel.rotationAngle
+      gavinWheel.snapToRotation = imageWheelView.rotationForCenterOfCurrentWedge
       
       if let percentageLeft = gavinWheel.percentageLeft {
         updateBackgroundForPercentDone(percentageLeft)
@@ -339,7 +339,7 @@ final class TimerViewController: UIViewController {
            WithImageWheel imageWheel: ImageWheel,
                andPercentage percent: CGFloat) {
     let dev = Developement()
-    let rotationAngleString = dev.pad(imageWheel.rotationAngle.cgRadians)
+    let rotationAngleString = dev.pad(imageWheel.rotation.cgRadians)
     label.text = "\(rotationAngleString) \(dev.pad(percent))%"
   }
 

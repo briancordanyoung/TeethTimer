@@ -48,7 +48,7 @@ extension TimerViewController {
     // the wheelControl may rotate.  Including the half a wedge width past
     // the minimum and maximum rotation points when dampening completely stops
     // the rotation.
-    let range = expandRange(workingRange, ByAmount: halfWedgeWidthAngle)
+    let range = expandRange(workingRange, ByAmount: Rotation(halfWedgeWidthAngle))
     let rotation  = abs(range.start - range.end)
     let framesPerDegree = Double(3)
         
@@ -102,7 +102,7 @@ extension TimerViewController {
     }
     
     let dev = Developement()
-    let rotationAngleString = dev.pad(imageWheel.rotationAngle.cgRadians)
+    let rotationAngleString = dev.pad(imageWheel.rotation.cgRadians)
     label.text = "\(rotationAngleString) \(message)"
   }
   

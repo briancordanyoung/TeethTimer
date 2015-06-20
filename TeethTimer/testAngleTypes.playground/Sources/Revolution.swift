@@ -1,21 +1,21 @@
-import Foundation
+import UIKit
 
 // A number that represents the degrees or radians around a circle.
-final class Revolution: AngularType {
+public final class Revolution: AngularType {
   
-  var value: Double
+  public var value: Double
   var angle: Angle       { return   Angle(value) }
 //var cgAngle: CGFloat   { return CGFloat(value) }
 
-  init(_ value: Angle) {
+  public init(_ value: Angle) {
     self.value = value.radians
   }
   
-  init(_ value: CGFloat) {
+  public init(_ value: CGFloat) {
     self.value = Double(value)
   }
   
-  init(_ value: Double) {
+  public init(_ value: Double) {
     self.value = value
   }
   
@@ -93,13 +93,13 @@ extension Revolution {
 
 // MARK: Protocol Conformance
 extension Revolution: IntegerLiteralConvertible {
-  convenience init(integerLiteral: IntegerLiteralType) {
+  convenience public init(integerLiteral: IntegerLiteralType) {
     self.init(integerLiteral: integerLiteral)
   }
 }
 
 extension Revolution: FloatLiteralConvertible {
-  convenience init(floatLiteral: FloatLiteralType) {
+  convenience public init(floatLiteral: FloatLiteralType) {
     self.init(floatLiteral)
   }
 }
