@@ -54,8 +54,8 @@ final class TimerViewController: UIViewController {
   var viewsAreSetupForBlurring = false
   
   // A computed property to make it easy to access the ImageWheel inside gavinWheel
-  var imageWheelView: ImageWheel? {
-    var imageWheel: ImageWheel? = nil
+  var imageWheelView: InfiniteImageWheel? {
+    var imageWheel: InfiniteImageWheel? = nil
     if let gavinWheel = gavinWheel {
         imageWheel = imageWheelFromWheelControl(gavinWheel)
     }
@@ -117,11 +117,11 @@ final class TimerViewController: UIViewController {
                                  toInterfaceOrientation: UIInterfaceOrientation,
                                                duration: NSTimeInterval) {
       // pre iOS 8 only
-    if SystemVersion.iOS7AndBelow() {
-        imageWheelView?.updateWedgeImageViewContraints( duration,
-                                        AndOrientation: toInterfaceOrientation,
-                                 AndViewControllerSize: self.view.bounds.size)
-    }
+//    if SystemVersion.iOS7AndBelow() {
+//        imageWheelView?.updateWedgeImageViewContraints( duration,
+//                                        AndOrientation: toInterfaceOrientation,
+//                                 AndViewControllerSize: self.view.bounds.size)
+//    }
   }
   
   override func didRotateFromInterfaceOrientation(
@@ -192,24 +192,25 @@ final class TimerViewController: UIViewController {
   }
   
   func setupImageWheelAndAddToGavinWheel(gavinWheel: WheelControl) {
-    let images = arrayOfImages(10)
-    let imageWheel = ImageWheel(Sections: 4, AndImages: images)
+    let imageNames = arrayOfNames(10)
+    let imageWheel = InfiniteImageWheel(imageNames: imageNames,
+                                  seperatedByAngle: Angle(degrees: 90))
     gavinWheel.wheelView.addSubview(imageWheel)
     
     // Set the inital rotation
-    let startingRotation = imageWheel.wedgeFromValue(1).midAngle
+    let startingRotation = imageWheel.rotationForIndex(10)
     
-    imageWheel.rotation        = Rotation(startingRotation)
-    gavinWheel.rotationAngle   = Rotation(startingRotation)
-    gavinWheel.maximumRotation = imageWheel.firstImageRotation
-    gavinWheel.minimumRotation = imageWheel.lastImageRotation
+    imageWheel.rotation        = startingRotation
+    gavinWheel.rotationAngle   = startingRotation
+    gavinWheel.maximumRotation = imageWheel.wedgeSeries.seriesEndRotation
+    gavinWheel.minimumRotation = imageWheel.wedgeSeries.seriesStartRotation
     gavinWheel.dampenCounterClockwise = true
     
-    if SystemVersion.iOS7AndBelow() {
-      imageWheel.updateWedgeImageViewContraints( 0,
-        AndOrientation: self.interfaceOrientation,
-        AndViewControllerSize: self.view.bounds.size)
-    }
+//    if SystemVersion.iOS7AndBelow() {
+//      imageWheel.updateWedgeImageViewContraints( 0,
+//        AndOrientation: self.interfaceOrientation,
+//        AndViewControllerSize: self.view.bounds.size)
+//    }
   }
   
   func setupVideoBackgroundConstraints() {
@@ -306,7 +307,7 @@ final class TimerViewController: UIViewController {
   func gavinWheelTouchedByUser(gavinWheel: WheelControl) {
     // User touches the wheel
     if let imageWheelView = imageWheelView {
-      previousImageBeforeTouch = imageWheelView.currentImage
+      previousImageBeforeTouch = imageWheelView.rotationState.wedgeIndex
     }
     
     timerStateBeforeTouch = timer.status
@@ -320,7 +321,7 @@ final class TimerViewController: UIViewController {
     // Update the state of the ImageWheel to the WheelControl state
     if let imageWheelView = imageWheelView {
       imageWheelView.rotation   = gavinWheel.rotationAngle
-      gavinWheel.snapToRotation = imageWheelView.rotationForCenterOfCurrentWedge
+      gavinWheel.snapToRotation = imageWheelView.rotationState.wedgeCenter
       
       if let percentageLeft = gavinWheel.percentageLeft {
         updateBackgroundForPercentDone(percentageLeft)
@@ -336,7 +337,7 @@ final class TimerViewController: UIViewController {
   
   
   func updateDebugCacheIULabel(label: UILabel,
-           WithImageWheel imageWheel: ImageWheel,
+           WithImageWheel imageWheel: InfiniteImageWheel,
                andPercentage percent: CGFloat) {
     let dev = Developement()
     let rotationAngleString = dev.pad(imageWheel.rotation.cgRadians)
@@ -347,7 +348,7 @@ final class TimerViewController: UIViewController {
     if let previousImageBeforeTouch = previousImageBeforeTouch,
                      imageWheelView = imageWheelView {
 
-      if previousImageBeforeTouch > imageWheelView.currentImage {
+      if previousImageBeforeTouch > imageWheelView.rotationState.wedgeIndex {
         // The wheel was turned back.
         let targetRotation = gavinWheel.targetRotationAngle
         let targetImage = imageWheelView.imageIndexForRotation(targetRotation)
@@ -355,7 +356,7 @@ final class TimerViewController: UIViewController {
         let wheelTurnedBackBy = max(wheelTurnedBackByTmp,0)
         
                                               // 1st image is not in count down
-        let imagesInCountDown = imageWheelView.images.count - 1
+        let imagesInCountDown = imageWheelView.wedgeSeries.wedgeCount - 1
         let percentageTurnedBackBy = CGFloat(wheelTurnedBackBy) /
                                      CGFloat(imagesInCountDown)
         
@@ -410,7 +411,8 @@ final class TimerViewController: UIViewController {
        let imageWheelView = imageWheelView {
 
       let firstAndLastStep = 2
-      let stepsToCountDown = imageWheelView.images.count - firstAndLastStep
+      let stepsToCountDown = imageWheelView.wedgeSeries.wedgeCount -
+                                      firstAndLastStep
 
       let nextImageFromSteps = currentWheelValueFromPrecent( percentageRemaining,
                                            WithSectionCount: stepsToCountDown)
@@ -418,12 +420,12 @@ final class TimerViewController: UIViewController {
 
       let countDownHasNotBegun      = percentageRemaining == 1.0
       
-      let currentImage              = imageWheelView.currentImage
+      let currentImage              = imageWheelView.rotationState.wedgeIndex
       let notDisplayingFirstImage   = currentImage > 1
       let rotateToFirstImage        = countDownHasNotBegun &&
                                       notDisplayingFirstImage
         
-      let notDisplayingCurrentImage = imageWheelView.currentImage != nextImage
+      let notDisplayingCurrentImage = imageWheelView.rotationState.wedgeIndex != nextImage
       let notAlreadyAnimating       = gavinWheel.animationState   == .AtRest
       let rotateToNextImage         = notDisplayingCurrentImage &&
                                       notAlreadyAnimating
@@ -431,14 +433,14 @@ final class TimerViewController: UIViewController {
       if countDownHasNotBegun {
         // At 100% should always be the first image
         if rotateToFirstImage  {
-          let rotation = imageWheelView.rotationForImage(1)
+          let rotation = imageWheelView.rotationForIndex(1)
           gavinWheel.animateToRotation(rotation)
         }
         
       } else if rotateToNextImage {
         // As soon as percentageRemaining is less than 100%, 
         // advance to the next image.
-        let rotation = imageWheelView.rotationForImage(nextImage)
+        let rotation = imageWheelView.rotationForIndex(nextImage)
         gavinWheel.animateToRotation(rotation)
       }
     }
@@ -491,6 +493,7 @@ final class TimerViewController: UIViewController {
 //    return "num-\(paddedTwoDigitNumber(i))"
   }
   
+  
   func arrayOfImages(count: Int) -> [UIImage] {
     var imageArray: [UIImage] = []
     for i in 1...count {
@@ -502,11 +505,19 @@ final class TimerViewController: UIViewController {
     return imageArray
   }
   
-  func imageWheelFromWheelControl(wheelControl: WheelControl) -> ImageWheel? {
-    var imageWheel: ImageWheel? = nil
+  func arrayOfNames(count: Int) -> [String] {
+    var nameArray: [String] = []
+    for i in 1...count {
+      nameArray.append(imageNameForNumber(i))
+    }
+    return nameArray
+  }
+  
+  func imageWheelFromWheelControl(wheelControl: WheelControl) -> InfiniteImageWheel? {
+    var imageWheel: InfiniteImageWheel? = nil
     for viewinWheel in wheelControl.wheelView.subviews {
-      if viewinWheel.isKindOfClass(ImageWheel) {
-        imageWheel = viewinWheel as? ImageWheel
+      if viewinWheel.isKindOfClass(InfiniteImageWheel) {
+        imageWheel = viewinWheel as? InfiniteImageWheel
       }
     }
     return imageWheel

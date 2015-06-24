@@ -21,7 +21,8 @@ class InfinateContainerView: UIView {
   func setupImageWheel() {
     let imageNames = arrayOfNames(10)
     let imageWheel = InfiniteImageWheel(imageNames: imageNames,
-                                  seperatedByAngle: Angle(degrees: 90))
+                                  seperatedByAngle: Angle(degrees: 90),
+                                       inDirection: .Clockwise)
     self.addSubview(imageWheel)
     self.imageWheel = imageWheel
   }
@@ -61,8 +62,8 @@ class InfinateContainerView: UIView {
 
   
   func imageNameForNumber(i: Int) -> String {
-    return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
-//    return "num-\(paddedTwoDigitNumber(i))"
+//    return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
+    return "num-\(paddedTwoDigitNumber(i))"
   }
   
   

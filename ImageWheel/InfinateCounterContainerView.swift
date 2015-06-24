@@ -1,30 +1,29 @@
 import UIKit
 
 
-class ContainerView: UIView {
+
+
+class InfinateCounterContainerView: UIView {
   
-  var imageWheel: ImageWheel?
+  var imageWheel: InfiniteImageWheel?
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    setupImageWheelAndAddToGavinWheel()
+    setupImageWheel()
   }
   
   required init(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    setupImageWheelAndAddToGavinWheel()
+    setupImageWheel()
   }
   
   
-  func setupImageWheelAndAddToGavinWheel() {
-    let images = arrayOfImages(10)
-    let imageWheel = ImageWheel(Sections: 4, AndImages: images)
+  func setupImageWheel() {
+    let imageNames = arrayOfNames(10)
+    let imageWheel = InfiniteImageWheel(imageNames: imageNames,
+                                  seperatedByAngle: Angle(degrees: 90),
+                                       inDirection: .CounterClockwise)
     self.addSubview(imageWheel)
-    
-//     Set the inital rotation
-    let startingRotation = imageWheel.wedgeFromValue(1).midAngle
-    imageWheel.rotation = Rotation(startingRotation)
-    
     self.imageWheel = imageWheel
   }
   
@@ -53,10 +52,19 @@ class ContainerView: UIView {
     return imageArray
   }
   
-  func imageNameForNumber(i: Int) -> String {
-//        return "num-\(paddedTwoDigitNumber(i))"
-    return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
+  func arrayOfNames(count: Int) -> [String] {
+    var imageNames: [String] = []
+    for i in 1...count {
+      imageNames.append(imageNameForNumber(i))
+    }
+    return imageNames
   }
-
+  
+  
+  func imageNameForNumber(i: Int) -> String {
+//    return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
+        return "num-\(paddedTwoDigitNumber(i))"
+  }
+  
   
 }

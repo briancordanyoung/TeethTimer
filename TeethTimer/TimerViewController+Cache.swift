@@ -35,11 +35,11 @@ extension TimerViewController {
   }
   
   func setupCacheStateWith(wheelControl: WheelControl,
-              AndImageWheel imageWheel: ImageWheel) {
+              AndImageWheel imageWheel: InfiniteImageWheel) {
     
     cacheState.completionHandler = resetViewsAfterRendering
 
-    let wedgeWidthAngle     = imageWheel.wedgeWidthAngle
+    let wedgeWidthAngle     = imageWheel.wedgeSeries.wedgeSeperation
     let halfWedgeWidthAngle = wedgeWidthAngle / 2
     let workingRange        = (start: wheelControl.maximumRotation!,
                                  end: wheelControl.minimumRotation!)

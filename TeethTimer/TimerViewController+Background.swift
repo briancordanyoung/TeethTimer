@@ -150,7 +150,7 @@ extension TimerViewController {
   func seekToTimeByPercentage(percent: CGFloat, inPlayer player: AVPlayer) {
     var wedgeImageCount: Int64 = 1
     if let imageWheelView = imageWheelView {
-      wedgeImageCount = Int64(imageWheelView.images.count)
+      wedgeImageCount = Int64(imageWheelView.wedgeSeries.wedgeCount)
     }
     
     let totalFrames       = backgroundVideo.duration

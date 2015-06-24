@@ -156,7 +156,7 @@ extension InfiniteImageWheel {
           relatedBy: NSLayoutRelation.Equal,
           toItem: superview,
           attribute: NSLayoutAttribute.Height,
-          multiplier: 0.25, // 0.75
+          multiplier: 0.75, // 0.75
           constant: 0.0)
         superview.addConstraint(height)
         constraints.append((superview: superview, constraint: height))

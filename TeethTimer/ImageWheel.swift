@@ -28,8 +28,32 @@ struct WedgeRegion: Printable {
   var maxAngle: Angle
   var midAngle: Angle
   var value: WedgeValue
+  var formatter = NSNumberFormatter()
   
-  // TODO: Add wedgeWidth computed property that can be get & set
+  var minRotation: Rotation {
+    if minAngle < midAngle &&
+       minAngle < maxAngle {
+      
+      return Rotation(minAngle)
+    } else {
+      return Rotation(minAngle.value - Double(M_PI * 2))
+    }
+  }
+  
+  var midRotation: Rotation {
+    return Rotation(midAngle)
+  }
+  
+  var maxRotation: Rotation {
+    if maxAngle > midAngle &&
+      maxAngle.value > minRotation.value {
+        
+        return Rotation(maxAngle)
+    } else {
+      return Rotation(maxAngle.value + Double(M_PI * 2))
+    }
+  }
+
   
   init(WithMin min: Angle,
         AndMax max: Angle,
@@ -39,11 +63,20 @@ struct WedgeRegion: Printable {
       maxAngle = max
       midAngle = mid
       value = valueIn
+    
+    formatter.minimumIntegerDigits  = 1
+    formatter.maximumIntegerDigits  = 1
+    formatter.minimumFractionDigits = 2
+    formatter.maximumFractionDigits = 2
+    formatter.positivePrefix = " "
+    formatter.negativeFormat = "-"
   }
   
   var description: String {
-    return "Wedge Region: \(value) | Angles: min \(minAngle) mid \(midAngle) max \(maxAngle)"
+    return "Wedge Region: \(formatter.stringFromNumber(value)!) | Angles: min \(formatter.stringFromNumber(minRotation.value)!) mid \(formatter.stringFromNumber(midRotation.value)!) max \(formatter.stringFromNumber(maxRotation.value)!)"
   }
+  
+  
 }
 
 
@@ -159,27 +192,36 @@ final class ImageWheel: UIView {
   }
   
   func createWedgeRegions(count: Int) {
-    let wedgeWidthAngle = wedgeWidthAngleForWedgeCount(count)
+    let wedgeWidthAngle = Revolution(wedgeWidthAngleForWedgeCount(count)).value
     
-    var mid = Revolution.half - (wedgeWidthAngle / 2)
-    var max = Revolution.half
-    var min = Revolution.half -  wedgeWidthAngle
+    var mid = Revolution(M_PI) - Revolution(wedgeWidthAngle / 2)
+    var max = Revolution(M_PI)
+    var min = Revolution(M_PI) - Revolution(wedgeWidthAngle)
     
     for i in 1...count {
-      max = mid + (wedgeWidthAngle / 2)
-      min = mid - (wedgeWidthAngle / 2)
+      if i == 4 {
+
+      }
       
-      var wedge = WedgeRegion(WithMin: min,
-                               AndMax: max,
-                               AndMid: mid,
+      max = mid + Revolution(wedgeWidthAngle / 2)
+      min = mid - Revolution(wedgeWidthAngle / 2)
+      
+      var wedge = WedgeRegion(WithMin: Angle(min.value),
+                               AndMax: Angle(max.value),
+                               AndMid: Angle(mid.value),
                              AndValue: i)
       
-      mid -= wedgeWidthAngle
+      mid -= Revolution(wedgeWidthAngle)
       
-      if count.parity == .Odd && (wedge.maxAngle < -Revolution.half) {
-        mid = (mid * -1)
-        mid -= wedgeWidthAngle
-      }
+//      if count.parity == .Odd && (wedge.maxAngle < -Revolution(M_PI)) {
+//        mid = (mid * -1)
+//        mid -= wedgeWidthAngle
+//      }
+      println("\(wedge)")
+      
+//      if i == 4 {
+//        println("      min \(min.value) \nwedge.min \(wedge.minRotation.value)\n          \(wedge.minAngle.value - (M_PI * 2))\n          \(M_PI * -1)\n          \(Double(M_PI) - (Double(M_PI) * 2))")
+//      }
       
       wedges.append(wedge)
     }
@@ -625,8 +667,8 @@ final class ImageWheel: UIView {
    isWithinWedge wedge: WedgeRegion) -> Bool {
       var angleIsWithinWedge = false
       
-      if (angle >= wedge.minAngle &&
-        angle <= wedge.maxAngle   ) {
+      if (Rotation(angle) >= wedge.minRotation &&
+        Rotation(angle) <= wedge.maxRotation   ) {
           
           angleIsWithinWedge = true
       }
@@ -641,7 +683,6 @@ final class ImageWheel: UIView {
   }
   
   func wedgeForAngle(angle: Angle) -> WedgeRegion {
-    
     // Determin where the wheel is (which wedge we are within)
     var currentWedge: WedgeRegion?
     for wedge in wedges {
@@ -650,6 +691,13 @@ final class ImageWheel: UIView {
         break
       }
     }
+    
+//    if currentWedge == nil {
+//      println("\(angle.value)")
+//      for wedge in wedges {
+//        println("\(wedge)")
+//      }
+//    }
     
     assert(currentWedge != nil,"wedgeForAngle() may not be nil. Wedges do not fill the circle.")
     return currentWedge!

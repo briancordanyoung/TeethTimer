@@ -1,6 +1,5 @@
 
 
-
 extension InfiniteImageWheel {
   class RotationState: NSObject, Printable {
     
@@ -36,6 +35,7 @@ extension InfiniteImageWheel {
     }
     
     // Computed Properties to compute once and store each result
+    // WedgeIndex is from 0 to (count-of-images - 1)
     lazy var wedgeIndex: WedgeIndex = {
       switch self.direction {
       case .Clockwise:
@@ -112,17 +112,19 @@ extension InfiniteImageWheel {
     }()
     
     // The WedgeIndex if the wheel is laid out clockwise
+    // WedgeIndex is from 0 to (count-of-images - 1)
     private lazy var wedgeIndexClockwise: WedgeIndex = {
       if self.remainingRotation >= 0 {
-        return self.countOfWedgesInRemainder + 1
+        return self.countOfWedgesInRemainder
       } else {
-        return self.wedgeCount + self.countOfWedgesInRemainder
+        return self.wedgeCount + self.countOfWedgesInRemainder - 1
       }
     }()
     
     // The WedgeIndex if the wheel is laid out counter clockwise
+    // WedgeIndex is from 0 to (count-of-images - 1)
     private lazy var wedgeIndexCounterClockwise: WedgeIndex = {
-      return self.wedgeCount + 1 - self.wedgeIndexClockwise
+      return self.wedgeCount - self.wedgeIndexClockwise - 1
     }()
     
     
@@ -130,19 +132,3 @@ extension InfiniteImageWheel {
   }
 }
 
-
-//extension InfiniteImageWheel {
-//  enum Placement: Printable {
-//    case hidden
-//    case placeAt((placement:Angle,width:Angle))
-//    
-//    var description: String {
-//      switch self {
-//      case hidden:
-//        return "hidden"
-//      case placeAt(let angles):
-//        return "Placement around Wheel: \(angles.placement) with a wedge width of \(angles.width)"
-//      }
-//    }
-//  }
-//}

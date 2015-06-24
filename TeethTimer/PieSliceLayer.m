@@ -64,6 +64,10 @@ CGImageRef flip (CGImageRef im) {
     return self;
 }
 
+- (void) dealloc {
+  CGImageRelease(_CGImage);
+}
+
 //-(id<CAAction>)actionForKey:(NSString *)event {
 //  if ([event isEqualToString:@"angleWidth"] ||
 //      [event isEqualToString:@"percentCoverage"] ) {
@@ -178,7 +182,7 @@ CGImageRef flip (CGImageRef im) {
   CGContextRef context = CGBitmapContextCreate(NULL, width,
                                                     height,
                                                8, 0, colorSpace,
-                                               kCGImageAlphaPremultipliedLast);
+                                 (CGBitmapInfo) kCGImageAlphaPremultipliedLast);
 
   [self drawMaskInContext: context];
   
