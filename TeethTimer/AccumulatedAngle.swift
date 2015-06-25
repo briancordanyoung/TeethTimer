@@ -13,10 +13,14 @@ struct AccumulatedAngle: AngularType, Printable {
   
   
   // All other initilizers call the above init()
+  init(_ accumulatedAngle: AccumulatedAngle) {
+    self.init(Double(accumulatedAngle.value))
+  }
+  
   init(_ angle: Angle) {
     self.init(Double(angle.value))
   }
-
+  
   init(_ value: CGFloat) {
     self.init(Double(value))
   }

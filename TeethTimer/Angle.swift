@@ -19,10 +19,14 @@ struct Angle: AngularType {
   
   
   // All other initilizers call the above init()
+  init(_ angle: Angle) {
+    self.init(angle.value)
+  }
+  
   init(_ angle: AccumulatedAngle) {
     self.init(angle.value)
   }
-
+  
   init(_ value: CGFloat) {
     self.init(Double(value))
   }
