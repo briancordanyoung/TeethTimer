@@ -19,10 +19,6 @@ extension InfiniteImageWheel {
     }
     
     // Computed Properties to access wheelShape properties easily.
-    var layoutRotation: Rotation {
-      return Rotation(rotation.value * -1)
-    }
-    
     var wedgeCount: Int {
       return wedgeSeries.wedgeCount
     }
@@ -40,6 +36,11 @@ extension InfiniteImageWheel {
     }
     
     // Computed Properties to compute once and store each result
+    
+    lazy var layoutRotation: Rotation = {
+      return self.rotation * -1
+    }()
+    
     // WedgeIndex is from 0 to (count-of-images - 1)
     lazy var wedgeIndex: WedgeIndex = {
       switch self.layoutDirection {
@@ -50,9 +51,23 @@ extension InfiniteImageWheel {
       }
     }()
     
+    lazy var wedgeCenterDistance: Rotation = {
+      let distanceWithinPartialRotation = self.wedgeSeperation * self.wedgeIndex
+      let distanceOfCompletRotations    = self.seriesWidth * self.rotationCount
+
+      let tmpDistanceWithinPartialRotation = "\(distanceWithinPartialRotation.degrees)"
+      let tmpDistanceOfCompletRotations = "\(distanceOfCompletRotations.degrees)"
+      
+      return distanceOfCompletRotations + distanceWithinPartialRotation
+    }()
+
     lazy var wedgeCenter: Rotation = {
-      return (self.seriesWidth * self.rotationCount)  +
-             (Rotation(self.wedgeSeperation.value) * self.wedgeIndex)
+      switch self.layoutDirection {
+      case .Clockwise:
+        return self.wedgeCenterDistance
+      case .CounterClockwise:
+        return self.wedgeCenterDistance * -1
+      }
     }()
     
     lazy var directionRotatedOffWedgeCenter: RotationDirection = {
@@ -83,7 +98,7 @@ extension InfiniteImageWheel {
     
     // How many complete rotations the wheel been rotated from the start.
     // Positive rotations are in the same direction as self.layoutDirection
-    private lazy var rotationCount: Int = {
+     lazy var rotationCount: Int = {
       let reciprocity: Int
       switch self.layoutDirection {
       case .Clockwise:
@@ -132,8 +147,24 @@ extension InfiniteImageWheel {
     private lazy var wedgeIndexCounterClockwise: WedgeIndex = {
       return self.wedgeCount - self.wedgeIndexClockwise - 1
     }()
+
     
     
+    
+    
+    
+    
+    
+    func angleOffCenterFromLayoutDirection(direction: LayoutDirection) -> Angle {
+      let angleOffCenter = layoutRotation - wedgeCenter
+    
+      switch direction {
+      case .Clockwise:
+        return Angle(angleOffCenter)
+      case .CounterClockwise:
+        return Angle(angleOffCenter * -1)
+      }
+    }
     
   }
 }
