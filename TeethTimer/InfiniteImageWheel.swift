@@ -28,7 +28,7 @@ final class InfiniteImageWheel: UIView {
   
   // MARK: Initialization
   init(imageNames: [String], seperatedByAngle wedgeSeperation: Angle,
-                                        inDirection direction: Direction ) {
+                                        inDirection direction: LayoutDirection ) {
 
     let wedges = imageNames.map({Wedge(imageName: $0)})
 
@@ -148,13 +148,17 @@ final class InfiniteImageWheel: UIView {
   }
   
   
+  
+  
+  
+  
   func transformWedge(wedge: Wedge, atIndex index: WedgeIndex,
                           withRotationState state: RotationState) {
     
     let steps = countFromIndex( index, toIndex: state.wedgeIndex,
                                    withinSteps: state.wedgeCount)
     let distanceOnCenter: Rotation
-    let direction: Direction
+    let direction: RotationDirection
     let stepCount: Int
                             
     if steps.clockwise < steps.counterClockwise {
@@ -171,46 +175,40 @@ final class InfiniteImageWheel: UIView {
     let angle:    Angle
     let width:    Angle
 
-    let msg: String
     switch direction {
     case .Clockwise:
       let offcenter = angleOffCenterFromDirection( direction,
                                  forRotationState: state)
       distance = distanceOnCenter + offcenter
       angle = Angle(state.wedgeCenter - distanceOnCenter)
-      
-      let percent = 1 - percentOfWidth(Angle(distance), forState: state)
-      width = (state.wedgeSeperation * 2) * Angle(percent)
+
+//      let percent = 1 - percentOfWidth(Angle(distance), forState: state)
+//      width = (state.wedgeSeperation * 2) * Angle(percent)
       
     case .CounterClockwise:
       let offcenter = angleOffCenterFromDirection( direction,
                                  forRotationState: state)
       distance = distanceOnCenter + offcenter
-      angle = Angle(state.wedgeCenter + distanceOnCenter)
-
+        angle = Angle(state.wedgeCenter + distanceOnCenter)
       
-      let percent = 1 - percentOfWidth(Angle(distance), forState: state)
-      width = (state.wedgeSeperation * 2) * Angle(percent)
-      
+//      let percent = 1 - percentOfWidth(Angle(distance), forState: state)
+//      width = (state.wedgeSeperation * 2) * Angle(percent)
     }
                             
    if abs(distance) < wedgeSeries.halfVisibleAngle {
       wedge.transform(angle)
+    println("wedge \(index + 1) state.wedge \(state.wedgeIndex + 1)")
 //      wedge.width = width
     } else {
       wedge.hide()
     }
-
-                            
-
-                            
   }
 
 
-  func angleOffCenterFromDirection(direction: Direction,
+  func angleOffCenterFromDirection(direction: RotationDirection,
                     forRotationState state: RotationState) -> Angle {
                       
-      let angleOffCenter = state.rotation - state.wedgeCenter
+      let angleOffCenter = state.layoutRotation - state.wedgeCenter
     
       switch direction {
       case .Clockwise:
@@ -239,9 +237,9 @@ final class InfiniteImageWheel: UIView {
   
   func countFromIndex( start: WedgeIndex, toIndex end: WedgeIndex,
                                     withinSteps steps: WedgeIndex,
-                                inDirection direction: Direction) -> WedgeIndex {
-      var increment: (int: Int) -> Int
-      var shouldWrap:   (lhs: Int, rhs: Int)  -> Bool
+                                inDirection direction: LayoutDirection) -> WedgeIndex {
+      var increment:  (int: Int) -> Int
+      var shouldWrap: (lhs: Int, rhs: Int)  -> Bool
       var wrapTo:     WedgeIndex
       var wrapAt:     WedgeIndex
 
@@ -261,13 +259,13 @@ final class InfiniteImageWheel: UIView {
       var count = 0
       var next  = start
       while next != end {
-        count = count + 1
+        count++
         next  = increment(int: next)
         if shouldWrap(lhs: next, rhs: wrapAt)  {
           next = wrapTo
         }
+        assert(count < steps, "countFromIndex is stuck in a while loop")
       }
-                                  
       return count
   }
 
@@ -302,7 +300,7 @@ final class InfiniteImageWheel: UIView {
 // Direction Enum
 // MARK: Direction Enum
 extension InfiniteImageWheel {
-  enum Direction: String, Printable {
+  enum RotationDirection: String, Printable {
     case Clockwise        = "       Clockwise"
     case CounterClockwise = "CounterClockwise"
     

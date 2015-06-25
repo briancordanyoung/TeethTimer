@@ -3,9 +3,26 @@
 extension InfiniteImageWheel {
   struct WedgeSeries: Printable {
     let wedges:          [Wedge]
-    let direction:       Direction
+    let direction:       LayoutDirection
     let wedgeSeperation: Angle
     let visibleAngle:    Angle
+    
+    init(      wedges: [Wedge],
+            direction: LayoutDirection,
+      wedgeSeperation: Angle,
+         visibleAngle: Angle) {
+      self.wedges          = wedges
+      self.direction       = direction
+      self.wedgeSeperation = Angle(wedgeSeperation)
+      self.visibleAngle    = Angle(visibleAngle)
+    }
+
+    init( _ wedgeSeries: WedgeSeries ) {
+      self.wedges          = wedgeSeries.wedges
+      self.direction       = wedgeSeries.direction
+      self.wedgeSeperation = Angle(wedgeSeries.wedgeSeperation)
+      self.visibleAngle    = Angle(wedgeSeries.visibleAngle)
+    }
     
     var wedgeCount: Int {
       return wedges.count
@@ -42,9 +59,10 @@ extension InfiniteImageWheel {
       return result
     }
     
+    
     func centerOfWedge(index: WedgeIndex,
       usingWedgeSeperation wedgeSeperation: Angle,
-      andDirection direction: Direction) -> Rotation {
+      andDirection direction: LayoutDirection) -> Rotation {
         
         let stepsToWedge = index - 1
         let distanceFromFirstWedge = Rotation(wedgeSeperation) * stepsToWedge
@@ -62,7 +80,7 @@ extension InfiniteImageWheel {
     
     func minOfWedge(index: WedgeIndex,
       usingWedgeSeperation wedgeSeperation: Angle,
-      andDirection direction: Direction) -> Rotation {
+      andDirection direction: LayoutDirection) -> Rotation {
         
         let center = centerOfWedge( index,
           usingWedgeSeperation: wedgeSeperation,
@@ -76,7 +94,7 @@ extension InfiniteImageWheel {
     
     func maxOfWedge(index: WedgeIndex,
       usingWedgeSeperation wedgeSeperation: Angle,
-      andDirection direction: Direction) -> Rotation {
+      andDirection direction: LayoutDirection) -> Rotation {
         
         let center = centerOfWedge( index,
           usingWedgeSeperation: wedgeSeperation,
@@ -94,3 +112,17 @@ extension InfiniteImageWheel {
     }
   }
 }
+
+
+extension InfiniteImageWheel {
+  enum LayoutDirection: String, Printable {
+    case Clockwise        = "       Clockwise"
+    case CounterClockwise = "CounterClockwise"
+    
+    var description: String {
+      return self.rawValue
+    }
+  }
+  
+}
+
