@@ -27,6 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   func application(application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+
+    // http://stackoverflow.com/questions/1672602/iphone-avaudioplayer-stopping-background-music
+    AVAudioSession.sharedInstance().setCategory( AVAudioSessionCategoryAmbient,
+                                          error: nil)
     return true
   }
   
