@@ -41,25 +41,14 @@ extension InfiniteImageWheel {
       return self.rotation * -1
     }()
     
-    // WedgeIndex is from 0 to (count-of-images - 1)
-    lazy var wedgeIndex: WedgeIndex = {
-      switch self.layoutDirection {
-      case .Clockwise:
-        return self.wedgeIndexClockwise
-      case .CounterClockwise:
-        return self.wedgeIndexCounterClockwise
-      }
+    lazy var wedgeCenterDistance: Rotation = {
+      let distanceWithinPartialRotation =
+                 self.wedgeSeperation * self.wedgeIndexInPositiveLayoutDirection
+      let distanceOfCompleteRotations    = self.seriesWidth * self.rotationCount
+
+      return distanceOfCompleteRotations + distanceWithinPartialRotation
     }()
     
-    lazy var wedgeCenterDistance: Rotation = {
-      let distanceWithinPartialRotation = self.wedgeSeperation * self.wedgeIndex
-      let distanceOfCompletRotations    = self.seriesWidth * self.rotationCount
-
-      let tmpDistanceWithinPartialRotation = "\(distanceWithinPartialRotation.degrees)"
-      let tmpDistanceOfCompletRotations = "\(distanceOfCompletRotations.degrees)"
-      
-      return distanceOfCompletRotations + distanceWithinPartialRotation
-    }()
 
     lazy var wedgeCenter: Rotation = {
       switch self.layoutDirection {
@@ -77,6 +66,27 @@ extension InfiniteImageWheel {
         return .CounterClockwise
       }
     }()
+
+    
+    // WedgeIndex is from 0 to (count-of-images - 1)
+    var wedgeIndex: WedgeIndex {
+      return self.wedgeIndexInLayoutDirection
+    }
+    
+    
+    
+    // WedgeIndex is from 0 to (count-of-images - 1)
+    lazy var wedgeIndexInLayoutDirection: WedgeIndex = {
+      if self.layoutRotation >= 0 {            // positive rotation
+                                               // in the direction of the layout
+        return self.wedgeIndexInPositiveLayoutDirection
+        
+      } else {                                 // negitive rotation in
+                                               // the direction of the layout
+        return self.wedgeCount - (self.wedgeIndexInPositiveLayoutDirection + 1)
+        
+      }
+      }()
     
     
     // Private Computed Properties to compute once and store each result
@@ -98,27 +108,30 @@ extension InfiniteImageWheel {
     
     // How many complete rotations the wheel been rotated from the start.
     // Positive rotations are in the same direction as self.layoutDirection
-     lazy var rotationCount: Int = {
-      let reciprocity: Int
-      switch self.layoutDirection {
-      case .Clockwise:
-        reciprocity = 1
-      case .CounterClockwise:
-        reciprocity = -1
-      }
-      
-      let positiveRotationCount = Int((self.offsetRotation / self.seriesWidth).value)
-      let negitiveRotationCount = (positiveRotationCount - 1)
-      if self.remainingRotation >= 0 {
-        return positiveRotationCount * reciprocity
-      } else {
-        return negitiveRotationCount * reciprocity
-      }
+//     lazy var rotationCount: Int = {
+//      let reciprocity: Int
+//      switch self.layoutDirection {
+//      case .Clockwise:
+//        reciprocity = 1
+//      case .CounterClockwise:
+//        reciprocity = -1
+//      }
+//      
+//      let positiveRotationCount = Int((self.offsetRotation / self.seriesWidth).value)
+//      let negitiveRotationCount = (positiveRotationCount - 1)
+//      if self.remainingRotation >= 0 {
+//        return positiveRotationCount * reciprocity
+//      } else {
+//        return negitiveRotationCount * reciprocity
+//      }
+//    }()
+    
+    lazy var rotationCount: Int = {
+        return Int((abs(self.offsetRotation) / self.seriesWidth).value)
     }()
     
-    
     // The remainder (modulus) of the seriesWidth in to the rotation.
-    // This remainder is transforms a rotation of any size in to a rotation
+    // This remainder transforms a rotation of any size in to a rotation
     // between 0 and seriesWidth.
     private lazy var remainingRotation: Rotation = {
       return self.offsetRotation % self.seriesWidth
@@ -126,27 +139,19 @@ extension InfiniteImageWheel {
     
     
     // The number of wedges in the remainder of the remainingRotation property
-    private lazy var countOfWedgesInRemainder: WedgeIndex = {
-      let wedgesInRemainder = self.remainingRotation / self.wedgeSeperation
-      let countOfWedgesInRemainder = WedgeIndex(wedgesInRemainder.value)
-      return countOfWedgesInRemainder
+    private lazy var wedgeIndexInPositiveLayoutDirection: Int = {
+      let index = Int(abs(self.remainingRotation) / self.wedgeSeperation)
+      assert(index < self.wedgeCount, "wedgeIndex is greater than wedgeCount")
+      return index
     }()
     
-    // The WedgeIndex if the wheel is laid out clockwise
-    // WedgeIndex is from 0 to (count-of-images - 1)
-    private lazy var wedgeIndexClockwise: WedgeIndex = {
-      if self.remainingRotation >= 0 {
-        return self.countOfWedgesInRemainder
-      } else {
-        return self.wedgeCount + self.countOfWedgesInRemainder - 1
-      }
-    }()
+//    private lazy var wedgeIndexInPositiveLayoutDirection: WedgeIndex = {
+//      let wedgeIndex = WedgeIndex(abs(self.wedgeCountInPartialRotation - 1))
+//      assert(wedgeIndex >= 0, "wedgeIndex is less than 0")
+//      assert(wedgeIndex < self.wedgeCount, "wedgeIndex is greater than wedgeCount")
+//      return wedgeIndex
+//      }()
     
-    // The WedgeIndex if the wheel is laid out counter clockwise
-    // WedgeIndex is from 0 to (count-of-images - 1)
-    private lazy var wedgeIndexCounterClockwise: WedgeIndex = {
-      return self.wedgeCount - self.wedgeIndexClockwise - 1
-    }()
 
     
     
