@@ -24,6 +24,7 @@ class InfinateCounterContainerView: UIView {
                                   seperatedByAngle: Angle(degrees: 90),
                                        inDirection: .CounterClockwise)
     self.addSubview(imageWheel)
+    imageWheel.printDebug = true
     self.imageWheel = imageWheel
   }
   

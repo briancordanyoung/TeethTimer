@@ -175,9 +175,14 @@ final class InfiniteImageWheel: UIView {
   }
   
   
-  func layoutWedge(wedge: Wedge, atIndex index: WedgeIndex,
+  func layoutWedge(wedge: Wedge, var atIndex index: WedgeIndex,
                        withRotationState state: RotationState) {
-        
+
+    // create new class to calculate each step below
+    if state.layoutDirection == .CounterClockwise {
+      index = state.wedgeCount - 1 - index
+    }
+      
     let steps = countFromIndex( index, toIndex: state.wedgeIndex,
                                    withinSteps: state.wedgeCount)
                         
@@ -202,18 +207,18 @@ final class InfiniteImageWheel: UIView {
             state.angleOffCenterFromLayoutDirection(direction.asLayoutDirection)
     let layoutDistanceFromCurrentRotation = abs(distanceOnCenter + offcenter)
                         
-                        let tmpOffcenter = "\(offcenter.degrees)"
-                        let tmplayoutRotation = "\(state.layoutRotation.degrees)"
-                        let tmpwedgeCenter = "\(state.wedgeCenter.degrees)"
-                        
-    let msg = "\(p2(index + 1)) steps \(p2(stepCount)) \(pad(layoutDistanceFromCurrentRotation.degrees)) \(pad(distanceOnCenter.degrees)) <\(state.layoutRotation.degrees) - \(tmpwedgeCenter) = \(offcenter.degrees) @ \(state.rotationCount)> | Current Wedge: \(p2(state.wedgeIndex + 1))"
+//    let tmpOffcenter = "\(offcenter.degrees)"
+//    let tmplayoutRotation = "\(state.layoutRotation.degrees)"
+//    let tmpwedgeCenter = "\(state.wedgeCenter.degrees)"
+//                        
+//    let msg = "\(p2(index + 1)) steps \(p2(stepCount)) \(pad(layoutDistanceFromCurrentRotation.degrees)) \(pad(distanceOnCenter.degrees)) <\(state.layoutRotation.degrees) - \(tmpwedgeCenter) = \(offcenter.degrees) @ \(state.rotationCount)> | Current Wedge: \(p2(state.wedgeIndex + 1))"
 
     if layoutDistanceFromCurrentRotation < wedgeSeries.halfVisibleAngle {
       wedge.transform(angle)
-      if printDebug { println("Show Wedge \(msg)") }
+//      if printDebug { println("Show Wedge \(msg)") }
     } else {
       wedge.hide()
-      if printDebug { println("Hide Wedge \(msg)") }
+//      if printDebug { println("Hide Wedge \(msg)") }
     }
   }
 
@@ -245,6 +250,7 @@ final class InfiniteImageWheel: UIView {
                        -> (clockwise: WedgeIndex, counterClockwise: WedgeIndex) {
       
     assert(end < steps, "steps should be 1 more than the maximum end index")
+                        
     let clockwise = countFromIndexClockwise( start,
                                     toIndex: end,
                                 withinSteps: steps)

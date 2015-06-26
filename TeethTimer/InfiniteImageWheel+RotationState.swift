@@ -18,7 +18,12 @@ extension InfiniteImageWheel {
       self.wedgeSeries = WedgeSeries(state.wedgeSeries)
     }
     
-    // Computed Properties to access wheelShape properties easily.
+    // MARK: Computed Properties
+    var layoutRotation: Rotation {
+      return self.rotation * -1
+    }
+
+    // wheelShape connivence properties.
     var wedgeCount: Int {
       return wedgeSeries.wedgeCount
     }
@@ -35,28 +40,22 @@ extension InfiniteImageWheel {
       return wedgeSeries.direction
     }
     
-    // Computed Properties to compute once and store each result
+    // MARK: Lazy Computed & Stored Properties
     
-    lazy var layoutRotation: Rotation = {
-      return self.rotation * -1
-    }()
     
-    lazy var wedgeCenterDistance: Rotation = {
-      let distanceWithinPartialRotation =
-                 self.wedgeSeperation * self.wedgeIndexInPositiveLayoutDirection
-      let distanceOfCompleteRotations    = self.seriesWidth * self.rotationCount
-
-      return distanceOfCompleteRotations + distanceWithinPartialRotation
-    }()
-    
-
-    lazy var wedgeCenter: Rotation = {
-      switch self.layoutDirection {
-      case .Clockwise:
-        return self.wedgeCenterDistance
-      case .CounterClockwise:
-        return self.wedgeCenterDistance * -1
+    // WedgeIndex is from 0 to (count-of-images - 1)
+    lazy var wedgeIndex: WedgeIndex = {
+      if self.remainingRotation >= 0 {
+        return self.countOfWedgesInRemainder
+      } else {
+        return self.wedgeCount + self.countOfWedgesInRemainder - 1
       }
+    }()
+    
+    lazy var wedgeCenter: Rotation = {
+      let distanceWithinPartialRotation = self.wedgeSeperation * self.wedgeIndex
+      let distanceOfCompletRotations    = self.seriesWidth * self.rotationCount
+      return distanceOfCompletRotations + distanceWithinPartialRotation
     }()
     
     lazy var directionRotatedOffWedgeCenter: RotationDirection = {
@@ -67,29 +66,9 @@ extension InfiniteImageWheel {
       }
     }()
 
+
     
-    // WedgeIndex is from 0 to (count-of-images - 1)
-    var wedgeIndex: WedgeIndex {
-      return self.wedgeIndexInLayoutDirection
-    }
-    
-    
-    
-    // WedgeIndex is from 0 to (count-of-images - 1)
-    lazy var wedgeIndexInLayoutDirection: WedgeIndex = {
-      if self.layoutRotation >= 0 {            // positive rotation
-                                               // in the direction of the layout
-        return self.wedgeIndexInPositiveLayoutDirection
-        
-      } else {                                 // negitive rotation in
-                                               // the direction of the layout
-        return self.wedgeCount - (self.wedgeIndexInPositiveLayoutDirection + 1)
-        
-      }
-      }()
-    
-    
-    // Private Computed Properties to compute once and store each result
+    // MARK: Private Lazy Computed & Stored Properties
     
     // Much of the math to compute these properties assumes that the
     // begining rotation of the wedge seriesWidth is at 0.  But, seriesWidth is
@@ -98,68 +77,40 @@ extension InfiniteImageWheel {
     // offsetRotation is the rotation shifted so the it the wedge min or max
     // is at the top of the wheel
     private lazy var offsetRotation: Rotation = {
-      switch self.layoutDirection {
-      case .Clockwise:
-        return self.layoutRotation + (self.wedgeSeperation / 2)
-      case .CounterClockwise:
-        return self.layoutRotation - (self.wedgeSeperation / 2)
-      }
+      return self.layoutRotation + (self.wedgeSeperation / 2)
     }()
     
-    // How many complete rotations the wheel been rotated from the start.
-    // Positive rotations are in the same direction as self.layoutDirection
-//     lazy var rotationCount: Int = {
-//      let reciprocity: Int
-//      switch self.layoutDirection {
-//      case .Clockwise:
-//        reciprocity = 1
-//      case .CounterClockwise:
-//        reciprocity = -1
-//      }
-//      
-//      let positiveRotationCount = Int((self.offsetRotation / self.seriesWidth).value)
-//      let negitiveRotationCount = (positiveRotationCount - 1)
-//      if self.remainingRotation >= 0 {
-//        return positiveRotationCount * reciprocity
-//      } else {
-//        return negitiveRotationCount * reciprocity
-//      }
-//    }()
-    
-    lazy var rotationCount: Int = {
-        return Int((abs(self.offsetRotation) / self.seriesWidth).value)
-    }()
     
     // The remainder (modulus) of the seriesWidth in to the rotation.
-    // This remainder transforms a rotation of any size in to a rotation
+    // This remainder is transforms a rotation of any size in to a rotation
     // between 0 and seriesWidth.
     private lazy var remainingRotation: Rotation = {
       return self.offsetRotation % self.seriesWidth
     }()
     
+    // MARK: Private Computed Properties
+    
+    // How many complete rotations the wheel been rotated from the start.
+    private var rotationCount: Int {
+      let positiveRotationCount = Int((self.offsetRotation / self.seriesWidth).value)
+      let negitiveRotationCount = (positiveRotationCount - 1)
+      
+      if self.offsetRotation >= 0 {
+        return positiveRotationCount
+      } else {
+        return negitiveRotationCount
+      }
+    }
     
     // The number of wedges in the remainder of the remainingRotation property
-    private lazy var wedgeIndexInPositiveLayoutDirection: Int = {
-      let index = Int(abs(self.remainingRotation) / self.wedgeSeperation)
-      assert(index < self.wedgeCount, "wedgeIndex is greater than wedgeCount")
-      return index
-    }()
-    
-//    private lazy var wedgeIndexInPositiveLayoutDirection: WedgeIndex = {
-//      let wedgeIndex = WedgeIndex(abs(self.wedgeCountInPartialRotation - 1))
-//      assert(wedgeIndex >= 0, "wedgeIndex is less than 0")
-//      assert(wedgeIndex < self.wedgeCount, "wedgeIndex is greater than wedgeCount")
-//      return wedgeIndex
-//      }()
-    
-
+    private var countOfWedgesInRemainder: Int {
+      let wedgesInRemainder = self.remainingRotation / self.wedgeSeperation
+      let countOfWedgesInRemainder = Int(wedgesInRemainder.value)
+      return countOfWedgesInRemainder
+    }
     
     
-    
-    
-    
-    
-    
+    // MARK: Methods
     func angleOffCenterFromLayoutDirection(direction: LayoutDirection) -> Angle {
       let angleOffCenter = layoutRotation - wedgeCenter
     

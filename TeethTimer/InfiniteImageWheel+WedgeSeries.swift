@@ -114,15 +114,3 @@ extension InfiniteImageWheel {
 }
 
 
-extension InfiniteImageWheel {
-  enum LayoutDirection: String, Printable {
-    case Clockwise        = "       Clockwise"
-    case CounterClockwise = "CounterClockwise"
-    
-    var description: String {
-      return self.rawValue
-    }
-  }
-  
-}
-
