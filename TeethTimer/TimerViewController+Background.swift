@@ -138,7 +138,7 @@ extension TimerViewController {
       case .ReadyToPlay:
         seekToTimeByPercentage(percent, inPlayer: backgroundPlayer)
       case .Unknown:
-        println("unknown status")
+        break //println("unknown status")
       case .Failed:
         println("failed to play")
       }
