@@ -35,6 +35,12 @@ struct Angle: AngularType {
     self.init(Double(value))
   }
   
+  init(transform: CGAffineTransform) {
+    let b = transform.b
+    let a = transform.a
+    let angle = atan2(b, a)
+    self.init(radians: angle)
+  }
   
   init(radians: Double) {
     self.init(radians)
@@ -82,6 +88,8 @@ struct Angle: AngularType {
     return "\(value)"
   }
 }
+
+
 
 // Angle conversions:
 // degrees <--> radians
