@@ -31,7 +31,9 @@ final class InfiniteImageWheel: UIView {
   init(imageNames: [String], seperatedByAngle wedgeSeperation: Angle,
                                         inDirection direction: LayoutDirection ) {
 
-    let wedges = imageNames.map({Wedge(imageName: $0)})
+    let wedges = imageNames.map({
+      Wedge(imageName: $0)
+    })
 
     wedgeSeries = WedgeSeries(wedges: wedges,
                            direction: direction,
@@ -101,7 +103,7 @@ final class InfiniteImageWheel: UIView {
     wedgeSeries = WedgeSeries(wedges: [],
                            direction: .Clockwise,
                      wedgeSeperation: Angle(0),
-                        visibleAngle: Angle(degrees: 180))
+                        visibleAngle: Angle(degrees: 90))
     
     rotationState = RotationState( rotation: 0.0,
                       wedgeSeries: wedgeSeries)
@@ -167,285 +169,35 @@ final class InfiniteImageWheel: UIView {
     for (index, wedge) in enumerate(wedgeSeries.wedges) {
       if wedge.viewExists {
         layoutWedge(wedge, atIndex: index, withRotationState: state)
-//        transformWedge(wedge, atIndex: index, withRotationState: state)
       }
     }
     if printDebug { println("") }
 
   }
   
-  
   func layoutWedge(wedge: Wedge, var atIndex index: WedgeIndex,
-                       withRotationState state: RotationState) {
-
-    // create new class to calculate each step below
-    if state.layoutDirection == .CounterClockwise {
-      index = state.wedgeCount - 1 - index
-    }
-      
-    let steps = countFromIndex( index, toIndex: state.wedgeIndex,
-                                   withinSteps: state.wedgeCount)
+                       withRotationState rotationState: RotationState) {
                         
-    let direction: RotationDirection
-    let stepCount: Int
+    let wedgeState = WedgeState(rotationState: rotationState,
+                                   wedgeIndex: index)
+    if wedgeState.distanceToRotation < wedgeSeries.halfVisibleAngle {
+      wedge.layoutAngle = wedgeState.layoutAngle
+      wedge.width       = wedgeState.shapeAngle
+
+      if printDebug {
+        println("W: \(p2(index)) dist: \(pad(wedgeState.distanceToRotation)) vis angle \(pad(wedgeState.shapeAngle.degrees))")
+      }
     
-    if steps.clockwise < steps.counterClockwise {
-      direction = .Clockwise
-      stepCount = steps.clockwise
-    } else {
-      direction = .CounterClockwise
-      stepCount = steps.counterClockwise
-    }
-    
-    let distanceOnCenter = Rotation(state.wedgeSeperation) * stepCount
-                        
-    let angle = layoutAngleAddingRotation( distanceOnCenter,
-                                  toAngle: state.wedgeCenter,
-                              inDirection: direction)
-
-    let offcenter =
-            state.angleOffCenterFromLayoutDirection(direction.asLayoutDirection)
-    let layoutDistanceFromCurrentRotation = abs(distanceOnCenter + offcenter)
-                        
-//    let tmpOffcenter = "\(offcenter.degrees)"
-//    let tmplayoutRotation = "\(state.layoutRotation.degrees)"
-//    let tmpwedgeCenter = "\(state.wedgeCenter.degrees)"
-//                        
-//    let msg = "\(p2(index + 1)) steps \(p2(stepCount)) \(pad(layoutDistanceFromCurrentRotation.degrees)) \(pad(distanceOnCenter.degrees)) <\(state.layoutRotation.degrees) - \(tmpwedgeCenter) = \(offcenter.degrees) @ \(state.rotationCount)> | Current Wedge: \(p2(state.wedgeIndex + 1))"
-
-    if layoutDistanceFromCurrentRotation < wedgeSeries.halfVisibleAngle {
-      wedge.transform(angle)
-//      if printDebug { println("Show Wedge \(msg)") }
     } else {
       wedge.hide()
-//      if printDebug { println("Hide Wedge \(msg)") }
+
+      if printDebug {
+        println("w: \(p2(index)) dist: \(pad(wedgeState.distanceToRotation)) vis angle \(pad(wedgeState.shapeAngle.degrees))")
+      }
+      
     }
   }
-
   
-  
-  
-  func layoutAngleAddingRotation(distance: Rotation,
-                            toAngle angle: Rotation,
-                    inDirection direction: RotationDirection) -> Angle {
-    
-    let returnAngle: Angle
-    switch direction {
-    case .Clockwise:
-      returnAngle = Angle(angle - distance)
-      
-    case .CounterClockwise:
-      returnAngle = Angle(angle + distance)
-    }
-    
-    return returnAngle
-     
-  }
-
-  
-  
-  func countFromIndex( start: WedgeIndex, toIndex
-                         end: WedgeIndex,
-           withinSteps steps: Int)
-                       -> (clockwise: WedgeIndex, counterClockwise: WedgeIndex) {
-      
-    assert(end < steps, "steps should be 1 more than the maximum end index")
-                        
-    let clockwise = countFromIndexClockwise( start,
-                                    toIndex: end,
-                                withinSteps: steps)
-                              
-    let counterClockwise = countFromIndexCounterClockwise( start,
-                                                  toIndex: end,
-                                              withinSteps: steps)
-    
-    return (       clockwise: clockwise,
-            counterClockwise: counterClockwise)
-  }
-
-  
-  
-  func countFromIndexClockwise( start: WedgeIndex,
-                          toIndex end: WedgeIndex,
-                    withinSteps steps: Int) -> WedgeIndex {
-      var count = 0
-      var next  = start
-      while next != end {
-        count++
-        next++
-        if next > (steps - 1)  {
-          next = 0
-        }
-        assert(count < steps, "countFromIndex is stuck in a while loop")
-      }
-      return count
-  }
-  
-  func countFromIndexCounterClockwise( start: WedgeIndex,
-                                 toIndex end: WedgeIndex,
-                           withinSteps steps: Int) -> WedgeIndex {
-      var count = 0
-      var next  = start
-      while next != end {
-        count++
-        next--
-        if next < 0  {
-          next = (steps - 1)
-        }
-        assert(count < steps, "countFromIndex is stuck in a while loop")
-      }
-      return count
-  }
-  
-  
-  
-  
-  
-  
-  
-  
-//  
-//  func transformWedge(wedge: Wedge, atIndex index: WedgeIndex,
-//                          withRotationState state: RotationState) {
-//    
-//    let steps = countFromIndex( index, toIndex: state.wedgeIndex,
-//                                   withinSteps: state.wedgeCount)
-//    let distanceOnCenter: Rotation
-//    let direction: RotationDirection
-//    let stepCount: Int
-//                            
-//    if steps.clockwise < steps.counterClockwise {
-//      direction = .Clockwise
-//      stepCount = steps.clockwise
-//      distanceOnCenter = Rotation(state.wedgeSeperation) * stepCount
-//    } else {
-//      direction = .CounterClockwise
-//      stepCount = steps.counterClockwise
-//      distanceOnCenter = Rotation(state.wedgeSeperation) * stepCount
-//    }
-//                            
-//    let distance: Rotation
-//    let angle:    Angle
-//    let width:    Angle
-//
-//    switch direction {
-//    case .Clockwise:
-//      let offcenter = angleOffCenterFromDirection( direction,
-//                                 forRotationState: state)
-//      distance = distanceOnCenter + offcenter
-//      angle = Angle(state.wedgeCenter - distanceOnCenter)
-//
-////      let percent = 1 - percentOfWidth(Angle(distance), forState: state)
-////      width = (state.wedgeSeperation * 2) * Angle(percent)
-//      
-//    case .CounterClockwise:
-//      let offcenter = angleOffCenterFromDirection( direction,
-//                                 forRotationState: state)
-//      distance = distanceOnCenter + offcenter
-//        angle = Angle(state.wedgeCenter + distanceOnCenter)
-//      
-////      let percent = 1 - percentOfWidth(Angle(distance), forState: state)
-////      width = (state.wedgeSeperation * 2) * Angle(percent)
-//    }
-//                            
-//   if abs(distance) < wedgeSeries.halfVisibleAngle {
-//      wedge.transform(angle)
-//    println("wedge \(index + 1) state.wedge \(state.wedgeIndex + 1)")
-////      wedge.width = width
-//    } else {
-//      wedge.hide()
-//    }
-//  }
-//
-//  // TODO: Move to an extention of RotationState
-//  func angleOffCenterFromDirection(direction: LayoutDirection,
-//                      forRotationState state: RotationState) -> Angle {
-//                      
-//      let angleOffCenter = state.layoutRotation - state.wedgeCenter
-//    
-//      switch direction {
-//      case .Clockwise:
-//        return Angle(angleOffCenter)
-//      case .CounterClockwise:
-//        return Angle(angleOffCenter * -1)
-//    }
-//  }
-//  
-  
-//  func countFromIndex( start: WedgeIndex, toIndex end: WedgeIndex,
-//                                    withinSteps steps: WedgeIndex)
-//                       -> (clockwise: WedgeIndex, counterClockwise: WedgeIndex) {
-//      
-//    let clockwise = countFromIndex( start, toIndex: end,
-//                                       withinSteps: steps,
-//                                       inDirection: .Clockwise)
-//                              
-//    let counterClockwise = countFromIndex( start, toIndex: end,
-//                                              withinSteps: steps,
-//                                              inDirection: .CounterClockwise)
-//    
-//    return (clockwise: clockwise, counterClockwise: counterClockwise)
-//  }
-//  func countFromIndex( start: WedgeIndex, toIndex end: WedgeIndex,
-//                                    withinSteps steps: WedgeIndex,
-//                                inDirection direction: LayoutDirection) -> WedgeIndex {
-//      var increment:  (int: Int) -> Int
-//      var shouldWrap: (lhs: Int, rhs: Int)  -> Bool
-//      var wrapTo:     WedgeIndex
-//      var wrapAt:     WedgeIndex
-//
-//      switch direction {
-//      case .Clockwise:
-//        increment  = add
-//        shouldWrap = more
-//        wrapTo     = 0
-//        wrapAt     = steps - 1
-//      case .CounterClockwise:
-//        increment  = subtract
-//        shouldWrap = less
-//        wrapTo     = steps - 1
-//        wrapAt     = 0
-//      }
-//
-//      var count = 0
-//      var next  = start
-//      while next != end {
-//        count++
-//        next  = increment(int: next)
-//        if shouldWrap(lhs: next, rhs: wrapAt)  {
-//          next = wrapTo
-//        }
-//        assert(count < steps, "countFromIndex is stuck in a while loop")
-//      }
-//      return count
-//  }
-//
-//
-//  func add(int: Int) -> Int {
-//    return int + 1
-//  }
-//  func subtract(int: Int) -> Int {
-//    return int - 1
-//  }
-//  func less(lhs: Int, rhs: Int) -> Bool {
-//    return lhs < rhs
-//  }
-//  func more(lhs: Int, rhs: Int) -> Bool {
-//    return lhs > rhs
-//  }
-  
-  func percentOfWidth(value: Angle, forState state: RotationState) -> Double {
-    let absoluteValue = Angle(abs(value.value))
-    return percentValue(value, isBetweenLow: Angle(0),
-                                    AndHigh: state.wedgeSeperation)
-  }
-  
-  func percentValue<T:AngularType>(value: T,
-                      isBetweenLow   low: T,
-                      AndHigh       high: T ) -> Double {
-      return (value.value - low.value) / (high.value - low.value)
-  }
-
 }
 
 // Direction Enum
