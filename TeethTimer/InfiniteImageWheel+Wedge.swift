@@ -47,6 +47,22 @@ extension InfiniteImageWheel {
     
     
     // MARK: Convience Helpers
+    var layoutAngle: Angle? {
+      set(angle) {
+        if let angle = angle {
+          transform(angle)
+        }
+      }
+      get {
+        if let transform = view?.transform {
+          return Angle(transform: transform)
+        } else {
+          return nil
+        }
+      }
+    }
+    
+    
     func transform(transform: CGAffineTransform) {
       view?.transform = transform
       show()
@@ -172,6 +188,7 @@ extension InfiniteImageWheel {
         constraints.append((superview: imageView, constraint: aspect))
         return constraints
     }
+
     
   }
 }
