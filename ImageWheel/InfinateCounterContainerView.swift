@@ -63,8 +63,8 @@ class InfinateCounterContainerView: UIView {
   
   
   func imageNameForNumber(i: Int) -> String {
-//    return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
-        return "num-\(paddedTwoDigitNumber(i))"
+    return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
+//        return "num-\(paddedTwoDigitNumber(i))"
   }
   
   
