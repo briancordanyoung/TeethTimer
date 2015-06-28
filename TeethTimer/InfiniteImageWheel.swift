@@ -9,9 +9,6 @@ final class InfiniteImageWheel: UIView {
   // Primary Properties
   let wedgeSeries:   WedgeSeries
   var rotationState: RotationState
-  let f = NSNumberFormatter()
-  let f2 = NSNumberFormatter()
-  var printDebug = false
   
   var rotation = Rotation(0.0) {
     didSet {
@@ -48,49 +45,6 @@ final class InfiniteImageWheel: UIView {
       "InfiniteImageWheel requires enough images and seperation betwen the wedges to at least make a complete circle.")
     self.userInteractionEnabled = false
     rotation = Rotation(0.0)
-                                          
-    f.minimumIntegerDigits  = 3
-    f.maximumIntegerDigits  = 3
-    f.minimumFractionDigits = 3
-    f.maximumFractionDigits = 3
-    f.positivePrefix = " "
-    f.negativePrefix = "-"
-    f.paddingCharacter = " "
-    f2.minimumIntegerDigits  = 2
-    f2.maximumIntegerDigits  = 2
-    f2.minimumFractionDigits = 0
-    f2.maximumFractionDigits = 0
-    f2.positivePrefix = ""
-    f2.negativePrefix = ""
-    f2.paddingCharacter = " "
-  }
-
-  func pad(number: Double) -> String {
-    return f.stringFromNumber(number)!
-  }
-  
-  func pad(number: Rotation) -> String {
-    return pad(number.value)
-  }
-  
-  func pad(number: Angle) -> String {
-    return pad(number.value)
-  }
-  
-  func pad2(number: Double) -> String {
-    return f2.stringFromNumber(number)!
-  }
-
-  func p2(number: Int) -> String {
-    return pad2(Double(number))
-  }
-  
-  func pad2(number: Rotation) -> String {
-    return pad2(number.value)
-  }
-  
-  func pad2(number: Angle) -> String {
-    return pad2(number.value)
   }
   
   convenience init(imageNames: [String], seperatedByAngle wedgeSeperation: Angle ) {
@@ -171,8 +125,6 @@ final class InfiniteImageWheel: UIView {
         layoutWedge(wedge, atIndex: index, withRotationState: state)
       }
     }
-    if printDebug { println("") }
-
   }
   
   func layoutWedge(wedge: Wedge, var atIndex index: WedgeIndex,
@@ -184,17 +136,9 @@ final class InfiniteImageWheel: UIView {
       wedge.layoutAngle = wedgeState.layoutAngle
       wedge.width       = wedgeState.shapeAngle
 
-      if printDebug {
-        println("W: \(p2(index)) dist: \(pad(wedgeState.distanceToRotation)) vis angle \(pad(wedgeState.shapeAngle.degrees))")
-      }
-    
     } else {
       wedge.hide()
 
-      if printDebug {
-        println("w: \(p2(index)) dist: \(pad(wedgeState.distanceToRotation)) vis angle \(pad(wedgeState.shapeAngle.degrees))")
-      }
-      
     }
   }
   
