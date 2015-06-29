@@ -4,14 +4,14 @@ extension InfiniteImageWheel {
   
   func rotationForIndex(index: WedgeIndex) -> Rotation {
     let wedgewidth = Rotation(wedgeSeries.wedgeSeperation)
-    let stepsFrom0 = Rotation(index - 1)
-    let rotation = wedgewidth * stepsFrom0
+    let rotation = wedgewidth * index
     
+    // LayoutDirection 9from wedgeSeries) is opposite rotation direction
     switch wedgeSeries.direction {
       case .Clockwise:
-      return rotation
-      case .CounterClockwise:
       return rotation * -1
+      case .CounterClockwise:
+      return rotation
     }
   }
   
