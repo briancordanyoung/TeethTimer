@@ -1,7 +1,7 @@
 import UIKit
 
 // MARK: - Old methods I wanted to keep around and up-to-date while I refactor
-//         These should be used any more.
+//         These shouldn't be used any more.
 
 extension WheelControl {
 
