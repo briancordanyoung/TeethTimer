@@ -57,7 +57,7 @@ extension TimerViewController {
     cacheState.totalFrames      = Int(rotation.degrees * framesPerDegree)
     cacheState.currentFrame     = 1
     
-    wheelControl.rotationAngle = cacheState.currentRotation
+    wheelControl.rotation       = cacheState.currentRotation
     
     cacheState.timer = NSTimer.scheduledTimerWithTimeInterval( 0.1,
                                       target: self,
@@ -73,37 +73,21 @@ extension TimerViewController {
     } else {
       if let imageWheel = imageWheelView, gavinWheel = gavinWheel {
         //        updateDebugLabel(debug, WithImageWheel: imageWheel)
-        if let percentageLeft = gavinWheel.percentageLeft {
+        if let percentageRemaining = gavinWheel.percentageRemaining {
           updateDebugCacheIULabel(debug, WithImageWheel: imageWheel,
-                                          andPercentage: percentageLeft)
+                                          andPercentage: percentageRemaining)
         }
       }
       checkForNextStage()
     }
   }
 
-  func updateDebugLabel(label: UILabel,
-    WithImageWheel imageWheel: ImageWheel) {
-    var wedgeImages: [Int:Int] = [:]
-    
-    for i in 1...imageWheel.wedges.count {
-      if let image = imageWheel.imageViewFromValue(i)?.image {
-        if let imageNumber = imageWheel.imageNumberFromImage(image){
-          wedgeImages[i] = imageNumber
-        }
-      }
-    }
-    
-    var message = ""
-    for i in 1...imageWheel.wedges.count {
-      if let imageIndex = wedgeImages[i] {
-        message = message + "\(i)-\(imageIndex)  "
-      }
-    }
-    
+  func updateDebugLabel(    label: UILabel,
+        WithImageWheel imageWheel: InfiniteImageWheel) {
+          
     let dev = Developement()
     let rotationAngleString = dev.pad(imageWheel.rotation.cgRadians)
-    label.text = "\(rotationAngleString) \(message)"
+    label.text = "\(rotationAngleString) \(imageWheel.rotationState.wedgeIndex)"
   }
   
   
@@ -224,8 +208,8 @@ extension TimerViewController {
   
   func finishedWritingFrame() {
     cacheState.currentFrame += 1
-    gavinWheel?.rotationAngle = cacheState.currentRotation
-    cacheState.frameState = .idle
+    gavinWheel?.rotation     = cacheState.currentRotation
+    cacheState.frameState    = .idle
   }
   
   func finishWritingMovie() {
