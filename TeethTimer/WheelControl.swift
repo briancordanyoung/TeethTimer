@@ -3,7 +3,7 @@
 // Wheel Control
 // 
 //               The public API to WheelControl value (position) is set and get
-//               using the rotationAngle property.
+//               using the rotation property.
 //               This is never referenced internally.
 //               Instead two properties are used:
 //                    currentAngle
@@ -14,7 +14,7 @@
 //    angle    - Ranges from -M_PI to M_PI (in radians)
 //
 //
-//    rotation - Has no theoretical min and max. (in radians)
+//    rotation - Has no theoretical min and max.
 //               Rotation may be used to notate the absolute number
 //               of complete rotations around the wheel.
 //               Rotation acculmulates in each direction where the angle
@@ -27,7 +27,7 @@
 //    currentAngle & currentRotation:
 //               These properties are independant,  They are related, but if one
 //               is modified, the other is not automaticly kept in sync.  That
-//               must be done by the internal developer. rotationAngle DOES set
+//               must be done by the internal developer. rotation DOES set
 //               both prperties, and that is why it is the only public property
 //               for working with the wheel position.
 //
@@ -54,29 +54,26 @@ final class WheelControl: UIControl, AnimationDelegate  {
   // This is the only interface for getting the data for this control.
   // Externally set the data for this control with this property or 
   //                                                animateToRotation()
-  var rotationAngle: Rotation {  // in module, make public //
+  var rotation: Rotation {  // in module, make public //
     get {
-      return currentRotation - internalRotationOffset
+      return currentRotation
     }
     set(newRotationAngle) {
-
-      let adjustRotationAngle = newRotationAngle + internalRotationOffset
-      
-      currentAngle = Angle(adjustRotationAngle)
-      currentRotation = adjustRotationAngle
+      currentAngle    = Angle(newRotationAngle)
+      currentRotation =       newRotationAngle
     }
   }
   
-  var percentageLeft: CGFloat? {
+  var percentageRemaining: CGFloat? {
     get {
-      var percentageLeft: CGFloat?
+      var percentageRemaining: CGFloat?
       if let min = minimumRotation, max = maximumRotation {
-        let current = rotationAngle
-        percentageLeft = percentValue( current.cgRadians,
+        let current = rotation
+        percentageRemaining = percentValue( current.cgRadians,
                          isBetweenLow: min.cgRadians,
                               AndHigh: max.cgRadians)
       }
-      return percentageLeft
+      return percentageRemaining
     }
   }
   
@@ -86,12 +83,12 @@ final class WheelControl: UIControl, AnimationDelegate  {
       return (value - low) / (high - low)
   }
   
-  var targetRotationAngle: Rotation {  // in module, make public //
-      var targetRotationAngle = rotationAngle
+  var targetRotation: Rotation {  // in module, make public //
+      var targetRotation = rotation
       if let target = rotationState.target {
-        targetRotationAngle = target - internalRotationOffset
+        targetRotation = target
       }
-      return targetRotationAngle
+      return targetRotation
   }
   
   var animationState: AnimatedMotion {
@@ -128,9 +125,9 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
     set(newMinRotation) {
       if let newMinRotation = newMinRotation {
-        let newMinRotationWithOffset = newMinRotation + internalRotationOffset
+        let newMinRotationWithOffset = newMinRotation
 
-        let msg = "minRotation must be less than or equal to rotationAngle."
+        let msg = "minRotation must be less than or equal to rotation."
         assert(currentRotation >= newMinRotationWithOffset, msg)
         
         minRotation = newMinRotationWithOffset
@@ -145,9 +142,9 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
     set(newMaxRotation) {
       if let newMaxRotation = newMaxRotation {
-        let newMaxRotationWithOffset = newMaxRotation + internalRotationOffset
+        let newMaxRotationWithOffset = newMaxRotation
         
-        let msg = "maxRotation must be greater than or equal to rotationAngle."
+        let msg = "maxRotation must be greater than or equal to rotation."
         assert(newMaxRotationWithOffset >= currentRotation, msg)
         
         maxRotation = newMaxRotationWithOffset
@@ -175,12 +172,8 @@ final class WheelControl: UIControl, AnimationDelegate  {
   // to the currentRotation.  The public properties that are used outside this
   // class will add/subtract this offset when set/get.
   
-  // TODO: This is currently not working.  Must debug
-  //  let internalRotationOffset = Angle(Rotation.full * 3)
-  let internalRotationOffset = Rotation(0)
-
   var outsideCircle: CGFloat {
-      return wheelView.bounds.height * 2
+    return wheelView.bounds.height * 2
   }
   
   var currentAngle: Angle {
@@ -230,7 +223,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
   }
 
   func resetRotationAngle() {
-    startingRotation = internalRotationOffset
+    startingRotation = 0.0
     currentAngle     = Angle(startingRotation)
     currentRotation  = startingRotation
   }
