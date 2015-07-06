@@ -1,4 +1,4 @@
-
+import UIKit
 
 extension InfiniteImageWheel {
   class RotationState: NSObject, Printable {
@@ -65,7 +65,12 @@ extension InfiniteImageWheel {
       case .Positive:
         return self.countOfWedgesInRemainder
       case .Negative:
-        return self.wedgeMaxIndex - self.countOfWedgesInRemainder
+        var wedgeIndex = self.wedgeMaxIndex - self.countOfWedgesInRemainder
+        var next = wedgeIndex + 1
+        if next > self.wedgeMaxIndex {
+          next = 0
+        }
+        return next
       }
     }()
     

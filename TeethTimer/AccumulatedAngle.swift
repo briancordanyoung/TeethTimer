@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 typealias Rotation = AccumulatedAngle
 // MARK: AccumulatedAngle - A number that represents an angle in both 

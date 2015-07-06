@@ -1,3 +1,6 @@
+import UIKit
+
+
 extension InfiniteImageWheel : Printable {
   struct WedgeState {
     

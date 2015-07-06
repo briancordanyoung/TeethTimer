@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 // A number that represents the degrees or radians around a circle.
 final class Revolution: AngularType {

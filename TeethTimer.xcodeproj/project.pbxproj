@@ -156,10 +156,7 @@
 		D37FBCCB1AF34E9300381C7F /* BCYStandardLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */; };
 		D37FBCCC1AF34E9300381C7F /* WedgeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37FBC761AF3308500381C7F /* WedgeImageView.swift */; };
 		D37FBCCD1AF34E9300381C7F /* PieImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */; };
-		D37FBCCE1AF34E9300381C7F /* TeethTimer-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = D388C2E41A9EE256007D4F8B /* TeethTimer-Bridging-Header.h */; };
-		D37FBCCF1AF34E9300381C7F /* UIImage+ImageEffects.h in Sources */ = {isa = PBXBuildFile; fileRef = D3207F2C1ADAC00900ABE2FC /* UIImage+ImageEffects.h */; };
 		D37FBCD01AF34E9300381C7F /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D3207F2D1ADAC00900ABE2FC /* UIImage+ImageEffects.m */; };
-		D37FBCD11AF34E9300381C7F /* PieSliceLayer.h in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2CE1AF32E6300243AFF /* PieSliceLayer.h */; };
 		D37FBCD21AF34E9300381C7F /* PieSliceLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */; };
 		D37FBCD31AF3518A00381C7F /* SystemVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30EDFA51AD2F8C100E76327 /* SystemVersion.swift */; };
 		D3864F591AF69FBE00B787B4 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3864F581AF69FBE00B787B4 /* Async.swift */; };
@@ -171,6 +168,22 @@
 		D397B3921B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D397B3901B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift */; };
 		D39BDB5D1B2E5D4E00B0E709 /* AccumulatedAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39BDB5C1B2E5D4E00B0E709 /* AccumulatedAngle.swift */; };
 		D39BDB5E1B2E5D4E00B0E709 /* AccumulatedAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39BDB5C1B2E5D4E00B0E709 /* AccumulatedAngle.swift */; };
+		D3AFFDC11B4AD2EE00BEA5A4 /* ImageWheelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AFFDC01B4AD2EE00BEA5A4 /* ImageWheelTests.swift */; };
+		D3AFFDC71B4AD30E00BEA5A4 /* InfiniteImageWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C438C81B308B4D00958CB8 /* InfiniteImageWheel.swift */; };
+		D3AFFDC81B4AD31000BEA5A4 /* InfiniteImageWheel+TeethTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3112E291B35442C00ECF073 /* InfiniteImageWheel+TeethTimer.swift */; };
+		D3AFFDC91B4AD31400BEA5A4 /* InfiniteImageWheel+RotationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F39741B330969002AE34B /* InfiniteImageWheel+RotationState.swift */; };
+		D3AFFDCA1B4AD31600BEA5A4 /* InfiniteImageWheel+Wedge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F397A1B3309E3002AE34B /* InfiniteImageWheel+Wedge.swift */; };
+		D3AFFDCB1B4AD31900BEA5A4 /* InfiniteImageWheel+WedgeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D397B3901B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift */; };
+		D3AFFDCC1B4AD31C00BEA5A4 /* InfiniteImageWheel+WedgeSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F39771B33098E002AE34B /* InfiniteImageWheel+WedgeSeries.swift */; };
+		D3AFFDCD1B4AD32000BEA5A4 /* Revolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32625901B2799D9002379C1 /* Revolution.swift */; };
+		D3AFFDCE1B4AD32200BEA5A4 /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CEFEE71B2A302400AE6A6D /* Angle.swift */; };
+		D3AFFDCF1B4AD32500BEA5A4 /* AccumulatedAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39BDB5C1B2E5D4E00B0E709 /* AccumulatedAngle.swift */; };
+		D3AFFDD01B4AD32D00BEA5A4 /* AngularType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8609D1B294C0300C68C08 /* AngularType.swift */; };
+		D3AFFDD11B4AD33000BEA5A4 /* Developement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341D23E1AC1FB24007D0593 /* Developement.swift */; };
+		D3AFFDD21B4AD33500BEA5A4 /* BCYStandardLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */; };
+		D3AFFDD31B4AEEFE00BEA5A4 /* PieImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */; };
+		D3AFFDD41B4AEF0200BEA5A4 /* WedgeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37FBC761AF3308500381C7F /* WedgeImageView.swift */; };
+		D3AFFDD71B4B038C00BEA5A4 /* PieSliceLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */; };
 		D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */; };
 		D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */; };
 		D3B7BC7519EA383A00F50DF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3B7BC7319EA383A00F50DF7 /* Main.storyboard */; };
@@ -188,6 +201,16 @@
 		D3F8609E1B294C0300C68C08 /* AngularType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8609D1B294C0300C68C08 /* AngularType.swift */; };
 		D3F8609F1B294C0300C68C08 /* AngularType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8609D1B294C0300C68C08 /* AngularType.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D3AFFDC21B4AD2EE00BEA5A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D3B7BC6219EA383A00F50DF7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D37FBC7B1AF34DE100381C7F;
+			remoteInfo = ImageWheel;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		494890643301A07092EB8CC0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -299,6 +322,10 @@
 		D3A08D9A1B30E0B80089D18F /* testAngleTypes.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = testAngleTypes.playground; sourceTree = "<group>"; };
 		D3A4341F1B015BA8001DD6A2 /* FramesToMovie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FramesToMovie.m; sourceTree = "<group>"; };
 		D3A434241B015CA0001DD6A2 /* FramesToMovie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FramesToMovie.h; sourceTree = "<group>"; };
+		D3AFFDBC1B4AD2EE00BEA5A4 /* ImageWheelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageWheelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3AFFDBF1B4AD2EE00BEA5A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D3AFFDC01B4AD2EE00BEA5A4 /* ImageWheelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWheelTests.swift; sourceTree = "<group>"; };
+		D3AFFDD61B4AEF3F00BEA5A4 /* ImageWheelTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ImageWheelTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		D3B29F7F1AF5264200C2C067 /* ContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		D3B7BC6A19EA383A00F50DF7 /* TeethTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeethTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B7BC6E19EA383A00F50DF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -322,6 +349,13 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		D37FBC791AF34DE100381C7F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3AFFDB91B4AD2EE00BEA5A4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -453,6 +487,7 @@
 				D3112E111B350FCB00ECF073 /* InfinateContainerView.swift */,
 				D39365EC1B3A16C90075173C /* InfinateCounterContainerView.swift */,
 				D37FBCD41AF3522700381C7F /* ImageWheel-Bridging-Header.h */,
+				D3AFFDD61B4AEF3F00BEA5A4 /* ImageWheelTests-Bridging-Header.h */,
 				D37FBC801AF34DE100381C7F /* AppDelegate.swift */,
 				D37FBC821AF34DE100381C7F /* ViewController.swift */,
 				D37FBC841AF34DE100381C7F /* Main.storyboard */,
@@ -526,6 +561,23 @@
 			name = WheelControl;
 			sourceTree = "<group>";
 		};
+		D3AFFDBD1B4AD2EE00BEA5A4 /* ImageWheelTests */ = {
+			isa = PBXGroup;
+			children = (
+				D3AFFDC01B4AD2EE00BEA5A4 /* ImageWheelTests.swift */,
+				D3AFFDBE1B4AD2EE00BEA5A4 /* Supporting Files */,
+			);
+			path = ImageWheelTests;
+			sourceTree = "<group>";
+		};
+		D3AFFDBE1B4AD2EE00BEA5A4 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D3AFFDBF1B4AD2EE00BEA5A4 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		D3B7BC6119EA383A00F50DF7 = {
 			isa = PBXGroup;
 			children = (
@@ -533,6 +585,7 @@
 				D3B7BC8219EA383A00F50DF7 /* TeethTimerTests */,
 				D37FBC7D1AF34DE100381C7F /* ImageWheel */,
 				D31CD1DD1B2F47FD008B4177 /* TeethTimer Tests */,
+				D3AFFDBD1B4AD2EE00BEA5A4 /* ImageWheelTests */,
 				D3B7BC6B19EA383A00F50DF7 /* Products */,
 				D7D25F379C44550B89AD1B67 /* Pods */,
 				0588C91E349A150BB0A9B1EB /* Frameworks */,
@@ -544,6 +597,7 @@
 			children = (
 				D3B7BC6A19EA383A00F50DF7 /* TeethTimer.app */,
 				D37FBC7C1AF34DE100381C7F /* ImageWheel.app */,
+				D3AFFDBC1B4AD2EE00BEA5A4 /* ImageWheelTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -662,6 +716,24 @@
 			productReference = D37FBC7C1AF34DE100381C7F /* ImageWheel.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D3AFFDBB1B4AD2EE00BEA5A4 /* ImageWheelTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3AFFDC61B4AD2EE00BEA5A4 /* Build configuration list for PBXNativeTarget "ImageWheelTests" */;
+			buildPhases = (
+				D3AFFDB81B4AD2EE00BEA5A4 /* Sources */,
+				D3AFFDB91B4AD2EE00BEA5A4 /* Frameworks */,
+				D3AFFDBA1B4AD2EE00BEA5A4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D3AFFDC31B4AD2EE00BEA5A4 /* PBXTargetDependency */,
+			);
+			name = ImageWheelTests;
+			productName = ImageWheelTests;
+			productReference = D3AFFDBC1B4AD2EE00BEA5A4 /* ImageWheelTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		D3B7BC6919EA383A00F50DF7 /* TeethTimer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D3B7BC8919EA383A00F50DF7 /* Build configuration list for PBXNativeTarget "TeethTimer" */;
@@ -694,6 +766,10 @@
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = YJ4PN236TF;
 					};
+					D3AFFDBB1B4AD2EE00BEA5A4 = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = D37FBC7B1AF34DE100381C7F;
+					};
 					D3B7BC6919EA383A00F50DF7 = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = YJ4PN236TF;
@@ -715,6 +791,7 @@
 			targets = (
 				D3B7BC6919EA383A00F50DF7 /* TeethTimer */,
 				D37FBC7B1AF34DE100381C7F /* ImageWheel */,
+				D3AFFDBB1B4AD2EE00BEA5A4 /* ImageWheelTests */,
 			);
 		};
 /* End PBXProject section */
@@ -780,6 +857,13 @@
 				D3112E271B352B9800ECF073 /* num-21@2x.png in Resources */,
 				D3112E281B352B9800ECF073 /* num-22@2x.png in Resources */,
 				D37FBC881AF34DE100381C7F /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3AFFDBA1B4AD2EE00BEA5A4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -908,17 +992,37 @@
 				D3C438C91B308B4D00958CB8 /* InfiniteImageWheel.swift in Sources */,
 				D37FBCCC1AF34E9300381C7F /* WedgeImageView.swift in Sources */,
 				D37FBCCD1AF34E9300381C7F /* PieImageView.swift in Sources */,
-				D37FBCCE1AF34E9300381C7F /* TeethTimer-Bridging-Header.h in Sources */,
 				D31F397C1B3309E3002AE34B /* InfiniteImageWheel+Wedge.swift in Sources */,
 				D3F8609F1B294C0300C68C08 /* AngularType.swift in Sources */,
-				D37FBCCF1AF34E9300381C7F /* UIImage+ImageEffects.h in Sources */,
 				D37FBCD01AF34E9300381C7F /* UIImage+ImageEffects.m in Sources */,
-				D37FBCD11AF34E9300381C7F /* PieSliceLayer.h in Sources */,
 				D3CEFEE91B2A302400AE6A6D /* Angle.swift in Sources */,
 				D37FBCD21AF34E9300381C7F /* PieSliceLayer.m in Sources */,
 				D30E035C1B20F2ED0019914B /* CacheWheelState.swift in Sources */,
 				D37FBC831AF34DE100381C7F /* ViewController.swift in Sources */,
 				D37FBC811AF34DE100381C7F /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3AFFDB81B4AD2EE00BEA5A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3AFFDC11B4AD2EE00BEA5A4 /* ImageWheelTests.swift in Sources */,
+				D3AFFDC71B4AD30E00BEA5A4 /* InfiniteImageWheel.swift in Sources */,
+				D3AFFDC81B4AD31000BEA5A4 /* InfiniteImageWheel+TeethTimer.swift in Sources */,
+				D3AFFDC91B4AD31400BEA5A4 /* InfiniteImageWheel+RotationState.swift in Sources */,
+				D3AFFDCA1B4AD31600BEA5A4 /* InfiniteImageWheel+Wedge.swift in Sources */,
+				D3AFFDCB1B4AD31900BEA5A4 /* InfiniteImageWheel+WedgeState.swift in Sources */,
+				D3AFFDCC1B4AD31C00BEA5A4 /* InfiniteImageWheel+WedgeSeries.swift in Sources */,
+				D3AFFDCD1B4AD32000BEA5A4 /* Revolution.swift in Sources */,
+				D3AFFDCE1B4AD32200BEA5A4 /* Angle.swift in Sources */,
+				D3AFFDCF1B4AD32500BEA5A4 /* AccumulatedAngle.swift in Sources */,
+				D3AFFDD01B4AD32D00BEA5A4 /* AngularType.swift in Sources */,
+				D3AFFDD11B4AD33000BEA5A4 /* Developement.swift in Sources */,
+				D3AFFDD21B4AD33500BEA5A4 /* BCYStandardLibrary.swift in Sources */,
+				D3AFFDD31B4AEEFE00BEA5A4 /* PieImageView.swift in Sources */,
+				D3AFFDD41B4AEF0200BEA5A4 /* WedgeImageView.swift in Sources */,
+				D3AFFDD71B4B038C00BEA5A4 /* PieSliceLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -964,6 +1068,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D3AFFDC31B4AD2EE00BEA5A4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D37FBC7B1AF34DE100381C7F /* ImageWheel */;
+			targetProxy = D3AFFDC21B4AD2EE00BEA5A4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		D37FBC841AF34DE100381C7F /* Main.storyboard */ = {
@@ -1033,6 +1145,49 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ImageWheel/ImageWheel-Bridging-Header.h";
+			};
+			name = Release;
+		};
+		D3AFFDC41B4AD2EE00BEA5A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ImageWheelTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ImageWheel/ImageWheelTests-Bridging-Header.h";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ImageWheel.app/ImageWheel";
+			};
+			name = Debug;
+		};
+		D3AFFDC51B4AD2EE00BEA5A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = ImageWheelTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ImageWheel/ImageWheelTests-Bridging-Header.h";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ImageWheel.app/ImageWheel";
 			};
 			name = Release;
 		};
@@ -1170,6 +1325,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		D3AFFDC61B4AD2EE00BEA5A4 /* Build configuration list for PBXNativeTarget "ImageWheelTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3AFFDC41B4AD2EE00BEA5A4 /* Debug */,
+				D3AFFDC51B4AD2EE00BEA5A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		D3B7BC6519EA383A00F50DF7 /* Build configuration list for PBXProject "TeethTimer" */ = {
 			isa = XCConfigurationList;
