@@ -6,7 +6,7 @@ import UIKit
 class InfinateCounterContainerView: UIView {
   
   var imageWheel: InfiniteImageWheel?
-  
+
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupImageWheel()
@@ -21,10 +21,9 @@ class InfinateCounterContainerView: UIView {
   func setupImageWheel() {
     let imageNames = arrayOfNames(10)
     let imageWheel = InfiniteImageWheel(imageNames: imageNames,
-                                  seperatedByAngle: Angle(degrees: 90),
+                                  seperatedByAngle: Angle(degrees: 45),
                                        inDirection: .CounterClockwise)
     self.addSubview(imageWheel)
-    imageWheel.printDebug = true
     self.imageWheel = imageWheel
   }
   
@@ -63,8 +62,8 @@ class InfinateCounterContainerView: UIView {
   
   
   func imageNameForNumber(i: Int) -> String {
-    return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
-//        return "num-\(paddedTwoDigitNumber(i))"
+//    return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
+        return "num-\(paddedTwoDigitNumber(i))"
   }
   
   

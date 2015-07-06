@@ -1,4 +1,4 @@
-extension InfiniteImageWheel {
+extension InfiniteImageWheel : Printable {
   struct WedgeState {
     
     // MARK: Properties
@@ -12,9 +12,47 @@ extension InfiniteImageWheel {
     }
     
     
+    var description: String {
+      let d = Developement()
+      let pi = d.pi
+      let p  = d.pad
+
+      var description = "rot:\(p(rotationState.rotation.cgDegrees)) "
+      description += "(\(rotationState.wedgeIndex))"
+      description += "index:\(pi(index)) | "
+      description += "layAngle:\(p(layoutAngle.cgDegrees)) "
+      description += "dist2Rot:\(p(distanceToRotation.cgDegrees)) "
+      description += "centerDist2Rot:\(p(centerDistanceToSelectedWedge.cgDegrees)) "
+      description += "laidoutIndex:\(pi(laidoutIndex)) "
+      description += "+LaidoutIndex:\(pi(positiveLaidoutIndex)) "
+      description += "steps:\(pi(steps)) "
+      description += "d: \(directionFromSelectedWedge.description) "
+      
+      return description
+    }
+    
     // MARK: Calculated Properties
     var layoutAngle: Angle {
-      switch direction {
+      switch rotationState.polarity {
+      case .Positive:
+        return positiveLayoutAngle
+      case .Negative:
+        return negativeLayoutAngle - rotationState.wedgeSeperation
+      }
+    }
+    
+    var positiveLayoutAngle: Angle {
+      switch directionFromSelectedWedge {
+      case .Clockwise:
+        return Angle(rotationState.wedgeCenter + centerDistanceToSelectedWedge)
+        
+      case .CounterClockwise:
+        return Angle(rotationState.wedgeCenter - centerDistanceToSelectedWedge)
+      }
+    }
+    
+    var negativeLayoutAngle: Angle {
+      switch directionFromSelectedWedge {
       case .Clockwise:
         return Angle(rotationState.wedgeCenter - centerDistanceToSelectedWedge)
         
@@ -32,13 +70,15 @@ extension InfiniteImageWheel {
     }
     
     var shapeAngle: Angle {
-      return (rotationState.wedgeSeperation * 2) * Angle(percentToNextWedge)
+      /* TODO: return to calculation below: */
+      // return (rotationState.wedgeSeperation * 2) * Angle(percentToNextWedge)
+      return Angle(degrees: 180)
     }
     
     // The rotation distance between the center of this wedge and the
     // rotation that the rotationState returns
     var distanceToRotation: Rotation {
-      let offcenter = rotationState.angleOffCenterFromLayoutDirection(direction)
+      let offcenter = rotationState.angleOffCenterFromLayoutDirection(directionFromSelectedWedge)
       let distanceToRotation = centerDistanceToSelectedWedge + offcenter
       return abs(distanceToRotation)
     }
@@ -52,20 +92,50 @@ extension InfiniteImageWheel {
       return Rotation(rotationState.wedgeSeperation) * steps
     }
     
-    //
-    private var laidoutIndex: Int {
-      if rotationState.layoutDirection == .Clockwise {
+    private var positiveLaidoutIndex: Int {
+      switch rotationState.layoutDirection {
+      case .Clockwise:
         return index
-      } else {
-        return rotationState.wedgeCount - 1 - index
+        
+      case .CounterClockwise:
+        return rotationState.wedgeMaxIndex - index
       }
     }
+    
+    private var negativeLaidoutIndex: Int {
+      switch rotationState.layoutDirection {
+      case .Clockwise:
+        return rotationState.wedgeMaxIndex - index
+        
+      case .CounterClockwise:
+        return index
+      }
+    }
+    
+    
+    
+    
+    private var laidoutIndex: Int {
+      switch rotationState.polarity {
+      case .Positive:
+        return positiveLaidoutIndex
+        
+      case .Negative:
+//        return prevIndex(negativeLaidoutIndex)
+        return negativeLaidoutIndex
+      }
+    }
+    
+    
+    
+    
+    
     
     private var steps: Int {
       return min(clockwiseSteps,counterClockwiseSteps)
     }
     
-    private var direction: LayoutDirection {
+    private var directionFromSelectedWedge: LayoutDirection {
       if clockwiseSteps < counterClockwiseSteps {
         return .Clockwise
       } else {
@@ -74,36 +144,23 @@ extension InfiniteImageWheel {
     }
     
     private var clockwiseSteps: Int {
-      let maximumIndex = rotationState.wedgeCount - 1
       
       var count   = 0
       var next    = laidoutIndex
       while next != rotationState.wedgeIndex {
         count++
-        next++
-        if next > maximumIndex {
-          next = 0
-        }
-        assert(count <= maximumIndex,
-                              "clockwiseSteps closure is stuck in a while loop")
+        next = nextIndex(next)
       }
       return count
     }
     
-    
     private var counterClockwiseSteps: Int {
-      let maximumIndex = self.rotationState.wedgeCount - 1
 
       var count   = 0
-      var next    = laidoutIndex
-      while next != rotationState.wedgeIndex {
+      var prev    = laidoutIndex
+      while prev != rotationState.wedgeIndex {
         count++
-        next--
-        if next < 0  {
-          next = maximumIndex
-        }
-        assert(count <= maximumIndex,
-                       "counterClockwiseSteps closure is stuck in a while loop")
+        prev = prevIndex(prev)
       }
       return count
     }
@@ -122,7 +179,29 @@ extension InfiniteImageWheel {
         return (value.value - low.value) / (high.value - low.value)
     }
   
-  
+    var nextNeighbor: WedgeIndex {
+      return nextIndex(self.index)
+    }
+    
+    var prevNeighbor: WedgeIndex {
+      return prevIndex(self.index)
+    }
+    
+    private func nextIndex(index: Int) -> Int {
+      var next = index + 1
+      if next > rotationState.wedgeMaxIndex {
+        next = 0
+      }
+      return next
+    }
+    
+    private func prevIndex(index: Int) -> Int {
+      var prev = index - 1
+      if prev < 0 {
+        prev = rotationState.wedgeMaxIndex
+      }
+      return prev
+    }
     
   }
 }

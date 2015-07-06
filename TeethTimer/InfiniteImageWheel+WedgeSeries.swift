@@ -28,10 +28,6 @@ extension InfiniteImageWheel {
       return wedges.count
     }
     
-    var halfVisibleAngle: Angle {
-      return visibleAngle
-    }
-    
     var seriesWidth: Rotation {
       return Rotation(wedgeSeperation) * wedges.count
     }

@@ -28,7 +28,7 @@ final class TimerViewController: UIViewController {
   let timer = Timer()
 
   var gavinWheel: WheelControl?
-  var previousImageBeforeTouch: WedgeIndex?
+  var previousIndexBeforeTouch: WedgeIndex?
   var timerStateBeforeTouch: Timer.Status = .Paused
   
   var d = Developement()
@@ -199,9 +199,14 @@ final class TimerViewController: UIViewController {
     
     imageWheel.rotation        = startingRotation
     gavinWheel.rotation        = startingRotation
-    gavinWheel.minimumRotation = imageWheel.wedgeSeries.seriesStartRotation
-    gavinWheel.maximumRotation = imageWheel.wedgeSeries.seriesEndRotation
+    gavinWheel.minimumRotation = (imageWheel.wedgeSeries.seriesEndRotation * -1)
+    gavinWheel.maximumRotation = (imageWheel.wedgeSeries.seriesStartRotation * -1)
+    
     gavinWheel.dampenCounterClockwise = true
+    
+    
+    
+    testRotationState(imageWheel)
     
   }
   
@@ -300,24 +305,36 @@ final class TimerViewController: UIViewController {
   // MARK: ImageWheelControl Target/Action Callbacks
   func gavinWheelTouchedByUser(gavinWheel: WheelControl) {
     // User touches the wheel
-    if let imageWheelView = imageWheelView {
-      previousImageBeforeTouch = imageWheelView.rotationState.wedgeIndex
-    }
-    
+    rememberIndex()
+    rememberTimerStatueAndPause()
+  }
+  
+  
+  func rememberTimerStatueAndPause() {
     timerStateBeforeTouch = timer.status
     if timerStateBeforeTouch == .Counting {
       timer.pause()
     }
   }
   
+  func rememberIndex() {
+    if let imageWheelView = imageWheelView {
+      previousIndexBeforeTouch = imageWheelView.rotationState.wedgeIndex
+    }
+  }
   
   func gavinWheelChanged(gavinWheel: WheelControl) {
     // Update the state of the ImageWheel to the WheelControl state
     if let imageWheelView = imageWheelView {
       
       imageWheelView.rotation   = gavinWheel.rotation
+      
+      
       gavinWheel.snapToRotation = imageWheelView.rotationState.wedgeCenter
       
+      
+      let wedgeCenter = imageWheelView.rotationState.wedgeCenter
+//      println("\(d.pad(gavinWheel.rotation.cgRadians)) \(d.pad(wedgeCenter.cgRadians))")
 //      println("wheel: \(d.pad(gavinWheel.rotationAngle.cgRadians)) image: \(d.pad(imageWheelView.rotation.cgRadians))")
       
 
@@ -345,14 +362,14 @@ final class TimerViewController: UIViewController {
   
   func gavinWheelRotatedByUser(gavinWheel: WheelControl) {
     
-    if let previousImageBeforeTouch = previousImageBeforeTouch,
+    if let previousIndexBeforeTouch = previousIndexBeforeTouch,
                      imageWheelView = imageWheelView {
 
-      if previousImageBeforeTouch > imageWheelView.rotationState.wedgeIndex {
+      if previousIndexBeforeTouch > imageWheelView.rotationState.wedgeIndex {
         // The wheel was turned back.
         let targetRotation = gavinWheel.targetRotation
         let targetImage = imageWheelView.imageIndexForRotation(targetRotation)
-        let wheelTurnedBackByTmp = previousImageBeforeTouch - targetImage
+        let wheelTurnedBackByTmp = previousIndexBeforeTouch - targetImage
         let wheelTurnedBackBy = max(wheelTurnedBackByTmp,0)
         
                                               // 1st image is not in count down
@@ -362,7 +379,7 @@ final class TimerViewController: UIViewController {
         
         timer.addTimeByPercentage(percentageTurnedBackBy)
       }
-      self.previousImageBeforeTouch = nil
+      self.previousIndexBeforeTouch = nil
     }
     
     if timerStateBeforeTouch == .Counting {
@@ -595,5 +612,31 @@ final class TimerViewController: UIViewController {
       return (elapsedMins, elapsedSecs)
   }
 
+  
+  
+  func testRotationState(imageWheel: InfiniteImageWheel) {
+    
+    let series = imageWheel.wedgeSeries
+    
+    for i in 1...1000 {
+      let rot = Rotation((CGFloat(0.06) * CGFloat(i)) - CGFloat(10))
+      let state = InfiniteImageWheel.RotationState(rotation: rot,
+                                                wedgeSeries: series)
+      
+      let rott         = "\(d.pad(state.rotation.cgRadians))"
+      let index       = "\(d.pad(CGFloat(state.wedgeIndex)))"
+      let wedgeCenter = "\(d.pad(state.wedgeCenter.cgRadians))"
+      let dir         = "\(state.directionRotatedOffWedgeCenter)"
+      let offsetRot   = "\(d.pad(state.offsetRotation.cgRadians))"
+      let count       = "\(d.pad(CGFloat(state.rotationCount)))"
+      let leftoverWed = "\(d.pad(CGFloat(state.countOfWedgesInRemainder)))"
+      
+//      println("r: \(d.pad(state.rotation.cgRadians)) center: \(d.pad(state.wedgeCenter.cgRadians))")
+//      println("r: \(rott) index: \(index) center: \(wedgeCenter) direction: \(dir) off: \(offsetRot) rot cont: \(count) wedges: \(leftoverWed)")
+    }
+    
+    
+  }
+  
 }
 

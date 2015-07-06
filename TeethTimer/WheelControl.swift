@@ -31,12 +31,7 @@
 //               both prperties, and that is why it is the only public property
 //               for working with the wheel position.
 //
-//               There is only one correct angle for any one rotation.
-//               Do not try to offset the angle from the rotation.
-//               Any offset in currentAngle will eventually be reset and synced
-//               to currentRotation.
-//
-//               The control only fires the ValueChange event when 
+//               The control only fires the ValueChange event when
 //               currentRotation is modified.
 
 
@@ -49,6 +44,8 @@ import UIKit
 // MARK: - WheelControl Class
 final class WheelControl: UIControl, AnimationDelegate  {
 
+  let d = Developement()
+  
   // The data of WheelControl
   // Do not use this internally.
   // This is the only interface for getting the data for this control.
@@ -68,10 +65,12 @@ final class WheelControl: UIControl, AnimationDelegate  {
     get {
       var percentageRemaining: CGFloat?
       if let min = minimumRotation, max = maximumRotation {
-        let current = rotation
-        percentageRemaining = percentValue( current.cgRadians,
-                         isBetweenLow: min.cgRadians,
-                              AndHigh: max.cgRadians)
+        percentageRemaining = percentValue( rotation.cgRadians,
+                              isBetweenLow: min.cgRadians,
+                                   AndHigh: max.cgRadians)
+        
+//        println("percentageRemaining: \(d.pad(percentageRemaining!)) \(d.pad(min.cgRadians)) > \(d.pad(rotation.cgRadians)) < \(d.pad(max.cgRadians))")
+        
       }
       return percentageRemaining
     }
@@ -119,40 +118,6 @@ final class WheelControl: UIControl, AnimationDelegate  {
   // Configure Dampening Properties
   var dampenClockwise          = false
   var dampenCounterClockwise   = false
-  var minimumRotation: Rotation? {
-    get {
-      return minRotation
-    }
-    set(newMinRotation) {
-      if let newMinRotation = newMinRotation {
-        let newMinRotationWithOffset = newMinRotation
-
-        let msg = "minRotation must be less than or equal to rotation."
-        assert(currentRotation >= newMinRotationWithOffset, msg)
-        
-        minRotation = newMinRotationWithOffset
-      } else {
-        minRotation = nil
-      }
-    }
-  }
-  var maximumRotation: Rotation? {
-    get {
-      return maxRotation
-    }
-    set(newMaxRotation) {
-      if let newMaxRotation = newMaxRotation {
-        let newMaxRotationWithOffset = newMaxRotation
-        
-        let msg = "maxRotation must be greater than or equal to rotation."
-        assert(newMaxRotationWithOffset >= currentRotation, msg)
-        
-        maxRotation = newMaxRotationWithOffset
-      } else {
-        maxRotation = nil
-      }
-    }
-  }
 
   
   // How strong should the users rotation be dampened as they
@@ -162,15 +127,20 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   // Internal Properties
   
-  var minRotation: Rotation?
-  var maxRotation: Rotation?
+  var minimumRotation: Rotation? {
+    didSet{
+      let msg = "minimumRotation must be less than or equal to rotation."
+      assert(currentRotation >= minimumRotation, msg)
+    }
+  }
+  var maximumRotation: Rotation? {
+    didSet{
+      let msg = "maximumRotation must be less than or equal to rotation."
+      assert(currentRotation <= maximumRotation, msg)
+    }
+  }
+
   
-  
-  // The method rotationUsingAngle(AndRotationState:) is a hack to try and figure
-  // out what the currentRotation should be.  That method has less problems when
-  // the rotation is greater than 0.  This offset is used to internally add
-  // to the currentRotation.  The public properties that are used outside this
-  // class will add/subtract this offset when set/get.
   
   var outsideCircle: CGFloat {
     return wheelView.bounds.height * 2
@@ -278,10 +248,10 @@ final class WheelControl: UIControl, AnimationDelegate  {
     userState.initialRotation    = currentRotation
     userState.initialTouchAngle  = angleAtTouch(touch)
     
-    if let min = minRotation {
+    if let min = minimumRotation {
       userState.minDampenAngle   = -(currentRotation - min)
     }
-    if let max = maxRotation {
+    if let max = maximumRotation {
       userState.maxDampenAngle   =   max - currentRotation
     }
     
@@ -349,11 +319,11 @@ final class WheelControl: UIControl, AnimationDelegate  {
       }
       
     case .MinRotation:
-      if let rotation = minRotation {
+      if let rotation = minimumRotation {
         animateToRotation(rotation)
       }
     case .MaxRotation:
-      if let rotation = maxRotation {
+      if let rotation = maximumRotation {
         animateToRotation(rotation)
       }
     }
@@ -428,7 +398,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
     // both directions.
     var dampenRotation  = DampenDirection()
   
-    // Check for the optional minRotation & maxRotation properties.
+    // Check for the optional minimumRotation & maximumRotation properties.
     // If they exist, the wheel is limited in how far it may rotate.
     // We need to pass back via the dampenRotation varriable, at what angle to
     // start dampening the rotation.  This number (passed in the .atRotation() enum)
@@ -438,13 +408,13 @@ final class WheelControl: UIControl, AnimationDelegate  {
     // Also set the userState to snapTo what possition after the 
     // user interaction is complete.
     
-    if let min = minRotation {
+    if let min = minimumRotation {
       if rotation < min {
         dampenRotation.counterClockwise = .atRotation(userState.minDampenAngle)
         userState.snapTo = .MinRotation
       }
     }
-    if let max = maxRotation {
+    if let max = maximumRotation {
       if rotation > max {
         dampenRotation.clockwise = .atRotation(userState.maxDampenAngle)
         userState.snapTo = .MaxRotation
@@ -453,7 +423,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
     
     
     // If the dampenClockwise or dampenCounterClockwise properties are set,
-    // they override the either minRotation & maxRotation and set the
+    // they override the either minimumRotation & maximumRotation and set the
     // dampening to begin imediately on user interaction.
     if rotation > userState.initialRotation && dampenClockwise {
       dampenRotation.clockwise = .atRotation(0.0)

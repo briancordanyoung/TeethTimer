@@ -14,6 +14,7 @@ final class InfiniteImageWheel: UIView {
     didSet {
       rotationState = RotationState( rotation: rotation,
                                   wedgeSeries: wedgeSeries)
+      
     transformWedgesWithRotationState(rotationState)
     }
   }
@@ -35,7 +36,7 @@ final class InfiniteImageWheel: UIView {
     wedgeSeries = WedgeSeries(wedges: wedges,
                            direction: direction,
                      wedgeSeperation: wedgeSeperation,
-                        visibleAngle: Angle(degrees:  90))
+                        visibleAngle: Angle(degrees: 90)) /* TODO: Angle(degrees: 90) */
     rotationState = RotationState( rotation: 0.0,
                       wedgeSeries: wedgeSeries)
     
@@ -120,11 +121,14 @@ final class InfiniteImageWheel: UIView {
   
   func transformWedgesWithRotationState(rotationState: RotationState) {
     let state = RotationState(state: rotationState)
+//    println("wedgeIndex: \(state.wedgeIndex)")
+    
     for (index, wedge) in enumerate(wedgeSeries.wedges) {
       if wedge.viewExists {
         layoutWedge(wedge, atIndex: index, withRotationState: state)
       }
     }
+//    println("")
   }
   
   func layoutWedge(wedge: Wedge, var atIndex index: WedgeIndex,
@@ -132,15 +136,26 @@ final class InfiniteImageWheel: UIView {
                         
     let wedgeState = WedgeState(rotationState: rotationState,
                                    wedgeIndex: index)
-    if wedgeState.distanceToRotation < wedgeSeries.halfVisibleAngle {
+                        
+                        
+//    if wedgeState.distanceToRotation < wedgeSeries.visibleAngle {
+    let i = rotationState.wedgeIndex
+    if i == index || i == wedgeState.nextNeighbor || i == wedgeState.prevNeighbor  {
       wedge.layoutAngle = wedgeState.layoutAngle
       wedge.width       = wedgeState.shapeAngle
-
+//      println("\(wedgeState.description)")
     } else {
       wedge.hide()
 
     }
   }
+
+
+//  if state.wedgeIndex == index || (state.wedgeIndex + 1) == index {
+  
+  
+  
+  
   
 }
 

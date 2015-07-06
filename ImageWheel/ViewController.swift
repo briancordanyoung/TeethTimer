@@ -53,11 +53,16 @@ class ViewController: UIViewController {
   func updateInfinateWheel(sender: UISlider) {
     let rotation = Rotation(degrees: CGFloat(sender.value))
     infinateContainerView.imageWheel?.rotation = rotation
+    let transformAngle = Angle(rotation).cgRadians * -1
+    infinateContainerView.transform = CGAffineTransformMakeRotation(transformAngle)
   }
   
   func updateCounterInfinateWheel(sender: UISlider) {
     let rotation = Rotation(degrees: CGFloat(sender.value))
     containerView.imageWheel?.rotation = rotation
+    
+    let transformAngle = Angle(rotation).cgRadians 
+    containerView.transform = CGAffineTransformMakeRotation(transformAngle)
   }
   
   @IBAction func saveFramesButton(sender: UIButton) {

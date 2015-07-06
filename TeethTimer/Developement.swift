@@ -12,10 +12,20 @@ class Developement: NSObject {
   
   lazy var padNumber: NSNumberFormatter = {
     let numberFormater = NSNumberFormatter()
-    numberFormater.minimumIntegerDigits  = 2
-    numberFormater.maximumIntegerDigits  = 2
+    numberFormater.minimumIntegerDigits  = 3
+    numberFormater.maximumIntegerDigits  = 3
     numberFormater.minimumFractionDigits = 3
     numberFormater.maximumFractionDigits = 3
+    numberFormater.positivePrefix = " "
+    return numberFormater
+    }()
+  
+  lazy var padInt: NSNumberFormatter = {
+    let numberFormater = NSNumberFormatter()
+    numberFormater.minimumIntegerDigits  = 3
+    numberFormater.maximumIntegerDigits  = 3
+    numberFormater.minimumFractionDigits = 0
+    numberFormater.maximumFractionDigits = 0
     numberFormater.positivePrefix = " "
     return numberFormater
     }()
@@ -23,6 +33,14 @@ class Developement: NSObject {
   func pad(number: CGFloat) -> String {
     var paddedNumber = " 1.000"
     if let numberString = padNumber.stringFromNumber(number) {
+      paddedNumber = numberString
+    }
+    return paddedNumber
+  }
+  
+  func pi(number: Int) -> String {
+    var paddedNumber = "000"
+    if let numberString = padInt.stringFromNumber(number) {
       paddedNumber = numberString
     }
     return paddedNumber
