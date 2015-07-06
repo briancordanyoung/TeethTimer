@@ -1,7 +1,7 @@
 import UIKit
 
 extension InfiniteImageWheel {
-  class RotationState: NSObject, Printable {
+  struct RotationState {
     
     let rotation:        Rotation
     let wedgeSeries:     WedgeSeries
@@ -59,7 +59,7 @@ extension InfiniteImageWheel {
     
     
     // WedgeIndex is from 0 to (count-of-images - 1)
-    lazy var wedgeIndex: WedgeIndex = {
+    var wedgeIndex: WedgeIndex {
       //      if self.remainingRotation >= 0 {
       switch self.polarity {
       case .Positive:
@@ -72,7 +72,7 @@ extension InfiniteImageWheel {
         }
         return next
       }
-    }()
+    }
     
     var distanceWithinPartialRotation: Rotation {
       let wedgeSeperation = Rotation(self.wedgeSeperation)
@@ -93,7 +93,7 @@ extension InfiniteImageWheel {
       return abs(self.seriesWidth * self.rotationCount)
     }
   
-    lazy var wedgeCenter: Rotation = {
+    var wedgeCenter: Rotation {
       
       let wedgeSeperation = Rotation(self.wedgeSeperation)
 
@@ -136,15 +136,15 @@ extension InfiniteImageWheel {
       println("i: \(self.wedgeIndex) \(self.d.pad(wedgeSep.cgDegrees)) * \(wedgeDex) = \(self.d.pad(self.distanceWithinPartialRotation.cgDegrees)) |+| \(self.d.pad(width)) * \(rotCount) = \(self.d.pad(self.distanceOfCompletRotations.cgDegrees)) |=|\(self.d.pad(wedgeCenter.cgDegrees)) @ \(self.d.pad(self.rotation.cgDegrees))")
 
       return wedgeCenter
-    }()
+    }
     
-    lazy var directionRotatedOffWedgeCenter: RotationDirection = {
+    var directionRotatedOffWedgeCenter: RotationDirection {
       if self.layoutRotation > self.wedgeCenter {
         return .Clockwise
       } else {
         return .CounterClockwise
       }
-    }()
+    }
 
 
     
@@ -156,22 +156,22 @@ extension InfiniteImageWheel {
     // first wedge is centered at the top of the wheel.
     // offsetRotation is the rotation shifted so the it the wedge min or max
     // is at the top of the wheel
-    /* private */ lazy var offsetRotation: Rotation = {
+    /* private */ var offsetRotation: Rotation {
       switch self.polarity {
       case .Positive:
         return self.layoutRotation + (self.wedgeSeperation / 2)
       case .Negative:
         return self.layoutRotation - (self.wedgeSeperation / 2)
       }
-    }()
+    }
     
     
     // The remainder (modulus) of the seriesWidth in to the rotation.
     // This remainder is transforms a rotation of any size in to a rotation
     // between 0 and seriesWidth.
-    /* private */ lazy var remainingRotation: Rotation = {
+    /* private */ var remainingRotation: Rotation {
       return abs(self.offsetRotation % self.seriesWidth)
-    }()
+    }
     
     // MARK: Private Computed Properties
     
