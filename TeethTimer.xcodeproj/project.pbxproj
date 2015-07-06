@@ -184,6 +184,7 @@
 		D3AFFDD31B4AEEFE00BEA5A4 /* PieImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */; };
 		D3AFFDD41B4AEF0200BEA5A4 /* WedgeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37FBC761AF3308500381C7F /* WedgeImageView.swift */; };
 		D3AFFDD71B4B038C00BEA5A4 /* PieSliceLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */; };
+		D3AFFDD91B4B29E800BEA5A4 /* RotationStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AFFDD81B4B29E800BEA5A4 /* RotationStateTests.swift */; };
 		D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */; };
 		D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */; };
 		D3B7BC7519EA383A00F50DF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3B7BC7319EA383A00F50DF7 /* Main.storyboard */; };
@@ -246,8 +247,6 @@
 		D30EDFA51AD2F8C100E76327 /* SystemVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemVersion.swift; sourceTree = "<group>"; };
 		D3112E111B350FCB00ECF073 /* InfinateContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfinateContainerView.swift; sourceTree = "<group>"; };
 		D3112E291B35442C00ECF073 /* InfiniteImageWheel+TeethTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InfiniteImageWheel+TeethTimer.swift"; sourceTree = "<group>"; };
-		D31CD1DF1B2F47FD008B4177 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D31CD1E01B2F47FD008B4177 /* TeethTimer_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeethTimer_Tests.swift; sourceTree = "<group>"; };
 		D31F389B1B2DF8CF0009E0B8 /* Int+Parity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Parity.swift"; sourceTree = "<group>"; };
 		D31F39741B330969002AE34B /* InfiniteImageWheel+RotationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InfiniteImageWheel+RotationState.swift"; sourceTree = "<group>"; };
 		D31F39771B33098E002AE34B /* InfiniteImageWheel+WedgeSeries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InfiniteImageWheel+WedgeSeries.swift"; sourceTree = "<group>"; };
@@ -326,6 +325,7 @@
 		D3AFFDBF1B4AD2EE00BEA5A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3AFFDC01B4AD2EE00BEA5A4 /* ImageWheelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWheelTests.swift; sourceTree = "<group>"; };
 		D3AFFDD61B4AEF3F00BEA5A4 /* ImageWheelTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ImageWheelTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		D3AFFDD81B4B29E800BEA5A4 /* RotationStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationStateTests.swift; sourceTree = "<group>"; };
 		D3B29F7F1AF5264200C2C067 /* ContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		D3B7BC6A19EA383A00F50DF7 /* TeethTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeethTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B7BC6E19EA383A00F50DF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -424,23 +424,6 @@
 				D3A4341F1B015BA8001DD6A2 /* FramesToMovie.m */,
 			);
 			name = CachingUI;
-			sourceTree = "<group>";
-		};
-		D31CD1DD1B2F47FD008B4177 /* TeethTimer Tests */ = {
-			isa = PBXGroup;
-			children = (
-				D31CD1E01B2F47FD008B4177 /* TeethTimer_Tests.swift */,
-				D31CD1DE1B2F47FD008B4177 /* Supporting Files */,
-			);
-			path = "TeethTimer Tests";
-			sourceTree = "<group>";
-		};
-		D31CD1DE1B2F47FD008B4177 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				D31CD1DF1B2F47FD008B4177 /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		D335407D1A3764E80064C81C /* GavinPoses */ = {
@@ -564,6 +547,7 @@
 		D3AFFDBD1B4AD2EE00BEA5A4 /* ImageWheelTests */ = {
 			isa = PBXGroup;
 			children = (
+				D3AFFDD81B4B29E800BEA5A4 /* RotationStateTests.swift */,
 				D3AFFDC01B4AD2EE00BEA5A4 /* ImageWheelTests.swift */,
 				D3AFFDBE1B4AD2EE00BEA5A4 /* Supporting Files */,
 			);
@@ -584,7 +568,6 @@
 				D3B7BC6C19EA383A00F50DF7 /* TeethTimer */,
 				D3B7BC8219EA383A00F50DF7 /* TeethTimerTests */,
 				D37FBC7D1AF34DE100381C7F /* ImageWheel */,
-				D31CD1DD1B2F47FD008B4177 /* TeethTimer Tests */,
 				D3AFFDBD1B4AD2EE00BEA5A4 /* ImageWheelTests */,
 				D3B7BC6B19EA383A00F50DF7 /* Products */,
 				D7D25F379C44550B89AD1B67 /* Pods */,
@@ -1013,6 +996,7 @@
 				D3AFFDC91B4AD31400BEA5A4 /* InfiniteImageWheel+RotationState.swift in Sources */,
 				D3AFFDCA1B4AD31600BEA5A4 /* InfiniteImageWheel+Wedge.swift in Sources */,
 				D3AFFDCB1B4AD31900BEA5A4 /* InfiniteImageWheel+WedgeState.swift in Sources */,
+				D3AFFDD91B4B29E800BEA5A4 /* RotationStateTests.swift in Sources */,
 				D3AFFDCC1B4AD31C00BEA5A4 /* InfiniteImageWheel+WedgeSeries.swift in Sources */,
 				D3AFFDCD1B4AD32000BEA5A4 /* Revolution.swift in Sources */,
 				D3AFFDCE1B4AD32200BEA5A4 /* Angle.swift in Sources */,
