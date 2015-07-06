@@ -55,9 +55,6 @@ extension InfiniteImageWheel {
       }
     }
     
-    // MARK: Lazy Computed & Stored Properties
-    
-    
     // WedgeIndex is from 0 to (count-of-images - 1)
     var wedgeIndex: WedgeIndex {
       //      if self.remainingRotation >= 0 {
@@ -147,8 +144,6 @@ extension InfiniteImageWheel {
     }
 
 
-    
-    // MARK: Private Lazy Computed & Stored Properties
     
     // Much of the math to compute these properties assumes that the
     // begining rotation of the wedge seriesWidth is at 0.  But, seriesWidth is
