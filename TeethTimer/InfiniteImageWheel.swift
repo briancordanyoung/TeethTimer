@@ -36,7 +36,8 @@ final class InfiniteImageWheel: UIView {
     wedgeSeries = WedgeSeries(wedges: wedges,
                            direction: direction,
                      wedgeSeperation: wedgeSeperation,
-                        visibleAngle: Angle(degrees: 90)) /* TODO: Angle(degrees: 90) */
+                        visibleAngle: Angle(degrees: 90))
+                                          
     rotationState = RotationState( rotation: 0.0,
                       wedgeSeries: wedgeSeries)
     
