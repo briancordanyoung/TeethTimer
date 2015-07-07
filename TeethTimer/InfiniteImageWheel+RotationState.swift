@@ -83,18 +83,16 @@ extension InfiniteImageWheel {
     }
     
     var wedgeCenter: Rotation {
-      let wedgeCenter: Rotation
+      let distanceToWedgeCenter = distanceOfCompletRotations +
+                                  distanceWithinPartialRotation
       
       switch polarity {
       case .Positive:
-        wedgeCenter = (distanceOfCompletRotations +
-                       distanceWithinPartialRotation ) * -1
+        return distanceToWedgeCenter * -1
         
       case .Negative:
-        wedgeCenter = distanceOfCompletRotations +
-                      distanceWithinPartialRotation
+        return distanceToWedgeCenter
       }
-      return wedgeCenter
     }
     
     var directionRotatedOffWedgeCenter: RotationDirection {
@@ -113,7 +111,7 @@ extension InfiniteImageWheel {
     // first wedge is centered at the top of the wheel.
     // offsetRotation is the rotation shifted so the it the wedge min or max
     // is at the top of the wheel
-    /* private */ var offsetRotation: Rotation {
+    var offsetRotation: Rotation {
       switch polarity {
       case .Positive:
         return layoutRotation + (wedgeSeperation / 2)
@@ -126,11 +124,9 @@ extension InfiniteImageWheel {
     // The remainder (modulus) of the seriesWidth in to the rotation.
     // This remainder is transforms a rotation of any size in to a rotation
     // between 0 and seriesWidth.
-    /* private */ var remainingRotation: Rotation {
+    var remainingRotation: Rotation {
       return abs(offsetRotation % seriesWidth)
     }
-    
-    // MARK: Private Computed Properties
     
     // How many complete rotations the wheel been rotated from the start.
     var rotationCount: Int {
