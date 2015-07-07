@@ -16,10 +16,10 @@ class RotationStateTests: XCTestCase {
     let imageSeperation = Angle(degrees: 90)
     let imageCount      = Int(10)
     let maxIndex        = imageCount - 1
-    let imageNames = arrayOfNames(imageCount)
-    let imageWheel = InfiniteImageWheel(imageNames: imageNames,
-      seperatedByAngle: imageSeperation,
-      inDirection: .Clockwise)
+    let imageNames      = arrayOfNames(imageCount)
+    let imageWheel      = InfiniteImageWheel(imageNames: imageNames,
+                                       seperatedByAngle: imageSeperation,
+                                            inDirection: .Clockwise)
     
     let testCount        = imageCount * 6
     var previousIndex    = 1
@@ -37,27 +37,106 @@ class RotationStateTests: XCTestCase {
       }
       
       XCTAssert(nextIndex == currentIndex, "Current Index is not next in the progression: Rot: \(currentRotation.cgDegrees) Is: \(currentIndex) Expected: \(nextIndex)")
+      
       previousIndex = imageWheel.rotationState.wedgeIndex
+    }
+  }
+  
+  
+  func testRotationCounterIndexProgression() {
+    let imageSeperation = Angle(degrees: 90)
+    let imageCount      = Int(10)
+    let maxIndex        = imageCount - 1
+    let imageNames      = arrayOfNames(imageCount)
+    let imageWheel      = InfiniteImageWheel(imageNames: imageNames,
+                                       seperatedByAngle: imageSeperation,
+                                            inDirection: .CounterClockwise)
+    
+    let testCount        = imageCount * 6
+    var previousIndex    = 1
+    let startingRotation = Rotation(imageSeperation) * (imageCount * 3 * -1)
+    
+    for i in 0..<testCount {
+      let additionalRotation   = Rotation(imageSeperation) * i
+      let currentRotation      = startingRotation + additionalRotation + Rotation(degrees: -1)
+      imageWheel.rotation      = currentRotation
+      let currentIndex         = imageWheel.rotationState.wedgeIndex
       
+      var nextIndex = previousIndex - 1
+      if nextIndex < 0 {
+        nextIndex = maxIndex
+      }
+      
+      XCTAssert(nextIndex == currentIndex, "Current Index is not next in the progression: Rot: \(currentRotation.cgDegrees) Is: \(currentIndex) Expected: \(nextIndex)")
+      
+      previousIndex = imageWheel.rotationState.wedgeIndex
+    }
+  }
+ 
+  
+  func testWedgeRotationProgression() {
+  
+    let imageSeperation = Angle(degrees: 90)
+    let imageCount      = Int(10)
+    let maxIndex        = imageCount - 1
+    let imageNames      = arrayOfNames(imageCount)
+    let wedges = imageNames.map({
+      InfiniteImageWheel.Wedge(imageName: $0)
+    })
+    let series = InfiniteImageWheel.WedgeSeries(wedges: wedges,
+      direction: .Clockwise,
+      wedgeSeperation: Angle(degrees: 90),
+      visibleAngle: Angle(degrees: 90))
+    
+    
+    
+    let testCount           = imageCount * 6
+    let startingRotation    = Rotation(imageSeperation) * (imageCount * 3 * -1)
+    
+    for i in 0..<testCount {
+      let randomOffset = randomRotationWithinRotation(imageSeperation.rotation)
+      
+      let additionalRotation   = Rotation(imageSeperation) * i
+      let currentRotation      = startingRotation + additionalRotation
+      let randomizedRotation   = currentRotation + randomOffset
+      
+      let state     = InfiniteImageWheel.RotationState(rotation: randomizedRotation,
+                                                    wedgeSeries: series)
+      
+      XCTAssert(rotationsAreClose(state.wedgeCenter, currentRotation), "Current Wedge Center is not next in the progression: Rot: \(randomizedRotation.cgDegrees) count: \(i) Is: \(state.wedgeCenter.cgDegrees  ) Expected: \(currentRotation.cgDegrees)")
       
     }
   }
   
   
-  
-  
-  
-  
-  
-  // Utility:
-  func arrayOfNames(count: Int) -> [String] {
-    var imageNames: [String] = []
-    for i in 0..<count {
-      imageNames.append(imageNameForNumber(i))
-    }
-    return imageNames
+  func rotationsAreClose(a: Rotation,_ b: Rotation) -> Bool {
+    var rotA = Int64(a.value * 10000)
+    var rotB = Int64(b.value * 10000)
+    return rotA == rotB
   }
   
+  
+  
+  // MARK: Utility
+  
+  // Return a Rotation that is randomly between -(rotation/2) & (rotation/2)
+  func randomRotationWithinRotation(rotation: Rotation) -> Rotation {
+    // arc4random works with integers. Before turning degrees (a double) in to 
+    // an Int (UInt32), first multiply it by 'precision'
+    let precision       = UInt32(100)
+    
+    let randomRange     = UInt32(rotation.degrees * 0.999 * Double(precision))
+    let halfRange       = rotation.degrees * 0.4995
+    
+    // Divide by 'precision' to return to the same order of magnitude that the
+    // original degrees were in.
+    let randomOffset    = Double(arc4random_uniform(randomRange)) /
+                          Double(precision)
+    let randomOffsetDegrees = randomOffset - halfRange
+    
+    return Rotation(degrees: randomOffsetDegrees)
+  }
+
   func paddedTwoDigitNumber(i: Int) -> String {
     var paddedTwoDigitNumber = "00"
     
@@ -72,10 +151,20 @@ class RotationStateTests: XCTestCase {
     }
     return paddedTwoDigitNumber
   }
-  
+
   func imageNameForNumber(i: Int) -> String {
     return "num-\(paddedTwoDigitNumber(i))"
   }
+    
+  
+  func arrayOfNames(count: Int) -> [String] {
+    var imageNames: [String] = []
+    for i in 0..<count {
+      imageNames.append(imageNameForNumber(i))
+    }
+    return imageNames
+  }
+  
   
   
   

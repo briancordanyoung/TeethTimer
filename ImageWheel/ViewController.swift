@@ -61,7 +61,7 @@ class ViewController: UIViewController {
     let rotation = Rotation(degrees: CGFloat(sender.value))
     containerView.imageWheel?.rotation = rotation
     
-    let transformAngle = Angle(rotation).cgRadians 
+    let transformAngle = Angle(rotation).cgRadians * -1
     containerView.transform = CGAffineTransformMakeRotation(transformAngle)
   }
   
