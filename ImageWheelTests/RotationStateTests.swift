@@ -36,7 +36,11 @@ class RotationStateTests: XCTestCase {
         nextIndex = maxIndex
       }
       
-      XCTAssert(nextIndex == currentIndex, "Current Index is not next in the progression: Rot: \(currentRotation.cgDegrees) Is: \(currentIndex) Expected: \(nextIndex)")
+      var msg = "Current Index is not next in the progression: "
+      msg += "Rot: \(currentRotation.cgDegrees) "
+      msg += "Is: \(currentIndex) "
+      msg += "Expected: \(nextIndex)"
+      XCTAssert(nextIndex == currentIndex, msg)
       
       previousIndex = imageWheel.rotationState.wedgeIndex
     }
@@ -67,7 +71,11 @@ class RotationStateTests: XCTestCase {
         nextIndex = maxIndex
       }
       
-      XCTAssert(nextIndex == currentIndex, "Current Index is not next in the progression: Rot: \(currentRotation.cgDegrees) Is: \(currentIndex) Expected: \(nextIndex)")
+      var msg = "Current Index is not next in the progression: "
+      msg += "Rot: \(currentRotation.cgDegrees) "
+      msg += "Is: \(currentIndex) "
+      msg += "Expected: \(nextIndex)"
+      XCTAssert(nextIndex == currentIndex, msg)
       
       previousIndex = imageWheel.rotationState.wedgeIndex
     }
