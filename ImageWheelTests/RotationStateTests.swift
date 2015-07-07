@@ -12,14 +12,20 @@ class RotationStateTests: XCTestCase {
     super.tearDown()
   }
   
+  // MARK: Tests
   func testRotationIndexProgression() {
     let imageSeperation = Angle(degrees: 90)
     let imageCount      = Int(10)
     let maxIndex        = imageCount - 1
     let imageNames      = arrayOfNames(imageCount)
-    let imageWheel      = InfiniteImageWheel(imageNames: imageNames,
-                                       seperatedByAngle: imageSeperation,
-                                            inDirection: .Clockwise)
+    let wedges = imageNames.map({
+      InfiniteImageWheel.Wedge(imageName: $0)
+    })
+    let series = InfiniteImageWheel.WedgeSeries(wedges: wedges,
+                                             direction: .Clockwise,
+                                       wedgeSeperation: imageSeperation,
+                                          visibleAngle: imageSeperation)
+    
     
     let testCount        = imageCount * 6
     var previousIndex    = 1
@@ -27,9 +33,11 @@ class RotationStateTests: XCTestCase {
     
     for i in 0..<testCount {
       let additionalRotation   = Rotation(imageSeperation) * i
-      let currentRotation      = startingRotation + additionalRotation + Rotation(degrees: -1)
-      imageWheel.rotation      = currentRotation
-      let currentIndex         = imageWheel.rotationState.wedgeIndex
+      let randomOffset = randomRotationWithinRotation(imageSeperation.rotation)
+      let currentRotation = startingRotation + additionalRotation + randomOffset
+      let state     = InfiniteImageWheel.RotationState(rotation: currentRotation,
+                                                    wedgeSeries: series)
+      let currentIndex         = state.wedgeIndex
       
       var nextIndex = previousIndex - 1
       if nextIndex < 0 {
@@ -42,7 +50,7 @@ class RotationStateTests: XCTestCase {
       msg += "Expected: \(nextIndex)"
       XCTAssert(nextIndex == currentIndex, msg)
       
-      previousIndex = imageWheel.rotationState.wedgeIndex
+      previousIndex = state.wedgeIndex
     }
   }
   
@@ -52,9 +60,13 @@ class RotationStateTests: XCTestCase {
     let imageCount      = Int(10)
     let maxIndex        = imageCount - 1
     let imageNames      = arrayOfNames(imageCount)
-    let imageWheel      = InfiniteImageWheel(imageNames: imageNames,
-                                       seperatedByAngle: imageSeperation,
-                                            inDirection: .CounterClockwise)
+    let wedges = imageNames.map({
+      InfiniteImageWheel.Wedge(imageName: $0)
+    })
+    let series = InfiniteImageWheel.WedgeSeries(wedges: wedges,
+                                             direction: .CounterClockwise,
+                                       wedgeSeperation: imageSeperation,
+                                          visibleAngle: imageSeperation)
     
     let testCount        = imageCount * 6
     var previousIndex    = 1
@@ -62,9 +74,11 @@ class RotationStateTests: XCTestCase {
     
     for i in 0..<testCount {
       let additionalRotation   = Rotation(imageSeperation) * i
-      let currentRotation      = startingRotation + additionalRotation + Rotation(degrees: -1)
-      imageWheel.rotation      = currentRotation
-      let currentIndex         = imageWheel.rotationState.wedgeIndex
+      let randomOffset = randomRotationWithinRotation(imageSeperation.rotation)
+      let currentRotation = startingRotation + additionalRotation + randomOffset
+      let state     = InfiniteImageWheel.RotationState(rotation: currentRotation,
+                                                    wedgeSeries: series)
+      let currentIndex = state.wedgeIndex
       
       var nextIndex = previousIndex - 1
       if nextIndex < 0 {
@@ -77,7 +91,7 @@ class RotationStateTests: XCTestCase {
       msg += "Expected: \(nextIndex)"
       XCTAssert(nextIndex == currentIndex, msg)
       
-      previousIndex = imageWheel.rotationState.wedgeIndex
+      previousIndex = state.wedgeIndex
     }
   }
  
@@ -92,9 +106,9 @@ class RotationStateTests: XCTestCase {
       InfiniteImageWheel.Wedge(imageName: $0)
     })
     let series = InfiniteImageWheel.WedgeSeries(wedges: wedges,
-      direction: .Clockwise,
-      wedgeSeperation: Angle(degrees: 90),
-      visibleAngle: Angle(degrees: 90))
+                                             direction: .Clockwise,
+                                       wedgeSeperation: imageSeperation,
+                                          visibleAngle: imageSeperation)
     
     
     
@@ -112,13 +126,52 @@ class RotationStateTests: XCTestCase {
                                                     wedgeSeries: series)
       
       var msg = "Current Wedge Center is not next in the progression: "
-      msg += "Rot: \(randomizedRotation.cgDegrees) count: \(i) "
+      msg += "Rot: \(randomizedRotation.cgDegrees) "
+      msg += "count: \(i) "
       msg += "Is: \(state.wedgeCenter.cgDegrees  ) "
       msg += "Expected: \(currentRotation.cgDegrees)"
       XCTAssert(rotationsAreClose(state.wedgeCenter, currentRotation), msg)
     }
   }
   
+  
+  func testCounterWedgeRotationProgression() {
+  
+    let imageSeperation = Angle(degrees: 90)
+    let imageCount      = Int(10)
+    let maxIndex        = imageCount - 1
+    let imageNames      = arrayOfNames(imageCount)
+    let wedges = imageNames.map({
+      InfiniteImageWheel.Wedge(imageName: $0)
+    })
+    let series = InfiniteImageWheel.WedgeSeries(wedges: wedges,
+                                             direction: .CounterClockwise,
+                                       wedgeSeperation: imageSeperation,
+                                          visibleAngle: imageSeperation)
+    
+    
+    
+    let testCount           = imageCount * 6
+    let startingRotation    = Rotation(imageSeperation) * (imageCount * 3 * -1)
+    
+    for i in 0..<testCount {
+      let randomOffset = randomRotationWithinRotation(imageSeperation.rotation)
+      
+      let additionalRotation   = Rotation(imageSeperation) * i
+      let currentRotation      = startingRotation + additionalRotation
+      let randomizedRotation   = currentRotation + randomOffset
+      
+      let state     = InfiniteImageWheel.RotationState(rotation: randomizedRotation,
+                                                    wedgeSeries: series)
+      
+      var msg = "Current Wedge Center is not next in the progression: "
+      msg += "Rot: \(randomizedRotation.cgDegrees) "
+      msg += "count: \(i) "
+      msg += "Is: \(state.wedgeCenter.cgDegrees  ) "
+      msg += "Expected: \(currentRotation.cgDegrees)"
+      XCTAssert(rotationsAreClose(state.wedgeCenter, currentRotation), msg)
+    }
+  }
   
   
   

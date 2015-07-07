@@ -75,6 +75,7 @@
 		D32519351B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D32519331B0AA5B9007965DD /* BDYMovieMakerHelper.m */; };
 		D32519361B0AB048007965DD /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3864F581AF69FBE00B787B4 /* Async.swift */; };
 		D32625911B2799D9002379C1 /* Revolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32625901B2799D9002379C1 /* Revolution.swift */; };
+		D3280BCA1B4C966C003D8448 /* WedgeStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3280BC91B4C966C003D8448 /* WedgeStateTests.swift */; };
 		D328E50D1AF08DC000144E3B /* forward-lg.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D328E5091AF08DC000144E3B /* forward-lg.mp4 */; };
 		D328E50E1AF08DC000144E3B /* forward.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D328E50A1AF08DC000144E3B /* forward.mp4 */; };
 		D333746A1B49C52D00CDB381 /* num-00@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33374691B49C52D00CDB381 /* num-00@2x.png */; };
@@ -257,6 +258,7 @@
 		D32519321B0AA5B9007965DD /* BDYMovieMakerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDYMovieMakerHelper.h; sourceTree = "<group>"; };
 		D32519331B0AA5B9007965DD /* BDYMovieMakerHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDYMovieMakerHelper.m; sourceTree = "<group>"; };
 		D32625901B2799D9002379C1 /* Revolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Revolution.swift; sourceTree = "<group>"; };
+		D3280BC91B4C966C003D8448 /* WedgeStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WedgeStateTests.swift; sourceTree = "<group>"; };
 		D328E5091AF08DC000144E3B /* forward-lg.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "forward-lg.mp4"; sourceTree = "<group>"; };
 		D328E50A1AF08DC000144E3B /* forward.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = forward.mp4; sourceTree = "<group>"; };
 		D33374691B49C52D00CDB381 /* num-00@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-00@2x.png"; path = "Images/Numbers/PNG/num-00@2x.png"; sourceTree = "<group>"; };
@@ -547,6 +549,7 @@
 		D3AFFDBD1B4AD2EE00BEA5A4 /* ImageWheelTests */ = {
 			isa = PBXGroup;
 			children = (
+				D3280BC91B4C966C003D8448 /* WedgeStateTests.swift */,
 				D3AFFDD81B4B29E800BEA5A4 /* RotationStateTests.swift */,
 				D3AFFDC01B4AD2EE00BEA5A4 /* ImageWheelTests.swift */,
 				D3AFFDBE1B4AD2EE00BEA5A4 /* Supporting Files */,
@@ -998,6 +1001,7 @@
 				D3AFFDCB1B4AD31900BEA5A4 /* InfiniteImageWheel+WedgeState.swift in Sources */,
 				D3AFFDD91B4B29E800BEA5A4 /* RotationStateTests.swift in Sources */,
 				D3AFFDCC1B4AD31C00BEA5A4 /* InfiniteImageWheel+WedgeSeries.swift in Sources */,
+				D3280BCA1B4C966C003D8448 /* WedgeStateTests.swift in Sources */,
 				D3AFFDCD1B4AD32000BEA5A4 /* Revolution.swift in Sources */,
 				D3AFFDCE1B4AD32200BEA5A4 /* Angle.swift in Sources */,
 				D3AFFDCF1B4AD32500BEA5A4 /* AccumulatedAngle.swift in Sources */,
@@ -1317,6 +1321,7 @@
 				D3AFFDC51B4AD2EE00BEA5A4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D3B7BC6519EA383A00F50DF7 /* Build configuration list for PBXProject "TeethTimer" */ = {
 			isa = XCConfigurationList;

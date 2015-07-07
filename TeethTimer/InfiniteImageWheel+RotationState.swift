@@ -65,6 +65,8 @@ extension InfiniteImageWheel {
         // First invert the index
         var wedgeIndex = wedgeMaxIndex - countOfWedgesInRemainder
         // Then shift it up one index
+        // This counteracts the 1/2 wedgeSeperation offset that is factored in
+        // to the the offsetRotation property.
         var next = wedgeIndex + 1
         if next > wedgeMaxIndex {
           next = 0
@@ -124,13 +126,17 @@ extension InfiniteImageWheel {
     // The remainder (modulus) of the seriesWidth in to the rotation.
     // This remainder is transforms a rotation of any size in to a rotation
     // between 0 and seriesWidth.
-    var remainingRotation: Rotation {
-      return abs(offsetRotation % seriesWidth)
-    }
-    
     // How many complete rotations the wheel been rotated from the start.
     var rotationCount: Int {
-      return abs(Int((offsetRotation / seriesWidth).value))
+      var rotations            = offsetRotation.radians
+      var width                = seriesWidth.radians
+      var rotationCount        = rotations / width
+      var roundedRotationCount = Int(rotationCount)
+      return abs(roundedRotationCount)
+    }
+    
+    var remainingRotation: Rotation {
+      return abs(offsetRotation % seriesWidth)
     }
     
     // The number of wedges in the remainder of the remainingRotation property
