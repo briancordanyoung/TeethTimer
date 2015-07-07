@@ -103,21 +103,25 @@ class RotationStateTests: XCTestCase {
       let state     = InfiniteImageWheel.RotationState(rotation: randomizedRotation,
                                                     wedgeSeries: series)
       
-      XCTAssert(rotationsAreClose(state.wedgeCenter, currentRotation), "Current Wedge Center is not next in the progression: Rot: \(randomizedRotation.cgDegrees) count: \(i) Is: \(state.wedgeCenter.cgDegrees  ) Expected: \(currentRotation.cgDegrees)")
-      
+      var msg = "Current Wedge Center is not next in the progression: "
+      msg += "Rot: \(randomizedRotation.cgDegrees) count: \(i) "
+      msg += "Is: \(state.wedgeCenter.cgDegrees  ) "
+      msg += "Expected: \(currentRotation.cgDegrees)"
+      XCTAssert(rotationsAreClose(state.wedgeCenter, currentRotation), msg)
     }
   }
   
   
-  func rotationsAreClose(a: Rotation,_ b: Rotation) -> Bool {
-    var rotA = Int64(a.value * 10000)
-    var rotB = Int64(b.value * 10000)
-    return rotA == rotB
-  }
   
   
   
   // MARK: Utility
+  func rotationsAreClose(a: Rotation,_ b: Rotation) -> Bool {
+    let precision = Double(10000)
+    var rotA = Int64(a.value * precision)
+    var rotB = Int64(b.value * precision)
+    return rotA == rotB
+  }
   
   // Return a Rotation that is randomly between -(rotation/2) & (rotation/2)
   func randomRotationWithinRotation(rotation: Rotation) -> Rotation {
