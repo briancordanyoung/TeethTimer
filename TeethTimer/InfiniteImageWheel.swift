@@ -122,14 +122,12 @@ final class InfiniteImageWheel: UIView {
   
   func transformWedgesWithRotationState(rotationState: RotationState) {
     let state = RotationState(state: rotationState)
-//    println("wedgeIndex: \(state.wedgeIndex)")
-    
+
     for (index, wedge) in enumerate(wedgeSeries.wedges) {
       if wedge.viewExists {
         layoutWedge(wedge, atIndex: index, withRotationState: state)
       }
     }
-//    println("")
   }
   
   func layoutWedge(wedge: Wedge, var atIndex index: WedgeIndex,
@@ -141,19 +139,15 @@ final class InfiniteImageWheel: UIView {
                         
 //    if wedgeState.distanceToRotation < wedgeSeries.visibleAngle {
     let i = rotationState.wedgeIndex
-    if i == index || i == wedgeState.nextNeighbor || i == wedgeState.prevNeighbor  {
+//    if i == index || i == wedgeState.nextNeighbor || i == wedgeState.prevNeighbor  {
+    if i == wedgeState.laidoutIndex || i == wedgeState.nextNeighbor || i == wedgeState.prevNeighbor  {
       wedge.layoutAngle = wedgeState.layoutAngle
-      wedge.width       = wedgeState.shapeAngle
-//      println("\(wedgeState.description)")
+      wedge.width       = Angle(degrees: 180) // wedgeState.shapeAngle
     } else {
       wedge.hide()
 
     }
   }
-
-
-//  if state.wedgeIndex == index || (state.wedgeIndex + 1) == index {
-  
   
   
   
