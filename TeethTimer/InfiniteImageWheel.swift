@@ -15,7 +15,16 @@ final class InfiniteImageWheel: UIView {
       rotationState = RotationState( rotation: rotation,
                                   wedgeSeries: wedgeSeries)
       
-    transformWedgesWithRotationState(rotationState)
+      transformWedgesWithRotationState(rotationState)
+    }
+  }
+  
+  var layoutRotation: Rotation {
+    get {
+      return rotation * -1
+    }
+    set(newRotation) {
+      rotation = newRotation * -1
     }
   }
   
@@ -44,7 +53,7 @@ final class InfiniteImageWheel: UIView {
     super.init(frame: CGRect())
     
     assert(wedgeSeries.seriesWidth >= Rotation(degrees: 360),
-      "InfiniteImageWheel requires enough images and seperation betwen the wedges to at least make a complete circle.")
+      "InfiniteImageWheel requires enough images and seperation between the wedges to at least make a complete circle.")
     self.userInteractionEnabled = false
     rotation = Rotation(0.0)
   }
@@ -115,11 +124,6 @@ final class InfiniteImageWheel: UIView {
   }
 
   
-  
-  
-  
-  
-  
   func transformWedgesWithRotationState(rotationState: RotationState) {
     let state = RotationState(state: rotationState)
 
@@ -130,23 +134,20 @@ final class InfiniteImageWheel: UIView {
     }
   }
   
-  func layoutWedge(wedge: Wedge, var atIndex index: WedgeIndex,
+  func layoutWedge(wedge: Wedge, atIndex index: WedgeIndex,
                        withRotationState rotationState: RotationState) {
                         
     let wedgeState = WedgeState(rotationState: rotationState,
                                    wedgeIndex: index)
                         
-    let laidoutIndex = wedgeState.laidoutIndex
-    
-    if laidoutIndex == rotationState.wedgeIndex  ||
-       laidoutIndex == rotationState.wedgeIndexNeighbor   {
+    if wedgeState.laidoutIndex == rotationState.wedgeIndex         ||
+       wedgeState.laidoutIndex == rotationState.wedgeIndexNeighbor   {
         
       wedge.layoutAngle = wedgeState.layoutAngle
       wedge.width       = wedgeState.shapeAngle
     } else {
       wedge.hide()
     }
-                        
   }
   
   
