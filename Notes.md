@@ -1,5 +1,9 @@
 TODO:
 ---------------------------------------
+- Refactor Revolution class and replace all M_PI code to use its presets
+- Sort out positive/negitive rotations of RotationState and WheelControl
+- Audit WheelControl
+
 - TimerViewController:
 	- Implement percentage dictionary for length of time to display each image
 - ImageWheel
@@ -32,19 +36,12 @@ TODO:
 	- Button:
 		- Start/Pause/Done button
 		- Reset Button
-	- Background
-		- Add video and sinc to rotation
 		
 	-Graphics
 		- Drop Shadow
 		- Clean up images
 		- Draw Icon
 		
--refactor code
-	New type: Cicle (radial?) Revolution
-		replace all radian & degree code with circle type
-	switch All movie Caching to the same extension "mp4"
-
 Design:
 ---------------------------------------
 [Visual Inspiration](https://vimeo.com/118801020)
