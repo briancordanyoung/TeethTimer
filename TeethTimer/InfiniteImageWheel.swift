@@ -136,17 +136,17 @@ final class InfiniteImageWheel: UIView {
     let wedgeState = WedgeState(rotationState: rotationState,
                                    wedgeIndex: index)
                         
-                        
-//    if wedgeState.distanceToRotation < wedgeSeries.visibleAngle {
-    let i = rotationState.wedgeIndex
-//    if i == index || i == wedgeState.nextNeighbor || i == wedgeState.prevNeighbor  {
-    if i == wedgeState.laidoutIndex || i == wedgeState.nextNeighbor || i == wedgeState.prevNeighbor  {
+    let laidoutIndex = wedgeState.laidoutIndex
+    
+    if laidoutIndex == rotationState.wedgeIndex  ||
+       laidoutIndex == rotationState.wedgeIndexNeighbor   {
+        
       wedge.layoutAngle = wedgeState.layoutAngle
-      wedge.width       = Angle(degrees: 180) // wedgeState.shapeAngle
+      wedge.width       = wedgeState.shapeAngle
     } else {
       wedge.hide()
-
     }
+                        
   }
   
   

@@ -98,14 +98,23 @@ extension InfiniteImageWheel {
     }
     
     var directionRotatedOffWedgeCenter: RotationDirection {
-      if layoutRotation > wedgeCenter {
-        return .Clockwise
-      } else {
+      let center = (wedgeCenter * -1)
+
+      switch (layoutRotation > center , layoutDirection) {
+      case (true, .Clockwise):
         return .CounterClockwise
+      case (false, .Clockwise):
+        return .Clockwise
+      case (true, .CounterClockwise):
+        return .Clockwise
+      case (false, .CounterClockwise):
+        return .CounterClockwise
+      default:
+        assertionFailure("directionRotatedOffWedgeCenter should already have been exhaustive and not reached the default case.")
+        return .Clockwise
       }
+      
     }
-
-
     
     // Much of the math to compute these properties assumes that the
     // begining rotation of the wedge seriesWidth is at 0.  But, seriesWidth is
@@ -146,6 +155,20 @@ extension InfiniteImageWheel {
       return abs(countOfWedgesInRemainder)
     }
     
+    var wedgeIndexNeighbor: WedgeIndex {
+      switch (directionRotatedOffWedgeCenter,layoutDirection) {
+      case (.Clockwise        , .Clockwise):
+        return prevNeighbor
+      case (.CounterClockwise , .Clockwise):
+        return nextNeighbor
+        
+      case (.Clockwise        , .CounterClockwise):
+        return nextNeighbor
+      case (.CounterClockwise , .CounterClockwise):
+        return prevNeighbor
+      }
+    }
+    
     
     // MARK: Methods
     func angleOffCenterFromLayoutDirection(direction: LayoutDirection) -> Angle {
@@ -158,6 +181,32 @@ extension InfiniteImageWheel {
         return Angle(angleOffCenter * -1)
       }
     }
+
+    
+    var nextNeighbor: WedgeIndex {
+      return nextIndex(wedgeIndex)
+    }
+    
+    var prevNeighbor: WedgeIndex {
+      return prevIndex(wedgeIndex)
+    }
+    
+    func nextIndex(index: Int) -> Int {
+      var next = index + 1
+      if next > wedgeMaxIndex {
+        next = 0
+      }
+      return next
+    }
+    
+    func prevIndex(index: Int) -> Int {
+      var prev = index - 1
+      if prev < 0 {
+        prev = wedgeMaxIndex
+      }
+      return prev
+    }
+    
     
   }
 }

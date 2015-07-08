@@ -1,7 +1,7 @@
 import UIKit
 
 
-extension InfiniteImageWheel : Printable {
+extension InfiniteImageWheel {
   struct WedgeState {
     
     // MARK: Properties
@@ -14,25 +14,6 @@ extension InfiniteImageWheel : Printable {
       self.index = wedgeIndex
     }
     
-    
-    var description: String {
-      let d = Developement()
-      let pi = d.pi
-      let p  = d.pad
-
-      var description = "rot:\(p(rotationState.rotation.cgDegrees)) "
-      description += "(\(rotationState.wedgeIndex))"
-      description += "index:\(pi(index)) | "
-      description += "layAngle:\(p(layoutAngle.cgDegrees)) "
-      description += "dist2Rot:\(p(distanceToRotation.cgDegrees)) "
-      description += "centerDist2Rot:\(p(centerDistanceToSelectedWedge.cgDegrees)) "
-      description += "laidoutIndex:\(pi(laidoutIndex)) "
-//      description += "+LaidoutIndex:\(pi(positiveLaidoutIndex)) "
-      description += "steps:\(pi(steps)) "
-      description += "d: \(directionFromSelectedWedge.description) "
-      
-      return description
-    }
     
     // MARK: Calculated Properties
     var layoutAngle: Angle {
@@ -83,32 +64,7 @@ extension InfiniteImageWheel : Printable {
       }
     }
 
-//    var positiveLaidoutIndex: Int {
-//      switch rotationState.layoutDirection {
-//      case .Clockwise:
-//        return index
-//        
-//      case .CounterClockwise:
-//        return rotationState.wedgeMaxIndex - index
-//      }
-//    }
-//    
-//    var negativeLaidoutIndex: Int {
-//      switch rotationState.layoutDirection {
-//      case .Clockwise:
-//        return rotationState.wedgeMaxIndex - index
-//        
-//      case .CounterClockwise:
-//        return index
-//      }
-//    }
-    
-    
-    
-    
-    
-    
-    
+
     var steps: Int {
       return min(clockwiseSteps,counterClockwiseSteps)
     }
