@@ -141,22 +141,22 @@ extension InfiniteImageWheel {
         
         var constraints: [(superview: UIView, constraint: NSLayoutConstraint)] = []
         let centerY = NSLayoutConstraint(item: imageView,
-          attribute: NSLayoutAttribute.CenterY,
-          relatedBy: NSLayoutRelation.Equal,
-          toItem: superview,
-          attribute: NSLayoutAttribute.CenterY,
-          multiplier: 1.0,
-          constant: 0.0)
+                                    attribute: NSLayoutAttribute.CenterY,
+                                    relatedBy: NSLayoutRelation.Equal,
+                                       toItem: superview,
+                                    attribute: NSLayoutAttribute.CenterY,
+                                   multiplier: 1.0,
+                                     constant: 0.0)
         superview.addConstraint(centerY)
         constraints.append((superview: superview, constraint: centerY))
         
         let centerX = NSLayoutConstraint(item: imageView,
-          attribute: NSLayoutAttribute.CenterX,
-          relatedBy: NSLayoutRelation.Equal,
-          toItem: superview,
-          attribute: NSLayoutAttribute.CenterX,
-          multiplier: 1.0,
-          constant: 0.0)
+                                    attribute: NSLayoutAttribute.CenterX,
+                                    relatedBy: NSLayoutRelation.Equal,
+                                       toItem: superview,
+                                    attribute: NSLayoutAttribute.CenterX,
+                                   multiplier: 1.0,
+                                     constant: 0.0)
         superview.addConstraint(centerX)
         constraints.append((superview: superview, constraint: centerX))
         return constraints
@@ -165,26 +165,26 @@ extension InfiniteImageWheel {
     func createHeightAndAspectContraintsForView(imageView: UIView,
       toSuperview superview: UIView,
       withAspect aspect: CGFloat)
-      -> [(superview: UIView, constraint: NSLayoutConstraint)] {
+                      -> [(superview: UIView, constraint: NSLayoutConstraint)] {
         
         var constraints: [(superview: UIView, constraint: NSLayoutConstraint)] = []
         let height = NSLayoutConstraint(item: imageView,
-          attribute: NSLayoutAttribute.Height,
-          relatedBy: NSLayoutRelation.Equal,
-          toItem: superview,
-          attribute: NSLayoutAttribute.Height,
-          multiplier: 0.75, // 0.75
-          constant: 0.0)
+                                   attribute: NSLayoutAttribute.Height,
+                                   relatedBy: NSLayoutRelation.Equal,
+                                      toItem: superview,
+                                   attribute: NSLayoutAttribute.Height,
+                                  multiplier: 0.75,
+                                    constant: 0.0)
         superview.addConstraint(height)
         constraints.append((superview: superview, constraint: height))
         
         let aspect = NSLayoutConstraint(item: imageView,
-          attribute: NSLayoutAttribute.Width,
-          relatedBy: NSLayoutRelation.Equal,
-          toItem: imageView,
-          attribute: NSLayoutAttribute.Height,
-          multiplier: aspect,
-          constant: 0.0)
+                                   attribute: NSLayoutAttribute.Width,
+                                   relatedBy: NSLayoutRelation.Equal,
+                                      toItem: imageView,
+                                   attribute: NSLayoutAttribute.Height,
+                                  multiplier: aspect,
+                                    constant: 0.0)
         superview.addConstraint(aspect)
         constraints.append((superview: imageView, constraint: aspect))
         return constraints
