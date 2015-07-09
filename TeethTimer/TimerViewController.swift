@@ -364,7 +364,7 @@ final class TimerViewController: UIViewController {
       if previousIndexBeforeTouch > imageWheelView.rotationState.wedgeIndex {
         // The wheel was turned back.
         let targetRotation = gavinWheel.targetRotation
-        let targetImage    = imageWheelView.imageIndexForRotation(targetRotation)
+        let targetImage    = imageWheelView.indexFromRotation(targetRotation)
         let wheelTurnedBackByTmp = previousIndexBeforeTouch - targetImage
         let wheelTurnedBackBy    = max(wheelTurnedBackByTmp,0)
         
@@ -505,21 +505,9 @@ final class TimerViewController: UIViewController {
   }
   
   
-  func arrayOfImages(count: Int) -> [UIImage] {
-    var imageArray: [UIImage] = []
-//    for i in 1...count {
-    for i in 0..<count {
-      if let image = UIImage(named: imageNameForNumber(i)) {
-        imageArray.append(image)
-      }
-    }
-    
-    return imageArray
-  }
-  
   func arrayOfNames(count: Int) -> [String] {
     var nameArray: [String] = []
-    //    for i in 1...count {
+//    for i in 1...count {
     for i in 0..<count {
       nameArray.append(imageNameForNumber(i))
     }
