@@ -510,8 +510,8 @@ final class WheelControl: UIControl, AnimationDelegate  {
     // Somewhere in the rotation of the wheelView will be a discontinuity
     // where the angle flips from -3.14 to 3.14 or  back.  This adgustment
     // places that point in negitive Y.
-    if angle >= Revolution.quarter {
-      angle = angle - Revolution.full
+    if angle >= Angle.quarter {
+      angle = Angle(Rotation(angle) - Rotation.full)
     }
     return angle
   }
