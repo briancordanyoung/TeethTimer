@@ -1,7 +1,7 @@
 TODO:
 ---------------------------------------
+- Figure out bugs in ViewController since InfinateImageWheel was installed
 - Refactor Revolution class and replace all M_PI code to use its presets
-- Sort out positive/negitive rotations of RotationState and WheelControl
 - Audit WheelControl
 
 - TimerViewController:

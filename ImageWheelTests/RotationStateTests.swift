@@ -22,7 +22,7 @@ class RotationStateTests: XCTestCase {
       InfiniteImageWheel.Wedge(imageName: $0)
     })
     let series = InfiniteImageWheel.WedgeSeries(wedges: wedges,
-                                             direction: .Clockwise,
+                                             direction: .ClockwiseLayout,
                                        wedgeSeperation: imageSeperation,
                                           visibleAngle: imageSeperation)
     
@@ -64,7 +64,7 @@ class RotationStateTests: XCTestCase {
       InfiniteImageWheel.Wedge(imageName: $0)
     })
     let series = InfiniteImageWheel.WedgeSeries(wedges: wedges,
-                                             direction: .CounterClockwise,
+                                             direction: .CounterClockwiseLayout,
                                        wedgeSeperation: imageSeperation,
                                           visibleAngle: imageSeperation)
     
@@ -106,7 +106,7 @@ class RotationStateTests: XCTestCase {
       InfiniteImageWheel.Wedge(imageName: $0)
     })
     let series = InfiniteImageWheel.WedgeSeries(wedges: wedges,
-                                             direction: .Clockwise,
+                                             direction: .ClockwiseLayout,
                                        wedgeSeperation: imageSeperation,
                                           visibleAngle: imageSeperation)
     
@@ -145,7 +145,7 @@ class RotationStateTests: XCTestCase {
       InfiniteImageWheel.Wedge(imageName: $0)
     })
     let series = InfiniteImageWheel.WedgeSeries(wedges: wedges,
-                                             direction: .CounterClockwise,
+                                             direction: .CounterClockwiseLayout,
                                        wedgeSeperation: imageSeperation,
                                           visibleAngle: imageSeperation)
     

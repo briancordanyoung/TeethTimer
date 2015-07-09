@@ -18,10 +18,10 @@ extension InfiniteImageWheel {
     // MARK: Calculated Properties
     var layoutAngle: Angle {
       switch directionFromSelectedWedge {
-      case .Clockwise:
+      case .ClockwiseLayout:
         return Angle(rotationState.wedgeCenter + centerDistanceToSelectedWedge)
         
-      case .CounterClockwise:
+      case .CounterClockwiseLayout:
         return Angle(rotationState.wedgeCenter - centerDistanceToSelectedWedge)
       }
     }
@@ -56,10 +56,10 @@ extension InfiniteImageWheel {
     
     var laidoutIndex: Int {
       switch rotationState.layoutDirection {
-      case .Clockwise:
+      case .ClockwiseLayout:
         return index
         
-      case .CounterClockwise:
+      case .CounterClockwiseLayout:
         return rotationState.wedgeMaxIndex - index
       }
     }
@@ -71,9 +71,9 @@ extension InfiniteImageWheel {
     
     var directionFromSelectedWedge: LayoutDirection {
       if clockwiseSteps < counterClockwiseSteps {
-        return .Clockwise
+        return .ClockwiseLayout
       } else {
-        return .CounterClockwise
+        return .CounterClockwiseLayout
       }
     }
     

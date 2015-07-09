@@ -36,9 +36,9 @@ extension InfiniteImageWheel {
       let offset = Rotation(wedgeSeperation) / 2
       let result: Rotation
       switch direction {
-      case .Clockwise:
+      case .ClockwiseLayout:
         result = -offset
-      case .CounterClockwise:
+      case .CounterClockwiseLayout:
         result =  offset
       }
       return result
@@ -47,9 +47,9 @@ extension InfiniteImageWheel {
     var seriesEndRotation: Rotation {
       let result: Rotation
       switch direction {
-      case .Clockwise:
+      case .ClockwiseLayout:
         result = seriesStartRotation + seriesWidth
-      case .CounterClockwise:
+      case .CounterClockwiseLayout:
         result = seriesStartRotation - seriesWidth
       }
       return result
@@ -65,9 +65,9 @@ extension InfiniteImageWheel {
         
         let result: Rotation
         switch direction {
-        case .Clockwise:
+        case .ClockwiseLayout:
           result =  distanceFromFirstWedge
-        case .CounterClockwise:
+        case .CounterClockwiseLayout:
           result = -distanceFromFirstWedge
         }
         return result

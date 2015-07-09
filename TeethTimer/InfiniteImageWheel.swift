@@ -19,20 +19,11 @@ final class InfiniteImageWheel: UIView {
     }
   }
   
-  var layoutRotation: Rotation {
-    get {
-      return rotation * -1
-    }
-    set(newRotation) {
-      rotation = newRotation * -1
-    }
-  }
   
   // Computed Properties
   var wedgeCenter: Rotation {
     return rotationState.wedgeCenter
   }
-  
   
   // MARK: Initialization
   init(imageNames: [String], seperatedByAngle wedgeSeperation: Angle,
@@ -45,7 +36,7 @@ final class InfiniteImageWheel: UIView {
     wedgeSeries = WedgeSeries(wedges: wedges,
                            direction: direction,
                      wedgeSeperation: wedgeSeperation,
-                        visibleAngle: Angle(degrees: 90))
+                        visibleAngle: Angle(degrees: 180))
                                           
     rotationState = RotationState( rotation: 0.0,
                       wedgeSeries: wedgeSeries)
@@ -60,15 +51,15 @@ final class InfiniteImageWheel: UIView {
   
   convenience init(imageNames: [String], seperatedByAngle wedgeSeperation: Angle ) {
     self.init(imageNames: imageNames, seperatedByAngle: wedgeSeperation,
-                                           inDirection: .Clockwise)
+                                           inDirection: .ClockwiseLayout)
   }
   
   required init(coder: NSCoder) {
     // TODO: impliment coder and decoder
     wedgeSeries = WedgeSeries(wedges: [],
-                           direction: .Clockwise,
+                           direction: .ClockwiseLayout,
                      wedgeSeperation: Angle(0),
-                        visibleAngle: Angle(degrees: 90))
+                        visibleAngle: Angle(degrees: 180))
     
     rotationState = RotationState( rotation: 0.0,
                       wedgeSeries: wedgeSeries)
@@ -144,7 +135,7 @@ final class InfiniteImageWheel: UIView {
        wedgeState.laidoutIndex == rotationState.wedgeIndexNeighbor   {
         
       wedge.layoutAngle = wedgeState.layoutAngle
-      wedge.width       = wedgeState.shapeAngle
+//      wedge.width       = wedgeState.shapeAngle
     } else {
       wedge.hide()
     }
@@ -159,8 +150,8 @@ final class InfiniteImageWheel: UIView {
 // MARK: Direction Enum
 extension InfiniteImageWheel {
   enum RotationDirection: String, Printable {
-    case Clockwise        = "       Clockwise"
-    case CounterClockwise = "CounterClockwise"
+    case Clockwise        = "       Clockwise Rotation"
+    case CounterClockwise = "CounterClockwise Rotation"
     
     var description: String {
       return self.rawValue
@@ -169,16 +160,16 @@ extension InfiniteImageWheel {
     var asLayoutDirection: LayoutDirection {
       switch self {
         case .Clockwise:
-          return .Clockwise
+          return .ClockwiseLayout
         case .CounterClockwise:
-          return .CounterClockwise
+          return .CounterClockwiseLayout
       }
     }
   }
   
   enum LayoutDirection: String, Printable {
-    case Clockwise        = "       Clockwise"
-    case CounterClockwise = "CounterClockwise"
+    case ClockwiseLayout        = "       Clockwise Layout"
+    case CounterClockwiseLayout = "CounterClockwise Layout"
     
     var description: String {
       return self.rawValue
@@ -186,9 +177,9 @@ extension InfiniteImageWheel {
     
     var asRotationDirection: RotationDirection {
       switch self {
-      case .Clockwise:
+      case .ClockwiseLayout:
         return .Clockwise
-      case .CounterClockwise:
+      case .CounterClockwiseLayout:
         return .CounterClockwise
       }
     }

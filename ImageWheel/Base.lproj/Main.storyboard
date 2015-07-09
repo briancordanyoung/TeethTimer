@@ -22,13 +22,13 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JXK-an-dF6">
                                 <rect key="frame" x="48" y="9" width="225" height="450"/>
                                 <subviews>
-                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZdF-0D-9an" userLabel="Container" customClass="InfinateCounterContainerView" customModule="ImageWheel" customModuleProvider="target">
+                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZdF-0D-9an" userLabel="CounterClockwise" customClass="InfinateCounterContainerView" customModule="ImageWheel" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="225" height="225"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="ZdF-0D-9an" secondAttribute="height" multiplier="1:1" id="xqQ-f0-xDK"/>
                                         </constraints>
                                     </view>
-                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rjc-Bp-ZxT" userLabel="InfinateContainer" customClass="InfinateContainerView" customModule="ImageWheel" customModuleProvider="target">
+                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rjc-Bp-ZxT" userLabel="Clockwise" customClass="InfinateContainerView" customModule="ImageWheel" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="225" width="225" height="225"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Rjc-Bp-ZxT" secondAttribute="height" multiplier="1:1" id="OAp-0H-SzQ"/>

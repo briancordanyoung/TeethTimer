@@ -27,6 +27,11 @@ class ViewController: UIViewController {
     infoLabel.text = labelNumber.stringFromNumber(slider.value)
 //    containerView.transform =
 //          CGAffineTransformMakeRotation(Angle(degrees: -90 - 45).cgRadians)
+    
+    
+    
+    
+    
     sliderChanged(slider)
   }
 
@@ -53,7 +58,7 @@ class ViewController: UIViewController {
   func updateInfinateWheel(sender: UISlider) {
     let rotation = Rotation(degrees: CGFloat(sender.value))
     infinateContainerView.imageWheel?.rotation = rotation
-    let transformAngle = Angle(rotation).cgRadians * -1
+    let transformAngle = Angle(rotation).cgRadians
     infinateContainerView.transform = CGAffineTransformMakeRotation(transformAngle)
   }
   
@@ -61,7 +66,7 @@ class ViewController: UIViewController {
     let rotation = Rotation(degrees: CGFloat(sender.value))
     containerView.imageWheel?.rotation = rotation
     
-    let transformAngle = Angle(rotation).cgRadians * -1
+    let transformAngle = Angle(rotation).cgRadians
     containerView.transform = CGAffineTransformMakeRotation(transformAngle)
   }
   

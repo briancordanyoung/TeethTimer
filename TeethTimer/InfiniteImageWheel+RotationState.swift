@@ -20,10 +20,6 @@ extension InfiniteImageWheel {
       self.wedgeSeries = WedgeSeries(state.wedgeSeries)
     }
     
-    // MARK: Computed Properties
-    var layoutRotation: Rotation {
-      return rotation * -1
-    }
 
     // wheelShape connivence properties.
     var wedgeCount: Int {
@@ -48,7 +44,7 @@ extension InfiniteImageWheel {
     
     
     var polarity: Polarity {
-      if layoutRotation >= 0 {
+      if rotation >= 0 {
         return .Positive
       } else {
         return .Negative
@@ -99,15 +95,15 @@ extension InfiniteImageWheel {
     
     var directionRotatedOffWedgeCenter: RotationDirection {
       let center = (wedgeCenter * -1)
-
-      switch (layoutRotation > center , layoutDirection) {
-      case (true, .Clockwise):
+      
+      switch (rotation > center , layoutDirection) {
+      case (true, .ClockwiseLayout):
         return .CounterClockwise
-      case (false, .Clockwise):
+      case (false, .ClockwiseLayout):
         return .Clockwise
-      case (true, .CounterClockwise):
+      case (true, .CounterClockwiseLayout):
         return .Clockwise
-      case (false, .CounterClockwise):
+      case (false, .CounterClockwiseLayout):
         return .CounterClockwise
       default:
         assertionFailure("directionRotatedOffWedgeCenter should already have been exhaustive and not reached the default case.")
@@ -125,9 +121,9 @@ extension InfiniteImageWheel {
     var offsetRotation: Rotation {
       switch polarity {
       case .Positive:
-        return layoutRotation + (wedgeSeperation / 2)
+        return rotation + (wedgeSeperation / 2)
       case .Negative:
-        return layoutRotation - (wedgeSeperation / 2)
+        return rotation - (wedgeSeperation / 2)
       }
     }
     
@@ -157,27 +153,26 @@ extension InfiniteImageWheel {
     
     var wedgeIndexNeighbor: WedgeIndex {
       switch (directionRotatedOffWedgeCenter,layoutDirection) {
-      case (.Clockwise        , .Clockwise):
+      case (.Clockwise        , .ClockwiseLayout):
         return prevNeighbor
-      case (.CounterClockwise , .Clockwise):
+      case (.CounterClockwise , .ClockwiseLayout):
         return nextNeighbor
         
-      case (.Clockwise        , .CounterClockwise):
+      case (.Clockwise        , .CounterClockwiseLayout):
         return nextNeighbor
-      case (.CounterClockwise , .CounterClockwise):
+      case (.CounterClockwise , .CounterClockwiseLayout):
         return prevNeighbor
       }
     }
     
-    
     // MARK: Methods
     func angleOffCenterFromLayoutDirection(direction: LayoutDirection) -> Angle {
-      let angleOffCenter = layoutRotation - wedgeCenter
+      let angleOffCenter = rotation - wedgeCenter
     
       switch direction {
-      case .Clockwise:
+      case .ClockwiseLayout:
         return Angle(angleOffCenter)
-      case .CounterClockwise:
+      case .CounterClockwiseLayout:
         return Angle(angleOffCenter * -1)
       }
     }
