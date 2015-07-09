@@ -32,7 +32,7 @@ class RotationStateTests: XCTestCase {
     let startingRotation = Rotation(imageSeperation) * (imageCount * 3 * -1)
     
     for i in 0..<testCount {
-      let additionalRotation   = Rotation(imageSeperation) * i
+      let additionalRotation   = Rotation(imageSeperation) * i * -1
       let randomOffset = randomRotationWithinRotation(imageSeperation.rotation)
       let currentRotation = startingRotation + additionalRotation + randomOffset
       let state     = InfiniteImageWheel.RotationState(rotation: currentRotation,
@@ -73,7 +73,7 @@ class RotationStateTests: XCTestCase {
     let startingRotation = Rotation(imageSeperation) * (imageCount * 3 * -1)
     
     for i in 0..<testCount {
-      let additionalRotation   = Rotation(imageSeperation) * i
+      let additionalRotation   = Rotation(imageSeperation) * i * -1
       let randomOffset = randomRotationWithinRotation(imageSeperation.rotation)
       let currentRotation = startingRotation + additionalRotation + randomOffset
       let state     = InfiniteImageWheel.RotationState(rotation: currentRotation,
@@ -129,8 +129,8 @@ class RotationStateTests: XCTestCase {
       msg += "Rot: \(randomizedRotation.degrees) "
       msg += "count: \(i) "
       msg += "Is: \(state.wedgeCenter.degrees  ) "
-      msg += "Expected: \(currentRotation.degrees)"
-      XCTAssert(rotationsAreClose(state.wedgeCenter, currentRotation), msg)
+      msg += "Expected: \(currentRotation.degrees * -1)"
+      XCTAssert(rotationsAreClose(state.wedgeCenter, currentRotation * -1), msg)
     }
   }
   
@@ -158,7 +158,7 @@ class RotationStateTests: XCTestCase {
       let randomOffset = randomRotationWithinRotation(imageSeperation.rotation)
       
       let additionalRotation   = Rotation(imageSeperation) * i
-      let currentRotation      = startingRotation + additionalRotation
+      let currentRotation      = (startingRotation + additionalRotation) * -1
       let randomizedRotation   = currentRotation + randomOffset
       
       let state     = InfiniteImageWheel.RotationState(rotation: randomizedRotation,
@@ -168,8 +168,8 @@ class RotationStateTests: XCTestCase {
       msg += "Rot: \(randomizedRotation.degrees) "
       msg += "count: \(i) "
       msg += "Is: \(state.wedgeCenter.degrees  ) "
-      msg += "Expected: \(currentRotation.degrees)"
-      XCTAssert(rotationsAreClose(state.wedgeCenter, currentRotation), msg)
+      msg += "Expected: \(currentRotation.degrees * -1)"
+      XCTAssert(rotationsAreClose(state.wedgeCenter, currentRotation * -1), msg)
     }
   }
   

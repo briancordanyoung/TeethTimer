@@ -57,10 +57,10 @@ extension InfiniteImageWheel {
     var laidoutIndex: Int {
       switch rotationState.layoutDirection {
       case .ClockwiseLayout:
-        return index
+        return rotationState.wedgeMaxIndex - index
         
       case .CounterClockwiseLayout:
-        return rotationState.wedgeMaxIndex - index
+        return index
       }
     }
 

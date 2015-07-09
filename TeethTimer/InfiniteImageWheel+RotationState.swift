@@ -96,19 +96,18 @@ extension InfiniteImageWheel {
       let center = (wedgeCenter * -1)
       
       switch (rotation > center , layoutDirection) {
-      case (true, .ClockwiseLayout):
-        return .CounterClockwise
-      case (false, .ClockwiseLayout):
-        return .Clockwise
       case (true, .CounterClockwiseLayout):
-        return .Clockwise
+        return .CounterClockwise
       case (false, .CounterClockwiseLayout):
+        return .Clockwise
+      case (true, .ClockwiseLayout):
+        return .Clockwise
+      case (false, .ClockwiseLayout):
         return .CounterClockwise
       default:
         assertionFailure("directionRotatedOffWedgeCenter should already have been exhaustive and not reached the default case.")
         return .Clockwise
       }
-      
     }
     
     // Much of the math to compute these properties assumes that the
@@ -152,14 +151,14 @@ extension InfiniteImageWheel {
     
     var wedgeIndexNeighbor: WedgeIndex {
       switch (directionRotatedOffWedgeCenter,layoutDirection) {
-      case (.Clockwise        , .ClockwiseLayout):
+      case (.Clockwise        , .CounterClockwiseLayout):
         return prevNeighbor
-      case (.CounterClockwise , .ClockwiseLayout):
+      case (.CounterClockwise , .CounterClockwiseLayout):
         return nextNeighbor
         
-      case (.Clockwise        , .CounterClockwiseLayout):
+      case (.Clockwise        , .ClockwiseLayout):
         return nextNeighbor
-      case (.CounterClockwise , .CounterClockwiseLayout):
+      case (.CounterClockwise , .ClockwiseLayout):
         return prevNeighbor
       }
     }
@@ -169,9 +168,9 @@ extension InfiniteImageWheel {
     
       switch layoutDirection {
       case .ClockwiseLayout:
-        return Angle(angleOffCenter)
-      case .CounterClockwiseLayout:
         return Angle(angleOffCenter * -1)
+      case .CounterClockwiseLayout:
+        return Angle(angleOffCenter)
       }
     }
 

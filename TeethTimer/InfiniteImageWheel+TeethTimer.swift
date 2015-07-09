@@ -12,9 +12,9 @@ extension InfiniteImageWheel {
     
     switch wedgeSeries.direction {
     case .ClockwiseLayout:
-      distanceWithinPartialRotation = abs(wedgeSeperation * index)
-    case .CounterClockwiseLayout:
       distanceWithinPartialRotation = abs(wedgeSeperation * invertedIndex)
+    case .CounterClockwiseLayout:
+      distanceWithinPartialRotation = abs(wedgeSeperation * index)
     }
     
     let distanceToWedgeCenter = distanceOfCompletRotations +

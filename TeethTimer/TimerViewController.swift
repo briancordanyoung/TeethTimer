@@ -191,7 +191,7 @@ final class TimerViewController: UIViewController {
     let imageNames = arrayOfNames(10)
     let imageWheel = InfiniteImageWheel(imageNames: imageNames,
                                   seperatedByAngle: Angle(degrees: 90),
-                                       inDirection: .CounterClockwiseLayout)
+                                       inDirection: .ClockwiseLayout)
     
     gavinWheel.wheelView.addSubview(imageWheel)
     
@@ -328,8 +328,8 @@ final class TimerViewController: UIViewController {
 
     if let imageWheelView = imageWheelView {
       
-      imageWheelView.rotation = gavinWheel.rotation
-      gavinWheel.snapToRotation     = imageWheelView.wedgeCenter * -1
+      imageWheelView.rotation    = gavinWheel.rotation
+      gavinWheel.snapToRotation  = imageWheelView.wedgeCenter
       
       if let percentageRemaining = gavinWheel.percentageRemaining {
         updateBackgroundForPercentDone(percentageRemaining)
