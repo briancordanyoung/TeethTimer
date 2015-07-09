@@ -527,10 +527,11 @@
 			children = (
 				D3C438C81B308B4D00958CB8 /* InfiniteImageWheel.swift */,
 				D3112E291B35442C00ECF073 /* InfiniteImageWheel+TeethTimer.swift */,
-				D31F39741B330969002AE34B /* InfiniteImageWheel+RotationState.swift */,
 				D31F397A1B3309E3002AE34B /* InfiniteImageWheel+Wedge.swift */,
-				D397B3901B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift */,
 				D31F39771B33098E002AE34B /* InfiniteImageWheel+WedgeSeries.swift */,
+				D31F39741B330969002AE34B /* InfiniteImageWheel+RotationState.swift */,
+				D397B3901B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift */,
+				D3F1DA361B4E38CF0067EA72 /* Wedge Classes */,
 			);
 			name = "InfinateImageWheel cluster";
 			sourceTree = "<group>";
@@ -646,6 +647,17 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		D3F1DA361B4E38CF0067EA72 /* Wedge Classes */ = {
+			isa = PBXGroup;
+			children = (
+				D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */,
+				D37FBC761AF3308500381C7F /* WedgeImageView.swift */,
+				D3CDA2CE1AF32E6300243AFF /* PieSliceLayer.h */,
+				D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */,
+			);
+			name = "Wedge Classes";
+			sourceTree = "<group>";
+		};
 		D3F72EAA1B2BFC61005C6F94 /* Shared Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -653,10 +665,6 @@
 				D3A8146A1B40816F008C80CC /* WheelControl */,
 				D3A814681B40813D008C80CC /* ImageWheel */,
 				D3A814691B408149008C80CC /* InfinateImageWheel cluster */,
-				D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */,
-				D37FBC761AF3308500381C7F /* WedgeImageView.swift */,
-				D3CDA2CE1AF32E6300243AFF /* PieSliceLayer.h */,
-				D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */,
 				D39BDB5F1B2E677100B0E709 /* NumericTypes */,
 			);
 			name = "Shared Classes";
