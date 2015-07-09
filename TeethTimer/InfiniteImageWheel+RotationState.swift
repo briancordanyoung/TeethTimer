@@ -21,7 +21,7 @@ extension InfiniteImageWheel {
     }
     
 
-    // wheelShape connivence properties.
+    // wedgeSeries connivence properties.
     var wedgeCount: Int {
       return wedgeSeries.wedgeCount
     }
@@ -53,7 +53,6 @@ extension InfiniteImageWheel {
     
     // WedgeIndex is from 0 to (count-of-images - 1)
     var wedgeIndex: WedgeIndex {
-      //      if remainingRotation >= 0 {
       switch polarity {
       case .Positive:
         return countOfWedgesInRemainder
