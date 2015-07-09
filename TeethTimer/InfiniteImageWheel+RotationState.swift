@@ -165,11 +165,10 @@ extension InfiniteImageWheel {
       }
     }
     
-    // MARK: Methods
-    func angleOffCenterFromLayoutDirection(direction: LayoutDirection) -> Angle {
+    var offsetFromWedgeCenter: Angle {
       let angleOffCenter = rotation - wedgeCenter
     
-      switch direction {
+      switch layoutDirection {
       case .ClockwiseLayout:
         return Angle(angleOffCenter)
       case .CounterClockwiseLayout:
@@ -177,7 +176,7 @@ extension InfiniteImageWheel {
       }
     }
 
-    
+    // MARK: Methods
     var nextNeighbor: WedgeIndex {
       return nextIndex(wedgeIndex)
     }

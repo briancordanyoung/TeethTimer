@@ -40,7 +40,7 @@ extension InfiniteImageWheel {
     // The rotation distance between the center of this wedge and the
     // rotation that the rotationState returns
     var distanceToRotation: Rotation {
-      let offcenter = rotationState.angleOffCenterFromLayoutDirection(directionFromSelectedWedge.asLayoutDirection)
+      let offcenter = rotationState.offsetFromWedgeCenter
       let distanceToRotation = centerDistanceToSelectedWedge + offcenter
       return abs(distanceToRotation)
     }
