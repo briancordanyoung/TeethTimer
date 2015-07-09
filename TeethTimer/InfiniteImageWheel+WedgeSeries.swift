@@ -33,7 +33,7 @@ extension InfiniteImageWheel {
     }
     
     var description: String {
-      return "TODO: impliment me"
+      return "TODO: impliment description"
     }
   }
 }

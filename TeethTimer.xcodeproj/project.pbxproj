@@ -245,7 +245,6 @@
 		D30EDFA51AD2F8C100E76327 /* SystemVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemVersion.swift; sourceTree = "<group>"; };
 		D3112E111B350FCB00ECF073 /* InfinateCounterContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfinateCounterContainerView.swift; sourceTree = "<group>"; };
 		D3112E291B35442C00ECF073 /* InfiniteImageWheel+TeethTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InfiniteImageWheel+TeethTimer.swift"; sourceTree = "<group>"; };
-		D31F389B1B2DF8CF0009E0B8 /* Int+Parity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Parity.swift"; sourceTree = "<group>"; };
 		D31F39741B330969002AE34B /* InfiniteImageWheel+RotationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InfiniteImageWheel+RotationState.swift"; sourceTree = "<group>"; };
 		D31F39771B33098E002AE34B /* InfiniteImageWheel+WedgeSeries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InfiniteImageWheel+WedgeSeries.swift"; sourceTree = "<group>"; };
 		D31F397A1B3309E3002AE34B /* InfiniteImageWheel+Wedge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InfiniteImageWheel+Wedge.swift"; sourceTree = "<group>"; };
@@ -290,14 +289,12 @@
 		D335409B1A3764E80064C81C /* Gavin Poses-s10@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s10@3x.png"; sourceTree = "<group>"; };
 		D341D23E1AC1FB24007D0593 /* Developement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Developement.swift; sourceTree = "<group>"; };
 		D347A2381B2C7D3100E5256C /* TimerViewController+Background.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimerViewController+Background.swift"; sourceTree = "<group>"; };
-		D3485C8319ECE77200C6E495 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		D3485C8419ECEEB900C6E495 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		D34DC0551A0FF26000AA7420 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		D34F10B81AAEA1D0009E2A9B /* WheelControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WheelControl.swift; sourceTree = "<group>"; };
 		D34F10BA1AAEAE88009E2A9B /* WheelImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WheelImage.png; path = Calibration/WheelImage.png; sourceTree = "<group>"; };
 		D34F10BB1AAEAE88009E2A9B /* WheelImageType.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WheelImageType.png; path = Calibration/WheelImageType.png; sourceTree = "<group>"; };
 		D35ED7B21AED6012001DFF20 /* VideoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
-		D36DB7361AB7D03800F080C8 /* ImageWheel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheel.swift; sourceTree = "<group>"; };
 		D37FBC761AF3308500381C7F /* WedgeImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WedgeImageView.swift; sourceTree = "<group>"; };
 		D37FBC7C1AF34DE100381C7F /* ImageWheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageWheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D37FBC7F1AF34DE100381C7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -316,7 +313,6 @@
 		D39365EC1B3A16C90075173C /* InfinateContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfinateContainerView.swift; sourceTree = "<group>"; };
 		D397B3901B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InfiniteImageWheel+WedgeState.swift"; sourceTree = "<group>"; };
 		D39BDB5C1B2E5D4E00B0E709 /* AccumulatedAngle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccumulatedAngle.swift; sourceTree = "<group>"; };
-		D3A08D9A1B30E0B80089D18F /* testAngleTypes.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = testAngleTypes.playground; sourceTree = "<group>"; };
 		D3A4341F1B015BA8001DD6A2 /* FramesToMovie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FramesToMovie.m; sourceTree = "<group>"; };
 		D3A434241B015CA0001DD6A2 /* FramesToMovie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FramesToMovie.h; sourceTree = "<group>"; };
 		D3AFFDBC1B4AD2EE00BEA5A4 /* ImageWheelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageWheelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -340,7 +336,6 @@
 		D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieSliceLayer.m; sourceTree = "<group>"; };
 		D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieImageView.swift; sourceTree = "<group>"; };
 		D3CEFEE71B2A302400AE6A6D /* Angle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
-		D3DC4C471A95877400984A24 /* ImageWheel+Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImageWheel+Types.swift"; sourceTree = "<group>"; };
 		D3F72EA71B2BEA21005C6F94 /* WheelControl+Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WheelControl+Types.swift"; sourceTree = "<group>"; };
 		D3F8609D1B294C0300C68C08 /* AngularType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AngularType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -507,16 +502,6 @@
 			name = NumericTypes;
 			sourceTree = "<group>";
 		};
-		D3A814681B40813D008C80CC /* ImageWheel */ = {
-			isa = PBXGroup;
-			children = (
-				D36DB7361AB7D03800F080C8 /* ImageWheel.swift */,
-				D3DC4C471A95877400984A24 /* ImageWheel+Types.swift */,
-				D31F389B1B2DF8CF0009E0B8 /* Int+Parity.swift */,
-			);
-			name = ImageWheel;
-			sourceTree = "<group>";
-		};
 		D3A814691B408149008C80CC /* InfinateImageWheel cluster */ = {
 			isa = PBXGroup;
 			children = (
@@ -598,8 +583,6 @@
 				D3F72EAA1B2BFC61005C6F94 /* Shared Classes */,
 				D3F72EAB1B2BFCBC005C6F94 /* Helper Classes */,
 				D3864F581AF69FBE00B787B4 /* Async.swift */,
-				D3A08D9A1B30E0B80089D18F /* testAngleTypes.playground */,
-				D3485C8319ECE77200C6E495 /* MyPlayground.playground */,
 				D34DC0551A0FF26000AA7420 /* Settings.bundle */,
 				D3B7BC6D19EA383A00F50DF7 /* Supporting Files */,
 				D388C3041A9F7B5D007D4F8B /* POP-Wrapper */,
@@ -658,7 +641,6 @@
 			children = (
 				D3485C8419ECEEB900C6E495 /* Timer.swift */,
 				D3A8146A1B40816F008C80CC /* WheelControl */,
-				D3A814681B40813D008C80CC /* ImageWheel */,
 				D3A814691B408149008C80CC /* InfinateImageWheel cluster */,
 				D39BDB5F1B2E677100B0E709 /* NumericTypes */,
 			);
@@ -732,6 +714,7 @@
 				D3B7BC6719EA383A00F50DF7 /* Frameworks */,
 				D3B7BC6819EA383A00F50DF7 /* Resources */,
 				562005A17CE1462DA7BDB754 /* Copy Pods Resources */,
+				D308867F1B4F1AC200582261 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -956,6 +939,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		D308867F1B4F1AC200582261 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "TAGS=\"TODO:|FIXME:\"\nERRORTAG=\"ERROR:\"\nfind \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\" -or -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$|($ERRORTAG).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\" | perl -p -e \"s/($ERRORTAG)/ error: \\$1/\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 

@@ -107,7 +107,7 @@ final class TimerViewController: UIViewController {
   
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
-    // TODO: if using cachedUI, tell InfinateImageWheel Wedges to 'go away'
+    imageWheelView?.removeWedgeImageViews()
   }
   
   // MARK: View Controller Rotation Methods

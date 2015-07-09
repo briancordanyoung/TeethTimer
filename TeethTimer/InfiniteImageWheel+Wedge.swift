@@ -99,24 +99,28 @@ extension InfiniteImageWheel {
         if let superview = superview {
           let image = self.image
           let aspect = imageAspect(image)
-          let wedgeImageView = WedgeImageView(image: image)
-          wedgeImageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
-          wedgeImageView.angleWidth = width
-          wedgeImageView.opaque = false
-          wedgeImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
-          superview.addSubview(wedgeImageView)
-
-          constraints += createCenterContraintsForView( wedgeImageView,
-                                           toSuperview: superview)
-          constraints += createHeightAndAspectContraintsForView( wedgeImageView,
-                                                    toSuperview: superview,
-                                                     withAspect: aspect)
           
-          for (view,constraint) in constraints {
-            view.addConstraint(constraint)
-          }
+          if let view = view {
+            assertionFailure("view already exists")
+          } else {
+            let wedgeImageView = WedgeImageView(image: image)
+            wedgeImageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
+            wedgeImageView.angleWidth = width
+            wedgeImageView.opaque = false
+            wedgeImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+            superview.addSubview(wedgeImageView)
 
-          view = wedgeImageView
+            constraints += createCenterContraintsForView( wedgeImageView,
+                                             toSuperview: superview)
+            constraints += createHeightAndAspectContraintsForView( wedgeImageView,
+                                                      toSuperview: superview,
+                                                       withAspect: aspect)
+            
+            for (view,constraint) in constraints {
+              view.addConstraint(constraint)
+            }
+            view = wedgeImageView
+          }
         }
       }
     }

@@ -112,11 +112,7 @@ extension TimerViewController {
         renderViews()
       
       case .rendered(let image):
-        // TODO: put on background thread
-        // Async.main() {
-        // self.writeFrame(image)
         self.writeFrameToMovie(image)
-        // }
 
       case .writing:
         // Do nothing. We are waiting until writing is done and
@@ -191,7 +187,7 @@ extension TimerViewController {
     return presentTime
   }
   
-  func writeFrameToPNG(image: UIImage) {
+  func writeFrameToPNG(image: UIImage) {    
     // TODO: Save on background thread
     cacheState.frameState = .writing
     
