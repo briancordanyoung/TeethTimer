@@ -3,13 +3,33 @@ import UIKit
 extension InfiniteImageWheel {
   
   func rotationForIndex(index: WedgeIndex) -> Rotation {
-    let wedgeSeperation = Rotation(wedgeSeries.wedgeSeperation)
+    
+    let wedgeSeperation               = Rotation(wedgeSeries.wedgeSeperation)
+    let invertedIndex                 = rotationState.wedgeMaxIndex - index
+    let distanceOfCompletRotations    = rotationState.distanceOfCompletRotations
+
+    let distanceWithinPartialRotation: Rotation
     
     switch wedgeSeries.direction {
     case .ClockwiseLayout:
-      return wedgeSeperation * index
+      distanceWithinPartialRotation = abs(wedgeSeperation * index)
     case .CounterClockwiseLayout:
-      return wedgeSeperation * (rotationState.wedgeMaxIndex - index)
+      distanceWithinPartialRotation = abs(wedgeSeperation * invertedIndex)
+    }
+    
+    let distanceToWedgeCenter = distanceOfCompletRotations +
+                                distanceWithinPartialRotation
+
+    return polarityAdjustedRotation(distanceToWedgeCenter)
+  }
+  
+  func polarityAdjustedRotation(distanceToWedgeCenter: Rotation) -> Rotation {
+    switch rotationState.polarity {
+    case .Positive:
+      return abs(distanceToWedgeCenter)
+      
+    case .Negative:
+      return abs(distanceToWedgeCenter) * -1
     }
   }
   
