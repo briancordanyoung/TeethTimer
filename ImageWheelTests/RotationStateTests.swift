@@ -45,7 +45,7 @@ class RotationStateTests: XCTestCase {
       }
       
       var msg = "Current Index is not next in the progression: "
-      msg += "Rot: \(currentRotation.cgDegrees) "
+      msg += "Rot: \(currentRotation.degrees) "
       msg += "Is: \(currentIndex) "
       msg += "Expected: \(nextIndex)"
       XCTAssert(nextIndex == currentIndex, msg)
@@ -86,7 +86,7 @@ class RotationStateTests: XCTestCase {
       }
       
       var msg = "Current Index is not next in the progression: "
-      msg += "Rot: \(currentRotation.cgDegrees) "
+      msg += "Rot: \(currentRotation.degrees) "
       msg += "Is: \(currentIndex) "
       msg += "Expected: \(nextIndex)"
       XCTAssert(nextIndex == currentIndex, msg)
@@ -126,10 +126,10 @@ class RotationStateTests: XCTestCase {
                                                     wedgeSeries: series)
       
       var msg = "Current Wedge Center is not next in the progression: "
-      msg += "Rot: \(randomizedRotation.cgDegrees) "
+      msg += "Rot: \(randomizedRotation.degrees) "
       msg += "count: \(i) "
-      msg += "Is: \(state.wedgeCenter.cgDegrees  ) "
-      msg += "Expected: \(currentRotation.cgDegrees)"
+      msg += "Is: \(state.wedgeCenter.degrees  ) "
+      msg += "Expected: \(currentRotation.degrees)"
       XCTAssert(rotationsAreClose(state.wedgeCenter, currentRotation), msg)
     }
   }
@@ -165,10 +165,10 @@ class RotationStateTests: XCTestCase {
                                                     wedgeSeries: series)
       
       var msg = "Current Wedge Center is not next in the progression: "
-      msg += "Rot: \(randomizedRotation.cgDegrees) "
+      msg += "Rot: \(randomizedRotation.degrees) "
       msg += "count: \(i) "
-      msg += "Is: \(state.wedgeCenter.cgDegrees  ) "
-      msg += "Expected: \(currentRotation.cgDegrees)"
+      msg += "Is: \(state.wedgeCenter.degrees  ) "
+      msg += "Expected: \(currentRotation.degrees)"
       XCTAssert(rotationsAreClose(state.wedgeCenter, currentRotation), msg)
     }
   }

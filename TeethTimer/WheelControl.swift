@@ -65,11 +65,11 @@ final class WheelControl: UIControl, AnimationDelegate  {
     get {
       var percentageRemaining: CGFloat?
       if let min = minimumRotation, max = maximumRotation {
-        percentageRemaining = percentValue( rotation.cgRadians,
-                              isBetweenLow: min.cgRadians,
-                                   AndHigh: max.cgRadians)
+        percentageRemaining = percentValue( CGFloat(rotation),
+                              isBetweenLow: CGFloat(min),
+                                   AndHigh: CGFloat(max))
         
-//        println("percentageRemaining: \(d.pad(percentageRemaining!)) \(d.pad(min.cgRadians)) > \(d.pad(rotation.cgRadians)) < \(d.pad(max.cgRadians))")
+//        println("percentageRemaining: \(d.pad(percentageRemaining!)) \(d.pad(CGFloat(min))) > \(d.pad(CGFloat(rotation))) < \(d.pad(CGFloat(max)))")
         
       }
       return percentageRemaining
@@ -151,7 +151,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
       return angleFromTransform(wheelView.transform)
     }
     set(newAngle) {
-      wheelView.transform = CGAffineTransformMakeRotation(newAngle.cgRadians)
+      wheelView.transform = CGAffineTransformMakeRotation(CGFloat(newAngle))
     }
   }
   
@@ -286,7 +286,8 @@ final class WheelControl: UIControl, AnimationDelegate  {
     // TODO: try to replace CGAffineTransformRotate() with CGAffineTransformMakeRotation()
     //       If so, use currentAngle = userState.initialRotation + angleDifference
     //       and remove initialTransform from userState.
-    let t = CGAffineTransformRotate( userState.initialTransform, angleDifference.cgRadians )
+    let t = CGAffineTransformRotate( userState.initialTransform,
+                                     CGFloat(angleDifference))
     wheelView.transform = t
     setRotation(userState.initialRotation + angleDifference)
                                         

@@ -72,16 +72,13 @@ struct AccumulatedAngle: AngularType, Printable {
   
 }
 
-// Convenience Computed Properties to convert to CGFloat
-extension AccumulatedAngle  {
-  var cgRadians: CGFloat  {
-    return CGFloat(radians)
-  }
-  
-  var cgDegrees: CGFloat {
-    return CGFloat(degrees)
+// Extend CGFloat to convert from radians
+extension CGFloat {
+  init(_ rotation: Rotation) {
+    self.init(CGFloat(rotation.radians))
   }
 }
+
 
 
 // MARK: Protocol Conformance

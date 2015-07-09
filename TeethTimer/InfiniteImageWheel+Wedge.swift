@@ -70,13 +70,14 @@ extension InfiniteImageWheel {
     }
     
     func transform(angle: Angle) {
-      transform(CGAffineTransformMakeRotation(angle.cgRadians))
+      transform(CGAffineTransformMakeRotation(CGFloat(angle)))
     }
     
     func hide() {
       if let view = view {
         if view.alpha != 0.0   { view.alpha = 0.0 }
-        view.transform = CGAffineTransformMakeRotation(Angle(degrees: 180).cgRadians)
+        let hiddenAngle = CGFloat(Angle(degrees: 180))
+        view.transform = CGAffineTransformMakeRotation(hiddenAngle)
       }
     }
     

@@ -86,7 +86,7 @@ extension TimerViewController {
         WithImageWheel imageWheel: InfiniteImageWheel) {
           
     let dev = Developement()
-    let rotationAngleString = dev.pad(imageWheel.rotation.cgRadians)
+    let rotationAngleString = dev.pad(CGFloat(imageWheel.rotation))
     label.text = "\(rotationAngleString) \(imageWheel.rotationState.wedgeIndex)"
   }
   

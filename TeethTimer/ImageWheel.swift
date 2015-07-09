@@ -183,7 +183,7 @@ final class ImageWheel: UIView {
       
       var imageView = WedgeImageView(image: imageOfNumber(i))
       imageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
-      imageView.transform = CGAffineTransformMakeRotation(wedgeAngle.cgRadians)
+      imageView.transform = CGAffineTransformMakeRotation(CGFloat(wedgeAngle))
       imageView.angleWidth = Angle(wedgeWidthAngle)
       imageView.tag = i
       
@@ -543,7 +543,7 @@ final class ImageWheel: UIView {
     let wedgesFromStart            = rotationStartingAtZero /
                                      Rotation(wedgeWidthAngle)
     // assumes: images increase as rotation decreases
-    var currentImage = ImageIndex(round(-wedgesFromStart.cgRadians)) + 1
+    var currentImage = ImageIndex(round(-CGFloat(wedgesFromStart))) + 1
     
     while currentImage > images.count || currentImage < 1 {
       if currentImage < 1 {

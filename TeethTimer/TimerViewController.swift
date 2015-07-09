@@ -351,7 +351,7 @@ final class TimerViewController: UIViewController {
            WithImageWheel imageWheel: InfiniteImageWheel,
                andPercentage percent: CGFloat) {
     let dev = Developement()
-    let rotationString = dev.pad(imageWheel.rotation.cgDegrees )
+    let rotationString = dev.pad(CGFloat(imageWheel.rotation.degrees))
     label.text = "\(rotationString) \(dev.pad(percent))%"
   }
 

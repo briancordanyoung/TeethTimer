@@ -124,16 +124,13 @@ extension Angle {
   }
 }
 
-// Convenience Computed Properties to convert to CGFloat
-extension Angle {
-  var cgRadians: CGFloat  {
-    return CGFloat(radians)
-  }
-
-  var cgDegrees: CGFloat {
-    return CGFloat(degrees)
+// Extend CGFloat to convert from radians
+extension CGFloat {
+  init(_ angle: Angle) {
+    self.init(CGFloat(angle.radians))
   }
 }
+
 
 
 // MARK: Protocol Conformance
