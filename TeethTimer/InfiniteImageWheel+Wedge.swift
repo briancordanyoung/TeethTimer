@@ -8,7 +8,7 @@ import UIKit
 // MARK: - Various enums and structs used throughout the InfiniteImageWheel Class
 extension InfiniteImageWheel {
   
-  class Wedge: NSObject {
+  final class Wedge: NSObject {
     
     // MARK: Prperties
     let imageName:    String
