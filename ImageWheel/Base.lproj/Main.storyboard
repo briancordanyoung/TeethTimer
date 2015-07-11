@@ -113,8 +113,8 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
-                        <outlet property="containerView" destination="ZdF-0D-9an" id="IVz-6C-k9F"/>
-                        <outlet property="infinateContainerView" destination="Rjc-Bp-ZxT" id="ZAW-Zb-ta5"/>
+                        <outlet property="CCWContainerView" destination="ZdF-0D-9an" id="e6K-4e-q9X"/>
+                        <outlet property="CWContainerView" destination="Rjc-Bp-ZxT" id="RdZ-fd-eDL"/>
                         <outlet property="infoLabel" destination="3HI-yF-Y5v" id="zKm-DT-0ur"/>
                         <outlet property="progressBar" destination="IQd-9c-aBs" id="wIt-la-9st"/>
                         <outlet property="slider" destination="qpj-NO-cxI" id="RqL-v6-xcL"/>
