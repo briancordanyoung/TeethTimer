@@ -58,39 +58,25 @@ extension InfiniteImageWheel {
     
     // WedgeIndex is from 0 to (count-of-images - 1)
     var wedgeIndex: WedgeIndex {
-      switch layoutDirection {
-      case .ClockwiseLayout:
-        return clockwiseWedgeIndex
-      case .CounterClockwiseLayout:
-        return counterClockwiseWedgeIndex
-      }
-    }
-    
-    var counterClockwiseWedgeIndex: WedgeIndex {
-      switch polarity {
-      case .Positive:
-        return countOfWedgesInRemainder
-      case .Negative:
+      switch (layoutDirection , polarity) {
+      case (.ClockwiseLayout , .Positive):
         return invertedShiftedCountOfWedgesInRemainder
-      }
-    }
-    
-    var clockwiseWedgeIndex: WedgeIndex {
-      switch polarity {
-      case .Positive:
-        return invertedShiftedCountOfWedgesInRemainder
-      case .Negative:
+      case (.CounterClockwiseLayout , .Positive ):
         return countOfWedgesInRemainder
+      case (.ClockwiseLayout , .Negative):
+        return countOfWedgesInRemainder
+      case (.CounterClockwiseLayout , .Negative):
+        return invertedShiftedCountOfWedgesInRemainder
       }
     }
 
-    
     var invertedShiftedCountOfWedgesInRemainder: WedgeIndex {
       // First invert the index
       var wedgeIndex = wedgeMaxIndex - countOfWedgesInRemainder
       // Then shift it up one index
       // This counteracts the 1/2 wedgeSeperation offset that is factored in
       // to the the offsetRotation property.
+      // A Rotation of 0 will be an index of 0 in both layoutDirections.
       var next = wedgeIndex + 1
       if next > wedgeMaxIndex {
         next = 0
