@@ -96,10 +96,10 @@ extension InfiniteImageWheel {
       return abs(distance)
     }
     
+    
     var wedgeCenter: Rotation {
       let distanceToWedgeCenter = distanceOfCompleteRotations +
                                   distanceWithinPartialRotation
-      
       switch polarity {
       case .Positive:
         return distanceToWedgeCenter
@@ -109,23 +109,6 @@ extension InfiniteImageWheel {
       }
     }
     
-    var directionRotatedOffWedgeCenter: RotationDirection {
-      let center = (wedgeCenter * -1)
-      
-      switch (rotation > center , layoutDirection) {
-      case (true, .CounterClockwiseLayout):
-        return .CounterClockwise
-      case (false, .CounterClockwiseLayout):
-        return .Clockwise
-      case (true, .ClockwiseLayout):
-        return .Clockwise
-      case (false, .ClockwiseLayout):
-        return .CounterClockwise
-      default:
-        assertionFailure("directionRotatedOffWedgeCenter should already have been exhaustive and not reached the default case.")
-        return .Clockwise
-      }
-    }
     
     // Much of the math to compute these properties assumes that the
     // begining rotation of the wedge seriesWidth is at 0.  But, seriesWidth is
@@ -155,9 +138,6 @@ extension InfiniteImageWheel {
       return abs(roundedRotationCount)
     }
 
-    
-    
-    
     
     
     
@@ -232,25 +212,28 @@ extension InfiniteImageWheel {
     var wedgeIndexNeighbor: WedgeIndex {
       switch (directionRotatedOffWedgeCenter,layoutDirection) {
       case (.Clockwise        , .CounterClockwiseLayout):
-        return prevNeighbor
-      case (.CounterClockwise , .CounterClockwiseLayout):
         return nextNeighbor
+      case (.CounterClockwise , .CounterClockwiseLayout):
+        return prevNeighbor
         
       case (.Clockwise        , .ClockwiseLayout):
-        return nextNeighbor
-      case (.CounterClockwise , .ClockwiseLayout):
         return prevNeighbor
+      case (.CounterClockwise , .ClockwiseLayout):
+        return nextNeighbor
       }
     }
     
     var offsetFromWedgeCenter: Angle {
       let angleOffCenter = rotation - wedgeCenter
+      return Angle(angleOffCenter)
+    }
     
-      switch layoutDirection {
-      case .ClockwiseLayout:
-        return Angle(angleOffCenter * -1)
-      case .CounterClockwiseLayout:
-        return Angle(angleOffCenter)
+    
+    var directionRotatedOffWedgeCenter: RotationDirection {
+      if rotation > wedgeCenter {
+        return .Clockwise
+      } else {
+        return .CounterClockwise
       }
     }
 
