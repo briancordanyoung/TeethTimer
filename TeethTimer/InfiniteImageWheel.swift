@@ -126,7 +126,7 @@ final class InfiniteImageWheel: UIView {
   }
   
   func layoutWedge(wedge: Wedge, atIndex index: WedgeIndex,
-                       withRotationState rotationState: RotationState) {
+               withRotationState rotationState: RotationState) {
                         
     let wedgeState = WedgeState(rotationState: rotationState,
                                    wedgeIndex: index)
