@@ -77,15 +77,8 @@ extension InfiniteImageWheel {
       // This counteracts the 1/2 wedgeSeperation offset that is factored in
       // to the the offsetRotation property.
       // A Rotation of 0 will be an index of 0 in both layoutDirections.
-      var next = wedgeIndex + 1
-      if next > wedgeMaxIndex {
-        next = 0
-      }
-      return next
+      return nextIndex(wedgeIndex)
     }
-    
-    
-    
     
     var distanceOfCompleteRotations: Rotation {
       return abs(seriesWidth * rotationCount)
@@ -237,6 +230,11 @@ extension InfiniteImageWheel {
       }
     }
 
+
+    
+    
+    // MARK: Neighbor Properties/Methods.
+    // swift 2: add to a protocol and conform RotationState & WedgeState to it
     var nextNeighbor: WedgeIndex {
       return nextIndex(wedgeIndex)
     }
