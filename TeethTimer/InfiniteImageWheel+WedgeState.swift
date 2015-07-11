@@ -16,21 +16,39 @@ extension InfiniteImageWheel {
     
     
     // MARK: Calculated Properties
+    var laidoutIndex: Int {
+      return index
+    }
+
     var layoutAngle: Angle {
-      switch directionFromSelectedWedge {
-      case .Clockwise:
-        return Angle(rotationState.wedgeCenter + centerDistanceToSelectedWedge)
-        
-      case .CounterClockwise:
-        return Angle(rotationState.wedgeCenter - centerDistanceToSelectedWedge)
+      switch rotationState.layoutDirection {
+        case .ClockwiseLayout:
+          return clockwiseLayoutAngle
+        case .CounterClockwiseLayout:
+          return counterClockwiseLayoutAngle
       }
     }
     
-    var percentToNextWedge: Double {
+    var counterClockwiseLayoutAngle: Angle {
+      let selectedWedgeCenter = Angle(rotationState.wedgeCenter * -1)
       
-      let invercePercentage = percentOfWidth( Angle(distanceToRotation),
-                                    forState: rotationState)
-      return 1 - invercePercentage
+      switch directionFromSelectedWedge {
+      case .Clockwise:
+        return selectedWedgeCenter + Angle(centerDistanceToSelectedWedge)
+      case .CounterClockwise:
+        return selectedWedgeCenter - Angle(centerDistanceToSelectedWedge)
+      }
+    }
+    
+    var clockwiseLayoutAngle: Angle {
+      let selectedWedgeCenter = Angle(rotationState.wedgeCenter * -1)
+      
+      switch directionFromSelectedWedge {
+      case .Clockwise:
+        return selectedWedgeCenter - Angle(centerDistanceToSelectedWedge)
+      case .CounterClockwise:
+        return selectedWedgeCenter + Angle(centerDistanceToSelectedWedge)
+      }
     }
     
     var shapeAngle: Angle {
@@ -46,28 +64,15 @@ extension InfiniteImageWheel {
     }
     
     
-    // MARK: Calculated Properties
+    // MARK:
     
     // The rotation distance between the center of this wedge and the
-    // selected wedge that the rotationState returns
+    // center of the selected wedge that the rotationState returns
     var centerDistanceToSelectedWedge: Rotation {
       return Rotation(rotationState.wedgeSeperation) * steps
     }
     
-    var laidoutIndex: Int {
-      switch rotationState.layoutDirection {
-      case .ClockwiseLayout:
-        return rotationState.wedgeMaxIndex - index
-        
-      case .CounterClockwiseLayout:
-        return index
-      }
-    }
 
-
-    var steps: Int {
-      return min(clockwiseSteps,counterClockwiseSteps)
-    }
     
     var directionFromSelectedWedge: RotationDirection {
       if clockwiseSteps < counterClockwiseSteps {
@@ -77,6 +82,12 @@ extension InfiniteImageWheel {
       }
     }
     
+    
+    // MARK: Count the steps from the current index
+    var steps: Int {
+      return min(clockwiseSteps,counterClockwiseSteps)
+    }
+
     var clockwiseSteps: Int {
       var count   = 0
       var next    = laidoutIndex
@@ -97,20 +108,35 @@ extension InfiniteImageWheel {
       return count
     }
     
+
+    
+    
+    
+    // MARK: How much a wedge is rotated off of bing the current index as a %
+    var percentToNextWedge: Double {
+      
+      let invercePercentage = percentOfWidth( Angle(distanceToRotation),
+                                    forState: rotationState)
+      return 1 - invercePercentage
+    }
     
     func percentOfWidth(value: Angle, forState state: RotationState) -> Double {
-      let absoluteValue = Angle(abs(value.value))
+//      let absoluteValue = Angle(abs(value))
       return percentValue(value, isBetweenLow: Angle(0),
                                       AndHigh: state.wedgeSeperation)
       
     }
-    
+
     func percentValue<T:AngularType>(value: T,
                         isBetweenLow   low: T,
                         AndHigh       high: T ) -> Double {
         return (value.value - low.value) / (high.value - low.value)
     }
-  
+
+    
+    
+    // MARK: Neighbor Properties/Methods.
+    // swift 2: add to a protocol and conform RotationState & WedgeState to it
     var nextNeighbor: WedgeIndex {
       return nextIndex(laidoutIndex)
     }
