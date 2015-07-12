@@ -19,9 +19,14 @@ extension InfiniteImageWheel {
     var laidoutIndex: Int {
       return index
     }
+    
+    var wedgeSeries: WedgeSeries {
+      return rotationState.wedgeSeries
+    }
 
     var layoutAngle: Angle {
-      switch rotationState.layoutDirection {
+      
+      switch wedgeSeries.direction {
         case .ClockwiseLayout:
           return clockwiseLayoutAngle
         case .CounterClockwiseLayout:
@@ -52,13 +57,13 @@ extension InfiniteImageWheel {
     }
     
     var shapeAngle: Angle {
-       return (rotationState.wedgeSeperation * 2) * Angle(percentToNextWedge)
+       return (wedgeSeries.wedgeSeperation * 2) * Angle(percentToNextWedge)
     }
     
     // The rotation distance between the center of this wedge and the
     // rotation that the rotationState returns
     var distanceToRotation: Rotation {
-      let offcenter = rotationState.offsetFromWedgeCenter
+      let offcenter = rotationState.offsetAngleFromWedgeCenter
       let distanceToRotation = centerDistanceToSelectedWedge + offcenter
       return abs(distanceToRotation)
     }
@@ -69,7 +74,7 @@ extension InfiniteImageWheel {
     // The rotation distance between the center of this wedge and the
     // center of the selected wedge that the rotationState returns
     var centerDistanceToSelectedWedge: Rotation {
-      return Rotation(rotationState.wedgeSeperation) * steps
+      return Rotation(wedgeSeries.wedgeSeperation) * steps
     }
     
 
@@ -123,7 +128,7 @@ extension InfiniteImageWheel {
     func percentOfWidth(value: Angle, forState state: RotationState) -> Double {
 //      let absoluteValue = Angle(abs(value))
       return percentValue(value, isBetweenLow: Angle(0),
-                                      AndHigh: state.wedgeSeperation)
+                                      AndHigh: wedgeSeries.wedgeSeperation)
       
     }
 
@@ -147,7 +152,7 @@ extension InfiniteImageWheel {
     
     func nextIndex(index: Int) -> Int {
       var next = index + 1
-      if next > rotationState.wedgeMaxIndex {
+      if next > wedgeSeries.wedgeMaxIndex {
         next = 0
       }
       return next
@@ -156,7 +161,7 @@ extension InfiniteImageWheel {
     func prevIndex(index: Int) -> Int {
       var prev = index - 1
       if prev < 0 {
-        prev = rotationState.wedgeMaxIndex
+        prev = wedgeSeries.wedgeMaxIndex
       }
       return prev
     }
