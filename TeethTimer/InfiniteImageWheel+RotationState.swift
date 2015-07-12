@@ -298,6 +298,8 @@ extension InfiniteImageWheel {
   }
 }
 
+// MARK:
+// MARK: enums
 
 
 extension InfiniteImageWheel {
