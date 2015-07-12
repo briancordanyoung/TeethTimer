@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 typealias Rotation = AccumulatedAngle
 // MARK: AccumulatedAngle - A number that represents an angle in both 
@@ -72,13 +72,16 @@ struct AccumulatedAngle: AngularType, Printable {
   
 }
 
-// Extend CGFloat to convert from radians
-extension CGFloat {
-  init(_ rotation: Rotation) {
-    self.init(CGFloat(rotation.radians))
+// Convenience Computed Properties to convert to CGFloat
+extension AccumulatedAngle  {
+  var cgRadians: CGFloat  {
+    return CGFloat(radians)
+  }
+  
+  var cgDegrees: CGFloat {
+    return CGFloat(degrees)
   }
 }
-
 
 
 // MARK: Protocol Conformance
@@ -104,57 +107,37 @@ extension Int {
 
 
 extension AccumulatedAngle {
-  enum Preset {
-    case full
-    case half
-    case quarter
-    case threeQuarter
-    case tau
-    case pi
+  static var pi: AccumulatedAngle {
+//    return AccumulatedAngle(Revolution.preset(.pi))
+    return AccumulatedAngle(M_PI)
+  }
+
+  static var tau: AccumulatedAngle {
+//    return AccumulatedAngle(Revolution.preset(.tau))
+    return AccumulatedAngle(M_PI * 2)
+  }
+
+  static var full: AccumulatedAngle {
+//    return AccumulatedAngle(Revolution.preset(.full))
+    return AccumulatedAngle(M_PI * 2)
+  }
+
+  static var half: AccumulatedAngle {
+//    return AccumulatedAngle(Revolution.preset(.half))
+    return AccumulatedAngle(M_PI)
+  }
+
+  static var quarter: AccumulatedAngle {
+//    return AccumulatedAngle(Revolution.preset(.quarter))
+    return AccumulatedAngle(M_PI * 0.50)
+  }
+
+  static var threeQuarter: AccumulatedAngle {
+//    return AccumulatedAngle(Revolution.preset(.threeQuarter))
+    return AccumulatedAngle(M_PI * 1.50)
   }
 }
 
-// MARK: Class Methods
-extension AccumulatedAngle {
-  static func preset(preset: Preset) -> AccumulatedAngle {
-    switch preset {
-    case .full,
-         .tau:
-      return AccumulatedAngle(M_PI * 2)
-    case .half,
-         .pi:
-      return AccumulatedAngle(M_PI)
-    case .quarter:
-      return AccumulatedAngle(M_PI * 0.50)
-    case .threeQuarter:
-      return AccumulatedAngle(M_PI * 1.50)
-    }
-  }
-  
-  static var pi: AccumulatedAngle {
-    return AccumulatedAngle.preset(.pi)
-  }
-  
-  static var tau: AccumulatedAngle {
-    return AccumulatedAngle.preset(.tau)
-  }
-  
-  static var full: AccumulatedAngle {
-    return AccumulatedAngle.preset(.full)
-  }
-  
-  static var half: AccumulatedAngle {
-    return AccumulatedAngle.preset(.half)
-  }
-  
-  static var quarter: AccumulatedAngle {
-    return AccumulatedAngle.preset(.quarter)
-  }
-  
-  static var threeQuarter: AccumulatedAngle {
-    return AccumulatedAngle.preset(.threeQuarter)
-  }
-}
 
 
 

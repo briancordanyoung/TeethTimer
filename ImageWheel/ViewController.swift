@@ -5,28 +5,28 @@ let kAppUseCachedUIKey = "useCachedUI"
 
 class ViewController: UIViewController {
 
-  var d = Developement()
   
-  @IBOutlet weak var CCWContainerView: InfinateCounterContainerView!
-  @IBOutlet weak var CWContainerView: InfinateContainerView!
+  @IBOutlet weak var containerView: InfinateCounterContainerView!
+  @IBOutlet weak var infinateContainerView: InfinateContainerView!
   @IBOutlet weak var slider: UISlider!
   
   @IBOutlet weak var progressBar: UIProgressView!
   @IBOutlet weak var infoLabel: UILabel!
   
   @IBAction func show(sender: UIButton) {
-    CWContainerView.imageWheel?.createWedgeImageViews()
+    infinateContainerView.imageWheel?.createWedgeImageViews()
     let sliderValue = Rotation(degrees: CGFloat(slider.value))
-    CWContainerView.imageWheel?.rotation = sliderValue
+    infinateContainerView.imageWheel?.rotation = sliderValue
   }
   @IBAction func hide(sender: UIButton) {
-    CWContainerView.imageWheel?.removeWedgeImageViews()
+    infinateContainerView.imageWheel?.removeWedgeImageViews()
   }
-  
   
   override func viewDidLoad() {
     super.viewDidLoad()
     infoLabel.text = labelNumber.stringFromNumber(slider.value)
+//    containerView.transform =
+//          CGAffineTransformMakeRotation(Angle(degrees: -90 - 45).cgRadians)
     sliderChanged(slider)
   }
 
@@ -35,72 +35,29 @@ class ViewController: UIViewController {
   }
 
   
-  
   @IBAction func sliderChanged(sender: UISlider) {
-    updateClockwiseWheel(sender)
-    updateCounterClockwiseWheel(sender)
+//    updateWheel(sender)
+    updateInfinateWheel(sender)
+    updateCounterInfinateWheel(sender)
     infoLabel.text = labelNumber.stringFromNumber(sender.value)
-//    print(" CW  "); printRotationStateForImageWheel(CWContainerView.imageWheel)
-//    print("    ||||     CCW "); 
-//    printRotationStateForImageWheel(CCWContainerView.imageWheel)
-//    println("")
-//    printRotationStateMinMaxForImageWheel(CCWContainerView.imageWheel)
   }
   
+//  func updateWheel(sender: UISlider) {
+//    let width = containerView.imageWheel!.wedgeWidthAngle
+//    let halfWidth = Rotation(width / 2)
+//    let sliderValue = Rotation(degrees: CGFloat(sender.value))
+//    let rotationAngle = sliderValue - (width * 2) // + Rotation(degrees:360)
+//    containerView.imageWheel?.rotation = rotationAngle
+//  }
   
-  func printRotationStateForImageWheel(wheel: InfiniteImageWheel?) {
-    if let s = wheel?.rotationState {
-      
-      var msg = ""
-//      //      msg += "min: \(d.pd(s.minimumRotationWithinWedgeSeries)) "
-//      msg += "rot: \(d.pd(s.rotation))   "
-//      //      msg += "max:\(d.pd(s.maximumRotationWithinWedgeSeries)) "
-//      msg += "cnt: \(d.pd(s.wedgeCenter))   "
-//      msg += "idx: \(d.pi2(s.wedgeIndex))   "
-//      msg += "nidx: \(d.pi2(s.wedgeIndexNeighbor))   "
-////      msg += " \(s.polarity)"
-////      msg += "off: \(d.pd(s.offsetFromWedgeCenter))   "
-////      msg += "off: \(s.directionRotatedOffWedgeCenter)   "
-////      msg += "lay: \(s.layoutDirection)   "
-      println("\(msg)")
-    }
-  }
-  
-  
-  
-  func printRotationStateMinMaxForImageWheel(wheel: InfiniteImageWheel?) {
-    if let s = wheel?.rotationState {
-      
-      var msg = ""
-//      msg += "Series Mult: \(d.pi(s.wedgeSeriesMultiplier))   "
-//      msg += "Rot Count: \(d.pi(s.rotationCount))   "
-//      msg += "w: \(d.pd4(s.seriesWidth))   "
-//      msg += "Com: \(d.pd4(s.distanceOfCompleteRotations))   "
-//      msg += "WedgeCount: \(d.pi(s.countOfWedgesInRemainder))   "
-      msg += "  |   "
-      msg += "min: \(d.pd4(s.minimumRotationWithinWedgeSeries))  <-  "
-      msg += "rot: \(d.pd4(s.rotation)) "
-      msg += "(\(d.pd4(s.wedgeCenter)))"
-      msg += "  ->  max: \(d.pd4(s.maximumRotationWithinWedgeSeries)) "
-      
-      println("\(msg)")
-    }
-  }
-  
-  
-  
-  func updateClockwiseWheel(sender: UISlider) {
+  func updateInfinateWheel(sender: UISlider) {
     let rotation = Rotation(degrees: CGFloat(sender.value))
-    CWContainerView.imageWheel?.rotation = rotation
-    let transformAngle = CGFloat(Angle(rotation))
-    CWContainerView.transform = CGAffineTransformMakeRotation(transformAngle)
+    infinateContainerView.imageWheel?.rotation = rotation
   }
   
-  func updateCounterClockwiseWheel(sender: UISlider) {
+  func updateCounterInfinateWheel(sender: UISlider) {
     let rotation = Rotation(degrees: CGFloat(sender.value))
-    CCWContainerView.imageWheel?.rotation = rotation
-    let transformAngle = CGFloat(Angle(rotation))
-    CCWContainerView.transform = CGAffineTransformMakeRotation(transformAngle)
+    containerView.imageWheel?.rotation = rotation
   }
   
   @IBAction func saveFramesButton(sender: UIButton) {
@@ -125,8 +82,8 @@ class ViewController: UIViewController {
 
 //  
 //  func saveImageWheelFramesWithProgress(percentDone: (CGFloat) -> ()) {
-//    let wheel         = CCWContainerView.imageWheel!
-//    let infWheel         = CWContainerView.imageWheel!
+//    let wheel         = containerView.imageWheel!
+//    let infWheel         = infinateContainerView.imageWheel!
 //    let anglePerImage = wheel.wedgeWidthAngle
 //    let imageCount    = wheel.images.count
 //    let totalRotation = anglePerImage * Angle(imageCount)
@@ -167,7 +124,7 @@ class ViewController: UIViewController {
 //      let path = path.URLByAppendingPathComponent("gavinWheel-\(frameString).png")
 //      println(frameString)
 //      
-//      var image = takeSnapshotOfView(CCWContainerView)
+//      var image = takeSnapshotOfView(containerView)
 //      let png   = UIImagePNGRepresentation(image)
 //      if png != nil {
 //        png.writeToURL(path, atomically: true)
@@ -200,6 +157,16 @@ class ViewController: UIViewController {
   
   
   
+  lazy var padNumber: NSNumberFormatter = {
+    let numberFormater = NSNumberFormatter()
+    numberFormater.minimumIntegerDigits  = 4
+    numberFormater.maximumIntegerDigits  = 4
+    numberFormater.minimumFractionDigits = 0
+    numberFormater.maximumFractionDigits = 0
+    numberFormater.positivePrefix = ""
+    return numberFormater
+    }()
+  
   lazy var labelNumber: NSNumberFormatter = {
     let numberFormater = NSNumberFormatter()
     numberFormater.minimumIntegerDigits  = 3
@@ -210,6 +177,14 @@ class ViewController: UIViewController {
     numberFormater.negativeFormat = "-"
     return numberFormater
     }()
+  
+  func pad(number: Int) -> String {
+    var paddedNumber = " 1.000"
+    if let numberString = padNumber.stringFromNumber(number) {
+      paddedNumber = numberString
+    }
+    return paddedNumber
+  }
 
 }
 

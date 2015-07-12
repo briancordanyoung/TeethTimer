@@ -1,45 +1,45 @@
-import UIKit
+import Foundation
 
 // A number that represents the degrees or radians around a circle.
-public final class Revolution: AngularType {
+final class Revolution: AngularType {
   
-  public var value: Double
-  public var angle: Angle       { return   Angle(value) }
+  var value: Double
+  var angle: Angle       { return   Angle(value) }
 //var cgAngle: CGFloat   { return CGFloat(value) }
 
-  public init(_ value: Angle) {
+  init(_ value: Angle) {
     self.value = value.radians
   }
   
-  public init(_ value: CGFloat) {
+  init(_ value: CGFloat) {
     self.value = Double(value)
   }
   
-  public init(_ value: Double) {
+  init(_ value: Double) {
     self.value = value
   }
   
 
-  public convenience init(radians: Angle) {
+  convenience init(radians: Angle) {
     self.init(radians)
   }
   
-  public convenience init(radians: CGFloat) {
+  convenience init(radians: CGFloat) {
     self.init(Double(radians))
   }
   
-  public convenience init(radians: Double) {
+  convenience init(radians: Double) {
     self.init(radians)
   }
   
-  public convenience init(preset: Preset) {
+  convenience init(preset: Preset) {
     let radians = Revolution.preset(preset)
     self.init(radians: radians)
   }
 }
 
 extension Revolution {
-  public enum Preset {
+  enum Preset {
     case full
     case half
     case quarter
@@ -51,7 +51,7 @@ extension Revolution {
 
 // MARK: Class Methods
 extension Revolution {
-  public class func preset(preset: Preset) -> Angle {
+  class func preset(preset: Preset) -> Angle {
     switch preset {
     case .full,
          .tau:
@@ -66,40 +66,40 @@ extension Revolution {
     }
   }
   
-  public class var pi: Angle {
+  class var pi: Angle {
     return Revolution.preset(.pi)
   }
   
-  public class var tau: Angle {
+  class var tau: Angle {
     return Revolution.preset(.tau)
   }
   
-  public class var full: Angle {
+  class var full: Angle {
     return Revolution.preset(.full)
   }
   
-  public class var half: Angle {
+  class var half: Angle {
     return Revolution.preset(.half)
   }
   
-  public class var quarter: Angle {
+  class var quarter: Angle {
     return Revolution.preset(.quarter)
   }
   
-  public class var threeQuarter: Angle {
+  class var threeQuarter: Angle {
     return Revolution.preset(.threeQuarter)
   }
 }
 
 // MARK: Protocol Conformance
 extension Revolution: IntegerLiteralConvertible {
-  public convenience init(integerLiteral: IntegerLiteralType) {
+  convenience init(integerLiteral: IntegerLiteralType) {
     self.init(integerLiteral: integerLiteral)
   }
 }
 
 extension Revolution: FloatLiteralConvertible {
-  public convenience init(floatLiteral: FloatLiteralType) {
+  convenience init(floatLiteral: FloatLiteralType) {
     self.init(floatLiteral)
   }
 }

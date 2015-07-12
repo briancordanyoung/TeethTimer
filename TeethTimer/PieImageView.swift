@@ -21,7 +21,7 @@ class PieImageView: UIView {
       return Angle(pieSliceLayer.angleWidth)
     }
     set(newWidth) {
-      pieSliceLayer.angleWidth = CGFloat(newWidth.radians)
+      pieSliceLayer.angleWidth = newWidth.cgRadians
     }
   }
   

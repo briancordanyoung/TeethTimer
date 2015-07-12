@@ -40,14 +40,15 @@ extension TimerViewController {
     cacheState.completionHandler = resetViewsAfterRendering
 
     let wedgeWidthAngle     = imageWheel.wedgeSeries.wedgeSeperation
-    let rotState            = imageWheel.rotationState
+    let halfWedgeWidthAngle = wedgeWidthAngle / 2
+    let workingRange        = (start: wheelControl.maximumRotation!,
+                                 end: wheelControl.minimumRotation!)
                 
     // The complete range (in radians) from the farthest point in each direction
     // the wheelControl may rotate.  Including the half a wedge width past
     // the minimum and maximum rotation points when dampening completely stops
     // the rotation.
-    let range        = (start: rotState.maximumRotationWithinWedgeSeries,
-                          end: rotState.minimumRotationWithinWedgeSeries)
+    let range = expandRange(workingRange, ByAmount: Rotation(halfWedgeWidthAngle))
     let rotation  = abs(range.start - range.end)
     let framesPerDegree = Double(3)
         
@@ -85,7 +86,7 @@ extension TimerViewController {
         WithImageWheel imageWheel: InfiniteImageWheel) {
           
     let dev = Developement()
-    let rotationAngleString = dev.pad(CGFloat(imageWheel.rotation))
+    let rotationAngleString = dev.pad(imageWheel.rotation.cgRadians)
     label.text = "\(rotationAngleString) \(imageWheel.rotationState.wedgeIndex)"
   }
   
@@ -111,7 +112,11 @@ extension TimerViewController {
         renderViews()
       
       case .rendered(let image):
+        // TODO: put on background thread
+        // Async.main() {
+        // self.writeFrame(image)
         self.writeFrameToMovie(image)
+        // }
 
       case .writing:
         // Do nothing. We are waiting until writing is done and
@@ -186,7 +191,7 @@ extension TimerViewController {
     return presentTime
   }
   
-  func writeFrameToPNG(image: UIImage) {    
+  func writeFrameToPNG(image: UIImage) {
     // TODO: Save on background thread
     cacheState.frameState = .writing
     

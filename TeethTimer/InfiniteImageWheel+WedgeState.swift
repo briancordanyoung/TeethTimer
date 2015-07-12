@@ -1,6 +1,3 @@
-import UIKit
-
-
 extension InfiniteImageWheel {
   struct WedgeState {
     
@@ -8,67 +5,67 @@ extension InfiniteImageWheel {
     let rotationState: RotationState
     let index: WedgeIndex
     
-    
-    // MARK: Convience
-    var wedgeSeries: WedgeSeries {
-      return rotationState.wedgeSeries
+    init( rotationState: RotationState,
+             wedgeIndex: WedgeIndex     ) {
+      self.rotationState = rotationState
+      self.index = wedgeIndex
     }
-
-    // MARK: Layout
+    
+    
+    // MARK: Calculated Properties
     var layoutAngle: Angle {
-      switch wedgeSeries.direction {
-        case .ClockwiseLayout:
-          return clockwiseLayoutAngle
-        case .CounterClockwiseLayout:
-          return counterClockwiseLayoutAngle
-      }
-    }
-    
-    private var counterClockwiseLayoutAngle: Angle {
-      let selectedWedgeCenter = Angle(rotationState.wedgeCenter * -1)
-      
-      switch directionFromSelectedWedge {
+      switch direction {
       case .Clockwise:
-        return selectedWedgeCenter + Angle(distanceToSelectedWedgeOnCenter)
+        return Angle(rotationState.wedgeCenter - centerDistanceToSelectedWedge)
+        
       case .CounterClockwise:
-        return selectedWedgeCenter - Angle(distanceToSelectedWedgeOnCenter)
+        return Angle(rotationState.wedgeCenter + centerDistanceToSelectedWedge)
       }
     }
     
-    private var clockwiseLayoutAngle: Angle {
-      let selectedWedgeCenter = Angle(rotationState.wedgeCenter * -1)
+    var percentToNextWedge: Double {
       
-      switch directionFromSelectedWedge {
-      case .Clockwise:
-        return selectedWedgeCenter - Angle(distanceToSelectedWedgeOnCenter)
-      case .CounterClockwise:
-        return selectedWedgeCenter + Angle(distanceToSelectedWedgeOnCenter)
-      }
+      let invercePercentage = percentOfWidth( Angle(distanceToRotation),
+                        forState: rotationState)
+      
+      return 1 - invercePercentage
     }
     
-    // MARK: Shape
     var shapeAngle: Angle {
-      return (wedgeSeries.wedgeSeperation * 2) * Angle(percentToNextWedge)
+      return (rotationState.wedgeSeperation * 2) * Angle(percentToNextWedge)
     }
     
-    
-    // MARK: Calcuations to curent Rotation & Wedge Center
     // The rotation distance between the center of this wedge and the
     // rotation that the rotationState returns
-    private var distanceToRotation: Rotation {
-      let offcenter = rotationState.offsetAngleFromWedgeCenter
-      let distanceToRotation = distanceToSelectedWedgeOnCenter + offcenter
+    var distanceToRotation: Rotation {
+      let offcenter = rotationState.angleOffCenterFromLayoutDirection(direction)
+      let distanceToRotation = centerDistanceToSelectedWedge + offcenter
       return abs(distanceToRotation)
     }
     
-    // The rotation distance between the center of this wedge and the
-    // center of the selected wedge that the rotationState returns
-    private var distanceToSelectedWedgeOnCenter: Rotation {
-      return Rotation(wedgeSeries.wedgeSeperation) * steps
-    }
-
     
-    private var directionFromSelectedWedge: RotationDirection {
+    // MARK: Private Calculated Properties
+    
+    // The rotation distance between the center of this wedge and the
+    // selected wedge that the rotationState returns
+    private var centerDistanceToSelectedWedge: Rotation {
+      return Rotation(rotationState.wedgeSeperation) * steps
+    }
+    
+    //
+    private var laidoutIndex: Int {
+      if rotationState.layoutDirection == .Clockwise {
+        return index
+      } else {
+        return rotationState.wedgeCount - 1 - index
+      }
+    }
+    
+    private var steps: Int {
+      return min(clockwiseSteps,counterClockwiseSteps)
+    }
+    
+    private var direction: LayoutDirection {
       if clockwiseSteps < counterClockwiseSteps {
         return .Clockwise
       } else {
@@ -76,83 +73,56 @@ extension InfiniteImageWheel {
       }
     }
     
-    
-    // MARK: Steps from the current index
-    private var steps: Int {
-      return min(clockwiseSteps,counterClockwiseSteps)
-    }
-
     private var clockwiseSteps: Int {
+      let maximumIndex = rotationState.wedgeCount - 1
+      
       var count   = 0
-      var next    = index
+      var next    = laidoutIndex
       while next != rotationState.wedgeIndex {
         count++
-        next = nextIndex(next)
+        next++
+        if next > maximumIndex {
+          next = 0
+        }
+        assert(count <= maximumIndex,
+                              "clockwiseSteps closure is stuck in a while loop")
       }
       return count
     }
+    
     
     private var counterClockwiseSteps: Int {
+      let maximumIndex = self.rotationState.wedgeCount - 1
+
       var count   = 0
-      var prev    = index
-      while prev != rotationState.wedgeIndex {
+      var next    = laidoutIndex
+      while next != rotationState.wedgeIndex {
         count++
-        prev = prevIndex(prev)
+        next--
+        if next < 0  {
+          next = maximumIndex
+        }
+        assert(count <= maximumIndex,
+                       "counterClockwiseSteps closure is stuck in a while loop")
       }
       return count
     }
     
-
     
-    
-    // MARK: How much a wedge is rotated off of being the current index (in %)
-    private var percentToNextWedge: Double {
-      
-      let invercePercentage = percentOfWidth( Angle(distanceToRotation),
-                                    forState: rotationState)
-      return 1 - invercePercentage
-    }
-    
-    private func percentOfWidth(value: Angle,
-               forState state: RotationState) -> Double {
-                
+    func percentOfWidth(value: Angle, forState state: RotationState) -> Double {
+      let absoluteValue = Angle(abs(value.value))
       return percentValue(value, isBetweenLow: Angle(0),
-                                      AndHigh: wedgeSeries.wedgeSeperation)
+                                      AndHigh: state.wedgeSeperation)
+      
     }
-
-    private func percentValue<T:AngularType>(value: T,
+    
+    func percentValue<T:AngularType>(value: T,
                         isBetweenLow   low: T,
                         AndHigh       high: T ) -> Double {
         return (value.value - low.value) / (high.value - low.value)
     }
-
-    
-    
-    // MARK: Neighbor Properties/Methods.
-    // swift 2: add to a protocol and conform RotationState & WedgeState to it
-    private var nextNeighbor: WedgeIndex {
-      return nextIndex(index)
-    }
-    
-    private var prevNeighbor: WedgeIndex {
-      return prevIndex(index)
-    }
-    
-    private func nextIndex(index: Int) -> Int {
-      var next = index + 1
-      if next > wedgeSeries.wedgeMaxIndex {
-        next = 0
-      }
-      return next
-    }
-    
-    private func prevIndex(index: Int) -> Int {
-      var prev = index - 1
-      if prev < 0 {
-        prev = wedgeSeries.wedgeMaxIndex
-      }
-      return prev
-    }
+  
+  
     
   }
 }

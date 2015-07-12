@@ -28,7 +28,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D3AFFDBB1B4AD2EE00BEA5A4"
+               BlueprintIdentifier = "D37FBC8F1AF34DE100381C7F"
                BuildableName = "ImageWheelTests.xctest"
                BlueprintName = "ImageWheelTests"
                ReferencedContainer = "container:TeethTimer.xcodeproj">
@@ -46,7 +46,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D3AFFDBB1B4AD2EE00BEA5A4"
+               BlueprintIdentifier = "D37FBC8F1AF34DE100381C7F"
                BuildableName = "ImageWheelTests.xctest"
                BlueprintName = "ImageWheelTests"
                ReferencedContainer = "container:TeethTimer.xcodeproj">

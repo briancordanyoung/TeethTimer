@@ -57,14 +57,14 @@ extension WheelControl {
     Animation.removeAllAnimations(wheelView.layer)
     let durationPerRadian = CGFloat(0.25)
     let totalAngularDistance = abs(currentRotation - rotation)
-    let baseDuration = CGFloat(totalAngularDistance) * durationPerRadian
+    let baseDuration = totalAngularDistance.cgRadians * durationPerRadian
     let totalDuration = speedUpDurationByDistance(baseDuration)
     let timing = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
     
     let rotate = BasicAnimation(duration: totalDuration, timingFunction: timing)
     rotate.property = AnimatableProperty(name: kPOPLayerRotation)
-    rotate.fromValue = CGFloat(currentRotation)
-    rotate.toValue   = CGFloat(rotation)
+    rotate.fromValue = currentRotation.cgRadians
+    rotate.toValue   = rotation.cgRadians
     rotate.name = "Basic Rotation"
     rotate.delegate = self
     rotate.completionBlock = { anim, finished in
@@ -89,8 +89,8 @@ extension WheelControl {
       
       let rotate = BasicAnimation(duration: duration)
       rotate.property  = AnimatableProperty(name: kPOPLayerRotation)
-      rotate.fromValue = CGFloat(from)
-      rotate.toValue   = CGFloat(to)
+      rotate.fromValue = from.cgRadians
+      rotate.toValue   =   to.cgRadians
       rotate.name = "Basic Rotation"
       rotate.delegate = self
       Animation.removeAllAnimations(wheelView.layer)
@@ -107,8 +107,8 @@ extension WheelControl {
       friction: 30,
       mass: 1)
     spring.property  = AnimatableProperty(name: kPOPLayerRotation)
-    spring.fromValue = CGFloat(from)
-    spring.toValue   = CGFloat(to)
+    spring.fromValue = from.cgRadians
+    spring.toValue   =   to.cgRadians
     spring.name = "Spring Rotation"
     spring.delegate = self
     spring.completionBlock = { anim, finished in

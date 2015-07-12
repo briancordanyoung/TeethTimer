@@ -14,16 +14,15 @@ final class InfiniteImageWheel: UIView {
     didSet {
       rotationState = RotationState( rotation: rotation,
                                   wedgeSeries: wedgeSeries)
-      
-      transformWedgesWithRotationState(rotationState)
+    transformWedgesWithRotationState(rotationState)
     }
   }
-  
   
   // Computed Properties
   var wedgeCenter: Rotation {
     return rotationState.wedgeCenter
   }
+  
   
   // MARK: Initialization
   init(imageNames: [String], seperatedByAngle wedgeSeperation: Angle,
@@ -36,30 +35,29 @@ final class InfiniteImageWheel: UIView {
     wedgeSeries = WedgeSeries(wedges: wedges,
                            direction: direction,
                      wedgeSeperation: wedgeSeperation,
-                        visibleAngle: Angle(degrees: 180))
-                                          
+                        visibleAngle: Angle(degrees:  90))
     rotationState = RotationState( rotation: 0.0,
                       wedgeSeries: wedgeSeries)
     
     super.init(frame: CGRect())
     
     assert(wedgeSeries.seriesWidth >= Rotation(degrees: 360),
-      "InfiniteImageWheel requires enough images and seperation between the wedges to at least make a complete circle.")
+      "InfiniteImageWheel requires enough images and seperation betwen the wedges to at least make a complete circle.")
     self.userInteractionEnabled = false
     rotation = Rotation(0.0)
   }
   
   convenience init(imageNames: [String], seperatedByAngle wedgeSeperation: Angle ) {
     self.init(imageNames: imageNames, seperatedByAngle: wedgeSeperation,
-                                           inDirection: .ClockwiseLayout)
+                                           inDirection: .Clockwise)
   }
   
   required init(coder: NSCoder) {
     // TODO: impliment coder and decoder
     wedgeSeries = WedgeSeries(wedges: [],
-                           direction: .ClockwiseLayout,
+                           direction: .Clockwise,
                      wedgeSeperation: Angle(0),
-                        visibleAngle: Angle(degrees: 180))
+                        visibleAngle: Angle(degrees: 90))
     
     rotationState = RotationState( rotation: 0.0,
                       wedgeSeries: wedgeSeries)
@@ -115,41 +113,43 @@ final class InfiniteImageWheel: UIView {
   }
 
   
+  
+  
+  
+  
+  
   func transformWedgesWithRotationState(rotationState: RotationState) {
+    let state = RotationState(state: rotationState)
     for (index, wedge) in enumerate(wedgeSeries.wedges) {
       if wedge.viewExists {
-        layoutWedge(wedge, atIndex: index, withRotationState: rotationState)
+        layoutWedge(wedge, atIndex: index, withRotationState: state)
       }
     }
   }
   
-  func layoutWedge(wedge: Wedge, atIndex index: WedgeIndex,
-               withRotationState rotationState: RotationState) {
+  func layoutWedge(wedge: Wedge, var atIndex index: WedgeIndex,
+                       withRotationState rotationState: RotationState) {
                         
     let wedgeState = WedgeState(rotationState: rotationState,
-                                        index: index)
-                        
-    if wedgeState.index == rotationState.wedgeIndex         ||
-       wedgeState.index == rotationState.wedgeIndexNeighbor   {
-        
+                                   wedgeIndex: index)
+    if wedgeState.distanceToRotation < wedgeSeries.halfVisibleAngle {
       wedge.layoutAngle = wedgeState.layoutAngle
       wedge.width       = wedgeState.shapeAngle
+
     } else {
       wedge.hide()
+
     }
   }
   
-  
-  
-  
 }
 
-// MARK: 
-// MARK: Direction Enums
+// Direction Enum
+// MARK: Direction Enum
 extension InfiniteImageWheel {
   enum RotationDirection: String, Printable {
-    case Clockwise        = "       Clockwise Rotation"
-    case CounterClockwise = "CounterClockwise Rotation"
+    case Clockwise        = "       Clockwise"
+    case CounterClockwise = "CounterClockwise"
     
     var description: String {
       return self.rawValue
@@ -158,16 +158,16 @@ extension InfiniteImageWheel {
     var asLayoutDirection: LayoutDirection {
       switch self {
         case .Clockwise:
-          return .ClockwiseLayout
+          return .Clockwise
         case .CounterClockwise:
-          return .CounterClockwiseLayout
+          return .CounterClockwise
       }
     }
   }
   
   enum LayoutDirection: String, Printable {
-    case ClockwiseLayout        = "       Clockwise Layout"
-    case CounterClockwiseLayout = "CounterClockwise Layout"
+    case Clockwise        = "       Clockwise"
+    case CounterClockwise = "CounterClockwise"
     
     var description: String {
       return self.rawValue
@@ -175,9 +175,9 @@ extension InfiniteImageWheel {
     
     var asRotationDirection: RotationDirection {
       switch self {
-      case .ClockwiseLayout:
+      case .Clockwise:
         return .Clockwise
-      case .CounterClockwiseLayout:
+      case .CounterClockwise:
         return .CounterClockwise
       }
     }

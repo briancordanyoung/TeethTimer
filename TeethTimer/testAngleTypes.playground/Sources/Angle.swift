@@ -19,77 +19,65 @@ public struct Angle: AngularType {
   
   
   // All other initilizers call the above init()
-  public init(_ angle: Angle) {
+  init(_ angle: AccumulatedAngle) {
     self.init(angle.value)
   }
-  
-  public init(_ angle: AccumulatedAngle) {
-    self.init(angle.value)
-  }
-  
-  public init(_ value: CGFloat) {
+
+  init(_ value: CGFloat) {
     self.init(Double(value))
   }
   
-  public init(_ value: Int) {
+  init(_ value: Int) {
     self.init(Double(value))
   }
   
-  public init(transform: CGAffineTransform) {
-    let b = transform.b
-    let a = transform.a
-    let angle = atan2(b, a)
-    self.init(radians: angle)
-  }
   
-  public init(radians: Double) {
+  init(radians: Double) {
     self.init(radians)
   }
   
-  public init(radians: CGFloat) {
+  init(radians: CGFloat) {
     self.init(Double(radians))
   }
   
-  public init(radians: Int) {
+  init(radians: Int) {
     self.init(Double(radians))
   }
   
   
-  public init(degrees: Double) {
+  init(degrees: Double) {
     self.init(radians: Angle.degrees2radians(degrees))
   }
   
-  public init(degrees: CGFloat) {
+  init(degrees: CGFloat) {
     self.init(degrees: Double(degrees))
   }
   
-  public init(degrees: Int) {
+  init(degrees: Int) {
     self.init(degrees: Double(degrees))
   }
   
   
-  public var radians: Double  {
+  var radians: Double  {
     return value
   }
   
-  public var degrees: Double {
+  var degrees: Double {
     return Angle.radians2Degrees(value)
   }
   
-  public var accumulatedAngle: AccumulatedAngle {
+  var accumulatedAngle: AccumulatedAngle {
     return AccumulatedAngle(radians)
   }
 
-  public var rotation: AccumulatedAngle {
+  var rotation: AccumulatedAngle {
     return AccumulatedAngle(radians)
   }
 
-  public var description: String {
+  var description: String {
     return "\(value)"
   }
 }
-
-
 
 // Angle conversions:
 // degrees <--> radians
@@ -126,11 +114,11 @@ extension Angle {
 
 // Convenience Computed Properties to convert to CGFloat
 extension Angle {
-  public var cgRadians: CGFloat  {
+  var cgRadians: CGFloat  {
     return CGFloat(radians)
   }
 
-  public var cgDegrees: CGFloat {
+  var cgDegrees: CGFloat {
     return CGFloat(degrees)
   }
 }
@@ -152,7 +140,7 @@ extension Angle: FloatLiteralConvertible {
 
 // MARK: Extend Int to initialize with an Angle
 extension Int {
-  public init(_ angle: Angle) {
+  init(_ angle: Angle) {
     self = Int(angle.value)
   }
 }
@@ -186,66 +174,4 @@ func isWithinAngleLimits(value: CGFloat) -> Bool {
   }
   
   return isWithinLimits
-}
-
-
-
-// MARK: Angle & Int specific overloads
-
-public func % (lhs: Angle, rhs: Int) -> Angle {
-  return Angle(lhs.value % Double(rhs))
-}
-
-
-public func + (lhs: Int, rhs: Angle) -> Angle {
-  return Angle(Double(lhs) + rhs.value)
-}
-
-public func - (lhs: Int, rhs: Angle) -> Angle {
-  return Angle(Double(lhs) - rhs.value)
-}
-
-public func + (lhs: Angle, rhs: Int) -> Angle {
-  return Angle(lhs.value + Double(rhs))
-}
-
-public func - (lhs: Angle, rhs: Int) -> Angle {
-  return Angle(lhs.value - Double(rhs))
-}
-
-
-
-
-public func < (lhs: Int, rhs: Angle) -> Bool {
-  return Double(lhs) < rhs.value
-}
-
-public func == (lhs: Int, rhs: Angle) -> Bool {
-  return Double(lhs) == rhs.value
-}
-
-public func < (lhs: Angle, rhs: Int) -> Bool {
-  return lhs.value < Double(rhs)
-}
-
-public func == (lhs: Angle, rhs: Int) -> Bool {
-  return lhs.value == Double(rhs)
-}
-
-
-
-public func += (inout lhs: Angle, rhs: Int) {
-  lhs.value = lhs.value + Double(rhs)
-}
-
-public func -= (inout lhs: Angle, rhs: Int) {
-  lhs.value = lhs.value - Double(rhs)
-}
-
-public func / (lhs: Angle, rhs: Int) -> Angle {
-  return Angle(lhs.value / Double(rhs))
-}
-
-public func * (lhs: Angle, rhs: Int) -> Angle {
-  return Angle(lhs.value * Double(rhs))
 }

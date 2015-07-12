@@ -1,6 +1,5 @@
 
 
-import UIKit
 
 
 
@@ -8,7 +7,7 @@ import UIKit
 // MARK: - Various enums and structs used throughout the InfiniteImageWheel Class
 extension InfiniteImageWheel {
   
-  final class Wedge: NSObject {
+  class Wedge: NSObject {
     
     // MARK: Prperties
     let imageName:    String
@@ -70,14 +69,13 @@ extension InfiniteImageWheel {
     }
     
     func transform(angle: Angle) {
-      transform(CGAffineTransformMakeRotation(CGFloat(angle)))
+      transform(CGAffineTransformMakeRotation(angle.cgRadians))
     }
     
     func hide() {
       if let view = view {
         if view.alpha != 0.0   { view.alpha = 0.0 }
-        let hiddenAngle = CGFloat(Angle(degrees: 180))
-        view.transform = CGAffineTransformMakeRotation(hiddenAngle)
+        view.transform = CGAffineTransformMakeRotation(Angle(degrees: 180).cgRadians)
       }
     }
     
@@ -99,28 +97,24 @@ extension InfiniteImageWheel {
         if let superview = superview {
           let image = self.image
           let aspect = imageAspect(image)
-          
-          if let view = view {
-            assertionFailure("view already exists")
-          } else {
-            let wedgeImageView = WedgeImageView(image: image)
-            wedgeImageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
-            wedgeImageView.angleWidth = width
-            wedgeImageView.opaque = false
-            wedgeImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
-            superview.addSubview(wedgeImageView)
+          let wedgeImageView = WedgeImageView(image: image)
+          wedgeImageView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.65)
+          wedgeImageView.angleWidth = width
+          wedgeImageView.opaque = false
+          wedgeImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+          superview.addSubview(wedgeImageView)
 
-            constraints += createCenterContraintsForView( wedgeImageView,
-                                             toSuperview: superview)
-            constraints += createHeightAndAspectContraintsForView( wedgeImageView,
-                                                      toSuperview: superview,
-                                                       withAspect: aspect)
-            
-            for (view,constraint) in constraints {
-              view.addConstraint(constraint)
-            }
-            view = wedgeImageView
+          constraints += createCenterContraintsForView( wedgeImageView,
+                                           toSuperview: superview)
+          constraints += createHeightAndAspectContraintsForView( wedgeImageView,
+                                                    toSuperview: superview,
+                                                     withAspect: aspect)
+          
+          for (view,constraint) in constraints {
+            view.addConstraint(constraint)
           }
+
+          view = wedgeImageView
         }
       }
     }
@@ -146,22 +140,22 @@ extension InfiniteImageWheel {
         
         var constraints: [(superview: UIView, constraint: NSLayoutConstraint)] = []
         let centerY = NSLayoutConstraint(item: imageView,
-                                    attribute: NSLayoutAttribute.CenterY,
-                                    relatedBy: NSLayoutRelation.Equal,
-                                       toItem: superview,
-                                    attribute: NSLayoutAttribute.CenterY,
-                                   multiplier: 1.0,
-                                     constant: 0.0)
+          attribute: NSLayoutAttribute.CenterY,
+          relatedBy: NSLayoutRelation.Equal,
+          toItem: superview,
+          attribute: NSLayoutAttribute.CenterY,
+          multiplier: 1.0,
+          constant: 0.0)
         superview.addConstraint(centerY)
         constraints.append((superview: superview, constraint: centerY))
         
         let centerX = NSLayoutConstraint(item: imageView,
-                                    attribute: NSLayoutAttribute.CenterX,
-                                    relatedBy: NSLayoutRelation.Equal,
-                                       toItem: superview,
-                                    attribute: NSLayoutAttribute.CenterX,
-                                   multiplier: 1.0,
-                                     constant: 0.0)
+          attribute: NSLayoutAttribute.CenterX,
+          relatedBy: NSLayoutRelation.Equal,
+          toItem: superview,
+          attribute: NSLayoutAttribute.CenterX,
+          multiplier: 1.0,
+          constant: 0.0)
         superview.addConstraint(centerX)
         constraints.append((superview: superview, constraint: centerX))
         return constraints
@@ -170,26 +164,26 @@ extension InfiniteImageWheel {
     func createHeightAndAspectContraintsForView(imageView: UIView,
       toSuperview superview: UIView,
       withAspect aspect: CGFloat)
-                      -> [(superview: UIView, constraint: NSLayoutConstraint)] {
+      -> [(superview: UIView, constraint: NSLayoutConstraint)] {
         
         var constraints: [(superview: UIView, constraint: NSLayoutConstraint)] = []
         let height = NSLayoutConstraint(item: imageView,
-                                   attribute: NSLayoutAttribute.Height,
-                                   relatedBy: NSLayoutRelation.Equal,
-                                      toItem: superview,
-                                   attribute: NSLayoutAttribute.Height,
-                                  multiplier: 0.75,
-                                    constant: 0.0)
+          attribute: NSLayoutAttribute.Height,
+          relatedBy: NSLayoutRelation.Equal,
+          toItem: superview,
+          attribute: NSLayoutAttribute.Height,
+          multiplier: 0.75, // 0.75
+          constant: 0.0)
         superview.addConstraint(height)
         constraints.append((superview: superview, constraint: height))
         
         let aspect = NSLayoutConstraint(item: imageView,
-                                   attribute: NSLayoutAttribute.Width,
-                                   relatedBy: NSLayoutRelation.Equal,
-                                      toItem: imageView,
-                                   attribute: NSLayoutAttribute.Height,
-                                  multiplier: aspect,
-                                    constant: 0.0)
+          attribute: NSLayoutAttribute.Width,
+          relatedBy: NSLayoutRelation.Equal,
+          toItem: imageView,
+          attribute: NSLayoutAttribute.Height,
+          multiplier: aspect,
+          constant: 0.0)
         superview.addConstraint(aspect)
         constraints.append((superview: imageView, constraint: aspect))
         return constraints
