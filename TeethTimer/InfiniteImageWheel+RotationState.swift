@@ -222,6 +222,44 @@ extension InfiniteImageWheel {
     }
 
     
+    func wedgeCenterForIndex(index: WedgeIndex) -> Rotation {
+      let maxIndexMsg = "Index \(index) may not be greater than \(wedgeMaxIndex)"
+      assert(index < wedgeSeries.wedgeCount, maxIndexMsg)
+      let minIndexMsg = "Index \(index) may not be less than 0"
+      assert(index >= 0, maxIndexMsg)
+      
+      let wedgeSeperation = Rotation(self.wedgeSeperation)
+      let distanceWithinSeries = wedgeSeperation * index
+      let min = minimumRotationWithinWedgeSeries
+      let max = maximumRotationWithinWedgeSeries
+
+      let wedgeCenterForIndex: Rotation
+      
+      switch layoutDirection {
+        
+      case .ClockwiseLayout:
+        let index0WedgeCenter = max - (wedgeSeperation / 2)
+        wedgeCenterForIndex   = index0WedgeCenter - distanceWithinSeries
+        
+      case .CounterClockwiseLayout:
+        let index0WedgeCenter = min + (wedgeSeperation / 2)
+        wedgeCenterForIndex   = index0WedgeCenter + distanceWithinSeries
+      }
+      
+      let greaterMsg = "WedgeCenter \(wedgeCenterForIndex) for index \(index) is too low"
+      assert(wedgeCenterForIndex > minimumRotationWithinWedgeSeries, greaterMsg)
+      let lessMsg = "WedgeCenter \(wedgeCenterForIndex) for index \(index) is too high"
+      assert(wedgeCenterForIndex < maximumRotationWithinWedgeSeries, lessMsg)
+      
+      if index == wedgeIndex {
+        let msg = "\(wedgeCenterForIndex) is not \(wedgeCenter) for index: \(index)"
+        assert(wedgeCenter == wedgeCenterForIndex, msg)
+      }
+      
+      return wedgeCenterForIndex
+    }
+
+    
     // MARK:
     // MARK: wedgeSeries connivence properties.
     private var wedgeCount: Int {

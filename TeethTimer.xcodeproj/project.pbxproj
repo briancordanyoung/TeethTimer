@@ -320,7 +320,6 @@
 		D3AFFDC01B4AD2EE00BEA5A4 /* ImageWheelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWheelTests.swift; sourceTree = "<group>"; };
 		D3AFFDD61B4AEF3F00BEA5A4 /* ImageWheelTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ImageWheelTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		D3AFFDD81B4B29E800BEA5A4 /* RotationStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationStateTests.swift; sourceTree = "<group>"; };
-		D3B29F7F1AF5264200C2C067 /* ContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		D3B7BC6A19EA383A00F50DF7 /* TeethTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeethTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B7BC6E19EA383A00F50DF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -459,9 +458,8 @@
 		D37FBC7D1AF34DE100381C7F /* ImageWheel */ = {
 			isa = PBXGroup;
 			children = (
-				D3B29F7F1AF5264200C2C067 /* ContainerView.swift */,
-				D3112E111B350FCB00ECF073 /* InfinateCounterContainerView.swift */,
 				D39365EC1B3A16C90075173C /* InfinateContainerView.swift */,
+				D3112E111B350FCB00ECF073 /* InfinateCounterContainerView.swift */,
 				D37FBCD41AF3522700381C7F /* ImageWheel-Bridging-Header.h */,
 				D3AFFDD61B4AEF3F00BEA5A4 /* ImageWheelTests-Bridging-Header.h */,
 				D37FBC801AF34DE100381C7F /* AppDelegate.swift */,

@@ -196,15 +196,15 @@ final class TimerViewController: UIViewController {
     gavinWheel.wheelView.addSubview(imageWheel)
     
     // Set the inital rotation
-    let startingRotation = imageWheel.rotationForIndex(0)
-    let seriesWidth = imageWheel.wedgeSeries.seriesWidth
-    
+    let startingRotation = imageWheel.rotationState.wedgeCenterForIndex(0)
+    let min = imageWheel.rotationState.minimumRotationWithinWedgeSeries
+    let max = imageWheel.rotationState.maximumRotationWithinWedgeSeries
+
     imageWheel.rotation        = startingRotation
     gavinWheel.rotation        = startingRotation
-    gavinWheel.minimumRotation = startingRotation
-    gavinWheel.maximumRotation = startingRotation + seriesWidth
+    gavinWheel.minimumRotation = min
+    gavinWheel.maximumRotation = max
     gavinWheel.dampenCounterClockwise = true
-    
   }
   
   func setupVideoBackgroundConstraints() {
@@ -324,6 +324,9 @@ final class TimerViewController: UIViewController {
     }
   }
   
+  
+  
+  // TODO: rename to wheelRotated
   func gavinWheelChanged(gavinWheel: WheelControl) {
 
     if let imageWheelView = imageWheelView {
@@ -356,6 +359,7 @@ final class TimerViewController: UIViewController {
   }
 
   
+  // TODO: rename to wheelRotatedByUser
   func gavinWheelRotatedByUser(gavinWheel: WheelControl) {
     
     if let previousIndexBeforeTouch = previousIndexBeforeTouch,
@@ -421,16 +425,19 @@ final class TimerViewController: UIViewController {
     if let     gavinWheel = gavinWheel,
        let imageWheelView = imageWheelView {
         
+      let state = imageWheelView.rotationState
+
       let wedgeCount         = imageWheelView.wedgeSeries.wedgeCount
+      let firstStep          = 1
       let firstAndLastStep   = 2
         
       let stepsToCountDown   = wedgeCount - firstAndLastStep
       let calcedIndexFromSteps = currentIndexFromPercent( percentageRemaining,
-                                      WithSectionCount: stepsToCountDown)
-      let calcedIndex          = (calcedIndexFromSteps + firstAndLastStep)
+                                        WithSectionCount: stepsToCountDown)
+      let calcedIndex          = calcedIndexFromSteps + firstStep
 
-      //
-      let currentIndex              = imageWheelView.rotationState.wedgeIndex
+
+      let currentIndex              = state.wedgeIndex
       let notDisplayingFirstImage   = currentIndex != 0
       let countDownHasNotBegun      = percentageRemaining == 1.0
       let rotateToFirstImage        = countDownHasNotBegun &&
@@ -439,17 +446,18 @@ final class TimerViewController: UIViewController {
       let rotateToNextImage         = (currentIndex != calcedIndex) &&
                                       (gavinWheel.animationState == .AtRest)
       
+        
       if countDownHasNotBegun {
         // At 100% should always be the first image
         if rotateToFirstImage  {
-          let rotation = imageWheelView.rotationForIndex(0).degrees
-          gavinWheel.animateToRotation(Rotation(degrees: rotation))
+          let rotation = state.wedgeCenterForIndex(0)
+          gavinWheel.animateToRotation(rotation)
         }
         
       } else if rotateToNextImage {
         // As soon as percentageRemaining is less than 100%, 
         // advance to the next image.
-        let rotation = imageWheelView.rotationForIndex(calcedIndex)
+        let rotation = state.wedgeCenterForIndex(calcedIndex)
         gavinWheel.animateToRotation(rotation)
       }
     }
