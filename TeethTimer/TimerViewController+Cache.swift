@@ -40,15 +40,14 @@ extension TimerViewController {
     cacheState.completionHandler = resetViewsAfterRendering
 
     let wedgeWidthAngle     = imageWheel.wedgeSeries.wedgeSeperation
-    let halfWedgeWidthAngle = wedgeWidthAngle / 2
-    let workingRange        = (start: wheelControl.maximumRotation!,
-                                 end: wheelControl.minimumRotation!)
+    let rotState            = imageWheel.rotationState
                 
     // The complete range (in radians) from the farthest point in each direction
     // the wheelControl may rotate.  Including the half a wedge width past
     // the minimum and maximum rotation points when dampening completely stops
     // the rotation.
-    let range = expandRange(workingRange, ByAmount: Rotation(halfWedgeWidthAngle))
+    let range        = (start: rotState.maximumRotationWithinWedgeSeries,
+                          end: rotState.minimumRotationWithinWedgeSeries)
     let rotation  = abs(range.start - range.end)
     let framesPerDegree = Double(3)
         
