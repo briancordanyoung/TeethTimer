@@ -133,7 +133,7 @@ final class InfiniteImageWheel: UIView {
        wedgeState.index == rotationState.wedgeIndexNeighbor   {
         
       wedge.layoutAngle = wedgeState.layoutAngle
-//      wedge.width       = wedgeState.shapeAngle
+      wedge.width       = wedgeState.shapeAngle
     } else {
       wedge.hide()
     }
@@ -144,8 +144,8 @@ final class InfiniteImageWheel: UIView {
   
 }
 
-// Direction Enum
-// MARK: Direction Enum
+// MARK: 
+// MARK: Direction Enums
 extension InfiniteImageWheel {
   enum RotationDirection: String, Printable {
     case Clockwise        = "       Clockwise Rotation"
