@@ -28,6 +28,10 @@ extension InfiniteImageWheel {
       return wedges.count
     }
     
+    var wedgeMaxIndex: Int {
+      return abs(wedges.count - 1)
+    }
+    
     var seriesWidth: Rotation {
       return Rotation(wedgeSeperation) * wedges.count
     }
