@@ -6,57 +6,22 @@ extension InfiniteImageWheel {
     let rotation:        Rotation
     let wedgeSeries:     WedgeSeries
     
-    let d = Developement()
     
-    init(    rotation: Rotation,
-          wedgeSeries: WedgeSeries) {
+    // MARK:
+    // MARK: Center Rotation and wedgeIndex for rotation
+    // WedgeIndex is from 0 to (count-of-images - 1)
+    var wedgeCenter: Rotation {
+      let distanceToWedgeCenter = distanceOfCompleteRotations +
+                                  distanceWithinPartialRotation
+      switch polarity {
+      case .Positive:
+        return distanceToWedgeCenter
         
-        self.rotation    = Rotation(rotation)
-        self.wedgeSeries = WedgeSeries(wedgeSeries)
-    }
-    
-    init( state: RotationState) {
-      self.rotation    = Rotation(state.rotation)
-      self.wedgeSeries = WedgeSeries(state.wedgeSeries)
-    }
-    
-
-    // wedgeSeries connivence properties.
-    var wedgeCount: Int {
-      return wedgeSeries.wedgeCount
-    }
-    
-    var wedgeMaxIndex: Int {
-      return wedgeSeries.wedgeCount - 1
-    }
-    
-    var seriesWidth: Rotation {
-      return wedgeSeries.seriesWidth
-    }
-    
-    var wedgeSeperation: Angle {
-      return wedgeSeries.wedgeSeperation
-    }
-    
-    var layoutDirection: LayoutDirection {
-      return wedgeSeries.direction
-    }
-    
-    
-    var polarity: Polarity {
-      if rotation >= 0 {
-        return .Positive
-      } else {
-        return .Negative
+      case .Negative:
+        return distanceToWedgeCenter * -1
       }
     }
-    
-    
-    
-    
-    
-    
-    // WedgeIndex is from 0 to (count-of-images - 1)
+
     var wedgeIndex: WedgeIndex {
       switch (layoutDirection , polarity) {
       case (.ClockwiseLayout , .Positive):
@@ -70,7 +35,7 @@ extension InfiniteImageWheel {
       }
     }
 
-    var invertedShiftedCountOfWedgesInRemainder: WedgeIndex {
+    private var invertedShiftedCountOfWedgesInRemainder: WedgeIndex {
       // First invert the index
       var wedgeIndex = wedgeMaxIndex - countOfWedgesInRemainder
       // Then shift it up one index
@@ -80,36 +45,38 @@ extension InfiniteImageWheel {
       return nextIndex(wedgeIndex)
     }
     
-    var distanceOfCompleteRotations: Rotation {
-      return abs(seriesWidth * rotationCount)
+    
+    // The number of wedges in the remainder of the remainingRotation property
+    private var countOfWedgesInRemainder: Int {
+      let remainingRotation = abs(offsetRotation % seriesWidth)
+      let wedgesInRemainder = remainingRotation / wedgeSeperation
+      let countOfWedgesInRemainder = Int(wedgesInRemainder.value)
+      return abs(countOfWedgesInRemainder)
+    }
+
+    
+    private var distanceOfCompleteRotations: Rotation {
+      let rotations            = offsetRotation.radians
+      let width                = seriesWidth.radians
+      let rawRotationCount     = rotations / width
+      let flooredRotationCount = Int(rawRotationCount)
+      let rotationCount        = abs(flooredRotationCount)
+      return seriesWidth * rotationCount
     }
   
-    var distanceWithinPartialRotation: Rotation {
+    private var distanceWithinPartialRotation: Rotation {
       let distance =  Rotation(wedgeSeperation) * Rotation(countOfWedgesInRemainder)
-      return abs(distance)
+      return distance
     }
-    
-    
-    var wedgeCenter: Rotation {
-      let distanceToWedgeCenter = distanceOfCompleteRotations +
-                                  distanceWithinPartialRotation
-      switch polarity {
-      case .Positive:
-        return distanceToWedgeCenter
-        
-      case .Negative:
-        return distanceToWedgeCenter * -1
-      }
-    }
-    
+
     
     // Much of the math to compute these properties assumes that the
     // begining rotation of the wedge seriesWidth is at 0.  But, seriesWidth is
-    // actually a half wedgeSeperation off, so that when rotation = 0, the 
+    // actually a half wedgeSeperation off, so that when rotation = 0, the
     // first wedge is centered at the top of the wheel.
     // offsetRotation is the rotation shifted so the it the wedge min or max
     // is at the top of the wheel
-    var offsetRotation: Rotation {
+    private var offsetRotation: Rotation {
       switch polarity {
       case .Positive:
         return rotation + (wedgeSeperation / 2)
@@ -119,68 +86,6 @@ extension InfiniteImageWheel {
     }
     
     
-    // The remainder (modulus) of the seriesWidth in to the rotation.
-    // This remainder is transforms a rotation of any size in to a rotation
-    // between 0 and seriesWidth.
-    // How many complete rotations the wheel been rotated from the start.
-    var rotationCount: Int {
-      var rotations            = offsetRotation.radians
-      var width                = seriesWidth.radians
-      var rotationCount        = rotations / width
-      var roundedRotationCount = Int(rotationCount)
-      return abs(roundedRotationCount)
-    }
-
-    
-    
-    
-    
-    // Shifts distanceOfCompletRotations back a half wedge
-    var resetDistanceOfCompleteRotations: Rotation {
-      return distanceOfCompleteRotations - (wedgeSeperation / 2)
-    }
-    
-    var rotationBoundsAWithinWedgeSeries: Rotation {
-      switch polarity {
-      case .Positive:
-        return resetDistanceOfCompleteRotations
-        
-      case .Negative:
-        return resetDistanceOfCompleteRotations * -1
-      }
-    }
-    
-    var rotationBoundsBWithinWedgeSeries: Rotation {
-      switch polarity {
-      case .Positive:
-        return  resetDistanceOfCompleteRotations + seriesWidth
-        
-      case .Negative:
-        return (resetDistanceOfCompleteRotations + seriesWidth) * -1
-      }
-    }
-    
-    var minimumRotationWithinWedgeSeries: Rotation {
-      let minRotation =  min(rotationBoundsAWithinWedgeSeries,
-                             rotationBoundsBWithinWedgeSeries)
-      return shiftForLayoutDirection(minRotation)
-    }
-
-    var maximumRotationWithinWedgeSeries: Rotation {
-      let maxRotation =  max(rotationBoundsAWithinWedgeSeries,
-                             rotationBoundsBWithinWedgeSeries)
-      return shiftForLayoutDirection(maxRotation)
-    }
-    
-    func shiftForLayoutDirection(rotation: Rotation) -> Rotation {
-      switch layoutDirection {
-      case .ClockwiseLayout:
-        return rotation + wedgeSeperation
-      
-      case .CounterClockwiseLayout:
-        return rotation
-      }
-    }
     
     
     
@@ -189,19 +94,10 @@ extension InfiniteImageWheel {
     
     
     
+    // MARK:
+    // MARK: Properties reletive to wedgeIndex/wedgeCenter.
     
-    
-    var remainingRotation: Rotation {
-      return abs(offsetRotation % seriesWidth)
-    }
-    
-    // The number of wedges in the remainder of the remainingRotation property
-    var countOfWedgesInRemainder: Int {
-      let wedgesInRemainder = remainingRotation / wedgeSeperation
-      let countOfWedgesInRemainder = Int(wedgesInRemainder.value)
-      return abs(countOfWedgesInRemainder)
-    }
-    
+    // The 2nd closest wedgeIndex to rotation.
     var wedgeIndexNeighbor: WedgeIndex {
       switch (directionRotatedOffWedgeCenter,layoutDirection) {
       case (.Clockwise        , .CounterClockwiseLayout):
@@ -216,13 +112,13 @@ extension InfiniteImageWheel {
       }
     }
     
-    var offsetFromWedgeCenter: Angle {
+    var offsetAngleFromWedgeCenter: Angle {
       let angleOffCenter = rotation - wedgeCenter
       return Angle(angleOffCenter)
     }
     
     
-    var directionRotatedOffWedgeCenter: RotationDirection {
+    private var directionRotatedOffWedgeCenter: RotationDirection {
       if rotation > wedgeCenter {
         return .Clockwise
       } else {
@@ -233,18 +129,18 @@ extension InfiniteImageWheel {
 
     
     
-    // MARK: Neighbor Properties/Methods.
+    // MARK:
+    // MARK: Neighbor Helper Properties/Methods.
     // swift 2: add to a protocol and conform RotationState & WedgeState to it
-    var nextNeighbor: WedgeIndex {
+    private var nextNeighbor: WedgeIndex {
       return nextIndex(wedgeIndex)
     }
     
-    var prevNeighbor: WedgeIndex {
+    private var prevNeighbor: WedgeIndex {
       return prevIndex(wedgeIndex)
     }
     
-    // MARK: Methods
-    func nextIndex(index: Int) -> Int {
+    private func nextIndex(index: Int) -> Int {
       var next = index + 1
       if next > wedgeMaxIndex {
         next = 0
@@ -252,13 +148,113 @@ extension InfiniteImageWheel {
       return next
     }
     
-    func prevIndex(index: Int) -> Int {
+    private func prevIndex(index: Int) -> Int {
       var prev = index - 1
       if prev < 0 {
         prev = wedgeMaxIndex
       }
       return prev
     }
+    
+    
+    
+    
+    
+    // MARK:
+    // MARK: Min and Max Rotations for current wedgeSeries
+    
+    var minimumRotationWithinWedgeSeries: Rotation {
+      var minimumRotation: Rotation
+      switch layoutDirection {
+      case .ClockwiseLayout:
+        minimumRotation = seriesStartingRotation - seriesWidth
+      case .CounterClockwiseLayout:
+        minimumRotation = seriesStartingRotation
+      }
+      minimumRotation += (seriesWidth * wedgeSeriesMultiplier)
+      
+      let msg = "minimumRotation must be less than rotation"
+      assert(minimumRotation < rotation, msg)
+      
+      return minimumRotation
+    }
+    
+    var maximumRotationWithinWedgeSeries: Rotation {
+      var maximumRotation: Rotation
+      switch layoutDirection {
+      case .ClockwiseLayout:
+        maximumRotation = seriesStartingRotation
+      case .CounterClockwiseLayout:
+        maximumRotation = seriesStartingRotation + seriesWidth
+      }
+      maximumRotation += (seriesWidth * wedgeSeriesMultiplier)
+      
+      let msg = "maximumRotation must be greater than rotation"
+      assert(maximumRotation > rotation, msg)
+      
+      return maximumRotation
+    }
+    
+    private var seriesStartingRotation: Rotation {
+      switch layoutDirection {
+      case .ClockwiseLayout:
+        return Rotation(0) + (wedgeSeperation / 2)
+      case .CounterClockwiseLayout:
+        return Rotation(0) - (wedgeSeperation / 2)
+      }
+    }
+    
+    
+    private var wedgeSeriesMultiplier: Int {
+      let normalizeRotation = rotation - seriesStartingRotation
+      var index = Int(normalizeRotation / seriesWidth)
+      
+      if rotation > seriesStartingRotation {
+        index = index + 1
+      }
+      
+      switch layoutDirection {
+      case .ClockwiseLayout:
+        return index
+      case .CounterClockwiseLayout:
+        return index - 1
+      }
+    }
+
+    
+    // MARK:
+    // MARK: wedgeSeries connivence properties.
+    private var wedgeCount: Int {
+      return wedgeSeries.wedgeCount
+    }
+    
+    private var wedgeMaxIndex: Int {
+      return wedgeSeries.wedgeMaxIndex
+    }
+    
+    private var seriesWidth: Rotation {
+      return wedgeSeries.seriesWidth
+    }
+    
+    private var wedgeSeperation: Angle {
+      return wedgeSeries.wedgeSeperation
+    }
+    
+    private var layoutDirection: LayoutDirection {
+      return wedgeSeries.direction
+    }
+    
+    
+    // MARK:
+    // MARK: Helpers
+    private var polarity: Polarity {
+      if rotation >= 0 {
+        return .Positive
+      } else {
+        return .Negative
+      }
+    }
+
     
     
   }
