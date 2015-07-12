@@ -42,7 +42,7 @@ class ViewController: UIViewController {
     infoLabel.text = labelNumber.stringFromNumber(sender.value)
 //    print(" CW  "); printRotationStateForImageWheel(CWContainerView.imageWheel)
 //    print("    ||||     CCW "); 
-//    printRotationStateForImageWheel(CWContainerView.imageWheel)
+//    printRotationStateForImageWheel(CCWContainerView.imageWheel)
 //    println("")
 //    printRotationStateMinMaxForImageWheel(CCWContainerView.imageWheel)
   }
@@ -62,8 +62,6 @@ class ViewController: UIViewController {
 ////      msg += "off: \(d.pd(s.offsetFromWedgeCenter))   "
 ////      msg += "off: \(s.directionRotatedOffWedgeCenter)   "
 ////      msg += "lay: \(s.layoutDirection)   "
-      
-      msg += "index: \(s.wedgeIndex) | \(s.newWedgeIndex)"
       println("\(msg)")
     }
   }

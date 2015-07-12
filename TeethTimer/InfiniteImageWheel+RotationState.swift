@@ -17,59 +17,36 @@ extension InfiniteImageWheel {
     // MARK: wedgeIndex for given rotation
     //       TODO: refactor wedgeIndex (see end of file)
     var wedgeIndex: WedgeIndex {
-      switch (layoutDirection , polarity) {
-      case (.ClockwiseLayout , .Positive):
-        return invertedShiftedCountOfWedgesInRemainder
-      case (.CounterClockwiseLayout , .Positive ):
-        return countOfWedgesInRemainder
-      case (.ClockwiseLayout , .Negative):
-        return countOfWedgesInRemainder
-      case (.CounterClockwiseLayout , .Negative):
-        return invertedShiftedCountOfWedgesInRemainder
-      }
-    }
-
-    private var invertedShiftedCountOfWedgesInRemainder: WedgeIndex {
-      // First invert the index
-      var wedgeIndex = wedgeMaxIndex - countOfWedgesInRemainder
-      // Then shift it up one index
-      // This counteracts the 1/2 wedgeSeperation offset that is factored in
-      // to the the offsetRotation property.
-      // A Rotation of 0 will be an index of 0 in both layoutDirections.
-      return nextIndex(wedgeIndex)
-    }
-    
-    
-    // The number of wedges in the remainder of the remainingRotation property
-    private var countOfWedgesInRemainder: Int {
-      let remainingRotation = abs(offsetRotation % seriesWidth)
-      let wedgesInRemainder = remainingRotation / wedgeSeperation
-      let countOfWedgesInRemainder = Int(wedgesInRemainder.value)
-      return abs(countOfWedgesInRemainder)
-    }
-
-    // The math to compute the above properties assumes that the
-    // begining rotation of the wedge seriesWidth is at 0.0.  But, begining
-    // rotation is actually a shifted a half wedgeSeperation off.
-    // When rotation = 0.0, the first wedge (index 0) has it's center at 0.0
-    // offsetRotation is the rotation shifted so that the
-    // leading edge of the wedge (and leading edge of the wedgeSeries)
-    // is at 0.0 allowing easy divition to calculate full and partial rotations
-    private var offsetRotation: Rotation {
-      switch polarity {
-      case .Positive:
-        return rotation + (wedgeSeperation / 2)
-      case .Negative:
-        return rotation - (wedgeSeperation / 2)
-      }
-    }
-    
-    private var polarity: Polarity {
-      if rotation >= 0 {
-        return .Positive
+      
+      let width = wedgeSeperation / 2
+      let min = minimumRotationWithinWedgeSeries
+      let max: Rotation
+      let rot: Rotation
+      if min < 0 {
+        max = maximumRotationWithinWedgeSeries + abs(min)
+        rot = rotation + abs(min)
       } else {
-        return .Negative
+        max = maximumRotationWithinWedgeSeries - abs(min)
+        rot = rotation  - abs(min)
       }
+      
+      
+      let percent = percentValue(rot, isBetweenLow: 0, AndHigh: max)
+      let index   = Int(floor(percent * 10))
+      
+      switch layoutDirection {
+      case .ClockwiseLayout:
+        return wedgeMaxIndex - index
+      case .CounterClockwiseLayout:
+        return index
+      }
+      
+    }
+    
+    private func percentValue<T:AngularType>(value: T,
+      isBetweenLow   low: T,
+      AndHigh       high: T ) -> Double {
+        return (value.value - low.value) / (high.value - low.value)
     }
     
     
@@ -258,56 +235,6 @@ extension InfiniteImageWheel {
     private var layoutDirection: LayoutDirection {
       return wedgeSeries.direction
     }
-
     
-    
-    
-    // MARK:
-    // MARK: Experimenting with new wedgeIndex calulations to replace the above:
-    //       wedgeIndex
-    //       invertedShiftedCountOfWedgesInRemainder
-    //       countOfWedgesInRemainder
-    //       offsetRotation
-    
-    var newWedgeIndex: WedgeIndex {
-      let min = minimumRotationWithinWedgeSeries
-      let max = maximumRotationWithinWedgeSeries -
-      minimumRotationWithinWedgeSeries
-      let rot = rotation - minimumRotationWithinWedgeSeries
-      
-      let percent = percentValue(rot, isBetweenLow: min, AndHigh: max)
-      let index   = Int(floor(percent * 10))
-      
-      switch layoutDirection {
-      case .ClockwiseLayout:
-        return wedgeMaxIndex - index
-      case .CounterClockwiseLayout:
-        return index
-      }
-      
-    }
-    
-    private func percentValue<T:AngularType>(value: T,
-                                isBetweenLow   low: T,
-                                AndHigh       high: T ) -> Double {
-        return (value.value - low.value) / (high.value - low.value)
-    }
-    
-    
-    
-    
-  }
-}
-
-// MARK:
-// MARK: enums
-extension InfiniteImageWheel {
-  enum Polarity: String, Printable  {
-    case Positive = "Positive"
-    case Negative  = "Negative"
-    
-    var description: String {
-      return self.rawValue
-    }
   }
 }
