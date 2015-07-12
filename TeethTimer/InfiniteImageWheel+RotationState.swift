@@ -155,7 +155,7 @@ extension InfiniteImageWheel {
       minimumRotation += (seriesWidth * wedgeSeriesMultiplier)
       
       let msg = "minimumRotation must be less than rotation"
-      assert(minimumRotation < rotation, msg)
+      assert(minimumRotation <= rotation, msg)
       
       return minimumRotation
     }
@@ -171,7 +171,7 @@ extension InfiniteImageWheel {
       maximumRotation += (seriesWidth * wedgeSeriesMultiplier)
       
       let msg = "maximumRotation must be greater than rotation"
-      assert(maximumRotation > rotation, msg)
+      assert(maximumRotation >= rotation, msg)
       
       return maximumRotation
     }
