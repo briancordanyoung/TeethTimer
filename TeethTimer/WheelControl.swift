@@ -44,8 +44,6 @@ import UIKit
 // MARK: - WheelControl Class
 final class WheelControl: UIControl, AnimationDelegate  {
 
-  let d = Developement()
-  
   // The data of WheelControl
   // Do not use this internally.
   // This is the only interface for getting the data for this control.
@@ -68,9 +66,6 @@ final class WheelControl: UIControl, AnimationDelegate  {
         percentageRemaining = percentValue( CGFloat(rotation),
                               isBetweenLow: CGFloat(min),
                                    AndHigh: CGFloat(max))
-        
-//        println("percentageRemaining: \(d.pad(percentageRemaining!)) \(d.pad(CGFloat(min))) > \(d.pad(CGFloat(rotation))) < \(d.pad(CGFloat(max)))")
-        
       }
       return percentageRemaining
     }
