@@ -31,8 +31,6 @@ final class TimerViewController: UIViewController {
   var previousIndexBeforeTouch: WedgeIndex?
   var timerStateBeforeTouch: Timer.Status = .Paused
   
-  var d = Developement()
-  
   var blurLowerThird: Bool  {
     return NSUserDefaults.standardUserDefaults().boolForKey(kAppBlurLowerThirdKey)
   }
@@ -167,7 +165,7 @@ final class TimerViewController: UIViewController {
   
   func setupGavinWheelControlEvents(gavinWheel: WheelControl) {
     gavinWheel.addTarget( self,
-                  action: "gavinWheelChanged:",
+                  action: "wheelRotated:",
         forControlEvents: UIControlEvents.ValueChanged)
     
     gavinWheel.addTarget( self,
@@ -182,7 +180,7 @@ final class TimerViewController: UIViewController {
                                       .TouchCancel ]
     for event in events {
       gavinWheel.addTarget( self,
-                    action: "gavinWheelRotatedByUser:",
+                    action: "wheelRotatedByUser:",
           forControlEvents: event)
     }
   }
@@ -197,13 +195,14 @@ final class TimerViewController: UIViewController {
     
     // Set the inital rotation
     let startingRotation = imageWheel.rotationState.wedgeCenterForIndex(0)
+    let halfWedge = imageWheel.rotationState.wedgeSeries.wedgeSeperation / 2
     let min = imageWheel.rotationState.minimumRotationWithinWedgeSeries
     let max = imageWheel.rotationState.maximumRotationWithinWedgeSeries
 
     imageWheel.rotation        = startingRotation
     gavinWheel.rotation        = startingRotation
-    gavinWheel.minimumRotation = min
-    gavinWheel.maximumRotation = max
+    gavinWheel.minimumRotation = min + halfWedge
+    gavinWheel.maximumRotation = max - halfWedge
     gavinWheel.dampenCounterClockwise = true
   }
   
@@ -240,7 +239,7 @@ final class TimerViewController: UIViewController {
     timerLabel.hidden = !showTimeLabel
     
     if let gavinWheel = gavinWheel {
-      gavinWheelChanged(gavinWheel)
+      wheelRotated(gavinWheel)
     }
     setupVideoBackgroundAsset()
   }
@@ -326,8 +325,7 @@ final class TimerViewController: UIViewController {
   
   
   
-  // TODO: rename to wheelRotated
-  func gavinWheelChanged(gavinWheel: WheelControl) {
+  func wheelRotated(gavinWheel: WheelControl) {
 
     if let imageWheelView = imageWheelView {
       
@@ -359,8 +357,7 @@ final class TimerViewController: UIViewController {
   }
 
   
-  // TODO: rename to wheelRotatedByUser
-  func gavinWheelRotatedByUser(gavinWheel: WheelControl) {
+  func wheelRotatedByUser(gavinWheel: WheelControl) {
     
     if let previousIndexBeforeTouch = previousIndexBeforeTouch,
                      imageWheelView = imageWheelView {
@@ -508,15 +505,15 @@ final class TimerViewController: UIViewController {
   }
   
   func imageNameForNumber(i: Int) -> String {
-//    return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
-    return "num-\(paddedTwoDigitNumber(i))"
+    return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
+//    return "num-\(paddedTwoDigitNumber(i))"
   }
   
   
   func arrayOfNames(count: Int) -> [String] {
     var nameArray: [String] = []
-//    for i in 1...count {
-    for i in 0..<count {
+    for i in 1...count {
+//    for i in 0..<count {
       nameArray.append(imageNameForNumber(i))
     }
     return nameArray

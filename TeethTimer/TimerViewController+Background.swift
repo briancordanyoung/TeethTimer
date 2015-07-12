@@ -121,7 +121,7 @@ extension TimerViewController {
       backgroundVideo.player    = player
 
       if let gavinWheel = gavinWheel {
-        gavinWheelChanged(gavinWheel)
+        wheelRotated(gavinWheel)
       }
       
       videoLayer.player = player
