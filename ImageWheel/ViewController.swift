@@ -41,7 +41,8 @@ class ViewController: UIViewController {
     updateCounterClockwiseWheel(sender)
     infoLabel.text = labelNumber.stringFromNumber(sender.value)
 //    print(" CW  "); printRotationStateForImageWheel(CWContainerView.imageWheel)
-//    print("    ||||     CCW "); printRotationStateForImageWheel(CCWContainerView.imageWheel)
+//    print("    ||||     CCW "); 
+//    printRotationStateForImageWheel(CWContainerView.imageWheel)
 //    println("")
 //    printRotationStateMinMaxForImageWheel(CCWContainerView.imageWheel)
   }
@@ -62,8 +63,8 @@ class ViewController: UIViewController {
 ////      msg += "off: \(s.directionRotatedOffWedgeCenter)   "
 ////      msg += "lay: \(s.layoutDirection)   "
       
-      
-      print("\(msg)")
+      msg += "index: \(s.wedgeIndex) | \(s.newWedgeIndex)"
+      println("\(msg)")
     }
   }
   
