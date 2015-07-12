@@ -1,63 +1,68 @@
 import UIKit
 
+public typealias Rotation = AccumulatedAngle
 // MARK: AccumulatedAngle - A number that represents an angle in both 
 //                          degrees or radians.
 public struct AccumulatedAngle: AngularType, Printable {
   
   public var value: Double
   
-  public  init(_ value: Double) {
+  public init(_ value: Double) {
     self.value = value
   }
   
   
   // All other initilizers call the above init()
-  init(_ angle: Angle) {
+  public init(_ accumulatedAngle: AccumulatedAngle) {
+    self.init(Double(accumulatedAngle.value))
+  }
+  
+  public init(_ angle: Angle) {
     self.init(Double(angle.value))
   }
-
-  init(_ value: CGFloat) {
+  
+  public init(_ value: CGFloat) {
     self.init(Double(value))
   }
   
-  init(_ value: Int) {
+  public init(_ value: Int) {
     self.init(Double(value))
   }
   
-  init(radians: Double) {
+  public init(radians: Double) {
     self.init(radians)
   }
   
-  init(radians: CGFloat) {
+  public init(radians: CGFloat) {
     self.init(Double(radians))
   }
   
-  init(radians: Int) {
+  public init(radians: Int) {
     self.init(Double(radians))
   }
   
   
-  init(degrees: Double) {
+  public init(degrees: Double) {
     self.init(radians: Angle.degrees2radians(degrees))
   }
   
-  init(degrees: CGFloat) {
+  public init(degrees: CGFloat) {
     self.init(degrees: Double(degrees))
   }
   
-  init(degrees: Int) {
+  public init(degrees: Int) {
     self.init(degrees: Double(degrees))
   }
   
-  var radians: Double  {
+  public var radians: Double  {
     return value
   }
   
-  var degrees: Double {
+  public var degrees: Double {
     return Angle.radians2Degrees(value)
   }
   
-  var angle: Angle {
+  public var angle: Angle {
     return Angle(radians)
   }
   
@@ -69,11 +74,11 @@ public struct AccumulatedAngle: AngularType, Printable {
 
 // Convenience Computed Properties to convert to CGFloat
 extension AccumulatedAngle  {
-  var cgRadians: CGFloat  {
+  public var cgRadians: CGFloat  {
     return CGFloat(radians)
   }
   
-  var cgDegrees: CGFloat {
+  public var cgDegrees: CGFloat {
     return CGFloat(degrees)
   }
 }
@@ -95,39 +100,39 @@ extension AccumulatedAngle: FloatLiteralConvertible {
 
 // MARK: Extend Int to initialize with an AccumulatedAngle
 extension Int {
-  init(_ accumulatedAngle: AccumulatedAngle) {
+  public init(_ accumulatedAngle: AccumulatedAngle) {
     self = Int(accumulatedAngle.radians)
   }
 }
 
 
 extension AccumulatedAngle {
-  static var pi: AccumulatedAngle {
+  public static var pi: AccumulatedAngle {
 //    return AccumulatedAngle(Revolution.preset(.pi))
     return AccumulatedAngle(M_PI)
   }
 
-  static var tau: AccumulatedAngle {
+  public static var tau: AccumulatedAngle {
 //    return AccumulatedAngle(Revolution.preset(.tau))
     return AccumulatedAngle(M_PI * 2)
   }
 
-  static var full: AccumulatedAngle {
+  public static var full: AccumulatedAngle {
 //    return AccumulatedAngle(Revolution.preset(.full))
     return AccumulatedAngle(M_PI * 2)
   }
 
-  static var half: AccumulatedAngle {
+  public static var half: AccumulatedAngle {
 //    return AccumulatedAngle(Revolution.preset(.half))
     return AccumulatedAngle(M_PI)
   }
 
-  static var quarter: AccumulatedAngle {
+  public static var quarter: AccumulatedAngle {
 //    return AccumulatedAngle(Revolution.preset(.quarter))
     return AccumulatedAngle(M_PI * 0.50)
   }
 
-  static var threeQuarter: AccumulatedAngle {
+  public static var threeQuarter: AccumulatedAngle {
 //    return AccumulatedAngle(Revolution.preset(.threeQuarter))
     return AccumulatedAngle(M_PI * 1.50)
   }
@@ -205,55 +210,55 @@ public func % (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
 }
 
 
-public func + (lhs: Int, rhs: AccumulatedAngle) -> AccumulatedAngle {
+func + (lhs: Int, rhs: AccumulatedAngle) -> AccumulatedAngle {
   return AccumulatedAngle(Double(lhs) + rhs.value)
 }
 
-public func - (lhs: Angle, rhs: Int) -> AccumulatedAngle {
-  return AccumulatedAngle(lhs.value - Double(rhs))
+func - (lhs: Int, rhs: AccumulatedAngle) -> AccumulatedAngle {
+  return AccumulatedAngle(Double(lhs) - Double(rhs.value))
 }
 
-public func + (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
+func + (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
   return AccumulatedAngle(lhs.value + Double(rhs))
 }
 
-public func - (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
+func - (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
   return AccumulatedAngle(lhs.value - Double(rhs))
 }
 
 
 
-public func < (lhs: Int, rhs: AccumulatedAngle) -> Bool {
+func < (lhs: Int, rhs: AccumulatedAngle) -> Bool {
   return Double(lhs) < rhs.value
 }
 
-public func == (lhs: Int, rhs: AccumulatedAngle) -> Bool {
+func == (lhs: Int, rhs: AccumulatedAngle) -> Bool {
   return Double(lhs) == rhs.value
 }
 
-public func < (lhs: AccumulatedAngle, rhs: Int) -> Bool {
+func < (lhs: AccumulatedAngle, rhs: Int) -> Bool {
   return lhs.value < Double(rhs)
 }
 
-public func == (lhs: AccumulatedAngle, rhs: Int) -> Bool {
+func == (lhs: AccumulatedAngle, rhs: Int) -> Bool {
   return lhs.value == Double(rhs)
 }
 
 
 
-public func += (inout lhs: AccumulatedAngle, rhs: Int) {
+func += (inout lhs: AccumulatedAngle, rhs: Int) {
   lhs.value = lhs.value + Double(rhs)
 }
 
-public func -= (inout lhs: AccumulatedAngle, rhs: Int) {
+func -= (inout lhs: AccumulatedAngle, rhs: Int) {
   lhs.value = lhs.value - Double(rhs)
 }
 
-public func / (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
+func / (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
   return AccumulatedAngle(lhs.value / Double(rhs))
 }
 
-public func * (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
+func * (lhs: AccumulatedAngle, rhs: Int) -> AccumulatedAngle {
   return AccumulatedAngle(lhs.value * Double(rhs))
 }
 
