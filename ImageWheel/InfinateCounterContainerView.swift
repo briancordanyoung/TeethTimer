@@ -47,12 +47,13 @@ class InfinateCounterContainerView: UIView {
   
   func arrayOfNames(count: Int) -> [String] {
     var imageNames: [String] = []
+//    for i in 1...count {
     for i in 0...(count - 1) {
       imageNames.append(imageNameForNumber(i))
     }
     return imageNames
   }
-
+  
   
   func imageNameForNumber(i: Int) -> String {
 //    return "Gavin Poses-s\(paddedTwoDigitNumber(i))"

@@ -49,6 +49,7 @@ class InfinateContainerView: UIView {
   
   func arrayOfNames(count: Int) -> [String] {
     var imageNames: [String] = []
+//   for i in 1...count {
     for i in 0...(count - 1) {
       imageNames.append(imageNameForNumber(i))
     }
@@ -58,7 +59,7 @@ class InfinateContainerView: UIView {
   
   func imageNameForNumber(i: Int) -> String {
 //    return "Gavin Poses-s\(paddedTwoDigitNumber(i))"
-        return "num-\(paddedTwoDigitNumber(i))"
+    return "num-\(paddedTwoDigitNumber(i))"
   }
   
   

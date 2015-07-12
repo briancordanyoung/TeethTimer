@@ -43,7 +43,7 @@ class ViewController: UIViewController {
 //    print(" CW  "); printRotationStateForImageWheel(CWContainerView.imageWheel)
 //    print("    ||||     CCW "); printRotationStateForImageWheel(CCWContainerView.imageWheel)
 //    println("")
-    printRotationStateMinMaxForImageWheel(CWContainerView.imageWheel)
+//    printRotationStateMinMaxForImageWheel(CCWContainerView.imageWheel)
   }
   
   
@@ -51,16 +51,17 @@ class ViewController: UIViewController {
     if let s = wheel?.rotationState {
       
       var msg = ""
-      //      msg += "min: \(d.pd(s.minimumRotationWithinWedgeSeries)) "
-      msg += "rot: \(d.pd(s.rotation))   "
-      //      msg += "max:\(d.pd(s.maximumRotationWithinWedgeSeries)) "
-      msg += "cnt: \(d.pd(s.wedgeCenter))   "
-      msg += "idx: \(d.pi2(s.wedgeIndex))   "
-      msg += "nidx: \(d.pi2(s.wedgeIndexNeighbor))   "
-//      msg += " \(s.polarity)"
-//      msg += "off: \(d.pd(s.offsetFromWedgeCenter))   "
-//      msg += "off: \(s.directionRotatedOffWedgeCenter)   "
-//      msg += "lay: \(s.layoutDirection)   "
+//      //      msg += "min: \(d.pd(s.minimumRotationWithinWedgeSeries)) "
+//      msg += "rot: \(d.pd(s.rotation))   "
+//      //      msg += "max:\(d.pd(s.maximumRotationWithinWedgeSeries)) "
+//      msg += "cnt: \(d.pd(s.wedgeCenter))   "
+//      msg += "idx: \(d.pi2(s.wedgeIndex))   "
+//      msg += "nidx: \(d.pi2(s.wedgeIndexNeighbor))   "
+////      msg += " \(s.polarity)"
+////      msg += "off: \(d.pd(s.offsetFromWedgeCenter))   "
+////      msg += "off: \(s.directionRotatedOffWedgeCenter)   "
+////      msg += "lay: \(s.layoutDirection)   "
+      
       
       print("\(msg)")
     }
@@ -72,9 +73,11 @@ class ViewController: UIViewController {
     if let s = wheel?.rotationState {
       
       var msg = ""
-      msg += "Rot Count: \(d.pi(s.rotationCount))   "
-      msg += "w: \(d.pd4(s.seriesWidth))   "
-      msg += "Com: \(d.pd4(s.distanceOfCompleteRotations))   "
+//      msg += "Series Mult: \(d.pi(s.wedgeSeriesMultiplier))   "
+//      msg += "Rot Count: \(d.pi(s.rotationCount))   "
+//      msg += "w: \(d.pd4(s.seriesWidth))   "
+//      msg += "Com: \(d.pd4(s.distanceOfCompleteRotations))   "
+//      msg += "WedgeCount: \(d.pi(s.countOfWedgesInRemainder))   "
       msg += "  |   "
       msg += "min: \(d.pd4(s.minimumRotationWithinWedgeSeries))  <-  "
       msg += "rot: \(d.pd4(s.rotation)) "
