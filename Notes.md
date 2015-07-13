@@ -73,6 +73,21 @@ Contraints:
 							
 							
 
+Difference in 2 approaches:
+					
+InfinateImageWheel
+
+	- 22033	Characters
+	- 1501 Words
+	- 620
+	
+ImageWheel
+
+	- 18098	Characters
+	- 1328 Words
+	- 497
+
+
 
 
 
