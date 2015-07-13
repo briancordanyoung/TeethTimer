@@ -1,11 +1,11 @@
 import UIKit
 
-// MARK: - Various enums and structs used throughout the WheelControl Class
+// MARK: Various enums and structs used throughout the WheelControl Class
 
 
 extension WheelControl {
   
-  // MARK: -
+  // MARK:
   // MARK: Tracking the Wheel Rotation
   // Which way is the wheel spinning?.
   enum Direction: String, Printable {
@@ -52,18 +52,18 @@ extension WheelControl {
     var description: String {
       var msg =  "Current Rotation: \(current) "
       msg    +=  "Previous Rotation: \(previous) "
-      msg    +=  "Previous Cirection: \(direction)"
+      msg    +=  "Previous Direction: \(direction)"
       return msg
     }
   }
 
-  // MARK: -
+  // MARK:
   // MARK: Tracking the User Interaction
   // Defines if the wheel is currently under the control
   // of user interaction or not.
   enum UserInteraction: String, Printable {
     case Interacting    = "Interacting"
-    case NotInteracting = "NotInteracting"
+    case NotInteracting = "Not Interacting"
     
     var description: String {
       return self.rawValue
@@ -72,10 +72,10 @@ extension WheelControl {
   
   // Describes what angle the wheel should snap-to when the user lets go
   enum SnapTo: String, Printable {
-    case InitialRotation = "InitialRotation"
-    case CurrentRotation = "CurrentRotation"
-    case MinRotation     = "MinRotation"
-    case MaxRotation     = "MaxRotation"
+    case InitialRotation = "Initial Rotation"
+    case CurrentRotation = "Current Rotation"
+    case MinRotation     = "Minimum Rotation"
+    case MaxRotation     = "Maximum Rotation"
     
     var description: String {
       return self.rawValue
@@ -89,11 +89,11 @@ extension WheelControl {
     var initialTransform:  CGAffineTransform
     var initialTouchAngle: Angle
     var initialRotation:   Rotation
+    var currently:         UserInteraction
+    var snapTo:            SnapTo
     var maxDampenAngle:    Rotation
     var minDampenAngle:    Rotation
     
-    var currently: UserInteraction
-    var snapTo:    SnapTo
     
     init() {
       initialTransform   = CGAffineTransformMakeRotation(0)

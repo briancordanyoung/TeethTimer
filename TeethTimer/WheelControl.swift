@@ -44,12 +44,28 @@ import UIKit
 // MARK: - WheelControl Class
 final class WheelControl: UIControl, AnimationDelegate  {
 
+  // MARK: Properties
+  // Configure WheelControl
+  var centerCircle  = CGFloat(10.0)
+  let wheelView     = UIView()
+  
+  // Configure Dampening Properties
+  var dampenClockwise          = false
+  var dampenCounterClockwise   = false
+  
+  // Set a rotation to snap to after user touch ends
+  var snapToRotation: Rotation?
+
+  // How strong should the users rotation be dampened as they
+  // rotate past the allowed point
+  var rotationDampeningFactor  = CGFloat(5)
+
   // The data of WheelControl
   // Do not use this internally.
   // This is the only interface for getting the data for this control.
   // Externally set the data for this control with this property or 
   //                                                animateToRotation()
-  var rotation: Rotation {  // in module, make public //
+  var rotation: Rotation {
     get {
       return currentRotation
     }
@@ -58,11 +74,30 @@ final class WheelControl: UIControl, AnimationDelegate  {
       currentRotation =       newRotationAngle
     }
   }
+
+  // The min and max rotations where user rotation becomes dampened (slowed)
+  var minimumRotation: Rotation? {
+    didSet{
+      let msg = "minimumRotation must be less than or equal to rotation."
+      assert(currentRotation >= minimumRotation, msg)
+    }
+  }
   
+  var maximumRotation: Rotation? {
+    didSet{
+      let msg = "maximumRotation must be less than or equal to rotation."
+      assert(currentRotation <= maximumRotation, msg)
+    }
+  }
+  
+  
+  // If the Wheel Control has a minimum and maximum rotation set,
+  // percentageRemaining will return the remaining portion as a percentage
   var percentageRemaining: CGFloat? {
     get {
       var percentageRemaining: CGFloat?
-      if let min = minimumRotation, max = maximumRotation {
+      if let min = minimumRotation,
+             max = maximumRotation {
         percentageRemaining = percentValue( CGFloat(rotation),
                               isBetweenLow: CGFloat(min),
                                    AndHigh: CGFloat(max))
@@ -71,18 +106,15 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
   }
   
-  func percentValue(value: CGFloat,
-        isBetweenLow  low: CGFloat,
-        AndHigh      high: CGFloat ) -> CGFloat {
-      return (value - low) / (high - low)
-  }
-  
-  var targetRotation: Rotation {  // in module, make public //
-      var targetRotation = rotation
-      if let target = rotationState.target {
-        targetRotation = target
-      }
-      return targetRotation
+  // MARK: Convenience calculated properties
+
+  var targetRotation: Rotation {
+    var targetRotation: Rotation
+    if let target = rotationState.target {
+      return target
+    } else {
+      return rotation
+    }
   }
   
   var animationState: AnimatedMotion {
@@ -99,43 +131,9 @@ final class WheelControl: UIControl, AnimationDelegate  {
     return state
   }
   
-  // Configure WheelControl
-  var centerCircle:      CGFloat = 10.0
-  var startingRotation           =  Rotation(0.0)
-  let wheelView                  = UIView()
   var backgroundView: UIView {
     return self
   }
-
-
-  var snapToRotation: Rotation?
-
-  // Configure Dampening Properties
-  var dampenClockwise          = false
-  var dampenCounterClockwise   = false
-
-  
-  // How strong should the users rotation be dampened as they
-  // rotate past the allowed point
-  var rotationDampeningFactor  = CGFloat(5)
-  
-  
-  // Internal Properties
-  
-  var minimumRotation: Rotation? {
-    didSet{
-      let msg = "minimumRotation must be less than or equal to rotation."
-      assert(currentRotation >= minimumRotation, msg)
-    }
-  }
-  var maximumRotation: Rotation? {
-    didSet{
-      let msg = "maximumRotation must be less than or equal to rotation."
-      assert(currentRotation <= maximumRotation, msg)
-    }
-  }
-
-  
   
   var outsideCircle: CGFloat {
     return wheelView.bounds.height * 2
@@ -150,12 +148,13 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
   }
   
-  // See: rotationFromAngle(_,AndRotationState:) for and explination of the
-  // the rotationState property and struct.
+  // Track User interaction through out the UIControl methods
+  var userState   = InteractionState()
+
+  // Struct to track wheel rotation as an Angle and translate to
+  // a Rotation (currentRotation)
   var rotationState = RotationState()
 
-  // See: rotationUseingAngle() for and explination of the
-  // the currentRotation property, rotationState property and backing struct.
   var currentRotation: Rotation {
     get {
       return rotationState.current
@@ -168,13 +167,9 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
   }
 
-  // See: The UIControl methods handling the touches to understand userState
-  //      beginTrackingWithTouch(_,withEvent:)
-  //      continueTrackingWithTouch(_,withEvent:)
-  //      endTrackingWithTouch(_,withEvent:)
-  var userState   = InteractionState()
 
-  
+  // MARK:
+  // MARK: Initialization
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupViews()
@@ -188,9 +183,8 @@ final class WheelControl: UIControl, AnimationDelegate  {
   }
 
   func resetRotationAngle() {
-    startingRotation = 0.0
-    currentAngle     = Angle(startingRotation)
-    currentRotation  = startingRotation
+    currentAngle     = Angle(0.0)
+    currentRotation  = Rotation(0.0)
   }
 
   func setupViews() {
@@ -204,25 +198,23 @@ final class WheelControl: UIControl, AnimationDelegate  {
     // constraints
     let viewsDictionary = ["wheelView":wheelView]
     
-    //position constraints
+    // position constraints
     let view_constraint_H:[AnyObject] =
-    NSLayoutConstraint.constraintsWithVisualFormat( "H:|[wheelView]|",
-                                           options: NSLayoutFormatOptions(0),
-                                           metrics: nil,
-                                             views: viewsDictionary)
+      NSLayoutConstraint.constraintsWithVisualFormat( "H:|[wheelView]|",
+                                             options: NSLayoutFormatOptions(0),
+                                             metrics: nil,
+                                               views: viewsDictionary)
     
     let view_constraint_V:[AnyObject] =
-    NSLayoutConstraint.constraintsWithVisualFormat( "V:|[wheelView]|",
-                                           options: NSLayoutFormatOptions(0),
-                                           metrics: nil,
-                                             views: viewsDictionary)
+      NSLayoutConstraint.constraintsWithVisualFormat( "V:|[wheelView]|",
+                                             options: NSLayoutFormatOptions(0),
+                                             metrics: nil,
+                                               views: viewsDictionary)
     
     self.addConstraints(view_constraint_H)
     self.addConstraints(view_constraint_V)
   }
 
-  
-  
   
   
   // MARK: -
@@ -250,16 +242,17 @@ final class WheelControl: UIControl, AnimationDelegate  {
       userState.maxDampenAngle   =   max - currentRotation
     }
     
-    
     return beginAndContinueTrackingWithTouch( touch, withEvent: event)
   }
   
+  //
   override func continueTrackingWithTouch(touch: UITouch,
                                 withEvent event: UIEvent) -> Bool {
       
     return beginAndContinueTrackingWithTouch( touch, withEvent: event)
   }
   
+  //
   func beginAndContinueTrackingWithTouch(touch: UITouch,
                                        withEvent event: UIEvent) -> Bool {
     switch touchRegion(touch) {
@@ -291,16 +284,19 @@ final class WheelControl: UIControl, AnimationDelegate  {
     return true
   }
   
+  //
   override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
     endUserInteraction()
   }
 
+  //
   override func cancelTrackingWithEvent(event: UIEvent?) {
     endUserInteraction()
   }
 
+  //
   func endUserInteraction() {
-    // User interaction has ended, but most of the state is
+    // User interaction has ended, but userState is
     // still used through out this method.
     userState.currently = .NotInteracting
     
@@ -311,7 +307,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
     case .CurrentRotation:
       if let snapToRotation = snapToRotation {
         animateToRotation(snapToRotation)
-        self.snapToRotation = nil
+        self.snapToRotation = .None
       }
       
     case .MinRotation:
@@ -328,7 +324,8 @@ final class WheelControl: UIControl, AnimationDelegate  {
     userState = InteractionState()
   }
   
-  
+  // MARK: User interaction helpers
+  // User rotated wheel.
   func setRotation(rotation: Rotation) {
     let newDirection: Direction
     if rotation > rotationState.current {
@@ -346,7 +343,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
   }
 
   
-  // MARK: Wheel State - during user interaction.
+  // Calculate angleDifference, including dampening in either direction
   func angleDifferenceUsing(touch: UITouch) -> Rotation {
     
     let angleDiff = angleDifferenceBetweenTouch( touch,
@@ -381,6 +378,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
   }
   
   
+  // Build the struct of clockwise & counter-clockwise dampening angles
   func directionsToDampenUsingRotation(rotation: Rotation) -> DampenDirection {
 
     // Each change in the touch angle of the WheelControl calls
@@ -434,7 +432,8 @@ final class WheelControl: UIControl, AnimationDelegate  {
     return dampenRotation
   }
   
-    // MARK: Wheel State Helpers
+  // MARK:
+  // MARK: Wheel State Helpers
   func angleDifferenceBetweenTouch( touch: UITouch,
                            AndAngle angle: Angle) -> Rotation {
                             
@@ -545,6 +544,14 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
     
     return region
+  }
+  
+  // MARK: Precent Helpers
+  private func percentValue(value: CGFloat,
+                isBetweenLow  low: CGFloat,
+                AndHigh      high: CGFloat ) -> CGFloat {
+                  
+      return (value - low) / (high - low)
   }
   
 

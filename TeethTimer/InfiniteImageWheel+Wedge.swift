@@ -37,12 +37,12 @@ extension InfiniteImageWheel {
     }
     
     // MARK: Convience Computed Properties
-    var viewExists: Bool       { return hasValue(view)         }
-    var viewDoesNotExist: Bool { return doesNotHaveValue(view) }
+    var viewExists: Bool       { return view.hasValue   }
+    var viewDoesNotExist: Bool { return view.hasNoValue }
     
     var image: UIImage       {
       let image = UIImage(named: imageName)
-      assert(hasValue(image), "Could Not Find Image \(imageName).")
+      assert(image.hasValue, "Could Not Find Image \(imageName).")
       return image!
     }
     
@@ -61,7 +61,7 @@ extension InfiniteImageWheel {
         if let transform = view?.transform {
           return Angle(transform: transform)
         } else {
-          return nil
+          return .None
         }
       }
     }
@@ -135,7 +135,7 @@ extension InfiniteImageWheel {
       }
       constraints.removeAll()
       view?.removeFromSuperview()
-      view = nil
+      view = .None
     }
     
     

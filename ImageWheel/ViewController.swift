@@ -169,7 +169,7 @@ class ViewController: UIViewController {
 //      
 //      var image = takeSnapshotOfView(CCWContainerView)
 //      let png   = UIImagePNGRepresentation(image)
-//      if png != nil {
+//      if hasValue(png) {
 //        png.writeToURL(path, atomically: true)
 //      }
 //    }

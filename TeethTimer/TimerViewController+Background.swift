@@ -53,7 +53,7 @@ extension TimerViewController {
     var url: NSURL?
     
     url = urlForDocumentAsset(kAppCacheUIMovieBaseNameKey + ".mp4")
-    if doesNotHaveValue(url) {
+    if url.hasNoValue {
       url = urlForAppBundleAsset(kAppCacheUIMovieBaseNameKey, ofType: "mp4")
     }
     

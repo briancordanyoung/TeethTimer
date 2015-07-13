@@ -54,7 +54,7 @@ final class TimerViewController: UIViewController {
   
   // A computed property to make it easy to access the ImageWheel inside gavinWheel
   var imageWheelView: InfiniteImageWheel? {
-    var imageWheel: InfiniteImageWheel? = nil
+    var imageWheel: InfiniteImageWheel?
     if let gavinWheel = gavinWheel {
         imageWheel = imageWheelFromWheelControl(gavinWheel)
     }
@@ -272,7 +272,7 @@ final class TimerViewController: UIViewController {
       blurLowerThirdView()
       lowerThirdView.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
     } else {
-      lowerThirdView.image = nil
+      lowerThirdView.image = .None
       lowerThirdView.backgroundColor = UIColor(white: 0.0, alpha: 0.5)
     }
   }
@@ -363,10 +363,11 @@ final class TimerViewController: UIViewController {
                      imageWheelView = imageWheelView {
 
       if previousIndexBeforeTouch > imageWheelView.rotationState.wedgeIndex {
+        
         // The wheel was turned back.
         let targetRotation = gavinWheel.targetRotation
-        let targetImage    = imageWheelView.indexFromRotation(targetRotation)
-        let wheelTurnedBackByTmp = previousIndexBeforeTouch - targetImage
+        let targetIndex    = imageWheelView.indexFromRotation(targetRotation)
+        let wheelTurnedBackByTmp = previousIndexBeforeTouch - targetIndex
         let wheelTurnedBackBy    = max(wheelTurnedBackByTmp,0)
         
                                               // 1st image is not in count down
@@ -376,7 +377,7 @@ final class TimerViewController: UIViewController {
         
         timer.addTimeByPercentage(percentageTurnedBackBy)
       }
-      self.previousIndexBeforeTouch = nil
+      self.previousIndexBeforeTouch = .None
     }
     
     if timerStateBeforeTouch == .Counting {
@@ -520,7 +521,7 @@ final class TimerViewController: UIViewController {
   }
   
   func imageWheelFromWheelControl(wheelControl: WheelControl) -> InfiniteImageWheel? {
-    var imageWheel: InfiniteImageWheel? = nil
+    var imageWheel: InfiniteImageWheel?
     for viewinWheel in wheelControl.wheelView.subviews {
       if viewinWheel.isKindOfClass(InfiniteImageWheel) {
         imageWheel = viewinWheel as? InfiniteImageWheel

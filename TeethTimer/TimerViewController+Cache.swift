@@ -149,7 +149,7 @@ extension TimerViewController {
   
   func writeFrameToMovie(image: UIImage) {
     
-    if doesNotHaveValue(cacheState.movieMaker) {
+    if cacheState.movieMaker.hasNoValue {
       setupMovieMaker()
     }
     

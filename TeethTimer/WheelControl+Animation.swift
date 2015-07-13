@@ -71,7 +71,7 @@ extension WheelControl {
       if finished {
         self.currentAngle         = Angle(rotation)
         self.currentRotation      = rotation
-        self.rotationState.target = nil
+        self.rotationState.target = .None
       }
     }
     
@@ -115,7 +115,7 @@ extension WheelControl {
       if finished {
         self.currentAngle = Angle(to)
         self.setRotation(to)
-        self.rotationState.target = nil
+        self.rotationState.target = .None
       }
     }
     Animation.removeAllAnimations(wheelView.layer)

@@ -142,9 +142,9 @@ final class Timer: NSObject {
   
   func reset() {
     _status                = .Ready
-    originalStartTime      = nil
-    recentStartTime        = nil
-    timerUUID              = nil
+    originalStartTime      = .None
+    recentStartTime        = .None
+    timerUUID              = .None
     secondsElapsedAtPause  = 0
     secondsAddedAfterStart = 0
     
@@ -156,10 +156,10 @@ final class Timer: NSObject {
     _status = .Counting
     
     recentStartTime = NSDate.timeIntervalSinceReferenceDate()
-    if originalStartTime == nil {
+    if originalStartTime.hasNoValue {
       originalStartTime = recentStartTime
     }
-    if timerUUID == nil {
+    if timerUUID.hasNoValue {
       timerUUID = NSUUID().UUIDString
     }
     
@@ -241,7 +241,7 @@ final class Timer: NSObject {
   
   private func rememberTimerAtPause() {
     secondsElapsedAtPause = secondsElapsed
-    recentStartTime = nil
+    recentStartTime = .None
   }
   
   // MARK: -

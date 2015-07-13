@@ -36,7 +36,7 @@ class MovieMaker {
       url = path.URLByAppendingPathComponent(movieName)
     }
     
-    assert(url != nil, "Could not create output movie path.")
+    assert(url.hasValue, "Could not create output movie path.")
     
     println(url!)
     
