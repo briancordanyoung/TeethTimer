@@ -1,6 +1,15 @@
 
 
 extension InfiniteImageWheel {
+  
+  // These objects describe how images are laidout on the wheel.
+  // It is essentail an array of wedge objects. (which contain image urls)
+  // It is also describes the angle between each wedge (wedgeSeperation)
+  // the direction the images are laid out in (Clockwise vs. Counter Clockwise)
+  // and how many wedges should be visiable at any one time,
+  // described as visibleAngle.  visibleAngle is largely a optimazation,
+  // reducing how many underlying PieSliceLayers new to re-draw their mask.
+  
   struct WedgeSeries: Printable {
     let wedges:          [Wedge]
     let direction:       LayoutDirection
@@ -13,15 +22,15 @@ extension InfiniteImageWheel {
          visibleAngle: Angle) {
       self.wedges          = wedges
       self.direction       = direction
-      self.wedgeSeperation = Angle(wedgeSeperation)
-      self.visibleAngle    = Angle(visibleAngle)
+      self.wedgeSeperation = wedgeSeperation
+      self.visibleAngle    = visibleAngle
     }
 
     init( _ wedgeSeries: WedgeSeries ) {
       self.wedges          = wedgeSeries.wedges
       self.direction       = wedgeSeries.direction
-      self.wedgeSeperation = Angle(wedgeSeries.wedgeSeperation)
-      self.visibleAngle    = Angle(wedgeSeries.visibleAngle)
+      self.wedgeSeperation = wedgeSeries.wedgeSeperation
+      self.visibleAngle    = wedgeSeries.visibleAngle
     }
     
     var wedgeCount: Int {
@@ -37,7 +46,7 @@ extension InfiniteImageWheel {
     }
     
     var description: String {
-      return "TODO: impliment description"
+      return "\(wedgeCount) wedges, laidout \(direction) with \(wedgeSeperation.degrees)° between each wedge, always filling at least \(visibleAngle.degrees)° of the wheel."
     }
   }
 }

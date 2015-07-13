@@ -9,7 +9,7 @@ extension InfiniteImageWheel {
     let index: WedgeIndex
     
     
-    // MARK: Convience
+    // MARK: Convenience
     var wedgeSeries: WedgeSeries {
       return rotationState.wedgeSeries
     }
@@ -129,7 +129,7 @@ extension InfiniteImageWheel {
     
     
     // MARK: Neighbor Properties/Methods.
-    // swift 2: add to a protocol and conform RotationState & WedgeState to it
+    // swift 2-do: add to a protocol and conform RotationState & WedgeState to it
     private var nextNeighbor: WedgeIndex {
       return nextIndex(index)
     }

@@ -15,25 +15,28 @@ extension InfiniteImageWheel {
     }
 
     // MARK: wedgeIndex for given rotation
-    //       TODO: refactor wedgeIndex (see end of file)
     var wedgeIndex: WedgeIndex {
       
-      let width = wedgeSeperation / 2
+      // Calculate the by determining the percentage the current rotation
+      // is between the min and max rotations of a series.
+      
+      // Transform the current rotation to be within a space between:
+      //  min: 0.0
+      //  max: wedgeSeries.seriesWidth
       let min = minimumRotationWithinWedgeSeries
-      let max: Rotation
       let rot: Rotation
       if min < 0 {
-        max = maximumRotationWithinWedgeSeries + abs(min)
         rot = rotation + abs(min)
       } else {
-        max = maximumRotationWithinWedgeSeries - abs(min)
-        rot = rotation  - abs(min)
+        rot = rotation - abs(min)
       }
       
-      
-      let percent = percentValue(rot, isBetweenLow: 0, AndHigh: max)
-      let index   = Int(floor(percent * 10))
-      
+      // Calc the index based on the percentage
+      let percent = percentValue(rot, isBetweenLow: 0,
+                                 AndHigh: wedgeSeries.seriesWidth)
+      let index   = WedgeIndex(floor(percent * 10))
+
+      // Invert the index if the layout is Clockwise
       switch layoutDirection {
       case .ClockwiseLayout:
         return wedgeMaxIndex - index
@@ -71,12 +74,14 @@ extension InfiniteImageWheel {
       }
     }
     
+    // The Angle between the rotation and the center of the current wedge
     var offsetAngleFromWedgeCenter: Angle {
       let angleOffCenter = rotation - wedgeCenter
       return Angle(angleOffCenter)
     }
     
     
+    // The direction the wheel is rotated off center of the current wedge
     private var directionRotatedOffWedgeCenter: RotationDirection {
       if rotation > wedgeCenter {
         return .Clockwise
@@ -84,13 +89,12 @@ extension InfiniteImageWheel {
         return .CounterClockwise
       }
     }
-
-
     
     
     // MARK:
     // MARK: Neighbor Helper Properties/Methods.
-    // swift 2: add to a protocol and conform RotationState & WedgeState to it
+    // swift 2-do: add to a protocol with these methods and conform 
+    // RotationState & WedgeState to it
     private var nextNeighbor: WedgeIndex {
       return nextIndex(wedgeIndex)
     }
@@ -114,8 +118,6 @@ extension InfiniteImageWheel {
       }
       return prev
     }
-    
-    
     
     
     
@@ -152,8 +154,13 @@ extension InfiniteImageWheel {
       
       return maximumRotation
     }
-    
-    
+
+    // MARK: 
+    // MARK: wedgeSeries related properties/methods
+    // The rotation the first wedgeSeries begins to be laidout from.  Since the
+    // first wedge is always centered on a rotation of 0,
+    // the first series (wedgeSeriesMultiplier = 0) begins half-a-wedge off
+    // in either direction, based on the layout direction.
     private var seriesOriginRotation: Rotation {
       switch layoutDirection {
       case .ClockwiseLayout:
@@ -164,6 +171,8 @@ extension InfiniteImageWheel {
     }
     
     
+    // This is a count ( + or - ) signifying how many wedgeSeries the wheel has
+    // rotated off from the first (origin) series.
     private var wedgeSeriesMultiplier: Int {
       let normalizeRotation = rotation - seriesOriginRotation
       var index = Int(normalizeRotation / seriesWidth)
@@ -180,7 +189,7 @@ extension InfiniteImageWheel {
       }
     }
 
-    
+    // calculate the center of a wedge from any index
     func wedgeCenterForIndex(index: WedgeIndex) -> Rotation {
       let maxIndexMsg = "Index \(index) may not be greater than \(wedgeMaxIndex)"
       assert(index < wedgeSeries.wedgeCount, maxIndexMsg)
@@ -215,7 +224,7 @@ extension InfiniteImageWheel {
 
     
     // MARK:
-    // MARK: wedgeSeries connivence properties.
+    // MARK: wedgeSeries convenience properties.
     private var wedgeCount: Int {
       return wedgeSeries.wedgeCount
     }

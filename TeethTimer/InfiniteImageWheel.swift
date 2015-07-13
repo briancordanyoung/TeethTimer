@@ -20,7 +20,7 @@ final class InfiniteImageWheel: UIView {
   }
   
   
-  // Computed Properties
+  // Convience Property
   var wedgeCenter: Rotation {
     return rotationState.wedgeCenter
   }
@@ -49,9 +49,12 @@ final class InfiniteImageWheel: UIView {
     rotation = Rotation(0.0)
   }
   
-  convenience init(imageNames: [String], seperatedByAngle wedgeSeperation: Angle ) {
-    self.init(imageNames: imageNames, seperatedByAngle: wedgeSeperation,
-                                           inDirection: .ClockwiseLayout)
+  convenience init(                       imageNames: [String],
+                    seperatedByAngle wedgeSeperation: Angle ) {
+                      
+    self.init(imageNames: imageNames,
+        seperatedByAngle: wedgeSeperation,
+             inDirection: .ClockwiseLayout)
   }
   
   required init(coder: NSCoder) {
@@ -100,6 +103,8 @@ final class InfiniteImageWheel: UIView {
     }
   }
   
+  
+  // MARK: Create and remove the image views of each wedge.
   func createWedgeImageViews() {
     if let superview = superview {
       for wedge in wedgeSeries.wedges {
@@ -114,17 +119,23 @@ final class InfiniteImageWheel: UIView {
     }
   }
 
-  
+  // MARK: Layout of wedge image views per rotation
+  // Iterate through each wedge, getting it's index and laying it out for this
+  // current rotation.
   func transformWedgesWithRotationState(rotationState: RotationState) {
-    for (index, wedge) in enumerate(wedgeSeries.wedges) {
+    for (index, wedge) in enumerate(rotationState.wedgeSeries.wedges) {
       if wedge.viewExists {
         layoutWedge(wedge, atIndex: index, withRotationState: rotationState)
       }
     }
   }
   
-  func layoutWedge(wedge: Wedge, atIndex index: WedgeIndex,
-               withRotationState rotationState: RotationState) {
+  
+  // Rotate the Wedge's View to in to place and set the layoutAngle to change
+  // the size of the pie shaped wedge.
+  func layoutWedge(                          wedge: Wedge,
+                                     atIndex index: WedgeIndex,
+                   withRotationState rotationState: RotationState) {
                         
     let wedgeState = WedgeState(rotationState: rotationState,
                                         index: index)

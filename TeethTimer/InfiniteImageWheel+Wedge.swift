@@ -48,6 +48,9 @@ extension InfiniteImageWheel {
     
     
     // MARK: Convience Helpers
+    //       the layoutAngle is passed to the underling view.
+    //       If the view exists it will be transformed to this Angle, 
+    //       or return the value of the current tranformation as an Angle.
     var layoutAngle: Angle? {
       set(angle) {
         if let angle = angle {
@@ -73,6 +76,9 @@ extension InfiniteImageWheel {
       transform(CGAffineTransformMakeRotation(CGFloat(angle)))
     }
     
+    // MARK: View visibility
+    //       Using alpha, instead of hidden property leaving the potential
+    //       to animate the opacity of each wedge.
     func hide() {
       if let view = view {
         if view.alpha != 0.0   { view.alpha = 0.0 }
@@ -87,13 +93,12 @@ extension InfiniteImageWheel {
       }
     }
     
+    // MARK: View Creation and Removal
     func createWedgeImageViewWithSuperview(superview: UIView) {
       self.superview = superview
       createWedgeImageView()
     }
     
-    
-    // MARK: Creation and Removal
     func createWedgeImageView() {
       if viewDoesNotExist {
         if let superview = superview {
@@ -115,7 +120,6 @@ extension InfiniteImageWheel {
             constraints += createHeightAndAspectContraintsForView( wedgeImageView,
                                                       toSuperview: superview,
                                                        withAspect: aspect)
-            
             for (view,constraint) in constraints {
               view.addConstraint(constraint)
             }
