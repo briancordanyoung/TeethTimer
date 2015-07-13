@@ -1,127 +1,240 @@
-
+import UIKit
 
 extension InfiniteImageWheel {
-  class RotationState: NSObject, Printable {
+  struct RotationState {
     
     let rotation:        Rotation
     let wedgeSeries:     WedgeSeries
     
-    init(    rotation: Rotation,
-          wedgeSeries: WedgeSeries) {
-        
-        self.rotation    = Rotation(rotation)
-        self.wedgeSeries = WedgeSeries(wedgeSeries)
-    }
     
-    init( state: RotationState) {
-      self.rotation    = Rotation(state.rotation)
-      self.wedgeSeries = WedgeSeries(state.wedgeSeries)
-    }
-    
-    // MARK: Computed Properties
-    var layoutRotation: Rotation {
-      return self.rotation * -1
+    // MARK:
+    // MARK: wedgeCenter rotation for given rotation
+    // WedgeIndex is from 0 to (count-of-images - 1)
+    var wedgeCenter: Rotation {
+      return wedgeCenterForIndex(wedgeIndex)
     }
 
-    // wheelShape connivence properties.
-    var wedgeCount: Int {
-      return wedgeSeries.wedgeCount
-    }
-    
-    var seriesWidth: Rotation {
-      return wedgeSeries.seriesWidth
-    }
-    
-    var wedgeSeperation: Angle {
-      return wedgeSeries.wedgeSeperation
-    }
-    
-    var layoutDirection: LayoutDirection {
-      return wedgeSeries.direction
-    }
-    
-    // MARK: Lazy Computed & Stored Properties
-    
-    
-    // WedgeIndex is from 0 to (count-of-images - 1)
-    lazy var wedgeIndex: WedgeIndex = {
-      if self.remainingRotation >= 0 {
-        return self.countOfWedgesInRemainder
+    // MARK: wedgeIndex for given rotation
+    //       TODO: refactor wedgeIndex (see end of file)
+    var wedgeIndex: WedgeIndex {
+      
+      let width = wedgeSeperation / 2
+      let min = minimumRotationWithinWedgeSeries
+      let max: Rotation
+      let rot: Rotation
+      if min < 0 {
+        max = maximumRotationWithinWedgeSeries + abs(min)
+        rot = rotation + abs(min)
       } else {
-        return self.wedgeCount + self.countOfWedgesInRemainder - 1
+        max = maximumRotationWithinWedgeSeries - abs(min)
+        rot = rotation  - abs(min)
       }
-    }()
+      
+      
+      let percent = percentValue(rot, isBetweenLow: 0, AndHigh: max)
+      let index   = Int(floor(percent * 10))
+      
+      switch layoutDirection {
+      case .ClockwiseLayout:
+        return wedgeMaxIndex - index
+      case .CounterClockwiseLayout:
+        return index
+      }
+      
+    }
     
-    lazy var wedgeCenter: Rotation = {
-      let distanceWithinPartialRotation = self.wedgeSeperation * self.wedgeIndex
-      let distanceOfCompletRotations    = self.seriesWidth * self.rotationCount
-      return distanceOfCompletRotations + distanceWithinPartialRotation
-    }()
+    private func percentValue<T:AngularType>(value: T,
+      isBetweenLow   low: T,
+      AndHigh       high: T ) -> Double {
+        return (value.value - low.value) / (high.value - low.value)
+    }
     
-    lazy var directionRotatedOffWedgeCenter: RotationDirection = {
-      if self.layoutRotation > self.wedgeCenter {
+    
+    
+    
+    
+    // MARK:
+    // MARK: Properties reletive to wedgeIndex/wedgeCenter.
+    
+    // The 2nd closest wedgeIndex to rotation.
+    var wedgeIndexNeighbor: WedgeIndex {
+      switch (directionRotatedOffWedgeCenter,layoutDirection) {
+      case (.Clockwise        , .CounterClockwiseLayout):
+        return nextNeighbor
+      case (.CounterClockwise , .CounterClockwiseLayout):
+        return prevNeighbor
+        
+      case (.Clockwise        , .ClockwiseLayout):
+        return prevNeighbor
+      case (.CounterClockwise , .ClockwiseLayout):
+        return nextNeighbor
+      }
+    }
+    
+    var offsetAngleFromWedgeCenter: Angle {
+      let angleOffCenter = rotation - wedgeCenter
+      return Angle(angleOffCenter)
+    }
+    
+    
+    private var directionRotatedOffWedgeCenter: RotationDirection {
+      if rotation > wedgeCenter {
         return .Clockwise
       } else {
         return .CounterClockwise
       }
-    }()
+    }
 
 
     
-    // MARK: Private Lazy Computed & Stored Properties
     
-    // Much of the math to compute these properties assumes that the
-    // begining rotation of the wedge seriesWidth is at 0.  But, seriesWidth is
-    // actually a half wedgeSeperation off, so that when rotation = 0, the 
-    // first wedge is centered at the top of the wheel.
-    // offsetRotation is the rotation shifted so the it the wedge min or max
-    // is at the top of the wheel
-    private lazy var offsetRotation: Rotation = {
-      return self.layoutRotation + (self.wedgeSeperation / 2)
-    }()
+    // MARK:
+    // MARK: Neighbor Helper Properties/Methods.
+    // swift 2: add to a protocol and conform RotationState & WedgeState to it
+    private var nextNeighbor: WedgeIndex {
+      return nextIndex(wedgeIndex)
+    }
+    
+    private var prevNeighbor: WedgeIndex {
+      return prevIndex(wedgeIndex)
+    }
+    
+    private func nextIndex(index: Int) -> Int {
+      var next = index + 1
+      if next > wedgeMaxIndex {
+        next = 0
+      }
+      return next
+    }
+    
+    private func prevIndex(index: Int) -> Int {
+      var prev = index - 1
+      if prev < 0 {
+        prev = wedgeMaxIndex
+      }
+      return prev
+    }
     
     
-    // The remainder (modulus) of the seriesWidth in to the rotation.
-    // This remainder is transforms a rotation of any size in to a rotation
-    // between 0 and seriesWidth.
-    private lazy var remainingRotation: Rotation = {
-      return self.offsetRotation % self.seriesWidth
-    }()
     
-    // MARK: Private Computed Properties
     
-    // How many complete rotations the wheel been rotated from the start.
-    private var rotationCount: Int {
-      let positiveRotationCount = Int((self.offsetRotation / self.seriesWidth).value)
-      let negitiveRotationCount = (positiveRotationCount - 1)
+    
+    // MARK:
+    // MARK: Min and Max Rotations for current wedgeSeries
+    var minimumRotationWithinWedgeSeries: Rotation {
+      var minimumRotation: Rotation
+      switch layoutDirection {
+      case .ClockwiseLayout:
+        minimumRotation = seriesOriginRotation - seriesWidth
+      case .CounterClockwiseLayout:
+        minimumRotation = seriesOriginRotation
+      }
+      minimumRotation += (seriesWidth * wedgeSeriesMultiplier)
       
-      if self.offsetRotation >= 0 {
-        return positiveRotationCount
-      } else {
-        return negitiveRotationCount
+      let msg = "minimumRotation must be less than rotation"
+      assert(minimumRotation <= rotation, msg)
+      
+      return minimumRotation
+    }
+    
+    var maximumRotationWithinWedgeSeries: Rotation {
+      var maximumRotation: Rotation
+      switch layoutDirection {
+      case .ClockwiseLayout:
+        maximumRotation = seriesOriginRotation
+      case .CounterClockwiseLayout:
+        maximumRotation = seriesOriginRotation + seriesWidth
+      }
+      maximumRotation += (seriesWidth * wedgeSeriesMultiplier)
+      
+      let msg = "maximumRotation must be greater than rotation"
+      assert(maximumRotation >= rotation, msg)
+      
+      return maximumRotation
+    }
+    
+    
+    private var seriesOriginRotation: Rotation {
+      switch layoutDirection {
+      case .ClockwiseLayout:
+        return Rotation(wedgeSeperation / 2)
+      case .CounterClockwiseLayout:
+        return Rotation(wedgeSeperation / 2) * -1
       }
     }
     
-    // The number of wedges in the remainder of the remainingRotation property
-    private var countOfWedgesInRemainder: Int {
-      let wedgesInRemainder = self.remainingRotation / self.wedgeSeperation
-      let countOfWedgesInRemainder = Int(wedgesInRemainder.value)
-      return countOfWedgesInRemainder
+    
+    private var wedgeSeriesMultiplier: Int {
+      let normalizeRotation = rotation - seriesOriginRotation
+      var index = Int(normalizeRotation / seriesWidth)
+      
+      if rotation > seriesOriginRotation {
+        index = index + 1
+      }
+      
+      switch layoutDirection {
+      case .ClockwiseLayout:
+        return index
+      case .CounterClockwiseLayout:
+        return index - 1
+      }
+    }
+
+    
+    func wedgeCenterForIndex(index: WedgeIndex) -> Rotation {
+      let maxIndexMsg = "Index \(index) may not be greater than \(wedgeMaxIndex)"
+      assert(index < wedgeSeries.wedgeCount, maxIndexMsg)
+      let minIndexMsg = "Index \(index) may not be less than 0"
+      assert(index >= 0, maxIndexMsg)
+      
+      let wedgeSeperation = Rotation(self.wedgeSeperation)
+      let distanceWithinSeries = wedgeSeperation * index
+      let min = minimumRotationWithinWedgeSeries
+      let max = maximumRotationWithinWedgeSeries
+
+      let wedgeCenterForIndex: Rotation
+      
+      switch layoutDirection {
+        
+      case .ClockwiseLayout:
+        let index0WedgeCenter = max - (wedgeSeperation / 2)
+        wedgeCenterForIndex   = index0WedgeCenter - distanceWithinSeries
+        
+      case .CounterClockwiseLayout:
+        let index0WedgeCenter = min + (wedgeSeperation / 2)
+        wedgeCenterForIndex   = index0WedgeCenter + distanceWithinSeries
+      }
+      
+      let greaterMsg = "WedgeCenter \(wedgeCenterForIndex) for index \(index) is too low"
+      assert(wedgeCenterForIndex > minimumRotationWithinWedgeSeries, greaterMsg)
+      let lessMsg = "WedgeCenter \(wedgeCenterForIndex) for index \(index) is too high"
+      assert(wedgeCenterForIndex < maximumRotationWithinWedgeSeries, lessMsg)
+      
+      return wedgeCenterForIndex
+    }
+
+    
+    // MARK:
+    // MARK: wedgeSeries connivence properties.
+    private var wedgeCount: Int {
+      return wedgeSeries.wedgeCount
     }
     
+    private var wedgeMaxIndex: Int {
+      return wedgeSeries.wedgeMaxIndex
+    }
     
-    // MARK: Methods
-    func angleOffCenterFromLayoutDirection(direction: LayoutDirection) -> Angle {
-      let angleOffCenter = layoutRotation - wedgeCenter
+    private var seriesWidth: Rotation {
+      return wedgeSeries.seriesWidth
+    }
     
-      switch direction {
-      case .Clockwise:
-        return Angle(angleOffCenter)
-      case .CounterClockwise:
-        return Angle(angleOffCenter * -1)
-      }
+    private var wedgeSeperation: Angle {
+      return wedgeSeries.wedgeSeperation
+    }
+    
+    private var layoutDirection: LayoutDirection {
+      return wedgeSeries.direction
     }
     
   }
 }
-

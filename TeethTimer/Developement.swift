@@ -10,10 +10,121 @@ import UIKit
 
 class Developement: NSObject {
   
+  // MARK: Degrees (3 places)
+  lazy var padDegrees: NSNumberFormatter = {
+    let numberFormater = NSNumberFormatter()
+    numberFormater.minimumIntegerDigits  = 3
+    numberFormater.maximumIntegerDigits  = 3
+    numberFormater.minimumFractionDigits = 0
+    numberFormater.maximumFractionDigits = 0
+    numberFormater.positivePrefix = " "
+    return numberFormater
+    }()
+  
+  func pd(number: CGFloat) -> String {
+    var paddedNumber = "000"
+    if let numberString = padDegrees.stringFromNumber(number) {
+      paddedNumber = numberString
+    }
+    return paddedNumber
+  }
+  func pd(number: Rotation) -> String {
+    var paddedNumber = "000"
+    if let numberString = padDegrees.stringFromNumber(number.degrees) {
+      paddedNumber = numberString
+    }
+    return paddedNumber
+  }
+  
+  func pd(number: Angle) -> String {
+    var paddedNumber = "000"
+    if let numberString = padDegrees.stringFromNumber(number.degrees) {
+      paddedNumber = numberString
+    }
+    return paddedNumber
+  }
+
+  
+  // MARK: Degrees (4 places)
+  lazy var padDegrees4: NSNumberFormatter = {
+    let numberFormater = NSNumberFormatter()
+    numberFormater.minimumIntegerDigits  = 4
+    numberFormater.maximumIntegerDigits  = 4
+    numberFormater.minimumFractionDigits = 0
+    numberFormater.maximumFractionDigits = 0
+    numberFormater.paddingCharacter = " "
+    numberFormater.positivePrefix = " "
+    return numberFormater
+    }()
+  
+  func pd4(number: CGFloat) -> String {
+    var paddedNumber = "000"
+    if let numberString = padDegrees4.stringFromNumber(number) {
+      paddedNumber = numberString
+    }
+    return paddedNumber
+  }
+  func pd4(number: Rotation) -> String {
+    var paddedNumber = "000"
+    if let numberString = padDegrees4.stringFromNumber(number.degrees) {
+      paddedNumber = numberString
+    }
+    return paddedNumber
+  }
+  
+  func pd4(number: Angle) -> String {
+    var paddedNumber = "000"
+    if let numberString = padDegrees4.stringFromNumber(number.degrees) {
+      paddedNumber = numberString
+    }
+    return paddedNumber
+  }
+  
+  
+  
+  
+  lazy var padRedians: NSNumberFormatter = {
+    let numberFormater = NSNumberFormatter()
+    numberFormater.minimumIntegerDigits  = 3
+    numberFormater.maximumIntegerDigits  = 3
+    numberFormater.minimumFractionDigits = 0
+    numberFormater.maximumFractionDigits = 0
+    numberFormater.positivePrefix = " "
+    return numberFormater
+    }()
+  
+  func pr(number: CGFloat) -> String {
+    var paddedNumber = "000"
+    if let numberString = padDegrees.stringFromNumber(number) {
+      paddedNumber = numberString
+    }
+    return paddedNumber
+  }
+  func pr(number: Rotation) -> String {
+    var paddedNumber = "000"
+    if let numberString = padDegrees.stringFromNumber(number.degrees) {
+      paddedNumber = numberString
+    }
+    return paddedNumber
+  }
+  func pr(number: Angle) -> String {
+    var paddedNumber = "000"
+    if let numberString = padDegrees.stringFromNumber(number.degrees) {
+      paddedNumber = numberString
+    }
+    return paddedNumber
+  }
+  
+  
+  
+  
+  
+  
+  
   lazy var padNumber: NSNumberFormatter = {
     let numberFormater = NSNumberFormatter()
-    numberFormater.minimumIntegerDigits  = 2
-    numberFormater.maximumIntegerDigits  = 2
+    numberFormater.minimumIntegerDigits  = 3
+    numberFormater.maximumIntegerDigits  = 3
     numberFormater.minimumFractionDigits = 3
     numberFormater.maximumFractionDigits = 3
     numberFormater.positivePrefix = " "
@@ -27,6 +138,49 @@ class Developement: NSObject {
     }
     return paddedNumber
   }
+  
+  func p(number: CGFloat) -> String {
+    return pad(number)
+  }
+  
+  lazy var padInt: NSNumberFormatter = {
+    let numberFormater = NSNumberFormatter()
+    numberFormater.minimumIntegerDigits  = 3
+    numberFormater.maximumIntegerDigits  = 3
+    numberFormater.minimumFractionDigits = 0
+    numberFormater.maximumFractionDigits = 0
+    numberFormater.positivePrefix = " "
+    return numberFormater
+    }()
+  
+  func pi(number: Int) -> String {
+    var paddedNumber = "000"
+    if let numberString = padInt.stringFromNumber(number) {
+      paddedNumber = numberString
+    }
+    return paddedNumber
+  }
+  
+  
+  lazy var padInt2: NSNumberFormatter = {
+    let numberFormater = NSNumberFormatter()
+    numberFormater.minimumIntegerDigits  = 2
+    numberFormater.maximumIntegerDigits  = 2
+    numberFormater.minimumFractionDigits = 0
+    numberFormater.maximumFractionDigits = 0
+    numberFormater.positivePrefix = " "
+    return numberFormater
+    }()
+  
+  func pi2(number: Int) -> String {
+    var paddedNumber = "00"
+    if let numberString = padInt2.stringFromNumber(number) {
+      paddedNumber = numberString
+    }
+    return paddedNumber
+  }
+  
+  
   
 //  let f = NSNumberFormatter()
 //  let f2 = NSNumberFormatter()

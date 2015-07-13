@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 
 // MARK: Angle - A number that represents an angle in both
@@ -124,16 +124,13 @@ extension Angle {
   }
 }
 
-// Convenience Computed Properties to convert to CGFloat
-extension Angle {
-  var cgRadians: CGFloat  {
-    return CGFloat(radians)
-  }
-
-  var cgDegrees: CGFloat {
-    return CGFloat(degrees)
+// Extend CGFloat to convert from radians
+extension CGFloat {
+  init(_ angle: Angle) {
+    self.init(CGFloat(angle.radians))
   }
 }
+
 
 
 // MARK: Protocol Conformance
@@ -187,6 +184,42 @@ func isWithinAngleLimits(value: CGFloat) -> Bool {
   
   return isWithinLimits
 }
+
+
+
+extension Angle {
+  enum Preset {
+    case half
+    case quarter
+    case pi
+  }
+}
+
+// MARK: Static Methods
+extension Angle {
+  static func preset(preset: Preset) -> Angle {
+    switch preset {
+    case .half,
+         .pi:
+      return Angle(M_PI)
+    case .quarter:
+      return Angle(M_PI * 0.50)
+    }
+  }
+  
+  static var pi: Angle {
+    return Angle.preset(.pi)
+  }
+  
+  static var half: Angle {
+    return Angle.preset(.half)
+  }
+  
+  static var quarter: Angle {
+    return Angle.preset(.quarter)
+  }
+}
+
 
 
 

@@ -18,7 +18,7 @@ class WedgeImageView: PieImageView {
       return Angle(pieSliceLayer.angleWidth)
     }
     set(newAngleWidth) {
-      pieSliceLayer.angleWidth = newAngleWidth.cgRadians
+      pieSliceLayer.angleWidth = CGFloat(newAngleWidth.radians)
       pieSliceLayer.usePercentage = false
     }
   }
@@ -42,6 +42,6 @@ class WedgeImageView: PieImageView {
   func initProperties() {
     opaque = false
     pieSliceLayer.usePercentage = false
-    pieSliceLayer.angleWidth    = CGFloat(M_PI * 2)
+    pieSliceLayer.angleWidth    = CGFloat(Rotation.tau)
   }
 }

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		B2B31E5C4E30211FC85A4DB9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1113560EAB34F926CF979D1 /* libPods.a */; };
 		D30245051B2F63840054AAEC /* WheelControl+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30245041B2F63840054AAEC /* WheelControl+Animation.swift */; };
-		D30245081B2F71F80054AAEC /* WheelControl+Unused.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30245071B2F71F80054AAEC /* WheelControl+Unused.swift */; };
 		D30771821A869B06003BA7E1 /* num-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716C1A869B06003BA7E1 /* num-01@2x.png */; };
 		D30771831A869B06003BA7E1 /* num-02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716D1A869B06003BA7E1 /* num-02@2x.png */; };
 		D30771841A869B06003BA7E1 /* num-03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716E1A869B06003BA7E1 /* num-03@2x.png */; };
@@ -39,7 +38,7 @@
 		D30E035C1B20F2ED0019914B /* CacheWheelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30E035A1B20F2ED0019914B /* CacheWheelState.swift */; };
 		D30EDFA61AD2F8C100E76327 /* SystemVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30EDFA51AD2F8C100E76327 /* SystemVersion.swift */; };
 		D3112E101B350EF000ECF073 /* InfiniteImageWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C438C81B308B4D00958CB8 /* InfiniteImageWheel.swift */; };
-		D3112E121B350FCB00ECF073 /* InfinateContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3112E111B350FCB00ECF073 /* InfinateContainerView.swift */; };
+		D3112E121B350FCB00ECF073 /* InfinateCounterContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3112E111B350FCB00ECF073 /* InfinateCounterContainerView.swift */; };
 		D3112E131B352B9800ECF073 /* num-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716C1A869B06003BA7E1 /* num-01@2x.png */; };
 		D3112E141B352B9800ECF073 /* num-02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716D1A869B06003BA7E1 /* num-02@2x.png */; };
 		D3112E151B352B9800ECF073 /* num-03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716E1A869B06003BA7E1 /* num-03@2x.png */; };
@@ -64,9 +63,6 @@
 		D3112E281B352B9800ECF073 /* num-22@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D30771811A869B06003BA7E1 /* num-22@2x.png */; };
 		D3112E2A1B35442C00ECF073 /* InfiniteImageWheel+TeethTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3112E291B35442C00ECF073 /* InfiniteImageWheel+TeethTimer.swift */; };
 		D3112E2B1B35442C00ECF073 /* InfiniteImageWheel+TeethTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3112E291B35442C00ECF073 /* InfiniteImageWheel+TeethTimer.swift */; };
-		D3141ECE1AB9F38D00780B72 /* ImageWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36DB7361AB7D03800F080C8 /* ImageWheel.swift */; };
-		D31F389C1B2DF8CF0009E0B8 /* Int+Parity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F389B1B2DF8CF0009E0B8 /* Int+Parity.swift */; };
-		D31F389D1B2DF8CF0009E0B8 /* Int+Parity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F389B1B2DF8CF0009E0B8 /* Int+Parity.swift */; };
 		D31F39751B330969002AE34B /* InfiniteImageWheel+RotationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F39741B330969002AE34B /* InfiniteImageWheel+RotationState.swift */; };
 		D31F39761B330969002AE34B /* InfiniteImageWheel+RotationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F39741B330969002AE34B /* InfiniteImageWheel+RotationState.swift */; };
 		D31F39781B33098E002AE34B /* InfiniteImageWheel+WedgeSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F39771B33098E002AE34B /* InfiniteImageWheel+WedgeSeries.swift */; };
@@ -78,9 +74,11 @@
 		D32519341B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D32519331B0AA5B9007965DD /* BDYMovieMakerHelper.m */; };
 		D32519351B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D32519331B0AA5B9007965DD /* BDYMovieMakerHelper.m */; };
 		D32519361B0AB048007965DD /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3864F581AF69FBE00B787B4 /* Async.swift */; };
-		D32625911B2799D9002379C1 /* Revolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32625901B2799D9002379C1 /* Revolution.swift */; };
+		D3280BCA1B4C966C003D8448 /* WedgeStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3280BC91B4C966C003D8448 /* WedgeStateTests.swift */; };
 		D328E50D1AF08DC000144E3B /* forward-lg.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D328E5091AF08DC000144E3B /* forward-lg.mp4 */; };
 		D328E50E1AF08DC000144E3B /* forward.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D328E50A1AF08DC000144E3B /* forward.mp4 */; };
+		D333746A1B49C52D00CDB381 /* num-00@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33374691B49C52D00CDB381 /* num-00@2x.png */; };
+		D333746B1B49C52D00CDB381 /* num-00@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33374691B49C52D00CDB381 /* num-00@2x.png */; };
 		D335409C1A3764E80064C81C /* Gavin Poses-s01.png in Resources */ = {isa = PBXBuildFile; fileRef = D335407E1A3764E80064C81C /* Gavin Poses-s01.png */; };
 		D335409E1A3764E80064C81C /* Gavin Poses-s01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335407F1A3764E80064C81C /* Gavin Poses-s01@2x.png */; };
 		D33540A01A3764E80064C81C /* Gavin Poses-s01@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D33540801A3764E80064C81C /* Gavin Poses-s01@3x.png */; };
@@ -155,25 +153,37 @@
 		D37FBCC11AF34E5200381C7F /* Gavin Poses-s10@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335409A1A3764E80064C81C /* Gavin Poses-s10@2x.png */; };
 		D37FBCC21AF34E5200381C7F /* Gavin Poses-s10@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D335409B1A3764E80064C81C /* Gavin Poses-s10@3x.png */; };
 		D37FBCC81AF34E9300381C7F /* Developement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341D23E1AC1FB24007D0593 /* Developement.swift */; };
-		D37FBCC91AF34E9300381C7F /* ImageWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36DB7361AB7D03800F080C8 /* ImageWheel.swift */; };
-		D37FBCCA1AF34E9300381C7F /* ImageWheel+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC4C471A95877400984A24 /* ImageWheel+Types.swift */; };
 		D37FBCCB1AF34E9300381C7F /* BCYStandardLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */; };
 		D37FBCCC1AF34E9300381C7F /* WedgeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37FBC761AF3308500381C7F /* WedgeImageView.swift */; };
 		D37FBCCD1AF34E9300381C7F /* PieImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */; };
-		D37FBCCE1AF34E9300381C7F /* TeethTimer-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = D388C2E41A9EE256007D4F8B /* TeethTimer-Bridging-Header.h */; };
-		D37FBCCF1AF34E9300381C7F /* UIImage+ImageEffects.h in Sources */ = {isa = PBXBuildFile; fileRef = D3207F2C1ADAC00900ABE2FC /* UIImage+ImageEffects.h */; };
 		D37FBCD01AF34E9300381C7F /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D3207F2D1ADAC00900ABE2FC /* UIImage+ImageEffects.m */; };
-		D37FBCD11AF34E9300381C7F /* PieSliceLayer.h in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2CE1AF32E6300243AFF /* PieSliceLayer.h */; };
 		D37FBCD21AF34E9300381C7F /* PieSliceLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */; };
 		D37FBCD31AF3518A00381C7F /* SystemVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30EDFA51AD2F8C100E76327 /* SystemVersion.swift */; };
 		D3864F591AF69FBE00B787B4 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3864F581AF69FBE00B787B4 /* Async.swift */; };
 		D388C3021A9F7B50007D4F8B /* POPProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = D388C2FF1A9F7B50007D4F8B /* POPProperty.swift */; };
 		D388C3031A9F7B50007D4F8B /* POPSwiftWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D388C3011A9F7B50007D4F8B /* POPSwiftWrapper.m */; };
 		D38CA8351B2386680029A212 /* TeethTimer.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D38CA8341B2386680029A212 /* TeethTimer.mp4 */; };
-		D39365ED1B3A16C90075173C /* InfinateCounterContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39365EC1B3A16C90075173C /* InfinateCounterContainerView.swift */; };
+		D39365ED1B3A16C90075173C /* InfinateContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39365EC1B3A16C90075173C /* InfinateContainerView.swift */; };
+		D397B3911B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D397B3901B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift */; };
+		D397B3921B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D397B3901B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift */; };
 		D39BDB5D1B2E5D4E00B0E709 /* AccumulatedAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39BDB5C1B2E5D4E00B0E709 /* AccumulatedAngle.swift */; };
 		D39BDB5E1B2E5D4E00B0E709 /* AccumulatedAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39BDB5C1B2E5D4E00B0E709 /* AccumulatedAngle.swift */; };
-		D3B29F801AF5264200C2C067 /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B29F7F1AF5264200C2C067 /* ContainerView.swift */; };
+		D3AFFDC11B4AD2EE00BEA5A4 /* ImageWheelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AFFDC01B4AD2EE00BEA5A4 /* ImageWheelTests.swift */; };
+		D3AFFDC71B4AD30E00BEA5A4 /* InfiniteImageWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C438C81B308B4D00958CB8 /* InfiniteImageWheel.swift */; };
+		D3AFFDC81B4AD31000BEA5A4 /* InfiniteImageWheel+TeethTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3112E291B35442C00ECF073 /* InfiniteImageWheel+TeethTimer.swift */; };
+		D3AFFDC91B4AD31400BEA5A4 /* InfiniteImageWheel+RotationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F39741B330969002AE34B /* InfiniteImageWheel+RotationState.swift */; };
+		D3AFFDCA1B4AD31600BEA5A4 /* InfiniteImageWheel+Wedge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F397A1B3309E3002AE34B /* InfiniteImageWheel+Wedge.swift */; };
+		D3AFFDCB1B4AD31900BEA5A4 /* InfiniteImageWheel+WedgeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D397B3901B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift */; };
+		D3AFFDCC1B4AD31C00BEA5A4 /* InfiniteImageWheel+WedgeSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F39771B33098E002AE34B /* InfiniteImageWheel+WedgeSeries.swift */; };
+		D3AFFDCE1B4AD32200BEA5A4 /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CEFEE71B2A302400AE6A6D /* Angle.swift */; };
+		D3AFFDCF1B4AD32500BEA5A4 /* AccumulatedAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39BDB5C1B2E5D4E00B0E709 /* AccumulatedAngle.swift */; };
+		D3AFFDD01B4AD32D00BEA5A4 /* AngularType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8609D1B294C0300C68C08 /* AngularType.swift */; };
+		D3AFFDD11B4AD33000BEA5A4 /* Developement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341D23E1AC1FB24007D0593 /* Developement.swift */; };
+		D3AFFDD21B4AD33500BEA5A4 /* BCYStandardLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30771991A88001B003BA7E1 /* BCYStandardLibrary.swift */; };
+		D3AFFDD31B4AEEFE00BEA5A4 /* PieImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */; };
+		D3AFFDD41B4AEF0200BEA5A4 /* WedgeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37FBC761AF3308500381C7F /* WedgeImageView.swift */; };
+		D3AFFDD71B4B038C00BEA5A4 /* PieSliceLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */; };
+		D3AFFDD91B4B29E800BEA5A4 /* RotationStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AFFDD81B4B29E800BEA5A4 /* RotationStateTests.swift */; };
 		D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */; };
 		D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */; };
 		D3B7BC7519EA383A00F50DF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3B7BC7319EA383A00F50DF7 /* Main.storyboard */; };
@@ -186,12 +196,20 @@
 		D3CDA2D21AF32EBD00243AFF /* PieImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */; };
 		D3CEFEE81B2A302400AE6A6D /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CEFEE71B2A302400AE6A6D /* Angle.swift */; };
 		D3CEFEE91B2A302400AE6A6D /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CEFEE71B2A302400AE6A6D /* Angle.swift */; };
-		D3DC4C481A95877400984A24 /* ImageWheel+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC4C471A95877400984A24 /* ImageWheel+Types.swift */; };
 		D3F72EA81B2BEA21005C6F94 /* WheelControl+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F72EA71B2BEA21005C6F94 /* WheelControl+Types.swift */; };
-		D3F8609C1B293F5200C68C08 /* Revolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32625901B2799D9002379C1 /* Revolution.swift */; };
 		D3F8609E1B294C0300C68C08 /* AngularType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8609D1B294C0300C68C08 /* AngularType.swift */; };
 		D3F8609F1B294C0300C68C08 /* AngularType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8609D1B294C0300C68C08 /* AngularType.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D3AFFDC21B4AD2EE00BEA5A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D3B7BC6219EA383A00F50DF7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D37FBC7B1AF34DE100381C7F;
+			remoteInfo = ImageWheel;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		494890643301A07092EB8CC0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -225,11 +243,8 @@
 		D30E03571B20F24D0019914B /* MovieMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieMaker.swift; sourceTree = "<group>"; };
 		D30E035A1B20F2ED0019914B /* CacheWheelState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheWheelState.swift; sourceTree = "<group>"; };
 		D30EDFA51AD2F8C100E76327 /* SystemVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemVersion.swift; sourceTree = "<group>"; };
-		D3112E111B350FCB00ECF073 /* InfinateContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfinateContainerView.swift; sourceTree = "<group>"; };
+		D3112E111B350FCB00ECF073 /* InfinateCounterContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfinateCounterContainerView.swift; sourceTree = "<group>"; };
 		D3112E291B35442C00ECF073 /* InfiniteImageWheel+TeethTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InfiniteImageWheel+TeethTimer.swift"; sourceTree = "<group>"; };
-		D31CD1DF1B2F47FD008B4177 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D31CD1E01B2F47FD008B4177 /* TeethTimer_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeethTimer_Tests.swift; sourceTree = "<group>"; };
-		D31F389B1B2DF8CF0009E0B8 /* Int+Parity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Parity.swift"; sourceTree = "<group>"; };
 		D31F39741B330969002AE34B /* InfiniteImageWheel+RotationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InfiniteImageWheel+RotationState.swift"; sourceTree = "<group>"; };
 		D31F39771B33098E002AE34B /* InfiniteImageWheel+WedgeSeries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InfiniteImageWheel+WedgeSeries.swift"; sourceTree = "<group>"; };
 		D31F397A1B3309E3002AE34B /* InfiniteImageWheel+Wedge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InfiniteImageWheel+Wedge.swift"; sourceTree = "<group>"; };
@@ -238,9 +253,10 @@
 		D3207F2D1ADAC00900ABE2FC /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		D32519321B0AA5B9007965DD /* BDYMovieMakerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDYMovieMakerHelper.h; sourceTree = "<group>"; };
 		D32519331B0AA5B9007965DD /* BDYMovieMakerHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDYMovieMakerHelper.m; sourceTree = "<group>"; };
-		D32625901B2799D9002379C1 /* Revolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Revolution.swift; sourceTree = "<group>"; };
+		D3280BC91B4C966C003D8448 /* WedgeStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WedgeStateTests.swift; sourceTree = "<group>"; };
 		D328E5091AF08DC000144E3B /* forward-lg.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "forward-lg.mp4"; sourceTree = "<group>"; };
 		D328E50A1AF08DC000144E3B /* forward.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = forward.mp4; sourceTree = "<group>"; };
+		D33374691B49C52D00CDB381 /* num-00@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-00@2x.png"; path = "Images/Numbers/PNG/num-00@2x.png"; sourceTree = "<group>"; };
 		D335407E1A3764E80064C81C /* Gavin Poses-s01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s01.png"; sourceTree = "<group>"; };
 		D335407F1A3764E80064C81C /* Gavin Poses-s01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s01@2x.png"; sourceTree = "<group>"; };
 		D33540801A3764E80064C81C /* Gavin Poses-s01@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s01@3x.png"; sourceTree = "<group>"; };
@@ -273,14 +289,12 @@
 		D335409B1A3764E80064C81C /* Gavin Poses-s10@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gavin Poses-s10@3x.png"; sourceTree = "<group>"; };
 		D341D23E1AC1FB24007D0593 /* Developement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Developement.swift; sourceTree = "<group>"; };
 		D347A2381B2C7D3100E5256C /* TimerViewController+Background.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimerViewController+Background.swift"; sourceTree = "<group>"; };
-		D3485C8319ECE77200C6E495 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		D3485C8419ECEEB900C6E495 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		D34DC0551A0FF26000AA7420 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		D34F10B81AAEA1D0009E2A9B /* WheelControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WheelControl.swift; sourceTree = "<group>"; };
 		D34F10BA1AAEAE88009E2A9B /* WheelImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WheelImage.png; path = Calibration/WheelImage.png; sourceTree = "<group>"; };
 		D34F10BB1AAEAE88009E2A9B /* WheelImageType.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WheelImageType.png; path = Calibration/WheelImageType.png; sourceTree = "<group>"; };
 		D35ED7B21AED6012001DFF20 /* VideoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
-		D36DB7361AB7D03800F080C8 /* ImageWheel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWheel.swift; sourceTree = "<group>"; };
 		D37FBC761AF3308500381C7F /* WedgeImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WedgeImageView.swift; sourceTree = "<group>"; };
 		D37FBC7C1AF34DE100381C7F /* ImageWheel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageWheel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D37FBC7F1AF34DE100381C7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -296,16 +310,20 @@
 		D388C3001A9F7B50007D4F8B /* POPSwiftWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POPSwiftWrapper.h; sourceTree = "<group>"; };
 		D388C3011A9F7B50007D4F8B /* POPSwiftWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POPSwiftWrapper.m; sourceTree = "<group>"; };
 		D38CA8341B2386680029A212 /* TeethTimer.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = TeethTimer.mp4; path = cachedUI/TeethTimer.mp4; sourceTree = "<group>"; };
-		D39365EC1B3A16C90075173C /* InfinateCounterContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfinateCounterContainerView.swift; sourceTree = "<group>"; };
+		D39365EC1B3A16C90075173C /* InfinateContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfinateContainerView.swift; sourceTree = "<group>"; };
+		D397B3901B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InfiniteImageWheel+WedgeState.swift"; sourceTree = "<group>"; };
 		D39BDB5C1B2E5D4E00B0E709 /* AccumulatedAngle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccumulatedAngle.swift; sourceTree = "<group>"; };
-		D3A08D9A1B30E0B80089D18F /* testAngleTypes.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = testAngleTypes.playground; sourceTree = "<group>"; };
 		D3A4341F1B015BA8001DD6A2 /* FramesToMovie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FramesToMovie.m; sourceTree = "<group>"; };
 		D3A434241B015CA0001DD6A2 /* FramesToMovie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FramesToMovie.h; sourceTree = "<group>"; };
-		D3B29F7F1AF5264200C2C067 /* ContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
+		D3AFFDBC1B4AD2EE00BEA5A4 /* ImageWheelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageWheelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3AFFDBF1B4AD2EE00BEA5A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D3AFFDC01B4AD2EE00BEA5A4 /* ImageWheelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWheelTests.swift; sourceTree = "<group>"; };
+		D3AFFDD61B4AEF3F00BEA5A4 /* ImageWheelTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ImageWheelTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		D3AFFDD81B4B29E800BEA5A4 /* RotationStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationStateTests.swift; sourceTree = "<group>"; };
 		D3B7BC6A19EA383A00F50DF7 /* TeethTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeethTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B7BC6E19EA383A00F50DF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
+		D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TimerViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		D3B7BC7419EA383A00F50DF7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D3B7BC7919EA383A00F50DF7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		D3B7BC8419EA383A00F50DF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -317,13 +335,19 @@
 		D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieSliceLayer.m; sourceTree = "<group>"; };
 		D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieImageView.swift; sourceTree = "<group>"; };
 		D3CEFEE71B2A302400AE6A6D /* Angle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
-		D3DC4C471A95877400984A24 /* ImageWheel+Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImageWheel+Types.swift"; sourceTree = "<group>"; };
 		D3F72EA71B2BEA21005C6F94 /* WheelControl+Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WheelControl+Types.swift"; sourceTree = "<group>"; };
 		D3F8609D1B294C0300C68C08 /* AngularType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AngularType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		D37FBC791AF34DE100381C7F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3AFFDB91B4AD2EE00BEA5A4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -352,6 +376,7 @@
 		D30771981A869B10003BA7E1 /* Numbers */ = {
 			isa = PBXGroup;
 			children = (
+				D33374691B49C52D00CDB381 /* num-00@2x.png */,
 				D307716C1A869B06003BA7E1 /* num-01@2x.png */,
 				D307716D1A869B06003BA7E1 /* num-02@2x.png */,
 				D307716E1A869B06003BA7E1 /* num-03@2x.png */,
@@ -391,23 +416,6 @@
 				D3A4341F1B015BA8001DD6A2 /* FramesToMovie.m */,
 			);
 			name = CachingUI;
-			sourceTree = "<group>";
-		};
-		D31CD1DD1B2F47FD008B4177 /* TeethTimer Tests */ = {
-			isa = PBXGroup;
-			children = (
-				D31CD1E01B2F47FD008B4177 /* TeethTimer_Tests.swift */,
-				D31CD1DE1B2F47FD008B4177 /* Supporting Files */,
-			);
-			path = "TeethTimer Tests";
-			sourceTree = "<group>";
-		};
-		D31CD1DE1B2F47FD008B4177 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				D31CD1DF1B2F47FD008B4177 /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		D335407D1A3764E80064C81C /* GavinPoses */ = {
@@ -450,10 +458,10 @@
 		D37FBC7D1AF34DE100381C7F /* ImageWheel */ = {
 			isa = PBXGroup;
 			children = (
-				D3B29F7F1AF5264200C2C067 /* ContainerView.swift */,
-				D3112E111B350FCB00ECF073 /* InfinateContainerView.swift */,
-				D39365EC1B3A16C90075173C /* InfinateCounterContainerView.swift */,
+				D39365EC1B3A16C90075173C /* InfinateContainerView.swift */,
+				D3112E111B350FCB00ECF073 /* InfinateCounterContainerView.swift */,
 				D37FBCD41AF3522700381C7F /* ImageWheel-Bridging-Header.h */,
+				D3AFFDD61B4AEF3F00BEA5A4 /* ImageWheelTests-Bridging-Header.h */,
 				D37FBC801AF34DE100381C7F /* AppDelegate.swift */,
 				D37FBC821AF34DE100381C7F /* ViewController.swift */,
 				D37FBC841AF34DE100381C7F /* Main.storyboard */,
@@ -485,12 +493,55 @@
 		D39BDB5F1B2E677100B0E709 /* NumericTypes */ = {
 			isa = PBXGroup;
 			children = (
-				D32625901B2799D9002379C1 /* Revolution.swift */,
 				D3CEFEE71B2A302400AE6A6D /* Angle.swift */,
 				D39BDB5C1B2E5D4E00B0E709 /* AccumulatedAngle.swift */,
 				D3F8609D1B294C0300C68C08 /* AngularType.swift */,
 			);
 			name = NumericTypes;
+			sourceTree = "<group>";
+		};
+		D3A814691B408149008C80CC /* InfinateImageWheel cluster */ = {
+			isa = PBXGroup;
+			children = (
+				D3C438C81B308B4D00958CB8 /* InfiniteImageWheel.swift */,
+				D3112E291B35442C00ECF073 /* InfiniteImageWheel+TeethTimer.swift */,
+				D31F397A1B3309E3002AE34B /* InfiniteImageWheel+Wedge.swift */,
+				D31F39771B33098E002AE34B /* InfiniteImageWheel+WedgeSeries.swift */,
+				D31F39741B330969002AE34B /* InfiniteImageWheel+RotationState.swift */,
+				D397B3901B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift */,
+				D3F1DA361B4E38CF0067EA72 /* Wedge Classes */,
+			);
+			name = "InfinateImageWheel cluster";
+			sourceTree = "<group>";
+		};
+		D3A8146A1B40816F008C80CC /* WheelControl */ = {
+			isa = PBXGroup;
+			children = (
+				D34F10B81AAEA1D0009E2A9B /* WheelControl.swift */,
+				D30245041B2F63840054AAEC /* WheelControl+Animation.swift */,
+				D30245071B2F71F80054AAEC /* WheelControl+Unused.swift */,
+				D3F72EA71B2BEA21005C6F94 /* WheelControl+Types.swift */,
+			);
+			name = WheelControl;
+			sourceTree = "<group>";
+		};
+		D3AFFDBD1B4AD2EE00BEA5A4 /* ImageWheelTests */ = {
+			isa = PBXGroup;
+			children = (
+				D3280BC91B4C966C003D8448 /* WedgeStateTests.swift */,
+				D3AFFDD81B4B29E800BEA5A4 /* RotationStateTests.swift */,
+				D3AFFDC01B4AD2EE00BEA5A4 /* ImageWheelTests.swift */,
+				D3AFFDBE1B4AD2EE00BEA5A4 /* Supporting Files */,
+			);
+			path = ImageWheelTests;
+			sourceTree = "<group>";
+		};
+		D3AFFDBE1B4AD2EE00BEA5A4 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D3AFFDBF1B4AD2EE00BEA5A4 /* Info.plist */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		D3B7BC6119EA383A00F50DF7 = {
@@ -499,7 +550,7 @@
 				D3B7BC6C19EA383A00F50DF7 /* TeethTimer */,
 				D3B7BC8219EA383A00F50DF7 /* TeethTimerTests */,
 				D37FBC7D1AF34DE100381C7F /* ImageWheel */,
-				D31CD1DD1B2F47FD008B4177 /* TeethTimer Tests */,
+				D3AFFDBD1B4AD2EE00BEA5A4 /* ImageWheelTests */,
 				D3B7BC6B19EA383A00F50DF7 /* Products */,
 				D7D25F379C44550B89AD1B67 /* Pods */,
 				0588C91E349A150BB0A9B1EB /* Frameworks */,
@@ -511,6 +562,7 @@
 			children = (
 				D3B7BC6A19EA383A00F50DF7 /* TeethTimer.app */,
 				D37FBC7C1AF34DE100381C7F /* ImageWheel.app */,
+				D3AFFDBC1B4AD2EE00BEA5A4 /* ImageWheelTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -529,8 +581,6 @@
 				D3F72EAA1B2BFC61005C6F94 /* Shared Classes */,
 				D3F72EAB1B2BFCBC005C6F94 /* Helper Classes */,
 				D3864F581AF69FBE00B787B4 /* Async.swift */,
-				D3A08D9A1B30E0B80089D18F /* testAngleTypes.playground */,
-				D3485C8319ECE77200C6E495 /* MyPlayground.playground */,
 				D34DC0551A0FF26000AA7420 /* Settings.bundle */,
 				D3B7BC6D19EA383A00F50DF7 /* Supporting Files */,
 				D388C3041A9F7B5D007D4F8B /* POP-Wrapper */,
@@ -573,26 +623,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		D3F1DA361B4E38CF0067EA72 /* Wedge Classes */ = {
+			isa = PBXGroup;
+			children = (
+				D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */,
+				D37FBC761AF3308500381C7F /* WedgeImageView.swift */,
+				D3CDA2CE1AF32E6300243AFF /* PieSliceLayer.h */,
+				D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */,
+			);
+			name = "Wedge Classes";
+			sourceTree = "<group>";
+		};
 		D3F72EAA1B2BFC61005C6F94 /* Shared Classes */ = {
 			isa = PBXGroup;
 			children = (
 				D3485C8419ECEEB900C6E495 /* Timer.swift */,
-				D34F10B81AAEA1D0009E2A9B /* WheelControl.swift */,
-				D30245041B2F63840054AAEC /* WheelControl+Animation.swift */,
-				D30245071B2F71F80054AAEC /* WheelControl+Unused.swift */,
-				D3F72EA71B2BEA21005C6F94 /* WheelControl+Types.swift */,
-				D36DB7361AB7D03800F080C8 /* ImageWheel.swift */,
-				D3DC4C471A95877400984A24 /* ImageWheel+Types.swift */,
-				D3C438C81B308B4D00958CB8 /* InfiniteImageWheel.swift */,
-				D3112E291B35442C00ECF073 /* InfiniteImageWheel+TeethTimer.swift */,
-				D31F39741B330969002AE34B /* InfiniteImageWheel+RotationState.swift */,
-				D31F397A1B3309E3002AE34B /* InfiniteImageWheel+Wedge.swift */,
-				D31F39771B33098E002AE34B /* InfiniteImageWheel+WedgeSeries.swift */,
-				D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */,
-				D37FBC761AF3308500381C7F /* WedgeImageView.swift */,
-				D31F389B1B2DF8CF0009E0B8 /* Int+Parity.swift */,
-				D3CDA2CE1AF32E6300243AFF /* PieSliceLayer.h */,
-				D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */,
+				D3A8146A1B40816F008C80CC /* WheelControl */,
+				D3A814691B408149008C80CC /* InfinateImageWheel cluster */,
 				D39BDB5F1B2E677100B0E709 /* NumericTypes */,
 			);
 			name = "Shared Classes";
@@ -638,6 +685,24 @@
 			productReference = D37FBC7C1AF34DE100381C7F /* ImageWheel.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D3AFFDBB1B4AD2EE00BEA5A4 /* ImageWheelTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3AFFDC61B4AD2EE00BEA5A4 /* Build configuration list for PBXNativeTarget "ImageWheelTests" */;
+			buildPhases = (
+				D3AFFDB81B4AD2EE00BEA5A4 /* Sources */,
+				D3AFFDB91B4AD2EE00BEA5A4 /* Frameworks */,
+				D3AFFDBA1B4AD2EE00BEA5A4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D3AFFDC31B4AD2EE00BEA5A4 /* PBXTargetDependency */,
+			);
+			name = ImageWheelTests;
+			productName = ImageWheelTests;
+			productReference = D3AFFDBC1B4AD2EE00BEA5A4 /* ImageWheelTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		D3B7BC6919EA383A00F50DF7 /* TeethTimer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D3B7BC8919EA383A00F50DF7 /* Build configuration list for PBXNativeTarget "TeethTimer" */;
@@ -647,6 +712,7 @@
 				D3B7BC6719EA383A00F50DF7 /* Frameworks */,
 				D3B7BC6819EA383A00F50DF7 /* Resources */,
 				562005A17CE1462DA7BDB754 /* Copy Pods Resources */,
+				D308867F1B4F1AC200582261 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -670,6 +736,10 @@
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = YJ4PN236TF;
 					};
+					D3AFFDBB1B4AD2EE00BEA5A4 = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = D37FBC7B1AF34DE100381C7F;
+					};
 					D3B7BC6919EA383A00F50DF7 = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = YJ4PN236TF;
@@ -691,6 +761,7 @@
 			targets = (
 				D3B7BC6919EA383A00F50DF7 /* TeethTimer */,
 				D37FBC7B1AF34DE100381C7F /* ImageWheel */,
+				D3AFFDBB1B4AD2EE00BEA5A4 /* ImageWheelTests */,
 			);
 		};
 /* End PBXProject section */
@@ -723,6 +794,7 @@
 				D37FBCB91AF34E5200381C7F /* Gavin Poses-s07@3x.png in Resources */,
 				D37FBCBA1AF34E5200381C7F /* Gavin Poses-s08.png in Resources */,
 				D37FBCBB1AF34E5200381C7F /* Gavin Poses-s08@2x.png in Resources */,
+				D333746B1B49C52D00CDB381 /* num-00@2x.png in Resources */,
 				D37FBCBC1AF34E5200381C7F /* Gavin Poses-s08@3x.png in Resources */,
 				D37FBCBD1AF34E5200381C7F /* Gavin Poses-s09.png in Resources */,
 				D37FBCBE1AF34E5200381C7F /* Gavin Poses-s09@2x.png in Resources */,
@@ -755,6 +827,13 @@
 				D3112E271B352B9800ECF073 /* num-21@2x.png in Resources */,
 				D3112E281B352B9800ECF073 /* num-22@2x.png in Resources */,
 				D37FBC881AF34DE100381C7F /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3AFFDBA1B4AD2EE00BEA5A4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -798,6 +877,7 @@
 				D33540CA1A3764E80064C81C /* Gavin Poses-s08@3x.png in Resources */,
 				D30771821A869B06003BA7E1 /* num-01@2x.png in Resources */,
 				D30771831A869B06003BA7E1 /* num-02@2x.png in Resources */,
+				D333746A1B49C52D00CDB381 /* num-00@2x.png in Resources */,
 				D30771841A869B06003BA7E1 /* num-03@2x.png in Resources */,
 				D328E50D1AF08DC000144E3B /* forward-lg.mp4 in Resources */,
 				D30771851A869B06003BA7E1 /* num-04@2x.png in Resources */,
@@ -858,6 +938,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D308867F1B4F1AC200582261 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "TAGS=\"TODO:|FIXME:\"\nERRORTAG=\"ERROR:\"\nfind \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\" -or -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$|($ERRORTAG).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\" | perl -p -e \"s/($ERRORTAG)/ error: \\$1/\"";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -866,36 +959,53 @@
 			buildActionMask = 2147483647;
 			files = (
 				D37FBCD31AF3518A00381C7F /* SystemVersion.swift in Sources */,
-				D39365ED1B3A16C90075173C /* InfinateCounterContainerView.swift in Sources */,
-				D3112E121B350FCB00ECF073 /* InfinateContainerView.swift in Sources */,
+				D39365ED1B3A16C90075173C /* InfinateContainerView.swift in Sources */,
+				D3112E121B350FCB00ECF073 /* InfinateCounterContainerView.swift in Sources */,
 				D31F39761B330969002AE34B /* InfiniteImageWheel+RotationState.swift in Sources */,
-				D3B29F801AF5264200C2C067 /* ContainerView.swift in Sources */,
+				D397B3921B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift in Sources */,
 				D3112E2B1B35442C00ECF073 /* InfiniteImageWheel+TeethTimer.swift in Sources */,
-				D3F8609C1B293F5200C68C08 /* Revolution.swift in Sources */,
 				D32519351B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */,
 				D30E03591B20F24D0019914B /* MovieMaker.swift in Sources */,
 				D37FBCC81AF34E9300381C7F /* Developement.swift in Sources */,
-				D37FBCC91AF34E9300381C7F /* ImageWheel.swift in Sources */,
 				D3864F591AF69FBE00B787B4 /* Async.swift in Sources */,
 				D39BDB5E1B2E5D4E00B0E709 /* AccumulatedAngle.swift in Sources */,
-				D37FBCCA1AF34E9300381C7F /* ImageWheel+Types.swift in Sources */,
 				D31F39791B33098E002AE34B /* InfiniteImageWheel+WedgeSeries.swift in Sources */,
-				D31F389D1B2DF8CF0009E0B8 /* Int+Parity.swift in Sources */,
 				D37FBCCB1AF34E9300381C7F /* BCYStandardLibrary.swift in Sources */,
 				D3C438C91B308B4D00958CB8 /* InfiniteImageWheel.swift in Sources */,
 				D37FBCCC1AF34E9300381C7F /* WedgeImageView.swift in Sources */,
 				D37FBCCD1AF34E9300381C7F /* PieImageView.swift in Sources */,
-				D37FBCCE1AF34E9300381C7F /* TeethTimer-Bridging-Header.h in Sources */,
 				D31F397C1B3309E3002AE34B /* InfiniteImageWheel+Wedge.swift in Sources */,
 				D3F8609F1B294C0300C68C08 /* AngularType.swift in Sources */,
-				D37FBCCF1AF34E9300381C7F /* UIImage+ImageEffects.h in Sources */,
 				D37FBCD01AF34E9300381C7F /* UIImage+ImageEffects.m in Sources */,
-				D37FBCD11AF34E9300381C7F /* PieSliceLayer.h in Sources */,
 				D3CEFEE91B2A302400AE6A6D /* Angle.swift in Sources */,
 				D37FBCD21AF34E9300381C7F /* PieSliceLayer.m in Sources */,
 				D30E035C1B20F2ED0019914B /* CacheWheelState.swift in Sources */,
 				D37FBC831AF34DE100381C7F /* ViewController.swift in Sources */,
 				D37FBC811AF34DE100381C7F /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3AFFDB81B4AD2EE00BEA5A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3AFFDC11B4AD2EE00BEA5A4 /* ImageWheelTests.swift in Sources */,
+				D3AFFDC71B4AD30E00BEA5A4 /* InfiniteImageWheel.swift in Sources */,
+				D3AFFDC81B4AD31000BEA5A4 /* InfiniteImageWheel+TeethTimer.swift in Sources */,
+				D3AFFDC91B4AD31400BEA5A4 /* InfiniteImageWheel+RotationState.swift in Sources */,
+				D3AFFDCA1B4AD31600BEA5A4 /* InfiniteImageWheel+Wedge.swift in Sources */,
+				D3AFFDCB1B4AD31900BEA5A4 /* InfiniteImageWheel+WedgeState.swift in Sources */,
+				D3AFFDD91B4B29E800BEA5A4 /* RotationStateTests.swift in Sources */,
+				D3AFFDCC1B4AD31C00BEA5A4 /* InfiniteImageWheel+WedgeSeries.swift in Sources */,
+				D3280BCA1B4C966C003D8448 /* WedgeStateTests.swift in Sources */,
+				D3AFFDCE1B4AD32200BEA5A4 /* Angle.swift in Sources */,
+				D3AFFDCF1B4AD32500BEA5A4 /* AccumulatedAngle.swift in Sources */,
+				D3AFFDD01B4AD32D00BEA5A4 /* AngularType.swift in Sources */,
+				D3AFFDD11B4AD33000BEA5A4 /* Developement.swift in Sources */,
+				D3AFFDD21B4AD33500BEA5A4 /* BCYStandardLibrary.swift in Sources */,
+				D3AFFDD31B4AEEFE00BEA5A4 /* PieImageView.swift in Sources */,
+				D3AFFDD41B4AEF0200BEA5A4 /* WedgeImageView.swift in Sources */,
+				D3AFFDD71B4B038C00BEA5A4 /* PieSliceLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -912,7 +1022,6 @@
 				D3B95AD41ADB3CA300883051 /* SnapshotView.swift in Sources */,
 				D37FBC771AF3308500381C7F /* WedgeImageView.swift in Sources */,
 				D3B7BC7219EA383A00F50DF7 /* TimerViewController.swift in Sources */,
-				D30245081B2F71F80054AAEC /* WheelControl+Unused.swift in Sources */,
 				D3CDA2D01AF32E6300243AFF /* PieSliceLayer.m in Sources */,
 				D341D23F1AC1FB24007D0593 /* Developement.swift in Sources */,
 				D32519341B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */,
@@ -929,13 +1038,10 @@
 				D3112E2A1B35442C00ECF073 /* InfiniteImageWheel+TeethTimer.swift in Sources */,
 				D347A2391B2C7D3100E5256C /* TimerViewController+Background.swift in Sources */,
 				D3F8609E1B294C0300C68C08 /* AngularType.swift in Sources */,
-				D3141ECE1AB9F38D00780B72 /* ImageWheel.swift in Sources */,
 				D3CDA2D21AF32EBD00243AFF /* PieImageView.swift in Sources */,
-				D3DC4C481A95877400984A24 /* ImageWheel+Types.swift in Sources */,
 				D30EDFA61AD2F8C100E76327 /* SystemVersion.swift in Sources */,
 				D30E03581B20F24D0019914B /* MovieMaker.swift in Sources */,
-				D31F389C1B2DF8CF0009E0B8 /* Int+Parity.swift in Sources */,
-				D32625911B2799D9002379C1 /* Revolution.swift in Sources */,
+				D397B3911B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift in Sources */,
 				D3485C8519ECEEB900C6E495 /* Timer.swift in Sources */,
 				D3112E101B350EF000ECF073 /* InfiniteImageWheel.swift in Sources */,
 				D31F95E11A2C5FE700219B32 /* ColorImage.swift in Sources */,
@@ -944,6 +1050,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D3AFFDC31B4AD2EE00BEA5A4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D37FBC7B1AF34DE100381C7F /* ImageWheel */;
+			targetProxy = D3AFFDC21B4AD2EE00BEA5A4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		D37FBC841AF34DE100381C7F /* Main.storyboard */ = {
@@ -1013,6 +1127,49 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ImageWheel/ImageWheel-Bridging-Header.h";
+			};
+			name = Release;
+		};
+		D3AFFDC41B4AD2EE00BEA5A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ImageWheelTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ImageWheel/ImageWheelTests-Bridging-Header.h";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ImageWheel.app/ImageWheel";
+			};
+			name = Debug;
+		};
+		D3AFFDC51B4AD2EE00BEA5A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = ImageWheelTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ImageWheel/ImageWheelTests-Bridging-Header.h";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ImageWheel.app/ImageWheel";
 			};
 			name = Release;
 		};
@@ -1147,6 +1304,15 @@
 			buildConfigurations = (
 				D37FBC991AF34DE100381C7F /* Debug */,
 				D37FBC9A1AF34DE100381C7F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D3AFFDC61B4AD2EE00BEA5A4 /* Build configuration list for PBXNativeTarget "ImageWheelTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3AFFDC41B4AD2EE00BEA5A4 /* Debug */,
+				D3AFFDC51B4AD2EE00BEA5A4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -56,6 +56,7 @@ extension TimerViewController {
     if doesNotHaveValue(url) {
       url = urlForAppBundleAsset(kAppCacheUIMovieBaseNameKey, ofType: "mp4")
     }
+    
     return url
   }
   
@@ -116,15 +117,14 @@ extension TimerViewController {
     player.allowsExternalPlayback = false
     if let videoLayer = videoView.layer as? AVPlayerLayer {
       
-      backgroundVideo.asset = asset
+      backgroundVideo.asset     = asset
       backgroundVideo.videoTime = backgroundVideo.asset!.duration
-      backgroundVideo.player = player
+      backgroundVideo.player    = player
 
       if let gavinWheel = gavinWheel {
-        gavinWheelChanged(gavinWheel)
+        wheelRotated(gavinWheel)
       }
       
-      // TODO: Swap background without flashing
       videoLayer.player = player
       player.actionAtItemEnd = .None
     }
@@ -132,13 +132,14 @@ extension TimerViewController {
   
   
   func updateBackgroundForPercentDone(percent: CGFloat) {
+    
     if let backgroundPlayer = backgroundVideo.player {
       
       switch backgroundPlayer.status {
       case .ReadyToPlay:
         seekToTimeByPercentage(percent, inPlayer: backgroundPlayer)
       case .Unknown:
-        break //println("unknown status")
+        println("unknown status")
       case .Failed:
         println("failed to play")
       }
@@ -159,6 +160,8 @@ extension TimerViewController {
     let interactiveFrames = totalFrames - framesPerWedge
     let framesPast        = Int64(CGFloat(interactiveFrames) * percent)
     let frame             = interactiveFrames - framesPast + (framesPerWedge / 2)
+
+//    println("time: \(frame.value)")
     
     seekToFrame(frame, inPlayer: player)
   }
@@ -178,7 +181,6 @@ extension TimerViewController {
   func seekToTime(time: CMTime, inPlayer player: AVPlayer) {
     player.seekToTime(time, toleranceBefore: kCMTimeZero,
                              toleranceAfter: kCMTimeZero)
-    
   }
   
 }
