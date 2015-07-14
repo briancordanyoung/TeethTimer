@@ -187,7 +187,6 @@ extension TimerViewController {
   }
   
   func writeFrameToPNG(image: UIImage) {    
-    // TODO: Save on background thread
     cacheState.frameState = .writing
     
     if let path = urlForFrame() {
