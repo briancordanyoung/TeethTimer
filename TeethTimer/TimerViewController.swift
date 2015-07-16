@@ -2,9 +2,10 @@ import AVFoundation
 import UIKit
 
 
-let kAppUseCachedUIKey    = "useCachedUI"
-let kAppBlurLowerThirdKey = "blurLowerThird"
-let kAppShowTimeLabelKey  = "showTimeLabel"
+let kAppUseCachedUIKey          = "useCachedUI"
+let kAppBlurLowerThirdKey       = "blurLowerThird"
+let kAppShowTimeLabelKey        = "showTimeLabel"
+let kAppChangeWedgePieAngleKey  = "changeWedgePieAngle"
 
 // MARK: -
 // MARK: TimerViewController class

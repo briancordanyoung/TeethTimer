@@ -25,6 +25,10 @@ final class InfiniteImageWheel: UIView {
     return rotationState.wedgeCenter
   }
   
+  var changeWedgePieAngle: Bool  {
+    return NSUserDefaults.standardUserDefaults().boolForKey(kAppChangeWedgePieAngleKey)
+  }
+
   // MARK: Initialization
   init(imageNames: [String], seperatedByAngle wedgeSeperation: Angle,
                                         inDirection direction: LayoutDirection ) {
@@ -144,7 +148,10 @@ final class InfiniteImageWheel: UIView {
        wedgeState.index == rotationState.wedgeIndexNeighbor   {
         
       wedge.layoutAngle = wedgeState.layoutAngle
-      wedge.width       = wedgeState.shapeAngle
+      if changeWedgePieAngle {
+        wedge.width     = wedgeState.shapeAngle
+      }
+
     } else {
       wedge.hide()
     }
