@@ -148,8 +148,13 @@ final class InfiniteImageWheel: UIView {
        wedgeState.index == rotationState.wedgeIndexNeighbor   {
         
       wedge.layoutAngle = wedgeState.layoutAngle
+      
       if changeWedgePieAngle {
         wedge.width     = wedgeState.shapeAngle
+      } else {
+        if wedge.width != Angle(degrees: 90) {
+          wedge.width   = Angle(degrees: 90)
+        }
       }
 
     } else {
