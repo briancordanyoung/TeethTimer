@@ -1,6 +1,7 @@
 import UIKit
 
 typealias Rotation = AccumulatedAngle
+
 // MARK: AccumulatedAngle - A number that represents an angle in both 
 //                          degrees or radians.
 struct AccumulatedAngle: AngularType, Printable {
@@ -105,10 +106,10 @@ extension Int {
 
 extension AccumulatedAngle {
   enum Preset {
-    case full
-    case half
-    case quarter
-    case threeQuarter
+    case circle
+    case halfCircle
+    case quarterCircle
+    case threeQuarterCircle
     case tau
     case pi
   }
@@ -118,15 +119,15 @@ extension AccumulatedAngle {
 extension AccumulatedAngle {
   static func preset(preset: Preset) -> AccumulatedAngle {
     switch preset {
-    case .full,
+    case .circle,
          .tau:
       return AccumulatedAngle(M_PI * 2)
-    case .half,
+    case .halfCircle,
          .pi:
       return AccumulatedAngle(M_PI)
-    case .quarter:
+    case .quarterCircle:
       return AccumulatedAngle(M_PI * 0.50)
-    case .threeQuarter:
+    case .threeQuarterCircle:
       return AccumulatedAngle(M_PI * 1.50)
     }
   }
@@ -139,20 +140,20 @@ extension AccumulatedAngle {
     return AccumulatedAngle.preset(.tau)
   }
   
-  static var full: AccumulatedAngle {
-    return AccumulatedAngle.preset(.full)
+  static var circle: AccumulatedAngle {
+    return AccumulatedAngle.preset(.circle)
   }
   
-  static var half: AccumulatedAngle {
-    return AccumulatedAngle.preset(.half)
+  static var halfCircle: AccumulatedAngle {
+    return AccumulatedAngle.preset(.halfCircle)
   }
   
-  static var quarter: AccumulatedAngle {
-    return AccumulatedAngle.preset(.quarter)
+  static var quarterCircle: AccumulatedAngle {
+    return AccumulatedAngle.preset(.quarterCircle)
   }
   
-  static var threeQuarter: AccumulatedAngle {
-    return AccumulatedAngle.preset(.threeQuarter)
+  static var threeQuarterCircle: AccumulatedAngle {
+    return AccumulatedAngle.preset(.threeQuarterCircle)
   }
 }
 

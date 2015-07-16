@@ -4,7 +4,7 @@ import UIKit
 // MARK: Angle - A number that represents an angle in both
 //               degrees or radians.
 //       Unlike AccumulatedAngle, Angle is limited to representing
-//       a single circle from -PI to PI
+//       a single circle from -π to π
 struct Angle: AngularType {
   
   var value: Double {
@@ -189,8 +189,8 @@ func isWithinAngleLimits(value: CGFloat) -> Bool {
 
 extension Angle {
   enum Preset {
-    case half
-    case quarter
+    case halfCircle
+    case quarterCircle
     case pi
   }
 }
@@ -199,10 +199,10 @@ extension Angle {
 extension Angle {
   static func preset(preset: Preset) -> Angle {
     switch preset {
-    case .half,
+    case .halfCircle,
          .pi:
       return Angle(M_PI)
-    case .quarter:
+    case .quarterCircle:
       return Angle(M_PI * 0.50)
     }
   }
@@ -211,12 +211,12 @@ extension Angle {
     return Angle.preset(.pi)
   }
   
-  static var half: Angle {
-    return Angle.preset(.half)
+  static var halfCircle: Angle {
+    return Angle.preset(.halfCircle)
   }
   
-  static var quarter: Angle {
-    return Angle.preset(.quarter)
+  static var quarterCircle: Angle {
+    return Angle.preset(.quarterCircle)
   }
 }
 
