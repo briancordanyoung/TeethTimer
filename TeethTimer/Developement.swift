@@ -83,7 +83,7 @@ class Developement: NSObject {
   
   
   
-  lazy var padRedians: NSNumberFormatter = {
+  lazy var padRadians: NSNumberFormatter = {
     let numberFormater = NSNumberFormatter()
     numberFormater.minimumIntegerDigits  = 3
     numberFormater.maximumIntegerDigits  = 3
@@ -95,27 +95,50 @@ class Developement: NSObject {
   
   func pr(number: CGFloat) -> String {
     var paddedNumber = "000"
-    if let numberString = padDegrees.stringFromNumber(number) {
+    if let numberString = padRadians.stringFromNumber(number) {
       paddedNumber = numberString
     }
     return paddedNumber
   }
   func pr(number: Rotation) -> String {
     var paddedNumber = "000"
-    if let numberString = padDegrees.stringFromNumber(number.degrees) {
+    if let numberString = padRadians.stringFromNumber(number.degrees) {
       paddedNumber = numberString
     }
     return paddedNumber
   }
   func pr(number: Angle) -> String {
     var paddedNumber = "000"
-    if let numberString = padDegrees.stringFromNumber(number.degrees) {
+    if let numberString = padRadians.stringFromNumber(number.degrees) {
       paddedNumber = numberString
     }
     return paddedNumber
   }
   
   
+  
+  lazy var padPercent: NSNumberFormatter = {
+    let numberFormater = NSNumberFormatter()
+    numberFormater.minimumIntegerDigits  = 3
+    numberFormater.maximumIntegerDigits  = 3
+    numberFormater.minimumFractionDigits = 2
+    numberFormater.maximumFractionDigits = 2
+    numberFormater.positivePrefix = " "
+    return numberFormater
+    }()
+  
+  func padPercent(number: CGFloat) -> String {
+    var paddedNumber = " 1.000"
+    if let numberString = padPercent.stringFromNumber(number) {
+      paddedNumber = numberString
+    }
+    return paddedNumber
+  }
+  
+  
+  func pp(number: CGFloat) -> String {
+    return padPercent(number)
+  }
   
   
   
