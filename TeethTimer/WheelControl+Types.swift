@@ -7,47 +7,29 @@ extension WheelControl {
   
   // MARK:
   // MARK: Tracking the Wheel Rotation
-  // Which way is the wheel spinning?.
-  enum Direction: String, Printable {
-      case Clockwise        = "Clockwise"
-      case CounterClockwise = "CounterClockwise"
-
-      var description: String {
-          return self.rawValue
-      }
-  }
 
   // This is used to store the state needed to track the cumulative rotation
   // of the wheel over the course of several full rotations..
   // (more than a single full rotation, which is all that the
   //  AffineTransform of the UIView can represent)
   struct RotationState: Printable {
-    static let initialVelocity: Rotation = 0.0000001
-    
     let current:   Rotation
     let previous:  Rotation
-    let direction: Direction
-    // When animating the wheel
-    var target:    Rotation?
     
     init() {
-      current   =  0.0
-      previous  = -RotationState.initialVelocity
-      direction = .Clockwise
+      current   = 0.0
+      previous  = 0.0
     }
     
     init( current: Rotation,
-         previous: Rotation,
-        direction: Direction) {
+         previous: Rotation) {
         self.current   = current
         self.previous  = previous
-        self.direction = direction
     }
     
     init(rotation: Rotation) {
       self.init(current: rotation,
-               previous: rotation - RotationState.initialVelocity,
-              direction: .Clockwise)
+               previous: rotation)
     }
     
     // Convenience Properties to transform the Rotation to an Angle
@@ -59,18 +41,9 @@ extension WheelControl {
       return Angle(current)
     }
     
-    var targetAngle: Angle? {
-      if let target = target {
-        return  Angle(target)
-      } else {
-        return .None
-      }
-    }
-    
     var description: String {
-      var msg =  "Current Rotation: \(current) "
-      msg    +=  "Previous Rotation: \(previous) "
-      msg    +=  "Previous Direction: \(direction)"
+      var msg =  "Current Rotation: \(current.degrees) "
+      msg    +=  "Previous Rotation: \(previous.degrees) "
       return msg
     }
   }

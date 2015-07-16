@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B2B31E5C4E30211FC85A4DB9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1113560EAB34F926CF979D1 /* libPods.a */; };
-		D30245051B2F63840054AAEC /* WheelControl+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30245041B2F63840054AAEC /* WheelControl+Animation.swift */; };
 		D30771821A869B06003BA7E1 /* num-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716C1A869B06003BA7E1 /* num-01@2x.png */; };
 		D30771831A869B06003BA7E1 /* num-02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716D1A869B06003BA7E1 /* num-02@2x.png */; };
 		D30771841A869B06003BA7E1 /* num-03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716E1A869B06003BA7E1 /* num-03@2x.png */; };
@@ -215,8 +214,6 @@
 		494890643301A07092EB8CC0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A8D8BE3E5746E8CC9B850697 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B1113560EAB34F926CF979D1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		D30245041B2F63840054AAEC /* WheelControl+Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WheelControl+Animation.swift"; sourceTree = "<group>"; };
-		D30245071B2F71F80054AAEC /* WheelControl+Unused.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WheelControl+Unused.swift"; sourceTree = "<group>"; };
 		D307716C1A869B06003BA7E1 /* num-01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-01@2x.png"; path = "TeethTimer/Numbers/num-01@2x.png"; sourceTree = "<group>"; };
 		D307716D1A869B06003BA7E1 /* num-02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-02@2x.png"; path = "TeethTimer/Numbers/num-02@2x.png"; sourceTree = "<group>"; };
 		D307716E1A869B06003BA7E1 /* num-03@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-03@2x.png"; path = "TeethTimer/Numbers/num-03@2x.png"; sourceTree = "<group>"; };
@@ -518,8 +515,6 @@
 			isa = PBXGroup;
 			children = (
 				D34F10B81AAEA1D0009E2A9B /* WheelControl.swift */,
-				D30245041B2F63840054AAEC /* WheelControl+Animation.swift */,
-				D30245071B2F71F80054AAEC /* WheelControl+Unused.swift */,
 				D3F72EA71B2BEA21005C6F94 /* WheelControl+Types.swift */,
 			);
 			name = WheelControl;
@@ -1034,7 +1029,6 @@
 				D307719A1A88001B003BA7E1 /* BCYStandardLibrary.swift in Sources */,
 				D3B7BC7019EA383A00F50DF7 /* AppDelegate.swift in Sources */,
 				D388C3031A9F7B50007D4F8B /* POPSwiftWrapper.m in Sources */,
-				D30245051B2F63840054AAEC /* WheelControl+Animation.swift in Sources */,
 				D3112E2A1B35442C00ECF073 /* InfiniteImageWheel+TeethTimer.swift in Sources */,
 				D347A2391B2C7D3100E5256C /* TimerViewController+Background.swift in Sources */,
 				D3F8609E1B294C0300C68C08 /* AngularType.swift in Sources */,

@@ -365,9 +365,10 @@ final class TimerViewController: UIViewController {
       if previousIndexBeforeTouch > imageWheelView.rotationState.wedgeIndex {
         
         // The wheel was turned back.
-        let targetRotation = gavinWheel.targetRotation
-        let targetIndex    = imageWheelView.indexFromRotation(targetRotation)
-        let wheelTurnedBackByTmp = previousIndexBeforeTouch - targetIndex
+        let rotation = gavinWheel.rotation
+        let index    = imageWheelView.indexFromRotation(rotation)
+        
+        let wheelTurnedBackByTmp = previousIndexBeforeTouch - index
         let wheelTurnedBackBy    = max(wheelTurnedBackByTmp,0)
         
                                               // 1st image is not in count down

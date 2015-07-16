@@ -109,15 +109,6 @@ final class WheelControl: UIControl, AnimationDelegate  {
   }
   
   // MARK: Convenience calculated properties
-  var targetRotation: Rotation {
-    var targetRotation: Rotation
-    if let target = rotationState.target {
-      return target
-    } else {
-      return rotation
-    }
-  }
-  
   var animationState: AnimatedMotion {
     let animations = Animation.animations(wheelView.layer)
     if animations.count == 0 {
@@ -164,8 +155,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
     set(newRotation) {
       rotationState = RotationState( current: newRotation,
-                                    previous: newRotation,
-                                   direction: .Clockwise)
+                                    previous: newRotation)
     }
   }
 
@@ -362,19 +352,8 @@ final class WheelControl: UIControl, AnimationDelegate  {
   // Updates the currentRotation calculated property by changing
   // the rotationState backing property.
   private func incrementToRotation(rotation: Rotation) {
-    
-    let newDirection: Direction
-    if rotation > rotationState.current {
-      newDirection = .Clockwise
-    } else if rotation < rotationState.current {
-      newDirection = .CounterClockwise
-    } else {
-      newDirection = rotationState.direction
-    }
-    
     rotationState = RotationState( current: rotation,
-                         previous: rotationState.current,
-                        direction: newDirection)
+                                  previous: rotationState.current)
    }
 
   // Calculate angleDifference, including dampening in either direction
@@ -620,8 +599,7 @@ extension WheelControl {
   // MARK: -
   // MARK: Public animation API
   func animateToRotation(rotation: Rotation) {
-    rotationState.target = rotation
-    
+
     func speedUpDurationByDistance(duration: CGFloat) -> CGFloat {
       let durationDistanceFactor = CGFloat(1)
       return log((duration * durationDistanceFactor) + 1) / durationDistanceFactor

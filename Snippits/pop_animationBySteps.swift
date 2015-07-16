@@ -4,7 +4,7 @@
         // (and avoid the crashes that will come later 
         //  from the assumption we have steps to do)
         if steps.count == 0 { return }
-        // TODO: change 2 to be greater when closer to iamges.count
+        // T0D0: change 2 to be greater when closer to iamges.count
         let duration = animateWedgeDuration * CFTimeInterval(steps.count) / 2
         
         let lastStep = steps.last!
