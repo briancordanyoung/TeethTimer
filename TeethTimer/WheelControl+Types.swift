@@ -24,9 +24,10 @@ extension WheelControl {
   struct RotationState: Printable {
     static let initialVelocity: Rotation = 0.0000001
     
-    var current:   Rotation
-    var previous:  Rotation
-    var direction: Direction
+    let current:   Rotation
+    let previous:  Rotation
+    let direction: Direction
+    // When animating the wheel
     var target:    Rotation?
     
     init() {
@@ -43,12 +44,29 @@ extension WheelControl {
         self.direction = direction
     }
     
-    init(angle: Rotation) {
-      self.init(current: angle,
-               previous: angle - RotationState.initialVelocity,
+    init(rotation: Rotation) {
+      self.init(current: rotation,
+               previous: rotation - RotationState.initialVelocity,
               direction: .Clockwise)
     }
-
+    
+    // Convenience Properties to transform the Rotation to an Angle
+    var previousAngle: Angle {
+      return Angle(previous)
+    }
+    
+    var currentAngle: Angle {
+      return Angle(current)
+    }
+    
+    var targetAngle: Angle? {
+      if let target = target {
+        return  Angle(target)
+      } else {
+        return .None
+      }
+    }
+    
     var description: String {
       var msg =  "Current Rotation: \(current) "
       msg    +=  "Previous Rotation: \(previous) "
@@ -84,26 +102,16 @@ extension WheelControl {
   
   // While a user touches and drags the wheel, this tracks all state
   // used to calculate the current and final resting rotation of the wheel.
+
   struct InteractionState {
     
-    var initialTransform:  CGAffineTransform
-    var initialTouchAngle: Angle
-    var initialRotation:   Rotation
-    var currently:         UserInteraction
-    var snapTo:            SnapTo
-    var maxDampenAngle:    Rotation
-    var minDampenAngle:    Rotation
+    var initialTouchAngle          = Angle(0.0)
+    var initialRotation            = Rotation(0.0)
+    var currently: UserInteraction = .NotInteracting
+    var snapTo:    SnapTo          = .CurrentRotation
+    var minDampenRotation          = -Rotation(DBL_MAX)
+    var maxDampenRotation          =  Rotation(DBL_MAX)
     
-    
-    init() {
-      initialTransform   = CGAffineTransformMakeRotation(0)
-      initialTouchAngle  = 0.0
-      initialRotation    = 0.0
-      currently          = .NotInteracting
-      snapTo             = .CurrentRotation
-      maxDampenAngle     =  Rotation(DBL_MAX)
-      minDampenAngle     = -Rotation(DBL_MAX)
-    }
   }
 
   
