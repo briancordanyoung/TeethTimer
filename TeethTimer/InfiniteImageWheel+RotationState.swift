@@ -34,16 +34,28 @@ extension InfiniteImageWheel {
       // Calc the index based on the percentage
       let percent = percentValue(rot, isBetweenLow: 0,
                                  AndHigh: wedgeSeries.seriesWidth)
-      let index   = WedgeIndex(floor(percent * 10))
+      var index   = WedgeIndex(floor(percent * 10))
+      
+      if index < 0 {
+        println("index (\(index)) should never be less than 0")
+        index = 0
+      }
+      if index > wedgeMaxIndex {
+        println("index (\(index)) should never be greater than wedgeMaxIndex")
+        index = wedgeMaxIndex
+      }
 
+      
       // Invert the index if the layout is Clockwise
+      let wedgeIndex: WedgeIndex
       switch layoutDirection {
       case .ClockwiseLayout:
-        return wedgeMaxIndex - index
+        wedgeIndex = wedgeMaxIndex - index
       case .CounterClockwiseLayout:
-        return index
+        wedgeIndex = index
       }
       
+      return wedgeIndex
     }
     
     private func percentValue<T:AngularType>(value: T,
