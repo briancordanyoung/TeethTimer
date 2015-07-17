@@ -48,11 +48,19 @@ extension TimerViewController {
     return urlIfItExists(path?.URLByAppendingPathComponent(name))
   }
   
+  func modifierForDevice() -> String {
+    // TODO: Add code for figuring out device screen class
+    return "@3.5"
+  }
   
   func urlForCashedUI() -> NSURL? {
     var url: NSURL?
     
     url = urlForDocumentAsset(kAppCacheUIMovieBaseNameKey + ".mp4")
+    if url.hasNoValue {
+      let modifier = modifierForDevice()
+      url = urlForAppBundleAsset(kAppCacheUIMovieBaseNameKey + modifier, ofType: "mp4")
+    }
     if url.hasNoValue {
       url = urlForAppBundleAsset(kAppCacheUIMovieBaseNameKey, ofType: "mp4")
     }
@@ -161,7 +169,7 @@ extension TimerViewController {
     let framesPast        = Int64(CGFloat(interactiveFrames) * percent)
     let frame             = interactiveFrames - framesPast + (framesPerWedge / 2)
 
-//    println("time: \(frame.value)")
+//    println("time: \(frame)")
     
     seekToFrame(frame, inPlayer: player)
   }
