@@ -217,8 +217,6 @@ final class WheelControl: UIControl, AnimationDelegate  {
   
   // MARK: -
   // MARK: UIControl methods handling the touches
-  // TODO: Sort out sendActionsForControlEvents() 
-  //       make sure they fire at the correct points
   override func beginTrackingWithTouch(touch: UITouch,
                              withEvent event: UIEvent) -> Bool {
       
@@ -261,6 +259,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
     switch touchRegion(touch) {
     case .Off:
         self.sendActionsForControlEvents(.TouchDragOutside)
+        self.sendActionsForControlEvents(.TouchDragExit)
         endTrackingWithTouch(touch, withEvent: event)
       return false  // Ends current touches to the control
     case .Center:
@@ -272,15 +271,12 @@ final class WheelControl: UIControl, AnimationDelegate  {
     }
     
     transformToTouch(touch)
-                                        
-    self.sendActionsForControlEvents(.TouchDragInside)
     
     return true
   }
   
   //
   override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
-    self.sendActionsForControlEvents(.TouchUpOutside)
     endUserInteraction()
   }
 
@@ -592,7 +588,30 @@ extension WheelControl {
   // MARK: POP Animation Delegate Callback
   //       This is called continually throughout all animations.
   func pop_animationDidApply(anim: Animation!) {
-    updateRotationDuringAnimatedTransform()
+    var allowRotationUpdate = true
+    let newRotation = CGFloat(calculateRotationFromPreviousAngle())
+    
+    if anim.isKindOfClass(BasicAnimation) {
+      let basicAnim = anim as! BasicAnimation
+      let from      = basicAnim.fromValue as! CGFloat
+      let to        = basicAnim.toValue   as! CGFloat
+      
+      if to > from {
+        if newRotation > to {
+          allowRotationUpdate = false
+        }
+      } else {
+        if newRotation < to {
+          allowRotationUpdate = false
+        }
+      }
+    }
+    
+    if allowRotationUpdate {
+      updateRotationDuringAnimatedTransform()
+    } else {
+      println("Animation over shot the rotation and WeheelControl has ignored the update of the rotationState")
+    }
   }
   
   
