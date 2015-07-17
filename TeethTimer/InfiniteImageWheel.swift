@@ -80,7 +80,6 @@ final class InfiniteImageWheel: UIView {
   // MARK: UIView Methods
   override func didMoveToSuperview() {
     addSelfContraints()
-    createWedgeImageViews()
     transformWedgesWithRotationState(rotationState)
   }
 
@@ -140,7 +139,7 @@ final class InfiniteImageWheel: UIView {
   func layoutWedge(                          wedge: Wedge,
                                      atIndex index: WedgeIndex,
                    withRotationState rotationState: RotationState) {
-                        
+
     let wedgeState = WedgeState(rotationState: rotationState,
                                         index: index)
                         
