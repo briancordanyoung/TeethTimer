@@ -10,6 +10,17 @@ import UIKit
 
 class Developement: NSObject {
   
+  func printDocumentFolderPath() {
+    let paths = NSFileManager.defaultManager()
+      .URLsForDirectory( .DocumentDirectory,
+        inDomains: .UserDomainMask)
+    let path = paths.last as? NSURL
+    if let path = path {
+      println("Documents Path: \(path)")
+    }
+  }
+
+  
   // MARK: Degrees (3 places)
   lazy var padDegrees: NSNumberFormatter = {
     let numberFormater = NSNumberFormatter()

@@ -48,21 +48,38 @@ extension TimerViewController {
     return urlIfItExists(path?.URLByAppendingPathComponent(name))
   }
   
-  func modifierForDevice() -> String {
-    // TODO: Add code for figuring out device screen class
-    return "@3.5"
+  func screenSizeExtention() -> String {
+    switch Device() {
+    case .iPhone4,
+         .iPhone4s:
+      return "@3.5"
+    case .iPhone5,
+         .iPhone5c,
+         .iPhone5s,
+         .iPodTouch5:
+      return "@4.0"
+    case .Simulator:
+      return "@3.5"
+    default:
+      return ""
+    }
   }
   
   func urlForCashedUI() -> NSURL? {
     var url: NSURL?
     
-    url = urlForDocumentAsset(kAppCacheUIMovieBaseNameKey + ".mp4")
+    // Look for a movie renderd to the document folder
+    url = urlForDocumentAsset(kAppCachedUIMovieBaseNameKey + ".mp4")
+
+    // Look for a movie for this device
     if url.hasNoValue {
-      let modifier = modifierForDevice()
-      url = urlForAppBundleAsset(kAppCacheUIMovieBaseNameKey + modifier, ofType: "mp4")
+      url = urlForAppBundleAsset(kAppCachedUIMovieBaseNameKey +
+                                           screenSizeExtention(), ofType: "mp4")
     }
+    
+    // Look for a genaric movie
     if url.hasNoValue {
-      url = urlForAppBundleAsset(kAppCacheUIMovieBaseNameKey, ofType: "mp4")
+      url = urlForAppBundleAsset(kAppCachedUIMovieBaseNameKey, ofType: "mp4")
     }
     
     return url
@@ -79,7 +96,16 @@ extension TimerViewController {
 
   
   func urlForBackground() -> NSURL? {
-    return urlForAppBundleAsset("forward-lg", ofType: "mp4")
+    // Look for a movie for this device
+    var url = urlForAppBundleAsset(kAppBGMovieBaseNameKey +
+                                          screenSizeExtention(), ofType: "mp4")
+    
+    // Look for a genaric movie
+    if url.hasNoValue {
+      url = urlForAppBundleAsset(kAppBGMovieBaseNameKey, ofType: "mp4")
+    }
+    
+    return url
   }
   
   

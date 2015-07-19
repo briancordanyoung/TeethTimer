@@ -1,7 +1,8 @@
 import AVFoundation
 import UIKit
 
-let kAppCacheUIMovieBaseNameKey = "TeethTimer"
+let kAppCachedUIMovieBaseNameKey = "TeethTimer"
+let kAppBGMovieBaseNameKey = "bg"
 
 class MovieMaker {
   
@@ -32,7 +33,7 @@ class MovieMaker {
     let path = paths.last as? NSURL
     
     if let path = path {
-      let movieName   = kAppCacheUIMovieBaseNameKey + ".mp4"
+      let movieName   = kAppCachedUIMovieBaseNameKey + ".mp4"
       url = path.URLByAppendingPathComponent(movieName)
     }
     

@@ -27,6 +27,7 @@ final class TimerViewController: UIViewController {
   @IBOutlet weak var debug: UILabel!
   
   let timer = Timer()
+  let d = Developement()
 
   var gavinWheel: WheelControl?
   var previousIndexBeforeTouch: WedgeIndex?
@@ -98,6 +99,8 @@ final class TimerViewController: UIViewController {
     timer.timerUpdatedHandler  = updateTimerDisplay
     timer.reset()
     setupAppearence()
+
+//    d.printDocumentFolderPath()    
   }
   
   override func viewDidAppear(animated: Bool) {
@@ -606,6 +609,5 @@ final class TimerViewController: UIViewController {
       return (elapsedMins, elapsedSecs)
   }
 
-    
 }
 
