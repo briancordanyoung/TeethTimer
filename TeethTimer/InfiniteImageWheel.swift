@@ -2,6 +2,7 @@ import UIKit
 
 typealias WedgeIndex = Int
 
+let kAppChangeWedgePieAngleKey  = "changeWedgePieAngle"
 
 
 final class InfiniteImageWheel: UIView {
