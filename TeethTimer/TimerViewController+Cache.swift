@@ -123,11 +123,15 @@ extension TimerViewController {
   
   func renderViews() {
     var image = takeSnapshotOfView(self.view, WithResolutionScale: CGFloat(2.0))
-    cacheState.frameState = .rendered(image)
+    cacheState.frameState = .rendered(image.imageScaledToMovieSize)
   }
   
   
   func setupMovieMaker() {
+    
+    let retinaSize = CGSize(width: self.view.frame.width  * 2,
+                           height: self.view.frame.height * 2)
+    let movieSize  = retinaSize.sizeForMovie
 
     let videoCompressionSettings: [NSObject : AnyObject] = [
                AVVideoAverageBitRateKey : Int(10500000 * 15),
@@ -136,10 +140,10 @@ extension TimerViewController {
           AVVideoMaxKeyFrameIntervalKey : Int(1),
     ]
     
-    let videoSettings: [NSObject : AnyObject] = [
+    let videoSettings:        [NSObject : AnyObject] = [
                         AVVideoCodecKey : AVVideoCodecH264,
-                        AVVideoWidthKey : self.view.frame.width * 2,
-                       AVVideoHeightKey : self.view.frame.height * 2,
+                        AVVideoWidthKey : movieSize.width,
+                       AVVideoHeightKey : movieSize.height,
         AVVideoCompressionPropertiesKey : videoCompressionSettings,
     ]
     
