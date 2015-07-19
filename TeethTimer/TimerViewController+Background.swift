@@ -15,8 +15,28 @@ struct BackgroundVideoProperties {
 extension TimerViewController {
 
   func setupBackground() {
-    setupVideoBackgroundConstraints()
+    setupBackgroundVideoConstraints()
     setupVideoBackgroundAsset()
+  }
+  
+  func setupBackgroundVideoConstraints() {
+    let height = NSLayoutConstraint(item: backgroundVideoView,
+                               attribute: NSLayoutAttribute.Width,
+                               relatedBy: NSLayoutRelation.Equal,
+                                  toItem: self.view,
+                               attribute: NSLayoutAttribute.Height,
+                              multiplier: 1.0,
+                                constant: 0.0)
+    self.view.addConstraint(height)
+    
+    let aspect = NSLayoutConstraint(item: backgroundVideoView,
+                               attribute: NSLayoutAttribute.Width,
+                               relatedBy: NSLayoutRelation.Equal,
+                                  toItem: backgroundVideoView,
+                               attribute: NSLayoutAttribute.Height,
+                              multiplier: 1.0,
+                                constant: 0.0)
+    backgroundVideoView.addConstraint(aspect)
   }
   
   func currentAssetURL() -> NSURL? {
@@ -54,12 +74,14 @@ extension TimerViewController {
          .iPhone4s:
       return "@3.5"
     case .iPhone5,
-         .iPhone5c,
-         .iPhone5s,
-         .iPodTouch5:
+    .iPhone5c,
+    .iPhone5s,
+    .iPodTouch5:
       return "@4.0"
+    case .iPhone6:
+      return "@4.7"
     case .Simulator:
-      return "@3.5"
+      return "@4.7"
     default:
       return ""
     }
@@ -149,7 +171,9 @@ extension TimerViewController {
     let playerItem = AVPlayerItem(asset: asset)
     let player     = AVPlayer(playerItem: playerItem)
     player.allowsExternalPlayback = false
-    if let videoLayer = videoView.layer as? AVPlayerLayer {
+    if let videoLayer = backgroundVideoView.layer as? AVPlayerLayer {
+      
+      
       
       backgroundVideo.asset     = asset
       backgroundVideo.videoTime = backgroundVideo.asset!.duration
@@ -160,6 +184,11 @@ extension TimerViewController {
       }
       
       videoLayer.player = player
+      videoLayer.videoGravity = AVLayerVideoGravityResize
+      Async.main() {
+        println("Video Layer Frame \(videoLayer.frame)")
+        println("Video Layer Bounds \(videoLayer.bounds)")
+      }
       player.actionAtItemEnd = .None
     }
   }

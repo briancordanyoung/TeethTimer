@@ -19,7 +19,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Msc-xa-DWv" userLabel="VideoView" customClass="VideoView" customModule="TeethTimer" customModuleProvider="target">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9M9-Ge-lpe" userLabel="cachedUIVideoView" customClass="VideoView" customModule="TeethTimer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="40" width="375" height="539"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Msc-xa-DWv" userLabel="backgroundVideoView" customClass="VideoView" customModule="TeethTimer" customModuleProvider="target">
                                 <rect key="frame" x="-173" y="0.0" width="720" height="720"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="720" placeholder="YES" id="40e-ph-LDV"/>
@@ -126,7 +130,9 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="backgroundVideoView" destination="Msc-xa-DWv" id="2Ia-Yi-nmh"/>
                         <outlet property="cacheUIButton" destination="IsK-Pa-dKm" id="ynd-MK-Azg"/>
+                        <outlet property="cachedUIVideoView" destination="9M9-Ge-lpe" id="atN-zt-xMd"/>
                         <outlet property="controlView" destination="MOq-R8-IVu" id="UKu-kb-7Zt"/>
                         <outlet property="debug" destination="cxW-IU-geL" id="5WI-cc-5Sh"/>
                         <outlet property="debugPosition" destination="kpZ-ap-XVA" id="yx0-Ih-7CT"/>
@@ -135,7 +141,6 @@
                         <outlet property="snapshotView" destination="BC6-ez-KJa" id="tKe-H0-5NK"/>
                         <outlet property="startPauseButton" destination="Vn1-Zx-sgu" id="59w-Mo-ILk"/>
                         <outlet property="timerLabel" destination="OUX-Ix-O1U" id="6fW-xf-yBv"/>
-                        <outlet property="videoView" destination="Msc-xa-DWv" id="CPb-OM-TOx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

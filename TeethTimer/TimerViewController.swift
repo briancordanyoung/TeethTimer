@@ -11,17 +11,18 @@ let kAppShowTimeLabelKey        = "showTimeLabel"
 final class TimerViewController: UIViewController {
 
   // MARK: Properties
-  @IBOutlet weak var startPauseButton: UIButton!
-  @IBOutlet weak var resetButton:      UIButton!
-  @IBOutlet weak var cacheUIButton:    UIButton!
-  @IBOutlet weak var timerLabel:       UILabel!
-  @IBOutlet weak var fullScreenImage:  UIImageView!
-  @IBOutlet weak var controlView:      UIView!
-  @IBOutlet weak var lowerThirdView:   UIImageView!
-  @IBOutlet weak var snapshotView:     UIView!
-  @IBOutlet weak var testImageView:    UIImageView!
-  @IBOutlet weak var videoView:        VideoView!
-  @IBOutlet weak var debugPosition: NSLayoutConstraint!
+  @IBOutlet weak var startPauseButton:    UIButton!
+  @IBOutlet weak var resetButton:         UIButton!
+  @IBOutlet weak var cacheUIButton:       UIButton!
+  @IBOutlet weak var timerLabel:          UILabel!
+  @IBOutlet weak var fullScreenImage:     UIImageView!
+  @IBOutlet weak var controlView:         UIView!
+  @IBOutlet weak var lowerThirdView:      UIImageView!
+  @IBOutlet weak var snapshotView:        UIView!
+  @IBOutlet weak var testImageView:       UIImageView!
+  @IBOutlet weak var cachedUIVideoView:   VideoView!
+  @IBOutlet weak var backgroundVideoView: VideoView!
+  @IBOutlet weak var debugPosition:    NSLayoutConstraint!
   
   @IBOutlet weak var debug: UILabel!
   
@@ -66,10 +67,10 @@ final class TimerViewController: UIViewController {
   lazy var cacheState: CacheWheelState = {
     return CacheWheelState()
   }()
-  lazy var backgroundVideo: BackgroundVideoProperties = {
-    return BackgroundVideoProperties()
-  }()
-
+  
+  var backgroundVideo = BackgroundVideoProperties()
+  var cachedUIVideo   = CachedUIVideoProperties()
+  
   // MARK: -
   // MARK: View Controller Methods
   override func viewDidLoad() {
@@ -87,6 +88,7 @@ final class TimerViewController: UIViewController {
     self.gavinWheel = gavinWheel
     
     setupBackground()
+    setupCachedUI()
   }
   
   override func viewWillAppear(animated: Bool) {
@@ -99,7 +101,7 @@ final class TimerViewController: UIViewController {
     timer.reset()
     setupAppearence()
 
-//    d.printDocumentFolderPath()    
+    d.printDocumentFolderPath()    
   }
   
   override func viewDidAppear(animated: Bool) {
@@ -209,27 +211,6 @@ final class TimerViewController: UIViewController {
     gavinWheel.dampenCounterClockwise = true
   }
   
-  func setupVideoBackgroundConstraints() {
-    let height = NSLayoutConstraint(item: videoView,
-                               attribute: NSLayoutAttribute.Width,
-                               relatedBy: NSLayoutRelation.Equal,
-                                  toItem: self.view,
-                               attribute: NSLayoutAttribute.Height,
-                              multiplier: 1.0,
-                                constant: 0.0)
-    self.view.addConstraint(height)
-    
-    let aspect = NSLayoutConstraint(item: videoView,
-                               attribute: NSLayoutAttribute.Width,
-                               relatedBy: NSLayoutRelation.Equal,
-                                  toItem: videoView,
-                               attribute: NSLayoutAttribute.Height,
-                              multiplier: 1.0,
-                                constant: 0.0)
-    videoView.addConstraint(aspect)
-  }
-  
-  
   func setupAppearence() {
     
     if isCashedUI {
@@ -248,24 +229,28 @@ final class TimerViewController: UIViewController {
   }
   
   func showCachedUI() {
-    cacheUIButton.hidden   = true
+    backgroundVideoView.hidden = true
+    cachedUIVideoView.hidden   = false
+    cacheUIButton.hidden       = true
     imageWheelView?.removeWedgeImageViews()
-    imageWheelView?.hidden = true
-    lowerThirdView.hidden  = true
-    snapshotView.hidden    = true
-    debugPosition.constant = 20
-    timerLabel.hidden      = !showTimeLabel
+    imageWheelView?.hidden     = true
+    lowerThirdView.hidden      = true
+    snapshotView.hidden        = true
+    debugPosition.constant     = 20
+    timerLabel.hidden          = !showTimeLabel
     debug.hidden = false
   }
   
   func showLiveUI() {
-    cacheUIButton.hidden   = false
+    backgroundVideoView.hidden = false
+    cachedUIVideoView.hidden   = true
+    cacheUIButton.hidden       = false
     imageWheelView?.createWedgeImageViews()
-    imageWheelView?.hidden = false
-    lowerThirdView.hidden  = false
-    snapshotView.hidden    = false
-    debugPosition.constant = 0
-    timerLabel.hidden      = !showTimeLabel
+    imageWheelView?.hidden     = false
+    lowerThirdView.hidden      = false
+    snapshotView.hidden        = false
+    debugPosition.constant     = 0
+    timerLabel.hidden          = !showTimeLabel
     debug.hidden = false
   }
   
