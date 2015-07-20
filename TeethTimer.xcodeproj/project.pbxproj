@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B2B31E5C4E30211FC85A4DB9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1113560EAB34F926CF979D1 /* libPods.a */; };
+		D306EC501B5CBA8800EF2B7D /* bg@3.5.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D306EC4F1B5CBA8800EF2B7D /* bg@3.5.mp4 */; };
 		D30771821A869B06003BA7E1 /* num-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716C1A869B06003BA7E1 /* num-01@2x.png */; };
 		D30771831A869B06003BA7E1 /* num-02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716D1A869B06003BA7E1 /* num-02@2x.png */; };
 		D30771841A869B06003BA7E1 /* num-03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D307716E1A869B06003BA7E1 /* num-03@2x.png */; };
@@ -73,13 +74,13 @@
 		D32096291B5C129B001C3226 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32096281B5C129B001C3226 /* Device.swift */; };
 		D320962C1B5C2327001C3226 /* TeethTimer.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D320962A1B5C2327001C3226 /* TeethTimer.mp4 */; };
 		D320962D1B5C2327001C3226 /* TeethTimer@4.0.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D320962B1B5C2327001C3226 /* TeethTimer@4.0.mp4 */; };
-		D32096301B5C2376001C3226 /* ba@3.5.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D320962E1B5C2376001C3226 /* ba@3.5.mp4 */; };
 		D32096311B5C2376001C3226 /* bg.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D320962F1B5C2376001C3226 /* bg.mp4 */; };
 		D32096331B5C3CD0001C3226 /* CGFloat+WholeNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32096321B5C3CD0001C3226 /* CGFloat+WholeNumber.swift */; };
 		D32096351B5C4443001C3226 /* CGSize+Movies.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32096341B5C4443001C3226 /* CGSize+Movies.swift */; };
 		D32096371B5C46C2001C3226 /* UIImage+Movies.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32096361B5C46C2001C3226 /* UIImage+Movies.swift */; };
 		D320963B1B5C67CD001C3226 /* TimerViewController+CachedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D320963A1B5C67CD001C3226 /* TimerViewController+CachedUI.swift */; };
 		D320963D1B5C6D00001C3226 /* TimerViewController+Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = D320963C1B5C6D00001C3226 /* TimerViewController+Video.swift */; };
+		D320963F1B5CB276001C3226 /* TeethTimer@4.7.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D320963E1B5CB276001C3226 /* TeethTimer@4.7.mp4 */; };
 		D32519341B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D32519331B0AA5B9007965DD /* BDYMovieMakerHelper.m */; };
 		D32519351B0AA5B9007965DD /* BDYMovieMakerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D32519331B0AA5B9007965DD /* BDYMovieMakerHelper.m */; };
 		D32519361B0AB048007965DD /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3864F581AF69FBE00B787B4 /* Async.swift */; };
@@ -222,6 +223,7 @@
 		494890643301A07092EB8CC0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A8D8BE3E5746E8CC9B850697 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B1113560EAB34F926CF979D1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D306EC4F1B5CBA8800EF2B7D /* bg@3.5.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "bg@3.5.mp4"; path = "caschedBG/bg@3.5.mp4"; sourceTree = "<group>"; };
 		D307716C1A869B06003BA7E1 /* num-01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-01@2x.png"; path = "TeethTimer/Numbers/num-01@2x.png"; sourceTree = "<group>"; };
 		D307716D1A869B06003BA7E1 /* num-02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-02@2x.png"; path = "TeethTimer/Numbers/num-02@2x.png"; sourceTree = "<group>"; };
 		D307716E1A869B06003BA7E1 /* num-03@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "num-03@2x.png"; path = "TeethTimer/Numbers/num-03@2x.png"; sourceTree = "<group>"; };
@@ -259,13 +261,13 @@
 		D32096281B5C129B001C3226 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		D320962A1B5C2327001C3226 /* TeethTimer.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = TeethTimer.mp4; path = cachedUI/TeethTimer.mp4; sourceTree = "<group>"; };
 		D320962B1B5C2327001C3226 /* TeethTimer@4.0.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "TeethTimer@4.0.mp4"; path = "cachedUI/TeethTimer@4.0.mp4"; sourceTree = "<group>"; };
-		D320962E1B5C2376001C3226 /* ba@3.5.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ba@3.5.mp4"; path = "caschedBG/ba@3.5.mp4"; sourceTree = "<group>"; };
 		D320962F1B5C2376001C3226 /* bg.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = bg.mp4; path = caschedBG/bg.mp4; sourceTree = "<group>"; };
 		D32096321B5C3CD0001C3226 /* CGFloat+WholeNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+WholeNumber.swift"; sourceTree = "<group>"; };
 		D32096341B5C4443001C3226 /* CGSize+Movies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+Movies.swift"; sourceTree = "<group>"; };
 		D32096361B5C46C2001C3226 /* UIImage+Movies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Movies.swift"; sourceTree = "<group>"; };
 		D320963A1B5C67CD001C3226 /* TimerViewController+CachedUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimerViewController+CachedUI.swift"; sourceTree = "<group>"; };
 		D320963C1B5C6D00001C3226 /* TimerViewController+Video.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimerViewController+Video.swift"; sourceTree = "<group>"; };
+		D320963E1B5CB276001C3226 /* TeethTimer@4.7.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "TeethTimer@4.7.mp4"; path = "cachedUI/TeethTimer@4.7.mp4"; sourceTree = "<group>"; };
 		D32519321B0AA5B9007965DD /* BDYMovieMakerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDYMovieMakerHelper.h; sourceTree = "<group>"; };
 		D32519331B0AA5B9007965DD /* BDYMovieMakerHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDYMovieMakerHelper.m; sourceTree = "<group>"; };
 		D3280BC91B4C966C003D8448 /* WedgeStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WedgeStateTests.swift; sourceTree = "<group>"; };
@@ -610,9 +612,10 @@
 			isa = PBXGroup;
 			children = (
 				D320962A1B5C2327001C3226 /* TeethTimer.mp4 */,
+				D320963E1B5CB276001C3226 /* TeethTimer@4.7.mp4 */,
 				D320962B1B5C2327001C3226 /* TeethTimer@4.0.mp4 */,
 				D3ADBBE01B58C97800784366 /* TeethTimer@3.5.mp4 */,
-				D320962E1B5C2376001C3226 /* ba@3.5.mp4 */,
+				D306EC4F1B5CBA8800EF2B7D /* bg@3.5.mp4 */,
 				D320962F1B5C2376001C3226 /* bg.mp4 */,
 				D34F10BA1AAEAE88009E2A9B /* WheelImage.png */,
 				D34F10BB1AAEAE88009E2A9B /* WheelImageType.png */,
@@ -862,7 +865,6 @@
 			files = (
 				D33540A01A3764E80064C81C /* Gavin Poses-s01@3x.png in Resources */,
 				D33540B01A3764E80064C81C /* Gavin Poses-s04@2x.png in Resources */,
-				D32096301B5C2376001C3226 /* ba@3.5.mp4 in Resources */,
 				D3B7BC7519EA383A00F50DF7 /* Main.storyboard in Resources */,
 				D33540CE1A3764E80064C81C /* Gavin Poses-s09@2x.png in Resources */,
 				D34DC0561A0FF26000AA7420 /* Settings.bundle in Resources */,
@@ -897,9 +899,11 @@
 				D33540BA1A3764E80064C81C /* Gavin Poses-s06.png in Resources */,
 				D33540CA1A3764E80064C81C /* Gavin Poses-s08@3x.png in Resources */,
 				D30771821A869B06003BA7E1 /* num-01@2x.png in Resources */,
+				D320963F1B5CB276001C3226 /* TeethTimer@4.7.mp4 in Resources */,
 				D30771831A869B06003BA7E1 /* num-02@2x.png in Resources */,
 				D333746A1B49C52D00CDB381 /* num-00@2x.png in Resources */,
 				D30771841A869B06003BA7E1 /* num-03@2x.png in Resources */,
+				D306EC501B5CBA8800EF2B7D /* bg@3.5.mp4 in Resources */,
 				D30771851A869B06003BA7E1 /* num-04@2x.png in Resources */,
 				D30771861A869B06003BA7E1 /* num-05@2x.png in Resources */,
 				D30771871A869B06003BA7E1 /* num-06@2x.png in Resources */,

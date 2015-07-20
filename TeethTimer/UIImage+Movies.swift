@@ -11,11 +11,9 @@ extension UIImage {
     
     // This UIImage need to be scaled to the correct dimentions for
     // writing to a movie
-    let naturalSize = self.size
-    let movieSize   = naturalSize.sizeForMovie
-    
-    let hasAlpha = false
-    let scale: CGFloat = 2.0 // Automatically use scale factor of main screen
+    let movieSize = self.size.sizeForMovie
+    let scale     = self.scale
+    let hasAlpha  = false
     
     UIGraphicsBeginImageContextWithOptions(movieSize, !hasAlpha, scale)
     self.drawInRect(CGRect(origin: CGPointZero, size: movieSize))
