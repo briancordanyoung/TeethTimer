@@ -68,8 +68,9 @@ final class TimerViewController: UIViewController {
     return CacheWheelState()
   }()
   
-  var backgroundVideo = BackgroundVideoProperties()
-  var cachedUIVideo   = CachedUIVideoProperties()
+  let backgroundVideo = VideoProperties()
+  let cachedUIVideo   = VideoProperties()
+  lazy var currentVideo: VideoProperties = {return self.backgroundVideo}()
   
   // MARK: -
   // MARK: View Controller Methods
@@ -229,6 +230,7 @@ final class TimerViewController: UIViewController {
   }
   
   func showCachedUI() {
+    currentVideo               = cachedUIVideo
     backgroundVideoView.hidden = true
     cachedUIVideoView.hidden   = false
     cacheUIButton.hidden       = true
@@ -242,6 +244,7 @@ final class TimerViewController: UIViewController {
   }
   
   func showLiveUI() {
+    currentVideo               = backgroundVideo
     backgroundVideoView.hidden = false
     cachedUIVideoView.hidden   = true
     cacheUIButton.hidden       = false
@@ -321,7 +324,8 @@ final class TimerViewController: UIViewController {
       gavinWheel.snapToRotation  = imageWheelView.wedgeCenter
       
       if let percentageRemaining = gavinWheel.percentageRemaining {
-        updateBackgroundForPercentDone(percentageRemaining)
+        updateVideoForPercentDone( percentageRemaining,
+              withVideoProperties: currentVideo)
         updateDebugCacheIULabel(debug, WithImageWheel: imageWheelView,
                                         andPercentage: percentageRemaining)
       } else {
