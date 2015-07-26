@@ -134,10 +134,10 @@ extension TimerViewController {
     let movieSize  = retinaSize.sizeForMovie
 
     let videoCompressionSettings: [NSObject : AnyObject] = [
-               AVVideoAverageBitRateKey : Int(10500000 * 15),
+               AVVideoAverageBitRateKey : Int(10500000 * 5),
       AVVideoExpectedSourceFrameRateKey : Int(60),
                  AVVideoProfileLevelKey : AVVideoProfileLevelH264MainAutoLevel,
-          AVVideoMaxKeyFrameIntervalKey : Int(1),
+          AVVideoMaxKeyFrameIntervalKey : Int(10),
     ]
     
     let videoSettings:        [NSObject : AnyObject] = [

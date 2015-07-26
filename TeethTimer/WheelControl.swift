@@ -125,7 +125,7 @@ final class WheelControl: UIControl, AnimationDelegate  {
   var outsideCircle: CGFloat {
     return wheelView.bounds.height * 2
   }
-  
+    
   
   // MARK: -
   // MARK: Internal Properties
@@ -588,7 +588,23 @@ extension WheelControl {
   // MARK: POP Animation Delegate Callback
   //       This is called continually throughout all animations.
   func pop_animationDidApply(anim: Animation!) {
-    var allowRotationUpdate = true
+    if anim != nil {
+      animationDidApply(anim)
+    }
+  }
+  
+  
+  func animationDidApply(anim: Animation) {
+    if animationHasNotOvershotTargetRotation(anim) {
+      updateRotationDuringAnimatedTransform()
+    } else {
+      println("Animation over shot the rotation and WeheelControl has ignored the update of the rotationState")
+    }
+  }
+  
+  
+  func animationHasNotOvershotTargetRotation(anim: Animation) -> Bool {
+    var hasNotOvershot = true
     let newRotation = CGFloat(calculateRotationFromPreviousAngle())
     
     if anim.isKindOfClass(BasicAnimation) {
@@ -598,22 +614,16 @@ extension WheelControl {
       
       if to > from {
         if newRotation > to {
-          allowRotationUpdate = false
+          hasNotOvershot = false
         }
       } else {
         if newRotation < to {
-          allowRotationUpdate = false
+          hasNotOvershot = false
         }
       }
     }
-    
-    if allowRotationUpdate {
-      updateRotationDuringAnimatedTransform()
-    } else {
-      println("Animation over shot the rotation and WeheelControl has ignored the update of the rotationState")
-    }
+    return hasNotOvershot
   }
-  
   
   // MARK: -
   // MARK: Public animation API

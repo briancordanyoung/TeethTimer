@@ -175,6 +175,7 @@
 		D397B3921B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D397B3901B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift */; };
 		D39BDB5D1B2E5D4E00B0E709 /* AccumulatedAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39BDB5C1B2E5D4E00B0E709 /* AccumulatedAngle.swift */; };
 		D39BDB5E1B2E5D4E00B0E709 /* AccumulatedAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39BDB5C1B2E5D4E00B0E709 /* AccumulatedAngle.swift */; };
+		D3A536A01B659C160084148F /* AppDelegate+Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A5369F1B659C160084148F /* AppDelegate+Defaults.swift */; };
 		D3ADBBE11B58C99E00784366 /* TeethTimer@3.5.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D3ADBBE01B58C97800784366 /* TeethTimer@3.5.mp4 */; };
 		D3AFFDC11B4AD2EE00BEA5A4 /* ImageWheelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AFFDC01B4AD2EE00BEA5A4 /* ImageWheelTests.swift */; };
 		D3AFFDC71B4AD30E00BEA5A4 /* InfiniteImageWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C438C81B308B4D00958CB8 /* InfiniteImageWheel.swift */; };
@@ -204,6 +205,7 @@
 		D3CDA2D21AF32EBD00243AFF /* PieImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */; };
 		D3CEFEE81B2A302400AE6A6D /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CEFEE71B2A302400AE6A6D /* Angle.swift */; };
 		D3CEFEE91B2A302400AE6A6D /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CEFEE71B2A302400AE6A6D /* Angle.swift */; };
+		D3E9520E1B60A35600168950 /* WheelControl+Preformance.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E9520D1B60A35600168950 /* WheelControl+Preformance.swift */; };
 		D3F72EA81B2BEA21005C6F94 /* WheelControl+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F72EA71B2BEA21005C6F94 /* WheelControl+Types.swift */; };
 		D3F8609E1B294C0300C68C08 /* AngularType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8609D1B294C0300C68C08 /* AngularType.swift */; };
 		D3F8609F1B294C0300C68C08 /* AngularType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8609D1B294C0300C68C08 /* AngularType.swift */; };
@@ -329,6 +331,7 @@
 		D39BDB5C1B2E5D4E00B0E709 /* AccumulatedAngle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccumulatedAngle.swift; sourceTree = "<group>"; };
 		D3A4341F1B015BA8001DD6A2 /* FramesToMovie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FramesToMovie.m; sourceTree = "<group>"; };
 		D3A434241B015CA0001DD6A2 /* FramesToMovie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FramesToMovie.h; sourceTree = "<group>"; };
+		D3A5369F1B659C160084148F /* AppDelegate+Defaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Defaults.swift"; sourceTree = "<group>"; };
 		D3ADBBE01B58C97800784366 /* TeethTimer@3.5.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "TeethTimer@3.5.mp4"; path = "cachedUI/TeethTimer@3.5.mp4"; sourceTree = "<group>"; };
 		D3AFFDBC1B4AD2EE00BEA5A4 /* ImageWheelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageWheelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3AFFDBF1B4AD2EE00BEA5A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -350,6 +353,7 @@
 		D3CDA2CF1AF32E6300243AFF /* PieSliceLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieSliceLayer.m; sourceTree = "<group>"; };
 		D3CDA2D11AF32EBD00243AFF /* PieImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieImageView.swift; sourceTree = "<group>"; };
 		D3CEFEE71B2A302400AE6A6D /* Angle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
+		D3E9520D1B60A35600168950 /* WheelControl+Preformance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WheelControl+Preformance.swift"; sourceTree = "<group>"; };
 		D3F72EA71B2BEA21005C6F94 /* WheelControl+Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WheelControl+Types.swift"; sourceTree = "<group>"; };
 		D3F8609D1B294C0300C68C08 /* AngularType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AngularType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -535,6 +539,7 @@
 			isa = PBXGroup;
 			children = (
 				D34F10B81AAEA1D0009E2A9B /* WheelControl.swift */,
+				D3E9520D1B60A35600168950 /* WheelControl+Preformance.swift */,
 				D3F72EA71B2BEA21005C6F94 /* WheelControl+Types.swift */,
 			);
 			name = WheelControl;
@@ -588,6 +593,7 @@
 				D3B7BC7319EA383A00F50DF7 /* Main.storyboard */,
 				D3B7BC7819EA383A00F50DF7 /* LaunchScreen.xib */,
 				D3B7BC6F19EA383A00F50DF7 /* AppDelegate.swift */,
+				D3A5369F1B659C160084148F /* AppDelegate+Defaults.swift */,
 				D3B7BC7119EA383A00F50DF7 /* TimerViewController.swift */,
 				D347A2381B2C7D3100E5256C /* TimerViewController+Background.swift */,
 				D320963A1B5C67CD001C3226 /* TimerViewController+CachedUI.swift */,
@@ -1066,10 +1072,12 @@
 				D320963B1B5C67CD001C3226 /* TimerViewController+CachedUI.swift in Sources */,
 				D347A2391B2C7D3100E5256C /* TimerViewController+Background.swift in Sources */,
 				D3F8609E1B294C0300C68C08 /* AngularType.swift in Sources */,
+				D3A536A01B659C160084148F /* AppDelegate+Defaults.swift in Sources */,
 				D3CDA2D21AF32EBD00243AFF /* PieImageView.swift in Sources */,
 				D30EDFA61AD2F8C100E76327 /* SystemVersion.swift in Sources */,
 				D30E03581B20F24D0019914B /* MovieMaker.swift in Sources */,
 				D397B3911B3DB3B9000C4DBC /* InfiniteImageWheel+WedgeState.swift in Sources */,
+				D3E9520E1B60A35600168950 /* WheelControl+Preformance.swift in Sources */,
 				D3485C8519ECEEB900C6E495 /* Timer.swift in Sources */,
 				D3112E101B350EF000ECF073 /* InfiniteImageWheel.swift in Sources */,
 				D32096351B5C4443001C3226 /* CGSize+Movies.swift in Sources */,

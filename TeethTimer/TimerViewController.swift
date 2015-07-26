@@ -43,7 +43,15 @@ final class TimerViewController: UIViewController {
   
   var isCashedUI: Bool {
     get {
-      return NSUserDefaults.standardUserDefaults().boolForKey(kAppUseCachedUIKey)
+      let isCachedUI = NSUserDefaults.standardUserDefaults().boolForKey(kAppUseCachedUIKey)
+      
+      // If the iOS device had too little ram, always use the cachedUI
+      switch Device() {
+        case .iPodTouch5, .iPhone4, .iPhone4s, .iPad2, .iPadMini, .iPadMini2:
+        return true
+        default:
+        return isCachedUI
+      }
     }
     set(isCachedUI) {
       NSUserDefaults.standardUserDefaults().setBool( isCachedUI,
